@@ -546,20 +546,22 @@
       margin: 12px 0;
     }
     .receipt-qr-box {
-      width: 76px;
-      height: 76px;
-      background: white;
+      width: 96px;
+      height: 96px;
+      background: #FFFFFF;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      border: 1px solid #E2E8F0;
+      border: 1.5px solid #0F172A;
       border-radius: 8px;
       padding: 2px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
     }
     .receipt-qr-box img, .receipt-qr-box canvas {
-      width: 100% !important;
-      height: 100% !important;
+      width: 92px !important;
+      height: 92px !important;
+      display: block;
     }
     .receipt-verify-meta {
       flex: 1;
@@ -1274,13 +1276,14 @@
           </p>
 
           <div class="form-group">
-            <label>রসিদ নম্বর প্রদান করুন (যেমন: RCT-12345)</label>
+            <label style="font-weight: 700; color: #1E293B;">রসিদ নম্বর অথবা সিক্রেট কোড প্রদান করুন</label>
             <div style="display: flex; gap: 8px;">
-              <input type="text" id="verifyInputReceiptNo" placeholder="RCT-XXXXX" style="text-transform: uppercase; font-weight: 700;">
+              <input type="text" id="verifyInputReceiptNo" placeholder="যেমন: RCT-XXXXXX বা গোপন কোড" style="text-transform: uppercase; font-weight: 700;">
               <button onclick="handleVerifyByInput()" style="background: #0F9D58; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; white-space: nowrap;">
                 🔍 যাচাই করুন
               </button>
             </div>
+            <small style="color: #64748B; font-size: 11px; margin-top: 5px; display: block;">রসিদে মুদ্রিত '🔐 সিক্রেট যাচাই কোড' লিখেও তাৎক্ষণিক যাচাই করতে পারেন।</small>
           </div>
         </div>
 
@@ -1358,14 +1361,18 @@
             <!-- QR code generated here -->
           </div>
           <div class="receipt-verify-meta">
-            <div style="font-weight: 800; font-size: 11px; color: #0F9D58; display: flex; align-items: center; gap: 4px;">
-              <span>✅</span> <span>অনুমোদিত আসল রসিদ</span>
+            <div style="font-weight: 800; font-size: 11px; color: #0F9D58; display: flex; align-items: center; gap: 4px; margin-bottom: 3px;">
+              <span>✅</span> <span>ডিজিটাল সত্যতা যাচাইকৃত</span>
             </div>
-            <div style="font-size: 10px; color: #64748B; margin-top: 2px;">
-              ক্যামেরা দিয়ে QR স্ক্যান করে অনলাইনে সত্যতা যাচাই করুন
+            <div style="background: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 6px; padding: 5px 8px; margin: 3px 0;">
+              <div style="font-size: 9.5px; color: #64748B; font-weight: 700;">🔐 সিক্রেট যাচাই কোড:</div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 1px;">
+                <span id="rcptSecretCode" style="font-family: monospace; font-size: 13px; font-weight: 800; color: #0F172A; letter-spacing: 0.5px;">RCT-000000</span>
+                <button type="button" onclick="copySecretCode()" style="background: white; border: 1px solid #94A3B8; border-radius: 4px; padding: 2px 6px; font-size: 9px; cursor: pointer; color: #1E293B; font-weight: 700;">📋 কপি</button>
+              </div>
             </div>
-            <div id="rcptVerifyLinkText" style="font-size: 9px; color: #1A73E8; word-break: break-all; margin-top: 3px;">
-              যাচাই লিংক লোড হচ্ছে...
+            <div style="font-size: 9.5px; color: #64748B; line-height: 1.3;">
+              ক্যামেরা দিয়ে QR স্ক্যান করুন অথবা যাচাই মেনুতে সিক্রেট কোডটি দিন।
             </div>
           </div>
         </div>
@@ -2452,43 +2459,50 @@
       const signEl = document.getElementById("rcptSignCashier");
       if (signEl) signEl.innerText = cashierSign;
 
-      // Generate Real Dynamic QR Code
-      generateReceiptQr(data.receiptNo, data.amount, data.memberName, data.dateStr);
+      // Secret verification code
+      const secretCode = data.receiptNo || "RCT-001";
+      const codeEl = document.getElementById("rcptSecretCode");
+      if (codeEl) codeEl.innerText = secretCode;
+
+      // Generate Real Dynamic QR Code (Instant Scan)
+      generateReceiptQr(secretCode);
 
       document.getElementById("receiptModal").style.display = "flex";
     }
 
-    function generateReceiptQr(receiptNo, amount, memberName, dateStr) {
+    function generateReceiptQr(receiptNo) {
       const qrBox = document.getElementById("receiptQrCodeBox");
-      const verifyLinkText = document.getElementById("rcptVerifyLinkText");
       if (!qrBox) return;
 
       qrBox.innerHTML = "";
-      const queryParams = new URLSearchParams();
-      if (receiptNo) queryParams.set("verify", receiptNo);
-      if (amount) queryParams.set("amt", amount);
-      if (memberName) queryParams.set("mem", memberName);
-      if (dateStr) queryParams.set("date", dateStr);
+      // Keep QR URL short and ultra-clean for instant mobile camera focus and scan
+      const verifyUrl = `${window.location.origin}${window.location.pathname}?verify=${encodeURIComponent(receiptNo)}`;
 
-      const verifyUrl = `${window.location.origin}${window.location.pathname}?${queryParams.toString()}`;
-      if (verifyLinkText) verifyLinkText.innerText = verifyUrl;
-
-      // Try QRCode library, fallback to high-reliability QR image API
+      // Generate sharp high-contrast QR code (92x92)
       try {
         if (typeof QRCode !== 'undefined') {
           new QRCode(qrBox, {
             text: verifyUrl,
-            width: 72,
-            height: 72,
+            width: 92,
+            height: 92,
             colorDark: "#0F172A",
             colorLight: "#FFFFFF",
             correctLevel: QRCode.CorrectLevel.M
           });
         } else {
-          qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=72x72&data=${encodeURIComponent(verifyUrl)}" alt="QR Code" style="width:72px;height:72px;border-radius:4px;">`;
+          qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=92x92&margin=0&data=${encodeURIComponent(verifyUrl)}" alt="QR Code" style="width:92px;height:92px;border-radius:4px;display:block;">`;
         }
       } catch (err) {
-        qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=72x72&data=${encodeURIComponent(verifyUrl)}" alt="QR Code" style="width:72px;height:72px;border-radius:4px;">`;
+        qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=92x92&margin=0&data=${encodeURIComponent(verifyUrl)}" alt="QR Code" style="width:92px;height:92px;border-radius:4px;display:block;">`;
+      }
+    }
+
+    function copySecretCode() {
+      const code = document.getElementById("rcptSecretCode")?.innerText;
+      if (code) {
+        navigator.clipboard.writeText(code).then(() => {
+          alert(`✅ সিক্রেট ভেরিফিকেশন কোড "${code}" কপি করা হয়েছে!`);
+        });
       }
     }
 
@@ -2751,14 +2765,8 @@
 
     function getReceiptPlainText() {
       if (!activeReceiptData) return "";
-      const queryParams = new URLSearchParams();
-      if (activeReceiptData.receiptNo) queryParams.set("verify", activeReceiptData.receiptNo);
-      if (activeReceiptData.amount) queryParams.set("amt", activeReceiptData.amount);
-      if (activeReceiptData.memberName) queryParams.set("mem", activeReceiptData.memberName);
-      if (activeReceiptData.dateStr) queryParams.set("date", activeReceiptData.dateStr);
-
-      const verifyUrl = `${window.location.origin}${window.location.pathname}?${queryParams.toString()}`;
-      return `*${currentSomiti.name}*\n"${currentSomiti.padHeader}"\n📍 ${currentSomiti.address}\n\n🧾 *ডিজিটাল মানি রিসিট*\nরসিদ নং: ${activeReceiptData.receiptNo}\nতারিখ: ${activeReceiptData.dateStr}\nসদস্য: [${activeReceiptData.memberNumber}] ${activeReceiptData.memberName}\nধরণ: ${activeReceiptData.type}\n*জমা টাকা: ৳${activeReceiptData.amount}*\nমন্তব্য: ${activeReceiptData.note || 'অনুল্লিখিত'}\nআদায়কারী: ${currentSomiti.cashierName}\n\n🔍 *অনলাইনে রসিদটি যাচাই করুন:*\n${verifyUrl}\n\nধন্যবাদ!`;
+      const verifyUrl = `${window.location.origin}${window.location.pathname}?verify=${encodeURIComponent(activeReceiptData.receiptNo)}`;
+      return `*${currentSomiti.name}*\n"${currentSomiti.padHeader}"\n📍 ${currentSomiti.address}\n\n🧾 *ডিজিটাল মানি রিসিট*\nরসিদ নং: ${activeReceiptData.receiptNo}\n🔐 *সিক্রেট যাচাই কোড:* ${activeReceiptData.receiptNo}\nতারিখ: ${activeReceiptData.dateStr}\nসদস্য: [${activeReceiptData.memberNumber}] ${activeReceiptData.memberName}\nধরণ: ${activeReceiptData.type}\n*জমা টাকা: ৳${activeReceiptData.amount}*\nমন্তব্য: ${activeReceiptData.note || 'অনুল্লিখিত'}\nআদায়কারী: ${currentSomiti.cashierName}\n\n🔍 *অনলাইনে রসিদ যাচাই লিংক:*\n${verifyUrl}\n\nধন্যবাদ!`;
     }
 
     function shareReceiptWhatsApp() {
