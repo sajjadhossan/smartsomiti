@@ -79,11 +79,17 @@ class AuthGate extends StatelessWidget {
               }
 
               final somitis = somitiSnapshot.data ?? [];
+              final userEmail = (user.email ?? '').toLowerCase().trim();
+              final isSuperAdmin = userEmail == 'hossansajjad1994@gmail.com';
               if (somitis.isEmpty) {
+                if (isSuperAdmin) {
+                  return OnboardingScreen(user: user);
+                }
                 return PendingApprovalScreen(user: user);
               }
 
               return SomitiListScreen(user: user, somitis: somitis);
+
             },
           );
         }

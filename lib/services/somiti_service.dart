@@ -19,18 +19,21 @@ class SomitiService {
   // User's linked Somitis (whether as creator or joined member)
   Stream<List<SomitiModel>> getUserSomitisStream(String userEmail, String userId) {
     final lowerEmail = userEmail.trim().toLowerCase();
+    const superAdminEmail = 'hossansajjad1994@gmail.com';
     return _somitisCol().snapshots().map((snapshot) {
       return snapshot.docs
           .map((doc) => SomitiModel.fromSnapshot(doc))
           .where((s) {
+            final isSuperAdmin = lowerEmail == superAdminEmail;
             final isCreator = s.creatorId == userId ||
                 (lowerEmail.isNotEmpty && s.creatorEmail.toLowerCase() == lowerEmail);
             final isAssigned = lowerEmail.isNotEmpty && s.assignedMemberEmails.contains(lowerEmail);
-            return isCreator || isAssigned;
+            return isSuperAdmin || isCreator || isAssigned;
           })
           .toList();
     });
   }
+
 
   Future<SomitiModel> createSomiti({
     required String name,

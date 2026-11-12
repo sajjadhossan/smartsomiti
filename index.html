@@ -732,10 +732,12 @@
       document.getElementById("pendingEmailBadge").innerText = "আপনার ইমেইল: " + (email || "অনুল্লিখিত");
 
       // Admin access check (Sajjad or test admin)
-      if (user.uid === "test-user-1" || email === "sajjad@somiti.app" || email === "admin@somiti.app") {
+      const adminEmails = ["hossansajjad1994@gmail.com", "sajjad@somiti.app", "admin@somiti.app"];
+      if (user.uid === "test-user-1" || adminEmails.includes(email)) {
         loadUserSomitis(true);
         return;
       }
+
 
       // Check if user is approved/assigned in the Somiti's members collection
       try {
@@ -894,9 +896,10 @@
     }
 
     function handleQuickTestLogin() {
-      currentUser = { uid: "test-user-1", email: "sajjad@somiti.app", displayName: "সাজ্জাদ হোসেন (অ্যাডমিন)" };
+      currentUser = { uid: "test-user-1", email: "hossansajjad1994@gmail.com", displayName: "সাজ্জাদ হোসেন (সুপার অ্যাডমিন)" };
       loadUserSomitis(true);
     }
+
 
     function handleSignOut() {
       currentUser = null;
