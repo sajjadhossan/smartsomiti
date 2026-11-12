@@ -1959,6 +1959,13 @@
             <input type="text" id="depositNote" placeholder="যেমন: নভেম্বর মাসের কিস্তি">
           </div>
 
+          <!-- ব্যাংক জমার স্লিপ / রসিদ নম্বর (Slip / Voucher No) -->
+          <div class="form-group">
+            <label style="font-weight: 700; color: #1E293B;">ব্যাংক জমার স্লিপ / রসিদ নম্বর (ঐচ্ছিক)</label>
+            <input type="text" id="depositBankSlipNo" placeholder="যেমন: SLIP-98432 বা ভাউচার/চালান নং">
+            <small style="color: #64748B; font-size: 11px;">ব্যাংকে বা অনলাইনে টাকা জমার স্লিপ বা রসিদ নম্বর থাকলে এখানে লিখুন।</small>
+          </div>
+
           <!-- জমার স্লিপ / রসিদের কপি এটাচমেন্ট (Proof Slip Attachment) -->
           <div class="form-group" style="background: #F0FDF4; border: 1.5px solid #86EFAC; border-radius: 8px; padding: 12px; margin-bottom: 14px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -2535,9 +2542,14 @@
                 <span class="pad-table-label">সমিতির ব্যাংক হিসাব:</span>
                 <span class="pad-table-val" id="rcptTableAccount" style="font-weight: 700;">2305158045001</span>
               </div>
-              <div class="pad-table-row" style="border-bottom: none; padding-bottom: 0;">
+              <div class="pad-table-row">
                 <span class="pad-table-label">পেমেন্ট মাধ্যম ও রেফারেন্স:</span>
                 <span class="pad-table-val" id="rcptTablePayment">নিয়মিত সঞ্চয় জমা</span>
+              </div>
+              <!-- Bank Slip / Deposit Receipt No Row -->
+              <div class="pad-table-row" id="rcptRowBankSlip" style="display: none; background: #F8FAFC; padding: 4px 6px; border-radius: 4px;">
+                <span class="pad-table-label" style="color: #1E3A8A; font-weight: 700;">জমার স্লিপ / রসিদ নং:</span>
+                <span class="pad-table-val" id="rcptTableBankSlip" style="font-weight: 800; color: #1E3A8A; font-family: monospace; font-size: 13px;">-</span>
               </div>
               <!-- Google Drive Link Row in Official Letterhead -->
               <div class="pad-table-row" id="rcptRowDrive" style="display: none; background: #F0FDF4; border: 1px dashed #16A34A; border-radius: 6px; padding: 4px 8px; margin-top: 4px;">
@@ -4608,6 +4620,7 @@
 
       if (!memberId || isNaN(amount) || amount <= 0) { alert("সদস্য ও জমার সঠিক পরিমাণ দিন"); return; }
 
+      const bankSlipNo = document.getElementById("depositBankSlipNo")?.value.trim() || "";
       const isRep = document.querySelector('input[name="depositorType"][value="representative"]')?.checked;
       const depositorType = isRep ? "representative" : "self";
       let depositorName = memberName;
@@ -4632,6 +4645,7 @@
       const depositObj = {
         memberId: memberId, memberName: memberName, memberNumber: memberNumber,
         amount: amount, type: type, note: note, receiptNo: receiptNo,
+        bankSlipNo: bankSlipNo,
         depositorType: depositorType,
         depositorName: depositorName,
         depositorPhone: depositorPhone,
@@ -4651,6 +4665,7 @@
       batch.commit().then(() => {
         document.getElementById("depositAmount").value = "";
         document.getElementById("depositNote").value = "";
+        if (document.getElementById("depositBankSlipNo")) document.getElementById("depositBankSlipNo").value = "";
         if (document.getElementById("depositorName")) document.getElementById("depositorName").value = "";
         if (document.getElementById("depositorPhone")) document.getElementById("depositorPhone").value = "";
         const selfRadio = document.querySelector('input[name="depositorType"][value="self"]');
@@ -4668,6 +4683,7 @@
           amount: amount,
           type: type,
           note: note,
+          bankSlipNo: bankSlipNo,
           depositorType: depositorType,
           depositorName: depositorName,
           depositorPhone: depositorPhone,
@@ -4756,6 +4772,7 @@
           ? `<span style="font-size:11px; color:#B91C1C; background:#FEF2F2; padding:1px 6px; border-radius:4px; border:1px solid #FECACA;">👤 জমাকারী: ${d.depositorName} (প্রতিনিধি)</span>`
           : `<span style="font-size:11px; color:#15803D; background:#F0FDF4; padding:1px 6px; border-radius:4px;">👤 জমাকারী: সদস্য নিজে</span>`;
         const slipBadge = d.slipImg ? `<span style="font-size:10.5px; color:#166534; background:#DCFCE7; padding:1px 5px; border-radius:4px; font-weight:700;">📎 স্লিপ কপি</span>` : '';
+        const bankSlipBadge = d.bankSlipNo ? `<span style="font-size:10.5px; color:#1E3A8A; background:#EFF6FF; padding:1px 5px; border-radius:4px; font-weight:700; border:1px solid #BFDBFE;">📄 নং: ${d.bankSlipNo}</span>` : '';
         const driveBadge = d.driveUrl ? `<a href="${d.driveUrl}" target="_blank" onclick="event.stopPropagation()" style="font-size:10.5px; color:#1E40AF; background:#DBEAFE; padding:1px 6px; border-radius:4px; text-decoration:none; font-weight:700; border:1px solid #BFDBFE;">☁️ ড্রাইভ কপি ↗</a>` : '';
 
         return `
@@ -4767,6 +4784,7 @@
               <div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">${d.type} ${d.note ? '• ' + d.note : ''}</div>
               <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
                 ${depositorBadge}
+                ${bankSlipBadge}
                 ${slipBadge}
                 ${driveBadge}
               </div>
@@ -4976,6 +4994,18 @@
       if (el("rcptTablePayment")) el("rcptTablePayment").innerText = payMethod + payRef;
       if (el("rcptType")) el("rcptType").innerText = payMethod;
       if (el("rcptNote")) el("rcptNote").innerText = data.note || "কোনো বিশেষ মন্তব্য নেই";
+
+      // Table Row: Bank Slip / Deposit Receipt No
+      const rowBankSlip = el("rcptRowBankSlip");
+      const valBankSlip = el("rcptTableBankSlip");
+      if (rowBankSlip) {
+        if (data.bankSlipNo) {
+          rowBankSlip.style.display = "flex";
+          if (valBankSlip) valBankSlip.innerText = data.bankSlipNo;
+        } else {
+          rowBankSlip.style.display = "none";
+        }
+      }
 
       // Committee Signatures
       // 1. Cashier
@@ -5740,6 +5770,16 @@
               <span style="color:var(--text-muted);">জমার ধরণ:</span>
               <span>${found.type || 'মাসিক সঞ্চয়'} ${found.note ? '• ' + found.note : ''}</span>
             </div>
+            ${found.bankSlipNo ? `
+            <div style="display:flex; justify-content:space-between; padding:3px 0;">
+              <span style="color:var(--text-muted);">জমার স্লিপ/রসিদ নং:</span>
+              <strong style="color:#1E3A8A; font-family:monospace;">${found.bankSlipNo}</strong>
+            </div>` : ''}
+            ${found.depositorName && found.depositorName !== found.memberName ? `
+            <div style="display:flex; justify-content:space-between; padding:3px 0;">
+              <span style="color:var(--text-muted);">টাকা জমাকারী:</span>
+              <span>${found.depositorName} (প্রতিনিধি)</span>
+            </div>` : ''}
             <div style="display:flex; justify-content:space-between; padding:3px 0;">
               <span style="color:var(--text-muted);">তারিখ ও সময়:</span>
               <span>${dDate}</span>
@@ -5748,6 +5788,10 @@
               <span style="color:var(--text-muted);">অনুমোদিত আদায়কারী:</span>
               <strong style="color:#1E3A8A;">${found.recordedBy || (currentSomiti && currentSomiti.cashierName) || 'কোষাধ্যক্ষ'}</strong>
             </div>
+            ${found.driveUrl ? `
+            <div style="margin-top:10px; text-align:center;">
+              <a href="${found.driveUrl}" target="_blank" style="display:inline-block; background:#10B981; color:white; padding:6px 14px; border-radius:6px; text-decoration:none; font-size:12px; font-weight:700;">☁️ ড্রাইভে মূল রসিদ ও স্লিপ দেখুন ↗</a>
+            </div>` : ''}
           </div>
         `;
       } else {
@@ -5795,10 +5839,13 @@
             <div style="font-size:13px; line-height:1.7; color:#1F2937;">
               <div>রসিদ নং: <strong style="color:var(--primary); font-family:monospace;">${found.receiptNo || code}</strong></div>
               <div>সদস্য: <strong>${found.memberNumber ? '[' + found.memberNumber + '] ' : ''}${found.memberName}</strong></div>
+              ${found.bankSlipNo ? `<div>জমার স্লিপ/রসিদ নং: <strong style="color:#1E3A8A; font-family:monospace;">${found.bankSlipNo}</strong></div>` : ''}
+              ${found.depositorName && found.depositorName !== found.memberName ? `<div>জমাকারী (প্রতিনিধি): <strong>${found.depositorName}</strong></div>` : ''}
               <div>জমার পরিমাণ: <strong style="color:#0F9D58; font-size:16px;">৳${(found.amount || 0).toLocaleString()}</strong></div>
               <div>জমার ধরণ: ${found.type || 'মাসিক সঞ্চয়'} ${found.note ? '• ' + found.note : ''}</div>
               <div>তারিখ ও সময়: ${dDate}</div>
               <div style="margin-top:4px; font-size:12px; color:#475569;">আদায়কারী: <strong>${found.recordedBy || (currentSomiti && currentSomiti.cashierName) || 'কোষাধ্যক্ষ'}</strong></div>
+              ${found.driveUrl ? `<div style="margin-top:8px;"><a href="${found.driveUrl}" target="_blank" style="color:#10B981; font-weight:700; text-decoration:none;">☁️ গুগল ড্রাইভে মূল রসিদ ও স্লিপ কপি দেখুন ↗</a></div>` : ''}
             </div>
           </div>
         `;
@@ -5824,6 +5871,7 @@
         amount: d.amount,
         type: d.type,
         note: d.note,
+        bankSlipNo: d.bankSlipNo || '',
         depositorType: d.depositorType || 'self',
         depositorName: d.depositorName || d.memberName,
         depositorPhone: d.depositorPhone || '',
@@ -5848,7 +5896,13 @@
         ? `${activeReceiptData.depositorName} (প্রতিনিধি)${activeReceiptData.depositorPhone ? ` [মোবাইল: ${activeReceiptData.depositorPhone}]` : ''}`
         : `${activeReceiptData.memberName} (সদস্য নিজে)`;
 
-      let text = `*${s.name || 'সমিতি'}*\n"${s.padHeader || 'ছোট সঞ্চয়, বড় স্বপ্ন'}"\n📍 ${s.address || 'কার্যালয়'}\n\n🧾 *ডিজিটাল মানি রিসিট*\nরসিদ নং: ${activeReceiptData.receiptNo}\n🔐 *সিক্রেট যাচাই কোড:* ${activeReceiptData.receiptNo}\nতারিখ: ${activeReceiptData.dateStr || ''}\nসদস্য: [${activeReceiptData.memberNumber || ''}] ${activeReceiptData.memberName}\n👤 *টাকা জমাকারী:* ${depositorInfo}\nধরণ: ${activeReceiptData.type}\n*জমা টাকা: ৳${activeReceiptData.amount}*\nমন্তব্য: ${activeReceiptData.note || 'অনুল্লিখিত'}\nআদায়কারী: ${s.cashierName || 'কোষাধ্যক্ষ'}`;
+      let text = `*${s.name || 'সমিতি'}*\n"${s.padHeader || 'ছোট সঞ্চয়, বড় স্বপ্ন'}"\n📍 ${s.address || 'কার্যালয়'}\n\n🧾 *ডিজিটাল মানি রিসিট*\nরসিদ নং: ${activeReceiptData.receiptNo}\n🔐 *সিক্রেট যাচাই কোড:* ${activeReceiptData.receiptNo}\nতারিখ: ${activeReceiptData.dateStr || ''}\nসদস্য: [${activeReceiptData.memberNumber || ''}] ${activeReceiptData.memberName}\n👤 *টাকা জমাকারী:* ${depositorInfo}\nধরণ: ${activeReceiptData.type}\n*জমা টাকা: ৳${activeReceiptData.amount}*`;
+
+      if (activeReceiptData.bankSlipNo) {
+        text += `\n📄 *ব্যাংক জমার স্লিপ/রসিদ নং:* ${activeReceiptData.bankSlipNo}`;
+      }
+
+      text += `\nমন্তব্য: ${activeReceiptData.note || 'অনুল্লিখিত'}\nআদায়কারী: ${s.cashierName || 'কোষাধ্যক্ষ'}`;
 
       if (activeReceiptData.driveUrl) {
         text += `\n\n☁️ *গুগল ড্রাইভ মূল রসিদ কপি:* \n${activeReceiptData.driveUrl}`;
@@ -5887,12 +5941,13 @@
         listEl.innerHTML = memberDeposits.map(d => {
           const isRep = d.depositorType === 'representative' || (d.depositorName && d.depositorName !== d.memberName);
           const depositorInfo = isRep ? ` <span style="color:#B91C1C; font-size:10.5px;">• জমাকারী: ${d.depositorName} (প্রতিনিধি)</span>` : '';
+          const slipNoInfo = d.bankSlipNo ? ` <span style="color:#1E3A8A; font-size:10.5px;">• স্লিপ: ${d.bankSlipNo}</span>` : '';
           const driveBtn = d.driveUrl ? `<a href="${d.driveUrl}" target="_blank" onclick="event.stopPropagation()" style="font-size:10px; color:#1E40AF; text-decoration:underline; margin-left:6px; font-weight:700;">☁️ ড্রাইভ রসিদ ↗</a>` : '';
           return `
           <div onclick="viewDepositReceipt('${d.id}')" style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:8px 10px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;" title="রসিদ দেখতে ক্লিক করুন">
             <div>
               <div style="font-weight:700; font-size:12.5px;">${d.type}${depositorInfo}</div>
-              <div style="font-size:11px; color:var(--text-muted);">${d.note || 'নিয়মিত সঞ্চয়'}${driveBtn}</div>
+              <div style="font-size:11px; color:var(--text-muted);">${d.note || 'নিয়মিত সঞ্চয়'}${slipNoInfo}${driveBtn}</div>
             </div>
             <div style="text-align:right;">
               <strong style="color:var(--primary); font-size:14px;">৳${d.amount.toLocaleString()}</strong>
