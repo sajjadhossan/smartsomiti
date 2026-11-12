@@ -363,6 +363,11 @@
               এই সমিতির অফিসিয়াল প্যাডের সকল তথ্য (ঠিকানা, ব্যাংক, বিকাশ, কমিটি), সকল সদস্যের ব্যালেন্স এবং সম্পূর্ণ জমা ট্রানজেকশন একসাথে <strong>UTF-8 ফরম্যাটের অফিশিয়াল CSV/Excel স্টেটমেন্ট</strong> আকারে আপনার Google Drive-এ সরাসরি ব্যাকআপ রাখুন।
             </p>
 
+            <div style="margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center;">
+              <span id="driveStatusBadge" style="font-size: 12px; font-weight: 700; color: #64748B;">⚪ Google Drive কানেক্ট করা হয়নি</span>
+              <button onclick="connectGoogleDriveDirectly()" style="background:#4285F4; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">🔑 Google Drive দিয়ে লগইন করুন</button>
+            </div>
+
             <button class="btn" onclick="exportCsv()">
               <span>📥 Google ড্রাইভে এই সমিতির রিপোর্ট ব্যাকআপ করুন</span>
             </button>
@@ -664,7 +669,34 @@
       });
     }
 
-    // Official Somiti Pad & Drive CSV Backup
+    let googleAccessToken = null;
+
+    function handleGoogleSignIn() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.addScope('https://www.googleapis.com/auth/drive.file');
+      auth.signInWithPopup(provider).then((result) => {
+        if (result.credential) {
+          googleAccessToken = result.credential.accessToken;
+        }
+      }).catch((e) => alert("গুগল লগইন তথ্য: " + e.message));
+    }
+
+    function connectGoogleDriveDirectly() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.addScope('https://www.googleapis.com/auth/drive.file');
+      auth.signInWithPopup(provider).then((result) => {
+        if (result.credential) {
+          googleAccessToken = result.credential.accessToken;
+          alert("✅ Google Drive সফলভাবে কানেক্ট হয়েছে! এবার ব্যাকআপ বাটনে চাপুন।");
+          document.getElementById("driveStatusBadge").innerText = "🟢 Google Drive সরাসরি কানেক্টেড";
+          document.getElementById("driveStatusBadge").style.color = "#16A34A";
+        }
+      }).catch(err => {
+        alert("গুগল ড্রাইভ অথেনটিকেশন তথ্য: " + err.message);
+      });
+    }
+
+    // Official Somiti Pad & Direct Google Drive CSV Backup
     function exportCsv() {
       const s = currentSomiti || { name: "সমিতি", somitiCode: "SMT-001" };
       let csv = "\uFEFF"; // UTF-8 BOM
@@ -698,14 +730,51 @@
         csv += `"${new Date().toLocaleDateString('bn-BD')}","${d.memberNumber}","${d.memberName}","${d.type}",${d.amount},"${d.note || ''}","${d.recordedBy || 'কোষাধ্যক্ষ'}"\n`;
       });
 
+      const fileName = `${s.name}_Official_Backup.csv`;
+
+      // If Google OAuth Token is present -> Upload DIRECTLY to Google Drive API!
+      if (googleAccessToken) {
+        document.getElementById("backupFeedback").innerText = "⏳ আপনার Google Drive-এ সরাসরি ফাইল আপলোড হচ্ছে...";
+        document.getElementById("backupFeedback").style.display = "block";
+
+        const metadata = {
+          name: fileName,
+          mimeType: 'text/csv'
+        };
+
+        const form = new FormData();
+        form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+        form.append('file', new Blob([csv], { type: 'text/csv' }));
+
+        fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+          method: 'POST',
+          headers: new Headers({ 'Authorization': 'Bearer ' + googleAccessToken }),
+          body: form
+        })
+        .then(res => res.json())
+        .then(file => {
+          document.getElementById("backupFeedback").innerHTML = `🎉 <strong>সরাসরি Google Drive-এ আপলোড সম্পন্ন!</strong><br>ফাইল আইডি: ${file.id}<br><a href="https://drive.google.com/file/d/${file.id}/view" target="_blank" style="color:#0F9D58; text-decoration:underline;">Google Drive-এ ফাইলটি সরাসরি দেখুন ↗</a>`;
+        })
+        .catch(err => {
+          console.error(err);
+          // Fallback to local download
+          downloadLocal(csv, fileName);
+        });
+      } else {
+        // Fallback for demo preview
+        downloadLocal(csv, fileName);
+        document.getElementById("backupFeedback").innerHTML = `✅ ব্যাকআপ ফাইল প্রস্তুত ও ডাউনলোড হয়েছে!<br><small style="color:#64748B;">(সরাসরি Google Drive ক্লাউডে সেভ করতে উপরের নীল বাটনে ক্লিক করে ড্রাইভ কানেক্ট করুন)</small>`;
+        document.getElementById("backupFeedback").style.display = "block";
+      }
+    }
+
+    function downloadLocal(csv, fileName) {
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${s.name}_Official_Backup.csv`;
+      a.download = fileName;
       a.click();
-
-      document.getElementById("backupFeedback").style.display = "block";
     }
   </script>
 </body>
