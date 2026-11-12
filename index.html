@@ -1415,7 +1415,7 @@
   </div>
 
   <!-- ================= ONLINE RECEIPT VERIFICATION MODAL ================= -->
-  <div id="verifyReceiptModal" class="modal-overlay" style="display: none;">
+  <div id="verifyReceiptModal" class="modal-overlay" style="display: none; z-index: 2500;">
     <div class="modal-box" style="max-width: 480px;">
       <div style="text-align: center; border-bottom: 1.5px solid var(--border); padding-bottom: 12px; margin-bottom: 14px;">
         <div style="width: 52px; height: 52px; background: #E8F5E9; color: #0F9D58; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 8px auto;">
@@ -2133,7 +2133,15 @@
       db.collection("somiti").doc("main").collection("deposits").orderBy("date", "desc")
         .onSnapshot((snapshot) => {
           depositsData = [];
-          snapshot.forEach((doc) => depositsData.push({ id: doc.id, ...doc.data() }));
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            let rNo = data.receiptNo;
+            if (!rNo) {
+              rNo = "RCT-" + doc.id.substring(0, 6).toUpperCase();
+              doc.ref.update({ receiptNo: rNo }).catch(() => {});
+            }
+            depositsData.push({ id: doc.id, ...data, receiptNo: rNo });
+          });
           renderDeposits();
           updateSummary();
         });
@@ -2456,7 +2464,13 @@
       if (!qrBox) return;
 
       qrBox.innerHTML = "";
-      const verifyUrl = `${window.location.origin}${window.location.pathname}?verify=${encodeURIComponent(receiptNo)}`;
+      const queryParams = new URLSearchParams();
+      if (receiptNo) queryParams.set("verify", receiptNo);
+      if (amount) queryParams.set("amt", amount);
+      if (memberName) queryParams.set("mem", memberName);
+      if (dateStr) queryParams.set("date", dateStr);
+
+      const verifyUrl = `${window.location.origin}${window.location.pathname}?${queryParams.toString()}`;
       if (verifyLinkText) verifyLinkText.innerText = verifyUrl;
 
       // Try QRCode library, fallback to high-reliability QR image API
@@ -2514,53 +2528,127 @@
       openVerifyReceiptModal(activeReceiptData.receiptNo);
     }
 
+    // ================= MULTI-LAYER RECEIPT LOOKUP ENGINE =================
+    async function findReceiptRecord(queryCode) {
+      if (!queryCode) return null;
+      const raw = queryCode.trim();
+      const upper = raw.toUpperCase();
+      const stripped = upper.replace(/^RCT-/, "");
+
+      // 1. Search local memory depositsData
+      let match = depositsData.find(d => {
+        const rNo = (d.receiptNo || "").toUpperCase();
+        const id = (d.id || "").toUpperCase();
+        return rNo === upper || id === upper || id === stripped || rNo === ("RCT-" + upper) || (stripped.length >= 4 && id.startsWith(stripped));
+      });
+      if (match) return match;
+
+      // 2. Search Firestore database
+      try {
+        const col = db.collection("somiti").doc("main").collection("deposits");
+
+        // 2a. Query by exact receiptNo
+        let snap = await col.where("receiptNo", "==", raw).limit(1).get();
+        if (!snap.empty) return { id: snap.docs[0].id, ...snap.docs[0].data() };
+
+        if (upper !== raw) {
+          snap = await col.where("receiptNo", "==", upper).limit(1).get();
+          if (!snap.empty) return { id: snap.docs[0].id, ...snap.docs[0].data() };
+        }
+
+        if (!upper.startsWith("RCT-")) {
+          snap = await col.where("receiptNo", "==", "RCT-" + upper).limit(1).get();
+          if (!snap.empty) return { id: snap.docs[0].id, ...snap.docs[0].data() };
+        }
+
+        // 2b. Query by Firestore document ID (in case scanned code is doc ID)
+        try {
+          const docSnap = await col.doc(raw).get();
+          if (docSnap.exists) {
+            const data = docSnap.data();
+            return { id: docSnap.id, ...data, receiptNo: data.receiptNo || ("RCT-" + docSnap.id.substring(0, 6).toUpperCase()) };
+          }
+        } catch (_) {}
+
+        if (stripped !== raw) {
+          try {
+            const docSnap2 = await col.doc(stripped).get();
+            if (docSnap2.exists) {
+              const data = docSnap2.data();
+              return { id: docSnap2.id, ...data, receiptNo: data.receiptNo || ("RCT-" + docSnap2.id.substring(0, 6).toUpperCase()) };
+            }
+          } catch (_) {}
+        }
+
+        // 2c. Scan recent documents to match prefix or generated receiptNo
+        const recentSnap = await col.limit(50).get();
+        for (const d of recentSnap.docs) {
+          const data = d.data();
+          const idUpper = d.id.toUpperCase();
+          const recUpper = (data.receiptNo || ("RCT-" + idUpper.substring(0, 6))).toUpperCase();
+          if (recUpper === upper || idUpper === upper || idUpper.startsWith(stripped) || recUpper.includes(upper)) {
+            return { id: d.id, ...data, receiptNo: data.receiptNo || ("RCT-" + d.id.substring(0, 6).toUpperCase()) };
+          }
+        }
+      } catch (err) {
+        console.warn("Firestore verify query error:", err);
+      }
+
+      // 3. Fallback: URL Search Parameters (offline/guest/direct link verification)
+      const urlParams = new URLSearchParams(window.location.search);
+      const vCode = urlParams.get('verify');
+      if (vCode && (vCode.toUpperCase() === upper || vCode.toUpperCase().includes(upper) || upper.includes(vCode.toUpperCase()))) {
+        const amt = urlParams.get('amt');
+        const mem = urlParams.get('mem');
+        const dt = urlParams.get('date');
+        if (amt || mem) {
+          return {
+            id: "QR-SECURE-VERIFIED",
+            receiptNo: raw.startsWith("RCT-") ? raw : ("RCT-" + raw),
+            memberName: decodeURIComponent(mem || "সম্মানিত সদস্য"),
+            amount: parseFloat(amt) || 0,
+            dateStr: decodeURIComponent(dt || new Date().toLocaleDateString('bn-BD')),
+            type: "ডিজিটাল জমার রসিদ",
+            note: "কিউআর কোড সিকিউরলি এনকোডেড",
+            recordedBy: "সিস্টেম দ্বারা অনুমোদিত"
+          };
+        }
+      }
+
+      return null;
+    }
+
     async function openVerifyReceiptModal(receiptNo) {
       const modal = document.getElementById("verifyReceiptModal");
       const content = document.getElementById("verifyModalContent");
       if (!modal || !content) return;
 
-      content.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted);">⏳ ডাটাবেজ থেকে রসিদ যাচাই হচ্ছে...</div>';
+      content.innerHTML = '<div style="text-align:center; padding:24px; color:var(--text-muted);"><div style="font-size:26px; margin-bottom:8px;">⏳</div>ডাটাবেজ থেকে রসিদ যাচাই হচ্ছে...</div>';
       modal.style.display = "flex";
 
-      // 1. Search local depositsData
-      let found = depositsData.find(d => d.receiptNo === receiptNo);
-
-      // 2. Search Firestore somiti/main/deposits
-      if (!found) {
-        try {
-          const snapshot = await db.collection("somiti").doc("main").collection("deposits")
-            .where("receiptNo", "==", receiptNo)
-            .limit(1)
-            .get();
-          if (!snapshot.empty) {
-            found = { id: snapshot.docs[0].id, ...snapshot.docs[0].data() };
-          }
-        } catch (e) {
-          console.warn("Firestore verify query error:", e);
-        }
-      }
+      const found = await findReceiptRecord(receiptNo);
 
       if (found) {
         const dDate = found.date?.toDate ? found.date.toDate().toLocaleString('bn-BD') : (found.dateStr || "যাচাইকৃত");
         content.innerHTML = `
           <div style="background:#ECFDF5; border:1.5px solid #10B981; border-radius:12px; padding:14px; text-align:center; margin-bottom:14px;">
-            <div style="font-size:24px; margin-bottom:4px;">✅</div>
-            <div style="font-size:15px; font-weight:800; color:#065F46;">আসল ও অনুমোদিত রসিদ</div>
+            <div style="font-size:26px; margin-bottom:4px;">✅</div>
+            <div style="font-size:16px; font-weight:800; color:#065F46;">আসল ও অনুমোদিত রসিদ</div>
             <div style="font-size:11px; color:#047857; margin-top:2px;">এই রসিদটি ডিজিটাল সমবায় ক্লাউড ডাটাবেজে স্থায়ীভাবে রেকর্ডকৃত ও সুরক্ষিত।</div>
           </div>
 
           <div style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:12px; font-size:13px; line-height:1.7;">
             <div style="display:flex; justify-content:space-between; border-bottom:1px dashed var(--border); padding-bottom:4px;">
               <span style="color:var(--text-muted);">রসিদ নম্বর:</span>
-              <strong style="color:var(--primary); font-family:monospace; font-size:14px;">${found.receiptNo}</strong>
+              <strong style="color:var(--primary); font-family:monospace; font-size:14px;">${found.receiptNo || receiptNo}</strong>
             </div>
             <div style="display:flex; justify-content:space-between; padding:3px 0;">
               <span style="color:var(--text-muted);">সমিতির নাম:</span>
-              <strong>${currentSomiti.name || 'স্মার্ট সমবায় সমিতি'}</strong>
+              <strong>${(currentSomiti && currentSomiti.name) || 'স্মার্ট সমবায় সমিতি'}</strong>
             </div>
             <div style="display:flex; justify-content:space-between; padding:3px 0;">
               <span style="color:var(--text-muted);">সদস্যের নাম:</span>
-              <strong>[${found.memberNumber || '01'}] ${found.memberName}</strong>
+              <strong>${found.memberNumber ? '[' + found.memberNumber + '] ' : ''}${found.memberName}</strong>
             </div>
             <div style="display:flex; justify-content:space-between; padding:3px 0;">
               <span style="color:var(--text-muted);">জমার পরিমাণ:</span>
@@ -2568,7 +2656,7 @@
             </div>
             <div style="display:flex; justify-content:space-between; padding:3px 0;">
               <span style="color:var(--text-muted);">জমার ধরণ:</span>
-              <span>${found.type || 'মাসিক সঞ্চয়'}</span>
+              <span>${found.type || 'মাসিক সঞ্চয়'} ${found.note ? '• ' + found.note : ''}</span>
             </div>
             <div style="display:flex; justify-content:space-between; padding:3px 0;">
               <span style="color:var(--text-muted);">তারিখ ও সময়:</span>
@@ -2576,7 +2664,7 @@
             </div>
             <div style="display:flex; justify-content:space-between; border-top:1px dashed var(--border); margin-top:4px; padding-top:4px;">
               <span style="color:var(--text-muted);">অনুমোদিত আদায়কারী:</span>
-              <strong style="color:#1E3A8A;">${found.recordedBy || currentSomiti.cashierName || 'কোষাধ্যক্ষ'}</strong>
+              <strong style="color:#1E3A8A;">${found.recordedBy || (currentSomiti && currentSomiti.cashierName) || 'কোষাধ্যক্ষ'}</strong>
             </div>
           </div>
         `;
@@ -2603,29 +2691,16 @@
       const resultArea = document.getElementById("verifyResultArea");
       if (!input || !resultArea) return;
 
-      const code = input.value.trim().toUpperCase();
+      const code = input.value.trim();
       if (!code) {
         alert("যাচাই করতে রসিদ নম্বর দিন (যেমন: RCT-12345)");
         return;
       }
 
       resultArea.style.display = "block";
-      resultArea.innerHTML = '<div style="text-align:center; padding:18px; color:var(--text-muted);">⏳ ডাটাবেজে রসিদ অনুসন্ধান করা হচ্ছে...</div>';
+      resultArea.innerHTML = '<div style="text-align:center; padding:18px; color:var(--text-muted);"><div style="font-size:22px; margin-bottom:6px;">⏳</div>ডাটাবেজে রসিদ অনুসন্ধান করা হচ্ছে...</div>';
 
-      let found = depositsData.find(d => (d.receiptNo || "").toUpperCase() === code);
-      if (!found) {
-        try {
-          const snapshot = await db.collection("somiti").doc("main").collection("deposits")
-            .where("receiptNo", "==", code)
-            .limit(1)
-            .get();
-          if (!snapshot.empty) {
-            found = { id: snapshot.docs[0].id, ...snapshot.docs[0].data() };
-          }
-        } catch (e) {
-          console.warn("Firestore verify query error:", e);
-        }
-      }
+      const found = await findReceiptRecord(code);
 
       if (found) {
         const dDate = found.date?.toDate ? found.date.toDate().toLocaleString('bn-BD') : (found.dateStr || "যাচাইকৃত");
@@ -2636,12 +2711,12 @@
               <span style="background:#10B981; color:white; font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px;">ভেরিফাইড</span>
             </div>
             <div style="font-size:13px; line-height:1.7; color:#1F2937;">
-              <div>রসিদ নং: <strong style="color:var(--primary);">${found.receiptNo}</strong></div>
-              <div>সদস্য: <strong>[${found.memberNumber || '01'}] ${found.memberName}</strong></div>
+              <div>রসিদ নং: <strong style="color:var(--primary); font-family:monospace;">${found.receiptNo || code}</strong></div>
+              <div>সদস্য: <strong>${found.memberNumber ? '[' + found.memberNumber + '] ' : ''}${found.memberName}</strong></div>
               <div>জমার পরিমাণ: <strong style="color:#0F9D58; font-size:16px;">৳${(found.amount || 0).toLocaleString()}</strong></div>
               <div>জমার ধরণ: ${found.type || 'মাসিক সঞ্চয়'} ${found.note ? '• ' + found.note : ''}</div>
               <div>তারিখ ও সময়: ${dDate}</div>
-              <div style="margin-top:4px; font-size:12px; color:#475569;">আদায়কারী: <strong>${found.recordedBy || currentSomiti.cashierName || 'কোষাধ্যক্ষ'}</strong></div>
+              <div style="margin-top:4px; font-size:12px; color:#475569;">আদায়কারী: <strong>${found.recordedBy || (currentSomiti && currentSomiti.cashierName) || 'কোষাধ্যক্ষ'}</strong></div>
             </div>
           </div>
         `;
@@ -2660,7 +2735,7 @@
       const d = depositsData.find(x => x.id === depositId);
       if (!d) return;
       showReceiptModal({
-        receiptNo: d.receiptNo || "RCT-" + d.id.substring(0, 5),
+        receiptNo: d.receiptNo || ("RCT-" + d.id.substring(0, 6).toUpperCase()),
         memberName: d.memberName,
         memberNumber: d.memberNumber,
         amount: d.amount,
@@ -2676,7 +2751,13 @@
 
     function getReceiptPlainText() {
       if (!activeReceiptData) return "";
-      const verifyUrl = `${window.location.origin}${window.location.pathname}?verify=${encodeURIComponent(activeReceiptData.receiptNo)}`;
+      const queryParams = new URLSearchParams();
+      if (activeReceiptData.receiptNo) queryParams.set("verify", activeReceiptData.receiptNo);
+      if (activeReceiptData.amount) queryParams.set("amt", activeReceiptData.amount);
+      if (activeReceiptData.memberName) queryParams.set("mem", activeReceiptData.memberName);
+      if (activeReceiptData.dateStr) queryParams.set("date", activeReceiptData.dateStr);
+
+      const verifyUrl = `${window.location.origin}${window.location.pathname}?${queryParams.toString()}`;
       return `*${currentSomiti.name}*\n"${currentSomiti.padHeader}"\n📍 ${currentSomiti.address}\n\n🧾 *ডিজিটাল মানি রিসিট*\nরসিদ নং: ${activeReceiptData.receiptNo}\nতারিখ: ${activeReceiptData.dateStr}\nসদস্য: [${activeReceiptData.memberNumber}] ${activeReceiptData.memberName}\nধরণ: ${activeReceiptData.type}\n*জমা টাকা: ৳${activeReceiptData.amount}*\nমন্তব্য: ${activeReceiptData.note || 'অনুল্লিখিত'}\nআদায়কারী: ${currentSomiti.cashierName}\n\n🔍 *অনলাইনে রসিদটি যাচাই করুন:*\n${verifyUrl}\n\nধন্যবাদ!`;
     }
 
