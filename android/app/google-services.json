@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "122717224216",
+    "project_id": "somitiapp-1f0a2",
+    "storage_bucket": "somitiapp-1f0a2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:122717224216:android:de4a7bbc92ecd0b590726d",
+        "android_client_info": {
+          "package_name": "com.example.cloud_sync_drive"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaOVbmjGZi-7zyPGIc0LmP4Ou4_hW4shA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

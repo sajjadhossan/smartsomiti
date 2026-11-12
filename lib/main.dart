@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'models/member_model.dart';
 import 'models/deposit_model.dart';
 import 'models/user_profile.dart';
+import 'firebase_options.dart';
 import 'services/auth_service.dart';
 import 'services/drive_service.dart';
 import 'services/somiti_service.dart';
@@ -14,7 +15,9 @@ import 'services/somiti_service.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
   } catch (e) {
     debugPrint('Firebase initialization note: $e');
   }
