@@ -4,10 +4,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 
-import 'models/note_model.dart';
+import 'models/member_model.dart';
+import 'models/deposit_model.dart';
 import 'services/auth_service.dart';
 import 'services/drive_service.dart';
-import 'services/firestore_service.dart';
+import 'services/somiti_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,27 +17,27 @@ Future<void> main() async {
   } catch (e) {
     debugPrint('Firebase initialization note: $e');
   }
-  runApp(const CloudSyncApp());
+  runApp(const SomitiApp());
 }
 
-class CloudSyncApp extends StatelessWidget {
-  const CloudSyncApp({super.key});
+class SomitiApp extends StatelessWidget {
+  const SomitiApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Cloud Sync & Drive',
+      title: 'সমিতি ম্যানেজার',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF1A73E8),
+          seedColor: const Color(0xFF0F9D58),
           brightness: Brightness.light,
         ),
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF1A73E8),
+          seedColor: const Color(0xFF0F9D58),
           brightness: Brightness.dark,
         ),
         useMaterial3: true,
@@ -65,7 +66,7 @@ class AuthGate extends StatelessWidget {
 
         final user = snapshot.data;
         if (user != null) {
-          return SyncHomeScreen(user: user);
+          return SomitiDashboard(user: user);
         }
 
         return const LoginScreen();
@@ -119,50 +120,50 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(22),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.primaryContainer,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
-                    Icons.cloud_sync_rounded,
+                    Icons.account_balance_rounded,
                     size: 72,
                     color: theme.colorScheme.onPrimaryContainer,
                   ),
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  'Cloud Sync & Drive',
+                  'সমিতি ম্যানেজার',
                   style: theme.textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10),
                 Text(
-                  'রিয়েলটাইম ডিভাইস-টু-ডিভাইস এবং ওয়েব ডেটা সিঙ্ক ও গুগল ড্রাইভ ব্যাকআপ',
+                  'ক্রস-ডিভাইস রিয়েলটাইম সিঙ্ক এবং গুগল ড্রাইভ ব্যাকআপ',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 36),
-                _FeatureItem(
-                  icon: Icons.account_circle_outlined,
-                  title: 'Google অ্যাকাউন্ট লগইন',
-                  subtitle: 'এক ক্লিকে নিরাপদ গুগল সাইন-ইন',
+                _FeatureRow(
+                  icon: Icons.group_outlined,
+                  title: 'সদস্য ও সঞ্চয় ব্যবস্থাপনা',
+                  subtitle: 'সদস্য তালিকা ও দৈনিক/সাপ্তাহিক/মাসিক জমা এন্ট্রি',
                 ),
                 const SizedBox(height: 16),
-                _FeatureItem(
-                  icon: Icons.add_to_drive_outlined,
-                  title: 'Google ড্রাইভ সিঙ্ক',
-                  subtitle: 'নোট ও ডকুমেন্ট স্বয়ংক্রিয়ভাবে ড্রাইভে সেভ',
-                ),
-                const SizedBox(height: 16),
-                _FeatureItem(
+                _FeatureRow(
                   icon: Icons.sync_rounded,
-                  title: 'রিয়েলটাইম ক্রস-ডিভাইস সিঙ্ক',
-                  subtitle: 'মোবাইল বা ওয়েবে যা লিখবেন, সব ডিভাইসে সাথে সাথে সিঙ্ক হবে',
+                  title: 'রিয়েলটাইম ডিভাইস ও ওয়েব সিঙ্ক',
+                  subtitle: 'এক মোবাইলে হিসাব তুললে সাথে সাথে অন্য মোবাইল ও ওয়েবে আপডেট',
+                ),
+                const SizedBox(height: 16),
+                _FeatureRow(
+                  icon: Icons.add_to_drive_rounded,
+                  title: 'Google ড্রাইভে স্টেটমেন্ট ব্যাকআপ',
+                  subtitle: 'এক ক্লিকে পুরো হিসাবের রিপোর্ট সরাসরি ড্রাইভে সংরক্ষণ',
                 ),
                 const SizedBox(height: 40),
                 if (_isLoading)
@@ -172,8 +173,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: _handleGoogleSignIn,
                     icon: const Icon(Icons.login_rounded),
                     label: const Text(
-                      'Google দিয়ে সরাসরি সাইন-ইন করুন',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      'Google একাউন্ট দিয়ে লগইন করুন',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     style: FilledButton.styleFrom(
                       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
@@ -191,12 +192,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-class _FeatureItem extends StatelessWidget {
+class _FeatureRow extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
 
-  const _FeatureItem({
+  const _FeatureRow({
     required this.icon,
     required this.title,
     required this.subtitle,
@@ -242,22 +243,23 @@ class _FeatureItem extends StatelessWidget {
   }
 }
 
-class SyncHomeScreen extends StatefulWidget {
+class SomitiDashboard extends StatefulWidget {
   final User user;
-  const SyncHomeScreen({super.key, required this.user});
+  const SomitiDashboard({super.key, required this.user});
 
   @override
-  State<SyncHomeScreen> createState() => _SyncHomeScreenState();
+  State<SomitiDashboard> createState() => _SomitiDashboardState();
 }
 
-class _SyncHomeScreenState extends State<SyncHomeScreen> {
-  final FirestoreService _firestoreService = FirestoreService();
+class _SomitiDashboardState extends State<SomitiDashboard> {
+  int _currentIndex = 0;
+  final SomitiService _somitiService = SomitiService();
   final DriveService _driveService = DriveService();
 
-  void _showNoteDialog({NoteModel? existingNote}) {
-    final titleController = TextEditingController(text: existingNote?.title ?? '');
-    final contentController = TextEditingController(text: existingNote?.content ?? '');
-    bool syncToDrive = existingNote?.driveFileId != null || existingNote == null;
+  void _showAddMemberDialog() {
+    final nameController = TextEditingController();
+    final phoneController = TextEditingController();
+    final numberController = TextEditingController();
     bool isSaving = false;
 
     showDialog(
@@ -266,53 +268,36 @@ class _SyncHomeScreenState extends State<SyncHomeScreen> {
       builder: (ctx) => StatefulBuilder(
         builder: (context, setDialogState) {
           return AlertDialog(
-            title: Text(existingNote == null ? 'নতুন নোট / ডকুমেন্ট' : 'নোট সম্পাদনা'),
+            title: const Text('নতুন সদস্য যোগ করুন'),
             content: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextField(
-                    controller: titleController,
+                    controller: numberController,
                     decoration: const InputDecoration(
-                      labelText: 'শিরোনাম (Title)',
+                      labelText: 'সদস্য নং (যেমন: 01)',
                       border: OutlineInputBorder(),
                     ),
+                    keyboardType: TextInputType.number,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 14),
                   TextField(
-                    controller: contentController,
-                    maxLines: 5,
+                    controller: nameController,
                     decoration: const InputDecoration(
-                      labelText: 'বিস্তারিত কনটেন্ট (Content)',
+                      labelText: 'সদস্যের নাম',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  CheckboxListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: const Text('Google ড্রাইভে সেভ/ব্যাকআপ রাখুন'),
-                    value: syncToDrive,
-                    onChanged: isSaving
-                        ? null
-                        : (val) {
-                            setDialogState(() => syncToDrive = val ?? false);
-                          },
-                  ),
-                  if (isSaving)
-                    const Padding(
-                      padding: EdgeInsets.only(top: 12),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          ),
-                          SizedBox(width: 12),
-                          Text('ড্রাইভ ও ক্লাউডে সিঙ্ক হচ্ছে...'),
-                        ],
-                      ),
+                  const SizedBox(height: 14),
+                  TextField(
+                    controller: phoneController,
+                    decoration: const InputDecoration(
+                      labelText: 'মোবাইল নম্বর',
+                      border: OutlineInputBorder(),
                     ),
+                    keyboardType: TextInputType.phone,
+                  ),
                 ],
               ),
             ),
@@ -325,60 +310,45 @@ class _SyncHomeScreenState extends State<SyncHomeScreen> {
                 onPressed: isSaving
                     ? null
                     : () async {
-                        final title = titleController.text.trim();
-                        final content = contentController.text.trim();
-                        if (title.isEmpty) {
+                        final name = nameController.text.trim();
+                        final phone = phoneController.text.trim();
+                        final number = numberController.text.trim();
+
+                        if (name.isEmpty || number.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('দয়া করে একটি শিরোনাম লিখুন')),
+                            const SnackBar(content: Text('নাম এবং সদস্য নম্বর আবশ্যক')),
                           );
                           return;
                         }
 
                         setDialogState(() => isSaving = true);
-
-                        String? driveFileId = existingNote?.driveFileId;
-                        String? webViewLink = existingNote?.driveWebViewLink;
-
-                        if (syncToDrive) {
-                          try {
-                            final driveFile = await _driveService.uploadTextFile(
-                              title: title,
-                              content: content,
-                              existingFileId: driveFileId,
+                        try {
+                          await _somitiService.addMember(
+                            userId: widget.user.uid,
+                            name: name,
+                            phone: phone,
+                            memberNumber: number,
+                          );
+                          if (mounted) {
+                            Navigator.pop(ctx);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('সদস্য সফলভাবে যুক্ত ও সিঙ্ক হয়েছে')),
                             );
-                            if (driveFile != null) {
-                              driveFileId = driveFile.id;
-                              webViewLink = driveFile.webViewLink;
-                            }
-                          } catch (e) {
-                            debugPrint('Google Drive sync note: $e');
                           }
-                        }
-
-                        final String device = kIsWeb
-                            ? 'Web Browser'
-                            : 'Mobile Device';
-
-                        final note = NoteModel(
-                          id: existingNote?.id ?? '',
-                          title: title,
-                          content: content,
-                          driveFileId: driveFileId,
-                          driveWebViewLink: webViewLink,
-                          updatedAt: DateTime.now(),
-                          deviceSource: device,
-                        );
-
-                        await _firestoreService.saveNote(widget.user.uid, note);
-
-                        if (mounted) {
-                          Navigator.pop(ctx);
+                        } catch (e) {
+                          setDialogState(() => isSaving = false);
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('রিয়েলটাইমে সিঙ্ক সম্পন্ন হয়েছে!')),
+                            SnackBar(content: Text('ত্রুটি: $e')),
                           );
                         }
                       },
-                child: const Text('সেভ করুন'),
+                child: isSaving
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Text('সংরক্ষণ'),
               ),
             ],
           );
@@ -387,36 +357,200 @@ class _SyncHomeScreenState extends State<SyncHomeScreen> {
     );
   }
 
-  Future<void> _deleteNote(NoteModel note) async {
-    final confirm = await showDialog<bool>(
+  void _showAddDepositDialog(List<MemberModel> members) {
+    if (members.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('আগে সদস্য যোগ করুন')),
+      );
+      return;
+    }
+
+    MemberModel selectedMember = members.first;
+    final amountController = TextEditingController();
+    final noteController = TextEditingController();
+    String depositType = 'মাসিক';
+    DateTime selectedDate = DateTime.now();
+    bool isSaving = false;
+
+    showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('নোট মুছে ফেলতে চান?'),
-        content: Text('"${note.title}" সম্পূর্ণভাবে ডিলিট হয়ে যাবে।'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('না'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            style: FilledButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error,
+      barrierDismissible: false,
+      builder: (ctx) => StatefulBuilder(
+        builder: (context, setDialogState) {
+          return AlertDialog(
+            title: const Text('নতুন সঞ্চয় / চাঁদা জমা'),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DropdownButtonFormField<MemberModel>(
+                    value: selectedMember,
+                    decoration: const InputDecoration(
+                      labelText: 'সদস্য নির্বাচন করুন',
+                      border: OutlineInputBorder(),
+                    ),
+                    items: members.map((m) {
+                      return DropdownMenuItem(
+                        value: m,
+                        child: Text('[${m.memberNumber}] ${m.name}'),
+                      );
+                    }).toList(),
+                    onChanged: (val) {
+                      if (val != null) {
+                        setDialogState(() => selectedMember = val);
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 14),
+                  TextField(
+                    controller: amountController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: 'টাকার পরিমাণ (৳)',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  DropdownButtonFormField<String>(
+                    value: depositType,
+                    decoration: const InputDecoration(
+                      labelText: 'জমার ধরণ',
+                      border: OutlineInputBorder(),
+                    ),
+                    items: const [
+                      DropdownMenuItem(value: 'দৈনিক', child: Text('দৈনিক')),
+                      DropdownMenuItem(value: 'সাপ্তাহিক', child: Text('সাপ্তাহিক')),
+                      DropdownMenuItem(value: 'মাসিক', child: Text('মাসিক')),
+                    ],
+                    onChanged: (val) {
+                      if (val != null) {
+                        setDialogState(() => depositType = val);
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 14),
+                  TextField(
+                    controller: noteController,
+                    decoration: const InputDecoration(
+                      labelText: 'মন্তব্য (ঐচ্ছিক)',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            child: const Text('ডিলিট'),
+            actions: [
+              TextButton(
+                onPressed: isSaving ? null : () => Navigator.pop(ctx),
+                child: const Text('বাতিল'),
+              ),
+              FilledButton(
+                onPressed: isSaving
+                    ? null
+                    : () async {
+                        final amtStr = amountController.text.trim();
+                        final amount = double.tryParse(amtStr);
+                        if (amount == null || amount <= 0) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('সঠিক জমার পরিমাণ দিন')),
+                          );
+                          return;
+                        }
+
+                        setDialogState(() => isSaving = true);
+                        try {
+                          final device = kIsWeb ? 'Web Browser' : 'Mobile Device';
+                          await _somitiService.addDeposit(
+                            userId: widget.user.uid,
+                            memberId: selectedMember.id,
+                            memberName: selectedMember.name,
+                            memberNumber: selectedMember.memberNumber,
+                            amount: amount,
+                            type: depositType,
+                            date: selectedDate,
+                            note: noteController.text.trim(),
+                            deviceSource: device,
+                          );
+
+                          if (mounted) {
+                            Navigator.pop(ctx);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('জমা সফলভাবে লিপিবদ্ধ ও সিঙ্ক হয়েছে')),
+                            );
+                          }
+                        } catch (e) {
+                          setDialogState(() => isSaving = false);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('ত্রুটি: $e')),
+                          );
+                        }
+                      },
+                child: isSaving
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Text('জমা করুন'),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Future<void> _backupToDrive(List<MemberModel> members, List<DepositModel> deposits) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => const Center(
+        child: Card(
+          child: Padding(
+            padding: EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(height: 16),
+                Text('Google ড্রাইভে স্টেটমেন্ট আপলোড হচ্ছে...'),
+              ],
+            ),
           ),
-        ],
+        ),
       ),
     );
 
-    if (confirm == true) {
-      if (note.driveFileId != null) {
-        await _driveService.deleteFile(note.driveFileId!);
-      }
-      await _firestoreService.deleteNote(widget.user.uid, note.id);
+    try {
+      final file = await _driveService.uploadSomitiBackupCsv(
+        members: members,
+        deposits: deposits,
+      );
+
       if (mounted) {
+        Navigator.pop(context); // Close loading dialog
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            icon: const Icon(Icons.check_circle_rounded, color: Colors.green, size: 48),
+            title: const Text('Google ড্রাইভ ব্যাকআপ সম্পন্ন!'),
+            content: Text(
+              'আপনার Google Drive-এ "${file?.name ?? 'Somiti_Statement.csv'}" সফলভাবে সংরক্ষিত হয়েছে।',
+            ),
+            actions: [
+              FilledButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: const Text('ঠিক আছে'),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('মুছে ফেলা হয়েছে')),
+          SnackBar(content: Text('ড্রাইভ ব্যাকআপ ব্যর্থ হয়েছে: $e')),
         );
       }
     }
@@ -427,233 +561,422 @@ class _SyncHomeScreenState extends State<SyncHomeScreen> {
     final theme = Theme.of(context);
     final user = widget.user;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Cloud Sync & Drive',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              user.email ?? user.displayName ?? '',
-              style: TextStyle(
-                fontSize: 12,
-                color: theme.colorScheme.onSurfaceVariant,
+    return StreamBuilder<List<MemberModel>>(
+      stream: _somitiService.getMembersStream(user.uid),
+      builder: (context, memberSnapshot) {
+        final members = memberSnapshot.data ?? [];
+
+        return StreamBuilder<List<DepositModel>>(
+          stream: _somitiService.getDepositsStream(user.uid),
+          builder: (context, depositSnapshot) {
+            final deposits = depositSnapshot.data ?? [];
+            final totalFund = members.fold(0.0, (sum, m) => sum + m.totalDeposit);
+
+            return Scaffold(
+              appBar: AppBar(
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'সমিতি ম্যানেজার',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      user.email ?? user.displayName ?? '',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+                actions: [
+                  IconButton(
+                    tooltip: 'লগআউট',
+                    icon: const Icon(Icons.logout_rounded),
+                    onPressed: () async => await AuthService().signOut(),
+                  ),
+                ],
               ),
+              body: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    color: Colors.green.withOpacity(0.12),
+                    child: const Row(
+                      children: [
+                        Icon(Icons.sensors_rounded, color: Colors.green, size: 18),
+                        SizedBox(width: 8),
+                        Text(
+                          'লাইভ ক্লাউড সিঙ্ক সক্রিয় (ডিভাইস-টু-ডিভাইস ও ওয়েব)',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.green,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: IndexedStack(
+                      index: _currentIndex,
+                      children: [
+                        // Tab 0: Members
+                        _buildMembersTab(members),
+                        // Tab 1: Deposits
+                        _buildDepositsTab(deposits),
+                        // Tab 2: Summary & Google Drive
+                        _buildSummaryTab(members, deposits, totalFund),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              bottomNavigationBar: NavigationBar(
+                selectedIndex: _currentIndex,
+                onDestinationSelected: (i) => setState(() => _currentIndex = i),
+                destinations: const [
+                  NavigationDestination(
+                    icon: Icon(Icons.people_outline_rounded),
+                    selectedIcon: Icon(Icons.people_rounded),
+                    label: 'সদস্যগণ',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.payments_outlined),
+                    selectedIcon: Icon(Icons.payments_rounded),
+                    label: 'সঞ্চয় জমা',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.pie_chart_outline_rounded),
+                    selectedIcon: Icon(Icons.pie_chart_rounded),
+                    label: 'রিপোর্ট ও ড্রাইভ',
+                  ),
+                ],
+              ),
+              floatingActionButton: _currentIndex == 0
+                  ? FloatingActionButton.extended(
+                      onPressed: _showAddMemberDialog,
+                      icon: const Icon(Icons.person_add_rounded),
+                      label: const Text('নতুন সদস্য'),
+                    )
+                  : _currentIndex == 1
+                      ? FloatingActionButton.extended(
+                          onPressed: () => _showAddDepositDialog(members),
+                          icon: const Icon(Icons.add_card_rounded),
+                          label: const Text('জমা এন্ট্রি'),
+                        )
+                      : null,
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildMembersTab(List<MemberModel> members) {
+    if (members.isEmpty) {
+      return const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.group_add_outlined, size: 64, color: Colors.grey),
+            SizedBox(height: 16),
+            Text(
+              'কোনো সদস্য নেই',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
+            SizedBox(height: 6),
+            Text('নিচের বাটনে ট্যাপ করে নতুন সদস্য যোগ করুন।'),
           ],
         ),
-        actions: [
-          IconButton(
-            tooltip: 'লগআউট',
-            icon: const Icon(Icons.logout_rounded),
-            onPressed: () async {
-              await AuthService().signOut();
-            },
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            color: theme.colorScheme.primaryContainer.withOpacity(0.5),
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.sensors_rounded,
-                  color: Colors.green,
-                  size: 20,
+      );
+    }
+
+    final currencyFormat = NumberFormat('#,##,###');
+
+    return ListView.separated(
+      padding: const EdgeInsets.all(16),
+      itemCount: members.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 8),
+      itemBuilder: (context, index) {
+        final member = members[index];
+        return Card(
+          elevation: 1,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+              child: Text(
+                member.memberNumber,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    'লাইভ সিঙ্ক চালু আছে: যেকোনো ডিভাইসে যোগ করলে এখানে স্বয়ংক্রিয়ভাবে আপডেট হবে',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
+              ),
+            ),
+            title: Text(
+              member.name,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text('ফোন: ${member.phone.isEmpty ? 'দেওয়া হয়নি' : member.phone}'),
+            trailing: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                const Text(
+                  'মোট সঞ্চয়',
+                  style: TextStyle(fontSize: 11, color: Colors.grey),
+                ),
+                Text(
+                  '৳${currencyFormat.format(member.totalDeposit)}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                    fontSize: 15,
                   ),
                 ),
               ],
             ),
           ),
-          Expanded(
-            child: StreamBuilder<List<NoteModel>>(
-              stream: _firestoreService.getNotesStream(user.uid),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+        );
+      },
+    );
+  }
 
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(24.0),
+  Widget _buildDepositsTab(List<DepositModel> deposits) {
+    if (deposits.isEmpty) {
+      return const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.receipt_long_outlined, size: 64, color: Colors.grey),
+            SizedBox(height: 16),
+            Text(
+              'কোনো জমা এন্ট্রি নেই',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+            SizedBox(height: 6),
+            Text('নিচের বাটনে ট্যাপ করে নতুন জমা লিপিবদ্ধ করুন।'),
+          ],
+        ),
+      );
+    }
+
+    final dateFormat = DateFormat('dd MMM yyyy, hh:mm a');
+    final currencyFormat = NumberFormat('#,##,###');
+
+    return ListView.separated(
+      padding: const EdgeInsets.all(16),
+      itemCount: deposits.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 8),
+      itemBuilder: (context, index) {
+        final deposit = deposits[index];
+        return Card(
+          elevation: 1,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          child: ListTile(
+            leading: const CircleAvatar(
+              backgroundColor: Color(0xFFE8F5E9),
+              child: Icon(Icons.arrow_downward_rounded, color: Colors.green),
+            ),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '[${deposit.memberNumber}] ${deposit.memberName}',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  '৳${currencyFormat.format(deposit.amount)}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                       child: Text(
-                        'ডেটা লোড করতে সমস্যা হয়েছে:\n${snapshot.error}',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: theme.colorScheme.error),
+                        deposit.type,
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
                       ),
                     ),
-                  );
-                }
-
-                final notes = snapshot.data ?? [];
-                if (notes.isEmpty) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.note_add_outlined,
-                          size: 64,
-                          color: theme.colorScheme.outline,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'এখনও কোনো নোট নেই',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        const Text(
-                          'নিচের বাটনে ট্যাপ করে নতুন নোট যোগ করুন।',
-                          style: TextStyle(fontSize: 13),
-                        ),
-                      ],
+                    const SizedBox(width: 8),
+                    Text(
+                      dateFormat.format(deposit.date),
+                      style: const TextStyle(fontSize: 11, color: Colors.grey),
                     ),
-                  );
-                }
+                  ],
+                ),
+                if (deposit.note.isNotEmpty) ...[
+                  const SizedBox(height: 4),
+                  Text('নোট: ${deposit.note}', style: const TextStyle(fontSize: 12)),
+                ],
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
-                final dateFormat = DateFormat('dd MMM, hh:mm a');
+  Widget _buildSummaryTab(
+    List<MemberModel> members,
+    List<DepositModel> deposits,
+    double totalFund,
+  ) {
+    final currencyFormat = NumberFormat('#,##,###');
 
-                return ListView.separated(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: notes.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 10),
-                  itemBuilder: (context, index) {
-                    final note = notes[index];
-                    final isDriveBackedUp = note.driveFileId != null && note.driveFileId!.isNotEmpty;
-
-                    return Card(
-                      elevation: 1,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: BorderSide(
-                          color: theme.colorScheme.outlineVariant.withOpacity(0.5),
-                        ),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Card(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            elevation: 0,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  const Text(
+                    'সমিতির মোট সঞ্চিত তহবিল',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '৳${currencyFormat.format(totalFund)}',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: _MetricCard(
+                  icon: Icons.people_alt_rounded,
+                  title: 'মোট সদস্য',
+                  value: '${members.length} জন',
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _MetricCard(
+                  icon: Icons.receipt_rounded,
+                  title: 'মোট জমা এন্ট্রি',
+                  value: '${deposits.length} টি',
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Row(
+                    children: [
+                      Icon(Icons.add_to_drive_rounded, color: Color(0xFF0F9D58), size: 28),
+                      SizedBox(width: 10),
+                      Text(
+                        'Google Drive ব্যাকআপ',
+                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                       ),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        title: Text(
-                          note.title,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 6),
-                            Text(
-                              note.content,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: theme.colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.access_time_rounded,
-                                  size: 13,
-                                  color: theme.colorScheme.outline,
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  dateFormat.format(note.updatedAt),
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    color: theme.colorScheme.outline,
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                if (isDriveBackedUp)
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                    decoration: BoxDecoration(
-                                      color: Colors.green.withOpacity(0.15),
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: const Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(Icons.check_circle_outline, size: 12, color: Colors.green),
-                                        SizedBox(width: 4),
-                                        Text(
-                                          'Drive Synced',
-                                          style: TextStyle(
-                                            fontSize: 11,
-                                            color: Colors.green,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        trailing: PopupMenuButton<String>(
-                          onSelected: (value) {
-                            if (value == 'edit') {
-                              _showNoteDialog(existingNote: note);
-                            } else if (value == 'delete') {
-                              _deleteNote(note);
-                            }
-                          },
-                          itemBuilder: (context) => [
-                            const PopupMenuItem(
-                              value: 'edit',
-                              child: Row(
-                                children: [
-                                  Icon(Icons.edit_outlined, size: 18),
-                                  SizedBox(width: 8),
-                                  Text('সম্পাদনা'),
-                                ],
-                              ),
-                            ),
-                            const PopupMenuItem(
-                              value: 'delete',
-                              child: Row(
-                                children: [
-                                  Icon(Icons.delete_outline, size: 18, color: Colors.red),
-                                  SizedBox(width: 8),
-                                  Text('মুছে ফেলুন', style: TextStyle(color: Colors.red)),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        onTap: () => _showNoteDialog(existingNote: note),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'সমিতির সকল সদস্য তালিকা এবং সম্পূর্ণ জমা স্টেটমেন্ট CSV ফরমেটে তৈরি করে আপনার ব্যক্তিগত Google Drive-এ স্বয়ংক্রিয়ভাবে ব্যাকআপ রাখুন।',
+                    style: TextStyle(fontSize: 13, color: Colors.black87),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FilledButton.icon(
+                      onPressed: () => _backupToDrive(members, deposits),
+                      icon: const Icon(Icons.cloud_upload_rounded),
+                      label: const Text(
+                        'Google ড্রাইভে রিপোর্ট ব্যাকআপ করুন',
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                    );
-                  },
-                );
-              },
+                      style: FilledButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showNoteDialog(),
-        icon: const Icon(Icons.add_rounded),
-        label: const Text('নতুন ডেটা যোগ করুন'),
+    );
+  }
+}
+
+class _MetricCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String value;
+
+  const _MetricCard({
+    required this.icon,
+    required this.title,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Card(
+      elevation: 1,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(icon, color: theme.colorScheme.primary, size: 28),
+            const SizedBox(height: 10),
+            Text(title, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+            const SizedBox(height: 4),
+            Text(
+              value,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
       ),
     );
   }
