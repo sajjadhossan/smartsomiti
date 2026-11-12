@@ -587,17 +587,20 @@
       transition: transform 0.08s ease-out;
     }
 
-    /* Print Styles: Clean paper / PDF isolation for Receipts, Notices & Official Letterhead Pad */
+    /* Print Styles: Clean paper / PDF isolation for Receipts, Notices, ID Cards, Audit & Official Letterhead Pad */
     @media print {
       body * {
         visibility: hidden !important;
       }
       #receiptModal, #receiptPrintArea, #receiptPrintArea *,
       #noticeModal, #noticePrintArea, #noticePrintArea *,
-      #fullPadModal, #fullPadPrintArea, #fullPadPrintArea * {
+      #fullPadModal, #fullPadPrintArea, #fullPadPrintArea *,
+      #memberIdCardModal, #memberIdCardPrintArea, #memberIdCardPrintArea *,
+      #a4PdfPreviewModal, #a4SheetContainer, #a4SheetContainer *,
+      #auditModal, #auditPadPrintArea, #auditPadPrintArea * {
         visibility: visible !important;
       }
-      #receiptModal, #noticeModal, #fullPadModal {
+      #receiptModal, #noticeModal, #fullPadModal, #memberIdCardModal, #a4PdfPreviewModal, #auditModal {
         position: absolute !important;
         left: 0 !important;
         top: 0 !important;
@@ -613,18 +616,29 @@
         padding: 0 !important;
         background: none !important;
       }
-      #receiptPrintArea, #noticePrintArea, #fullPadPrintArea {
+      #receiptPrintArea, #noticePrintArea, #fullPadPrintArea, #auditPadPrintArea, #a4SheetContainer {
         position: absolute !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
         top: 15px !important;
-        width: 520px !important;
+        width: 540px !important;
         max-width: 96% !important;
         border: 1.5px solid #000000 !important;
         background: #FFFFFF !important;
         color: #000000 !important;
         box-shadow: none !important;
         padding: 16px !important;
+      }
+      #memberIdCardPrintArea {
+        position: absolute !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        top: 20px !important;
+        width: 320px !important;
+        border: 2px solid #000000 !important;
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        box-shadow: none !important;
       }
       .action-btn-row, .receipt-actions-grid, .btn-outline, .no-print, .btn, .modal-close-btn {
         display: none !important;
@@ -911,6 +925,11 @@
         <button class="nav-item" id="navItem-expenses" onclick="navTo('expenses')">
           <span class="nav-icon">💸</span>
           <span>দৈনন্দিন খরচ খাতা</span>
+        </button>
+
+        <button class="nav-item" id="navItem-audit" onclick="navTo('audit')">
+          <span class="nav-icon">📊</span>
+          <span>আয়-ব্যয় অডিট ও ব্যালেন্স শিট</span>
         </button>
 
         <button class="nav-item" id="navItem-backup" onclick="navTo('backup')">
@@ -1515,6 +1534,33 @@
           <button class="btn" onclick="addDeposit()">💰 জমা লিপিবদ্ধ করুন ও রসিদ তৈরি করুন</button>
         </div>
 
+        <!-- Due Installments Tracker Card -->
+        <div class="card" style="border-left: 4px solid #F59E0B; background: #FFFDF7; margin-top: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="font-weight: 800; font-size: 13.5px; color: #B45309; display: flex; align-items: center; gap: 6px;">
+              <span>⚠️</span>
+              <span>চলতি মাসের বকেয়া কিস্তি ট্র্যাকার ও তাগাদা</span>
+            </div>
+            <span id="dueMembersCountBadge" style="background: #FEF3C7; color: #92400E; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 10px;">০ জন বকেয়া</span>
+          </div>
+          <p style="font-size: 11.5px; color: #78350F; margin-bottom: 10px;">
+            যেসব সদস্যের চলতি মাসের সঞ্চয় কিস্তি এখনও জমা পড়েনি, তাদের তালিকা নিচে দেওয়া হলো। এক ক্লিকেই তাদের হোয়াটসঅ্যাপে তাগাদা পাঠানো যাবে।
+          </p>
+
+          <div id="dueMembersList" style="max-height: 200px; overflow-y: auto;">
+            <div style="text-align: center; padding: 12px; color: var(--text-muted); font-size: 12px;">যাচাই করা হচ্ছে...</div>
+          </div>
+
+          <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <button type="button" onclick="createDueNoticeInPad()" style="flex: 1; background: #B45309; color: white; border: none; padding: 8px; border-radius: 6px; font-size: 11.5px; font-weight: 700; cursor: pointer;">
+              📢 বকেয়া নোটিশ তৈরি করুন
+            </button>
+            <button type="button" onclick="renderDueInstallments()" style="background: white; border: 1px solid #D97706; color: #B45309; padding: 8px 12px; border-radius: 6px; font-size: 11.5px; font-weight: 700; cursor: pointer;">
+              ↺ রিফ্রেশ
+            </button>
+          </div>
+        </div>
+
         <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 14px;">সাম্প্রতিক জমার খতিয়ান (ক্লিক করে রসিদ দেখুন):</div>
         <div id="depositsList">
           <div style="text-align: center; padding: 20px; color: var(--text-muted);">লোড হচ্ছে...</div>
@@ -1599,6 +1645,187 @@
         <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 14px;">খরচের ভাউচার তালিকা:</div>
         <div id="expensesList">
           <div style="text-align: center; padding: 20px; color: var(--text-muted);">কোনো খরচের রেকর্ড নেই।</div>
+        </div>
+      </div>
+
+      <!-- ================= 4B. AUDIT & BALANCE SHEET VIEW ================= -->
+      <div id="view-audit" style="display: none;">
+        <div class="view-header-bar">
+          <button class="back-btn" onclick="navTo('dashboard')">← ড্যাশবোর্ডে ফিরুন</button>
+          <span style="font-weight: 700; font-size: 14px; color: #1E3A8A;">📊 আর্থিক নিরীক্ষা ও ব্যালেন্স শিট</span>
+        </div>
+
+        <!-- Filter & Control Card -->
+        <div class="card" style="border-left: 4px solid #1E3A8A; background: #F8FAFC;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div class="card-title" style="margin-bottom: 0;">অডিট হিসাবের সময়কাল নির্বাচন</div>
+            <button type="button" onclick="calculateAndRenderAudit()" style="background: #1E3A8A; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;">
+              🔄 হিসাব রিফ্রেশ
+            </button>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label>সময়কাল ফিল্টার</label>
+              <select id="auditPeriodSelect" onchange="calculateAndRenderAudit()">
+                <option value="this_month">চলতি মাস</option>
+                <option value="last_month">বিগত মাস</option>
+                <option value="this_year">চলতি বছর (২০২৬)</option>
+                <option value="all_time">সমগ্র সময় (শুরু থেকে আজ পর্যন্ত)</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label>প্রতিবেদন তৈরির তারিখ</label>
+              <input type="text" id="auditReportDate" readonly style="background: white;">
+            </div>
+          </div>
+        </div>
+
+        <!-- 4-Box Metric Summary -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+          <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 10px; padding: 10px; text-align: center;">
+            <div style="font-size: 11px; color: #065F46; font-weight: 700;">মোট সঞ্চয় আদায়</div>
+            <div style="font-size: 18px; font-weight: 800; color: #0F9D58; margin-top: 2px;" id="auditTotalDeposits">৳০</div>
+          </div>
+          <div style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: 10px; padding: 10px; text-align: center;">
+            <div style="font-size: 11px; color: #991B1B; font-weight: 700;">মোট খরচ / ব্যয়</div>
+            <div style="font-size: 18px; font-weight: 800; color: #DC2626; margin-top: 2px;" id="auditTotalExpenses">৳০</div>
+          </div>
+          <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 10px; padding: 10px; text-align: center;">
+            <div style="font-size: 11px; color: #1E40AF; font-weight: 700;">বর্তমান নিট স্থিতি</div>
+            <div style="font-size: 18px; font-weight: 800; color: #1D4ED8; margin-top: 2px;" id="auditNetBalance">৳০</div>
+          </div>
+          <div style="background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 10px; padding: 10px; text-align: center;">
+            <div style="font-size: 11px; color: #92400E; font-weight: 700;">মোট সদস্য সংখ্যা</div>
+            <div style="font-size: 18px; font-weight: 800; color: #D97706; margin-top: 2px;" id="auditActiveMembers">০ জন</div>
+          </div>
+        </div>
+
+        <!-- Official Audit & Balance Sheet Document on Pad -->
+        <div style="font-weight: 800; margin: 16px 0 8px 4px; font-size: 14px; color: var(--text);">
+          📜 অফিসিয়াল প্যাডে ব্যালেন্স শিট প্রিভিউ:
+        </div>
+
+        <div class="pad-banner" id="auditPadPrintArea" style="background: white; border: 2px solid var(--primary); padding: 14px; border-radius: 12px; margin-bottom: 12px;">
+          <!-- Banner Image if any -->
+          <div id="apPadBannerImgContainer" style="display: none; margin-bottom: 8px;">
+            <img id="apPadBannerImg" src="" style="width: 100%; max-height: 70px; object-fit: cover; border-radius: 6px;">
+          </div>
+
+          <!-- Official Pad Top Row -->
+          <div class="pad-top-row" style="border-bottom: 2px solid #E2E8F0; padding-bottom: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+            <div class="pad-left-box" style="display: flex; align-items: center; gap: 8px;">
+              <div class="pad-logo-box" id="apPadLogoBox" style="font-size: 26px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: #F1F5F9; border-radius: 8px; flex-shrink: 0;">🏛️</div>
+              <div>
+                <div class="pad-title" id="apSomitiName" style="font-size: 15px; font-weight: 800; color: #0F172A; line-height: 1.2;">সমিতির নাম</div>
+                <div class="pad-slogan" id="apPadHeader" style="font-size: 11px; color: #64748B; font-style: italic;">স্লোগান</div>
+              </div>
+            </div>
+            <div class="pad-right-info" style="text-align: right; font-size: 10px; color: #475569; line-height: 1.35;">
+              <div id="apAddress">📍 ঢাকা</div>
+              <div id="apBkash">📱 বিকাশ/নগদ: নেই</div>
+              <div id="apBank">🏦 ব্যাংক: নেই</div>
+              <div id="apCodeBadge" style="font-weight: 800; color: #1A73E8; font-size: 10.5px;">কোড: SMT-7890</div>
+            </div>
+          </div>
+
+          <!-- Document Title Badge -->
+          <div style="text-align: center; margin-bottom: 10px;">
+            <span style="display: inline-block; background: #1E3A8A; color: white; font-size: 11.5px; font-weight: 800; padding: 3px 14px; border-radius: 20px; letter-spacing: 0.5px;">
+              📊 আর্থিক নিরীক্ষা ও উদ্বৃত্তপত্র (AUDIT & BALANCE SHEET)
+            </span>
+          </div>
+
+          <!-- Audit Meta -->
+          <div style="display: flex; justify-content: space-between; font-size: 11px; color: #475569; border-bottom: 1px dashed #CBD5E1; padding-bottom: 6px; margin-bottom: 10px;">
+            <div><strong>হিসাবের সময়কাল:</strong> <span id="apPeriodText">চলতি মাস</span></div>
+            <div><strong>ইস্যু তারিখ:</strong> <span id="apDateText">-</span></div>
+          </div>
+
+          <!-- Financial Statement Table -->
+          <div style="background: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 8px; padding: 8px 10px; margin-bottom: 12px; font-size: 12px;">
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #E2E8F0;">
+              <span>১. মোট সঞ্চয় কিস্তি আদায় (Total Income):</span>
+              <strong style="color: #0F9D58;" id="apDocDeposits">৳০</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #E2E8F0;">
+              <span>২. মোট অফিসিয়াল ও সাংগঠনিক ব্যয় (Total Expense):</span>
+              <strong style="color: #DC2626;" id="apDocExpenses">৳০</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 6px 0 2px 0; font-weight: 800; font-size: 13px;">
+              <span>৩. বর্তমান মোট ক্যাশ ও ব্যাংক স্থিতি (Net Treasury):</span>
+              <span style="color: #1D4ED8;" id="apDocNet">৳০</span>
+            </div>
+          </div>
+
+          <!-- Summary Breakdown Grid -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; font-size: 11px;">
+            <div style="background: white; border: 1px solid #E2E8F0; border-radius: 6px; padding: 6px 8px;">
+              <strong style="color: #0F9D58; display: block; margin-bottom: 4px;">📥 জমার শীর্ষ খাতসমূহ:</strong>
+              <div id="apDepositBreakdown" style="color: #475569; line-height: 1.4;">হিসাব প্রস্তুত হচ্ছে...</div>
+            </div>
+            <div style="background: white; border: 1px solid #E2E8F0; border-radius: 6px; padding: 6px 8px;">
+              <strong style="color: #DC2626; display: block; margin-bottom: 4px;">💸 খরচের শীর্ষ খাতসমূহ:</strong>
+              <div id="apExpenseBreakdown" style="color: #475569; line-height: 1.4;">হিসাব প্রস্তুত হচ্ছে...</div>
+            </div>
+          </div>
+
+          <!-- Pad Committee Footer Row -->
+          <div class="pad-committee-row" style="margin-top: 12px; padding-top: 8px; border-top: 1.5px dashed #CBD5E1; display: flex; justify-content: space-between; gap: 6px;">
+            <!-- President -->
+            <div class="committee-stamp-col" style="flex: 1; text-align: center;">
+              <div class="stamp-transform-wrapper" id="apWrapPresident">
+                <div class="digital-sign" id="apSignPresident" style="font-size: 14px; min-height: 24px; display: flex; align-items: center; justify-content: center;">Karim</div>
+                <div class="official-seal-stamp" style="width: 36px; height: 36px; font-size: 5.5px; margin: 1px auto;">
+                  <span>★ সিলমোহর ★</span>
+                  <span>অনুমোদিত</span>
+                </div>
+              </div>
+              <div class="signatory-name" id="apPresidentName" style="font-size: 9.5px; margin-top: 2px;">সভাপতি</div>
+              <div class="signatory-role" style="font-size: 8px; color: #64748B;">সভাপতি</div>
+            </div>
+
+            <!-- Secretary -->
+            <div class="committee-stamp-col" style="flex: 1; text-align: center;">
+              <div class="stamp-transform-wrapper" id="apWrapSecretary">
+                <div class="digital-sign" id="apSignSecretary" style="font-size: 14px; min-height: 24px; display: flex; align-items: center; justify-content: center;">Rafiqul</div>
+                <div class="official-seal-stamp" style="width: 36px; height: 36px; font-size: 5.5px; margin: 1px auto;">
+                  <span>★ সিলমোহর ★</span>
+                  <span>যাচাইকৃত</span>
+                </div>
+              </div>
+              <div class="signatory-name" id="apSecretaryName" style="font-size: 9.5px; margin-top: 2px;">সাধারণ সম্পাদক</div>
+              <div class="signatory-role" style="font-size: 8px; color: #64748B;">সাধারণ সম্পাদক</div>
+            </div>
+
+            <!-- Cashier -->
+            <div class="committee-stamp-col" style="flex: 1; text-align: center;">
+              <div class="stamp-transform-wrapper" id="apWrapCashier">
+                <div class="digital-sign" id="apSignCashier" style="font-size: 14px; min-height: 24px; display: flex; align-items: center; justify-content: center;">Sajjad</div>
+                <div class="official-seal-stamp" style="width: 36px; height: 36px; font-size: 5.5px; margin: 1px auto;">
+                  <span>★ সিলমোহর ★</span>
+                  <span>নিরীক্ষিত</span>
+                </div>
+              </div>
+              <div class="signatory-name" id="apCashierName" style="font-size: 9.5px; margin-top: 2px;">সাজ্জাদ হোসেন</div>
+              <div class="signatory-role" style="font-size: 8px; color: #64748B;">কোষাধ্যক্ষ</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Audit Action Buttons -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 24px;">
+          <button type="button" onclick="printAuditReport()" style="background: #1A73E8; color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <span>🖨️ অডিট শিট প্রিন্ট / PDF</span>
+          </button>
+          <button type="button" onclick="downloadAuditImage()" style="background: #7C3AED; color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <span>🖼️ শিট ছবি ডাউনলোড</span>
+          </button>
+          <button type="button" onclick="openA4Preview('audit')" style="background: #0F9D58; color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <span>📄 A4 PDF শিট প্রিভিউ</span>
+          </button>
+          <button type="button" onclick="shareAuditWhatsApp()" class="wa-btn" style="padding: 10px;">
+            <span>📲 WhatsApp শেয়ার</span>
+          </button>
         </div>
       </div>
 
@@ -1852,14 +2079,17 @@
         </button>
       </div>
 
-      <div style="margin-top: 8px; display: flex; gap: 8px;">
-        <button onclick="verifyCurrentReceiptOnline()" style="flex: 1; background: #0F9D58; color: white; border: none; padding: 9px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
-          <span>🔍 রসিদের সত্যতা যাচাই করুন</span>
+      <div style="margin-top: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+        <button onclick="openA4Preview('receipt')" style="background: #0F9D58; color: white; border: none; padding: 9px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <span>📄 A4 PDF শিট প্রিভিউ</span>
         </button>
-        <button class="btn btn-outline" style="width: auto; padding: 9px 14px;" onclick="closeReceiptModal()">
-          ✖️ বন্ধ
+        <button onclick="verifyCurrentReceiptOnline()" style="background: #1E3A8A; color: white; border: none; padding: 9px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <span>🔍 রসিদের সত্যতা যাচাই</span>
         </button>
       </div>
+      <button class="btn btn-outline" style="margin-top: 8px; padding: 9px;" onclick="closeReceiptModal()">
+        ✖️ বন্ধ
+      </button>
     </div>
   </div>
 
@@ -1964,13 +2194,16 @@
         <button type="button" onclick="downloadNoticeImage()" style="background: #7C3AED; color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
           <span>🖼️ ছবি ডাউনলোড</span>
         </button>
+        <button type="button" onclick="openA4Preview('notice')" style="background: #0F9D58; color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+          <span>📄 A4 PDF শিট প্রিভিউ</span>
+        </button>
         <button type="button" onclick="shareNoticeWhatsApp()" class="wa-btn" style="padding: 10px;">
           <span>📲 WhatsApp</span>
         </button>
-        <button type="button" onclick="closeNoticeModal()" class="btn btn-outline" style="padding: 10px;">
-          <span>✖️ বন্ধ করুন</span>
-        </button>
       </div>
+      <button type="button" onclick="closeNoticeModal()" class="btn btn-outline" style="margin-top: 8px; padding: 9px;">
+        <span>✖️ বন্ধ করুন</span>
+      </button>
     </div>
   </div>
 
@@ -2076,9 +2309,146 @@
           <span>🖼️ প্যাড ছবি ডাউনলোড</span>
         </button>
       </div>
+      <button type="button" onclick="openA4Preview('pad')" style="background: #0F9D58; color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 4px;">
+        <span>📄 A4 PDF শিট প্রিভিউ</span>
+      </button>
       <button type="button" onclick="closeFullPadModal()" class="btn btn-outline" style="margin-top: 8px; padding: 9px;">
         <span>✖️ বন্ধ করুন</span>
       </button>
+    </div>
+  </div>
+
+  <!-- ================= MEMBER OFFICIAL DIGITAL ID CARD MODAL ================= -->
+  <div id="memberIdCardModal" class="modal-overlay" style="display: none; z-index: 2600;">
+    <div class="modal-box" style="max-width: 440px; text-align: center;">
+      <!-- ID Card Print Area -->
+      <div id="memberIdCardPrintArea" style="background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%); border: 2px solid #1E3A8A; border-radius: 14px; padding: 16px; margin: 0 auto 14px auto; max-width: 330px; box-shadow: 0 4px 15px rgba(30, 58, 138, 0.12); position: relative; overflow: hidden; text-align: left;">
+        <!-- Top Colored Header Strip -->
+        <div style="background: linear-gradient(90deg, #1E3A8A 0%, #1A73E8 100%); color: white; margin: -16px -16px 12px -16px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div id="idCardLogoBox" style="font-size: 20px; width: 32px; height: 32px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #1E3A8A; flex-shrink: 0;">🏛️</div>
+            <div>
+              <div id="idCardSomitiName" style="font-size: 11.5px; font-weight: 800; line-height: 1.2;">প্রগতি সঞ্চয় সমিতি</div>
+              <div style="font-size: 8.5px; opacity: 0.9; letter-spacing: 0.5px;">সদস্য পরিচয়পত্র (MEMBER ID CARD)</div>
+            </div>
+          </div>
+          <div id="idCardSomitiCode" style="font-family: monospace; font-size: 9px; background: rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 4px; font-weight: 700;">SMT-7890</div>
+        </div>
+
+        <!-- Member Photo and Basic Info Row -->
+        <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
+          <div style="width: 68px; height: 68px; border-radius: 50%; border: 2.5px solid #1A73E8; background: #E8F0FE; display: flex; align-items: center; justify-content: center; font-size: 34px; color: #1A73E8; flex-shrink: 0; overflow: hidden;">
+            <span id="idCardAvatar">👤</span>
+          </div>
+          <div>
+            <div id="idCardMemberName" style="font-size: 14.5px; font-weight: 800; color: #0F172A; line-height: 1.25;">সদস্যের নাম</div>
+            <div style="margin-top: 3px;">
+              <span style="font-size: 9px; color: #64748B; font-weight: 700;">সদস্য নং:</span>
+              <span id="idCardMemberNum" style="display: inline-block; background: #0F9D58; color: white; font-weight: 800; font-size: 11px; padding: 1px 7px; border-radius: 10px; font-family: monospace;">#01</span>
+            </div>
+            <div style="font-size: 10px; color: #475569; margin-top: 2px;">
+              <span>📱 </span><span id="idCardMemberPhone">01700000000</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Meta Details Box -->
+        <div style="background: white; border: 1px solid #E2E8F0; border-radius: 8px; padding: 6px 10px; margin-bottom: 10px; font-size: 10.5px; line-height: 1.6;">
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: #64748B;">যোগদানের তারিখ:</span>
+            <strong id="idCardJoinDate" style="color: #1E293B;">১২ নভেম্বর, ২০২৬</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: #64748B;">বর্তমান স্ট্যাটাস:</span>
+            <span style="color: #0F9D58; font-weight: 800;">✓ অনুমোদিত সক্রিয় সদস্য</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: #64748B;">রক্তের গ্রুপ:</span>
+            <span id="idCardBloodGroup" style="font-weight: 700; color: #DC2626;">নির্ধারিত নয়</span>
+          </div>
+        </div>
+
+        <!-- QR Code & Official Sign Row -->
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #CBD5E1; padding-top: 8px;">
+          <!-- Real QR Code -->
+          <div style="text-align: center;">
+            <div id="idCardQrBox" style="width: 56px; height: 56px; background: white; padding: 2px; border: 1px solid #CBD5E1; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center;"></div>
+            <div style="font-size: 7.5px; color: #64748B; font-weight: 700; margin-top: 2px;">অনলাইন যাচাইকৃত</div>
+          </div>
+
+          <!-- Official Authority Signature & Seal -->
+          <div style="text-align: center;">
+            <div id="idCardSignWrap" style="transform-origin: center;">
+              <div class="digital-sign" id="idCardSignElement" style="font-size: 14px; color: #1E3A8A; min-height: 20px; display: flex; align-items: center; justify-content: center;">Karim</div>
+              <div class="official-seal-stamp" style="width: 32px; height: 32px; font-size: 5px; margin: 1px auto;">
+                <span>★ সিলমোহর ★</span>
+                <span>অনুমোদিত</span>
+              </div>
+            </div>
+            <div style="font-size: 8.5px; font-weight: 800; color: #1E293B;" id="idCardSignatoryName">সভাপতি</div>
+            <div style="font-size: 7px; color: #64748B;">অনুমোদনকারী কর্মকর্তা</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+        <button type="button" onclick="printMemberIdCard()" style="background: #1A73E8; color: white; border: none; padding: 9px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+          <span>🖨️ প্রিন্ট / PDF</span>
+        </button>
+        <button type="button" onclick="downloadMemberIdCardImage()" style="background: #7C3AED; color: white; border: none; padding: 9px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+          <span>🖼️ ছবি ডাউনলোড</span>
+        </button>
+        <button type="button" onclick="shareMemberIdCardWhatsApp()" class="wa-btn" style="padding: 9px; font-size: 12px;">
+          <span>📲 WhatsApp</span>
+        </button>
+        <button type="button" onclick="closeMemberIdCardModal()" class="btn btn-outline" style="padding: 9px; font-size: 12px;">
+          <span>✖️ বন্ধ</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= DEDICATED A4 PDF SHEET PREVIEW MODAL ================= -->
+  <div id="a4PdfPreviewModal" class="modal-overlay" style="display: none; z-index: 2700;">
+    <div class="modal-box" style="max-width: 660px; width: 95%; max-height: 94vh; display: flex; flex-direction: column; padding: 12px;">
+      <!-- A4 Top Control Toolbar -->
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid var(--border); padding-bottom: 8px; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span style="font-size: 18px;">📄</span>
+          <span style="font-weight: 800; font-size: 13px; color: var(--text);">A4 সাইজ অফিসিয়াল ডকুমেন্ট শিট প্রিভিউ</span>
+        </div>
+        <!-- Zoom Controls -->
+        <div style="display: flex; align-items: center; gap: 4px;">
+          <button type="button" onclick="zoomA4Sheet(-0.1)" style="background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 2px 7px; font-size: 11px; cursor: pointer; font-weight: 700;">🔍 ➖</button>
+          <span id="a4ZoomLabel" style="font-family: monospace; font-size: 11px; font-weight: 700; color: var(--primary); min-width: 40px; text-align: center;">100%</span>
+          <button type="button" onclick="zoomA4Sheet(0.1)" style="background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 2px 7px; font-size: 11px; cursor: pointer; font-weight: 700;">🔍 ➕</button>
+          <button type="button" onclick="zoomA4Sheet(0, true)" style="background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; font-size: 10px; cursor: pointer;">↺</button>
+        </div>
+      </div>
+
+      <!-- Scrollable Simulated A4 Paper Area -->
+      <div style="flex: 1; overflow-y: auto; overflow-x: hidden; background: #525659; padding: 14px 8px; border-radius: 8px; display: flex; justify-content: center; align-items: flex-start;">
+        <!-- Simulated Physical A4 Sheet Container -->
+        <div id="a4SheetContainer" style="width: 100%; max-width: 540px; min-height: 740px; background: white; box-shadow: 0 6px 25px rgba(0,0,0,0.35); border-radius: 2px; padding: 18px; transform-origin: top center; transition: transform 0.15s ease-out; box-sizing: border-box;">
+          <div id="a4SheetContent">
+            <!-- Dynamic Content Cloned Here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons Footer -->
+      <div style="display: flex; gap: 8px; margin-top: 10px;">
+        <button type="button" onclick="printA4Direct()" style="flex: 1; background: #1A73E8; color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <span>📥 PDF সংরক্ষণ / প্রিন্ট</span>
+        </button>
+        <button type="button" onclick="downloadA4Image()" style="flex: 1; background: #7C3AED; color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <span>🖼️ পূর্ণ পেজ ছবি ডাউনলোড</span>
+        </button>
+        <button type="button" onclick="closeA4PdfPreviewModal()" class="btn btn-outline" style="width: auto; padding: 10px 14px;">
+          <span>✖️ বন্ধ</span>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -2127,9 +2497,12 @@
         <div style="text-align:center; padding:14px; color:var(--text-muted);">কোনো জমার রেকর্ড নেই।</div>
       </div>
 
-      <div style="margin-top:16px; display:flex; gap:8px;">
-        <button class="wa-btn" onclick="shareMemberPassbookWhatsApp()">
-          <span>📲 WhatsApp-এ স্টেটমেন্ট পাঠান</span>
+      <div style="margin-top:16px; display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+        <button type="button" onclick="openMemberIdCard(activeMemberData?.id)" style="background: #1A73E8; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+          <span>🪪 ডিজিটাল আইডি কার্ড</span>
+        </button>
+        <button class="wa-btn" onclick="shareMemberPassbookWhatsApp()" style="padding: 10px; font-size: 12px;">
+          <span>📲 WhatsApp পাসবুক</span>
         </button>
       </div>
     </div>
@@ -3110,7 +3483,7 @@
       closeSidebar();
       currentActiveView = viewName;
 
-      const views = ['dashboard', 'somiti', 'deposits', 'members', 'expenses', 'backup', 'pending', 'verify', 'memberpassbook'];
+      const views = ['dashboard', 'somiti', 'deposits', 'members', 'expenses', 'audit', 'backup', 'pending', 'verify', 'memberpassbook'];
       views.forEach(v => {
         const el = document.getElementById('view-' + v);
         if (el) el.style.display = (v === viewName) ? 'block' : 'none';
@@ -3125,6 +3498,7 @@
         'deposits': '📥 কিস্তি জমা ও মানি রিসিট',
         'members': '👥 সদস্য তালিকা ও পাসবুক',
         'expenses': '💸 দৈনন্দিন খরচ খাতা',
+        'audit': '📊 আর্থিক নিরীক্ষা ও ব্যালেন্স শিট',
         'backup': '☁️ গুগল ড্রাইভ ক্লাউড ব্যাকআপ',
         'pending': '⏳ অপেক্ষমাণ আবেদনকারী',
         'verify': '🔍 অফিসিয়াল রসিদ ও QR যাচাই',
@@ -3139,6 +3513,10 @@
 
       if (viewName === 'somiti') {
         populateSomitiProfileView();
+      } else if (viewName === 'audit') {
+        calculateAndRenderAudit();
+      } else if (viewName === 'deposits') {
+        renderDueInstallments();
       }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -3165,7 +3543,7 @@
       }
 
       // Hide or show admin-only views in sidebar
-      const adminNavs = ['deposits', 'expenses', 'backup', 'pending'];
+      const adminNavs = ['deposits', 'expenses', 'audit', 'backup', 'pending'];
       adminNavs.forEach(v => {
         const btn = document.getElementById('navItem-' + v);
         if (btn) btn.style.display = isAdm ? 'flex' : 'none';
@@ -3187,6 +3565,8 @@
           renderMembers();
           updateSummary();
           updateDropdown();
+          renderDueInstallments();
+          if (currentActiveView === 'audit') calculateAndRenderAudit();
         });
 
       // 2. Deposits
@@ -3204,6 +3584,8 @@
           });
           renderDeposits();
           updateSummary();
+          renderDueInstallments();
+          if (currentActiveView === 'audit') calculateAndRenderAudit();
         });
 
       // 3. Expenses
@@ -3213,6 +3595,7 @@
           snapshot.forEach((doc) => expensesData.push({ id: doc.id, ...doc.data() }));
           renderExpenses();
           updateSummary();
+          if (currentActiveView === 'audit') calculateAndRenderAudit();
         });
     }
 
@@ -3395,9 +3778,15 @@
               <div style="font-size:12px; color:var(--text-muted);">ফোন: ${m.phone || 'নেই'}</div>
             </div>
           </div>
-          <div style="text-align:right;">
-            <div style="font-size:11px; color:var(--text-muted);">মোট সঞ্চয়</div>
-            <div style="font-weight:700; color:var(--primary); font-size:16px;">৳${(m.totalDeposit || 0).toLocaleString()}</div>
+          <div style="text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+            <div>
+              <span style="font-size:11px; color:var(--text-muted);">মোট সঞ্চয়: </span>
+              <strong style="color:var(--primary); font-size:15px;">৳${(m.totalDeposit || 0).toLocaleString()}</strong>
+            </div>
+            <button type="button" onclick="event.stopPropagation(); openMemberIdCard('${m.id}')" style="background:#EEF2FF; color:#4F46E5; border:1px solid #C7D2FE; padding:3px 9px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:3px;">
+              <span>🪪</span>
+              <span>আইডি কার্ড</span>
+            </button>
           </div>
         </div>
       `).join("");
@@ -4290,6 +4679,580 @@
       const memberDeposits = depositsData.filter(d => d.memberId === activeMemberData.id || d.memberNumber === activeMemberData.memberNumber);
       let text = `*${currentSomiti.name}*\nসদস্যের লাইভ সঞ্চয় স্টেটমেন্ট\n\nসদস্য নং: ${activeMemberData.memberNumber}\nনাম: ${activeMemberData.name}\nমোবাইল: ${activeMemberData.phone}\n*মোট সঞ্চিত ব্যালেন্স: ৳${activeMemberData.totalDeposit}*\n\nমোট কিস্তি সংখ্যা: ${memberDeposits.length} টি`;
       window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    // ================= 2. MEMBER OFFICIAL DIGITAL ID CARD LOGIC =================
+    let activeIdCardMember = null;
+
+    function openMemberIdCard(memberId) {
+      let m = null;
+      if (memberId) {
+        m = membersData.find(x => x.id === memberId || x.memberNumber === memberId);
+      }
+      if (!m && activeMemberData) {
+        m = activeMemberData;
+      }
+      if (!m && membersData.length > 0) {
+        m = membersData[0];
+      }
+      if (!m) {
+        alert("সদস্যের তথ্য পাওয়া যায়নি।");
+        return;
+      }
+      activeIdCardMember = m;
+      const s = currentSomiti || {};
+
+      const el = id => document.getElementById(id);
+      if (el("idCardSomitiName")) el("idCardSomitiName").innerText = s.name || "স্মার্ট সমবায় সমিতি";
+      if (el("idCardSomitiCode")) el("idCardSomitiCode").innerText = s.somitiCode || "SMT-7890";
+
+      const logoBox = el("idCardLogoBox");
+      if (logoBox) {
+        if (s.logoImg) {
+          logoBox.innerHTML = `<img src="${s.logoImg}" style="width:100%;height:100%;object-fit:contain;border-radius:50%;">`;
+        } else {
+          logoBox.innerHTML = s.logoEmoji || "🏛️";
+        }
+      }
+
+      if (el("idCardMemberName")) el("idCardMemberName").innerText = m.name || "সদস্যের নাম";
+      if (el("idCardMemberNum")) el("idCardMemberNum").innerText = "#" + (m.memberNumber || "০১");
+      if (el("idCardMemberPhone")) el("idCardMemberPhone").innerText = m.phone || "ফোন নেই";
+
+      // Join Date
+      let joinDateStr = "১ জানুয়ারি, ২০২৬";
+      if (m.createdAt?.toDate) {
+        joinDateStr = m.createdAt.toDate().toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' });
+      } else if (m.joinDate) {
+        joinDateStr = m.joinDate;
+      }
+      if (el("idCardJoinDate")) el("idCardJoinDate").innerText = joinDateStr;
+
+      // Blood Group
+      if (el("idCardBloodGroup")) el("idCardBloodGroup").innerText = m.bloodGroup || "B+ (পজিটিভ)";
+
+      // President Signatory
+      const presName = s.presidentName || "জনাব আব্দুল করিম";
+      if (el("idCardSignatoryName")) el("idCardSignatoryName").innerText = presName;
+      const signEl = el("idCardSignElement");
+      if (signEl) {
+        if (s.presidentSignImg) {
+          signEl.innerHTML = `<img src="${s.presidentSignImg}" alt="Sign" style="max-height: 22px; max-width: 65px; object-fit: contain;">`;
+        } else {
+          signEl.innerText = presName.replace("জনাব ", "").split(" ")[0] || "Karim";
+        }
+      }
+
+      // Generate Verification QR Code
+      const qrBox = el("idCardQrBox");
+      if (qrBox) {
+        qrBox.innerHTML = "";
+        const verifyUrl = `${window.location.origin}${window.location.pathname}?verifyMember=${encodeURIComponent(m.memberNumber || m.id)}`;
+        try {
+          if (typeof QRCode !== 'undefined') {
+            new QRCode(qrBox, {
+              text: verifyUrl,
+              width: 52,
+              height: 52,
+              colorDark: "#1E3A8A",
+              colorLight: "#FFFFFF",
+              correctLevel: QRCode.CorrectLevel.M
+            });
+          } else {
+            qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=52x52&margin=0&data=${encodeURIComponent(verifyUrl)}" alt="QR" style="width:52px;height:52px;border-radius:2px;">`;
+          }
+        } catch (err) {
+          qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=52x52&margin=0&data=${encodeURIComponent(verifyUrl)}" alt="QR" style="width:52px;height:52px;border-radius:2px;">`;
+        }
+      }
+
+      el("memberIdCardModal").style.display = "flex";
+    }
+
+    function closeMemberIdCardModal() {
+      const modal = document.getElementById("memberIdCardModal");
+      if (modal) modal.style.display = "none";
+    }
+
+    function printMemberIdCard() {
+      window.print();
+    }
+
+    function downloadMemberIdCardImage() {
+      const area = document.getElementById("memberIdCardPrintArea");
+      if (!area) return;
+      if (typeof html2canvas === 'undefined') {
+        alert("ছবি প্রস্তুতকারক লোড হচ্ছে, অনুগ্রহ করে ২ সেকেন্ড পর চেষ্টা করুন।");
+        return;
+      }
+      const memberName = (activeIdCardMember?.name || "Member").replace(/\s+/g, '_');
+      html2canvas(area, {
+        scale: 3,
+        backgroundColor: '#FFFFFF',
+        useCORS: true
+      }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `ID_Card_${memberName}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }).catch(err => {
+        alert("ছবি তৈরিতে ত্রুটি: " + err.message);
+      });
+    }
+
+    function shareMemberIdCardWhatsApp() {
+      if (!activeIdCardMember) return;
+      const s = currentSomiti || {};
+      const verifyUrl = `${window.location.origin}${window.location.pathname}?verifyMember=${encodeURIComponent(activeIdCardMember.memberNumber || activeIdCardMember.id)}`;
+      const text = `*${s.name || 'সমিতি'}*\n🪪 *ডিজিটাল সদস্য পরিচয়পত্র (MEMBER ID CARD)*\n\nসদস্যের নাম: ${activeIdCardMember.name}\nসদস্য নং: #${activeIdCardMember.memberNumber}\nমোবাইল: ${activeIdCardMember.phone || 'নেই'}\nমোট সঞ্চিত তহবিল: ৳${(activeIdCardMember.totalDeposit || 0).toLocaleString()}\nবর্তমান স্ট্যাটাস: ✓ অনুমোদিত সক্রিয় সদস্য\n\n🔍 *অনলাইনে সদস্য আইডি যাচাই লিংক:*\n${verifyUrl}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    // ================= 4. DUE INSTALLMENTS TRACKER & WHATSAPP LOGIC =================
+    function renderDueInstallments() {
+      const listEl = document.getElementById("dueMembersList");
+      const badgeEl = document.getElementById("dueMembersCountBadge");
+      if (!listEl) return;
+
+      if (!membersData || membersData.length === 0) {
+        listEl.innerHTML = '<div style="text-align:center; padding:12px; color:var(--text-muted); font-size:12px;">কোনো সদস্য ডাটাবেজে নেই।</div>';
+        if (badgeEl) badgeEl.innerText = '০ জন বকেয়া';
+        return;
+      }
+
+      const now = new Date();
+      const curMonth = now.getMonth();
+      const curYear = now.getFullYear();
+      const bnMonths = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+      const curMonthName = bnMonths[curMonth];
+
+      const paidMemberIds = new Set();
+      depositsData.forEach(d => {
+        let dDate = null;
+        if (d.date?.toDate) dDate = d.date.toDate();
+        else if (d.date) dDate = new Date(d.date);
+
+        if (dDate && dDate.getMonth() === curMonth && dDate.getFullYear() === curYear) {
+          if (d.memberId) paidMemberIds.add(String(d.memberId));
+          if (d.memberNumber) paidMemberIds.add(String(d.memberNumber));
+        }
+      });
+
+      const dueMembers = membersData.filter(m => {
+        const hasPaid = paidMemberIds.has(String(m.id)) || paidMemberIds.has(String(m.memberNumber));
+        return !hasPaid;
+      });
+
+      if (badgeEl) {
+        badgeEl.innerText = `${dueMembers.length} জন বকেয়া`;
+        badgeEl.style.background = dueMembers.length > 0 ? "#FEE2E2" : "#DCFCE7";
+        badgeEl.style.color = dueMembers.length > 0 ? "#991B1B" : "#166534";
+      }
+
+      if (dueMembers.length === 0) {
+        listEl.innerHTML = `
+          <div style="text-align:center; padding:14px; background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; color:#166534; font-weight:700; font-size:12.5px;">
+            🎉 মাশাআল্লাহ! চলতি ${curMonthName} মাসে সকল সদস্যের সঞ্চয় কিস্তি পরিশোধিত রয়েছে। কোনো বকেয়া নেই!
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = dueMembers.map(m => `
+        <div style="background:white; border:1px solid #FED7AA; border-radius:8px; padding:7px 10px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="background:#FFF7ED; color:#C2410C; border:1px solid #FFEDD5; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:11px;">
+              ${m.memberNumber || '0'}
+            </div>
+            <div>
+              <div style="font-weight:700; font-size:13px; color:#1F2937;">${m.name}</div>
+              <div style="font-size:11px; color:#9A3412;">📱 ${m.phone || 'ফোন নেই'} • সঞ্চিত: ৳${(m.totalDeposit || 0).toLocaleString()}</div>
+            </div>
+          </div>
+          <div>
+            <button type="button" onclick="sendDueReminderWhatsApp('${m.name.replace(/'/g, "\\'")}', '${m.memberNumber || ''}', '${m.phone || ''}')" style="background:#25D366; color:white; border:none; padding:5px 9px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">
+              <span>📲 তাগাদা</span>
+            </button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function sendDueReminderWhatsApp(name, memberNumber, phone) {
+      const s = currentSomiti || {};
+      const now = new Date();
+      const bnMonths = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+      const curMonthName = bnMonths[now.getMonth()];
+      const cleanPhone = (phone || "").replace(/[^0-9]/g, "");
+      let targetPhone = cleanPhone;
+      if (cleanPhone.startsWith("0")) targetPhone = "88" + cleanPhone;
+
+      const text = `*${s.name || 'সমিতি'}*\n📢 *বকেয়া সঞ্চয় কিস্তি পরিশোধের তাগিদপত্র*\n\nসম্মানিত সদস্য জনাব ${name} (সদস্য নং: #${memberNumber}),\nআসসালামু আলাইকুম। চলতি ${curMonthName} মাসের সঞ্চয় কিস্তি এখনও জমা পড়েনি।\n\nঅনুগ্রহ করে আগামী ৭ দিনের মধ্যে সমিতির কোষাধ্যক্ষ ${s.cashierName || 'কোষাধ্যক্ষ'} (${s.bkashNumber || ''})-এর নিকট কিস্তি জমা দিয়ে আপনার অফিসিয়াল ডিজিটাল রসিদ সংগ্রহ করার বিনীত অনুরোধ করা হলো।\n\nধন্যবাদান্তে,\n*${s.name || 'কর্তৃপক্ষ'}*`;
+
+      const url = targetPhone ? `https://wa.me/${targetPhone}?text=${encodeURIComponent(text)}` : `https://wa.me/?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+    }
+
+    function createDueNoticeInPad() {
+      const now = new Date();
+      const bnMonths = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+      const curMonthName = bnMonths[now.getMonth()];
+
+      const curMonth = now.getMonth();
+      const curYear = now.getFullYear();
+
+      const paidMemberIds = new Set();
+      depositsData.forEach(d => {
+        let dDate = null;
+        if (d.date?.toDate) dDate = d.date.toDate();
+        else if (d.date) dDate = new Date(d.date);
+
+        if (dDate && dDate.getMonth() === curMonth && dDate.getFullYear() === curYear) {
+          if (d.memberId) paidMemberIds.add(String(d.memberId));
+          if (d.memberNumber) paidMemberIds.add(String(d.memberNumber));
+        }
+      });
+
+      const dueMembers = membersData.filter(m => {
+        return !(paidMemberIds.has(String(m.id)) || paidMemberIds.has(String(m.memberNumber)));
+      });
+
+      let dueListText = "";
+      if (dueMembers.length === 0) {
+        dueListText = "মাশাআল্লাহ, চলতি মাসে কোনো সদস্যের কিস্তি বকেয়া নেই।";
+      } else {
+        dueListText = dueMembers.map((m, idx) => `${idx + 1}. [সদস্য নং #${m.memberNumber}] ${m.name} (মোবাইল: ${m.phone || 'নেই'})`).join("\n");
+      }
+
+      const memoEl = document.getElementById("noticeMemoNo");
+      const titleEl = document.getElementById("noticeTitle");
+      const bodyEl = document.getElementById("noticeBody");
+
+      if (memoEl) memoEl.value = `স্মারক-বকেয়া/${now.getFullYear()}/${curMonth + 1}`;
+      if (titleEl) titleEl.value = `চলতি ${curMonthName} মাসের বকেয়া সঞ্চয় কিস্তি পরিশোধ সংক্রান্ত জরুরি বিজ্ঞপ্তি`;
+      if (bodyEl) {
+        bodyEl.value = `সমিতির সকল সম্মানিত সদস্যবৃন্দের অবগতির জন্য জানানো যাচ্ছে যে, চলতি ${curMonthName} মাসের সঞ্চয় কিস্তি গ্রহণের কার্যক্রম চলমান রয়েছে। খতিয়ান পর্যালোচনা অনুযায়ী নিম্নোক্ত সম্মানিত সদস্যবৃন্দের চলতি মাসের কিস্তি অদ্যবধি অনাদায়ী রয়েছে:\n\n${dueListText}\n\nএমতাবস্থায়, অত্র বিজ্ঞপ্তি প্রকাশের আগামী ৭ (সাত) কার্যদিবসের মধ্যে সমিতির কোষাধ্যক্ষের নিকট উল্লেখিত কিস্তির অর্থ সরাসরি অথবা সমিতির নির্ধারিত মোবাইল ব্যাংকিং একাউন্টে পরিশোধ করে ডিজিটাল রসিদ সংগ্রহ করার অনুরোধ করা হলো।\n\nসমিতির আর্থিক শৃঙ্খলা রক্ষার্থে আপনাদের আন্তরিক সহযোগিতা একান্ত কাম্য।`;
+      }
+
+      navTo('somiti');
+      const noticeSection = document.getElementById("noticeFormCard");
+      if (noticeSection) noticeSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ================= 3. AUDIT & BALANCE SHEET ON OFFICIAL PAD LOGIC =================
+    function calculateAndRenderAudit() {
+      const periodSelect = document.getElementById("auditPeriodSelect");
+      const period = periodSelect ? periodSelect.value : "this_month";
+
+      const now = new Date();
+      const curYear = now.getFullYear();
+      const curMonth = now.getMonth();
+      const bnMonths = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+
+      let filterName = "চলতি মাস (" + bnMonths[curMonth] + " " + curYear + ")";
+      let filteredDeposits = [];
+      let filteredExpenses = [];
+
+      if (period === 'this_month') {
+        filterName = "চলতি মাস (" + bnMonths[curMonth] + " " + curYear + ")";
+        filteredDeposits = depositsData.filter(d => {
+          const dt = d.date?.toDate ? d.date.toDate() : (d.date ? new Date(d.date) : null);
+          return dt && dt.getMonth() === curMonth && dt.getFullYear() === curYear;
+        });
+        filteredExpenses = expensesData.filter(e => {
+          const dt = e.date?.toDate ? e.date.toDate() : (e.date ? new Date(e.date) : null);
+          return dt && dt.getMonth() === curMonth && dt.getFullYear() === curYear;
+        });
+      } else if (period === 'last_month') {
+        const lastMonthIndex = (curMonth === 0) ? 11 : curMonth - 1;
+        const lastMonthYear = (curMonth === 0) ? curYear - 1 : curYear;
+        filterName = "বিগত মাস (" + bnMonths[lastMonthIndex] + " " + lastMonthYear + ")";
+        filteredDeposits = depositsData.filter(d => {
+          const dt = d.date?.toDate ? d.date.toDate() : (d.date ? new Date(d.date) : null);
+          return dt && dt.getMonth() === lastMonthIndex && dt.getFullYear() === lastMonthYear;
+        });
+        filteredExpenses = expensesData.filter(e => {
+          const dt = e.date?.toDate ? e.date.toDate() : (e.date ? new Date(e.date) : null);
+          return dt && dt.getMonth() === lastMonthIndex && dt.getFullYear() === lastMonthYear;
+        });
+      } else if (period === 'this_year') {
+        filterName = "চলতি বছর (" + curYear + ")";
+        filteredDeposits = depositsData.filter(d => {
+          const dt = d.date?.toDate ? d.date.toDate() : (d.date ? new Date(d.date) : null);
+          return dt && dt.getFullYear() === curYear;
+        });
+        filteredExpenses = expensesData.filter(e => {
+          const dt = e.date?.toDate ? e.date.toDate() : (e.date ? new Date(e.date) : null);
+          return dt && dt.getFullYear() === curYear;
+        });
+      } else {
+        filterName = "সমগ্র সময় (প্রতিষ্ঠা হতে আজ পর্যন্ত)";
+        filteredDeposits = depositsData;
+        filteredExpenses = expensesData;
+      }
+
+      const totalDep = filteredDeposits.reduce((sum, d) => sum + (d.amount || 0), 0);
+      const totalExp = filteredExpenses.reduce((sum, e) => sum + (e.amount || 0), 0);
+      const netBal = totalDep - totalExp;
+
+      const dateStr = now.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' });
+      const el = id => document.getElementById(id);
+
+      if (el("auditReportDate")) el("auditReportDate").value = dateStr;
+      if (el("auditTotalDeposits")) el("auditTotalDeposits").innerText = "৳" + totalDep.toLocaleString();
+      if (el("auditTotalExpenses")) el("auditTotalExpenses").innerText = "৳" + totalExp.toLocaleString();
+      if (el("auditNetBalance")) {
+        el("auditNetBalance").innerText = "৳" + netBal.toLocaleString();
+        el("auditNetBalance").style.color = netBal >= 0 ? "#1D4ED8" : "#DC2626";
+      }
+      if (el("auditActiveMembers")) el("auditActiveMembers").innerText = membersData.length + " জন";
+
+      // Pad Header elements
+      const s = currentSomiti || {};
+      if (el("apSomitiName")) el("apSomitiName").innerText = s.name || "সমিতি";
+      if (el("apPadHeader")) el("apPadHeader").innerText = s.padHeader ? `"${s.padHeader}"` : "";
+      if (el("apAddress")) el("apAddress").innerText = "📍 " + (s.address || "ঢাকা");
+      if (el("apBkash")) el("apBkash").innerText = "📱 বিকাশ/নগদ: " + (s.bkashNumber || "নেই");
+      if (el("apBank")) el("apBank").innerText = "🏦 " + (s.bankAccount || "নেই");
+      if (el("apCodeBadge")) el("apCodeBadge").innerText = "কোড: " + (s.somitiCode || "SMT-7890");
+
+      const logoBox = el("apPadLogoBox");
+      if (logoBox) {
+        if (s.logoImg) {
+          logoBox.innerHTML = `<img src="${s.logoImg}" style="width:100%;height:100%;object-fit:contain;border-radius:6px;">`;
+        } else {
+          logoBox.innerHTML = s.logoEmoji || "🏛️";
+        }
+      }
+
+      const bannerCont = el("apPadBannerImgContainer");
+      const bannerImg = el("apPadBannerImg");
+      if (bannerCont && bannerImg) {
+        if (s.padHeaderImg) {
+          bannerImg.src = s.padHeaderImg;
+          bannerCont.style.display = "block";
+        } else {
+          bannerCont.style.display = "none";
+        }
+      }
+
+      if (el("apPeriodText")) el("apPeriodText").innerText = filterName;
+      if (el("apDateText")) el("apDateText").innerText = dateStr;
+      if (el("apDocDeposits")) el("apDocDeposits").innerText = "৳" + totalDep.toLocaleString();
+      if (el("apDocExpenses")) el("apDocExpenses").innerText = "৳" + totalExp.toLocaleString();
+      if (el("apDocNet")) {
+        el("apDocNet").innerText = "৳" + netBal.toLocaleString();
+        el("apDocNet").style.color = netBal >= 0 ? "#1D4ED8" : "#DC2626";
+      }
+
+      // Breakdowns
+      const depBreakdown = {};
+      filteredDeposits.forEach(d => {
+        const t = d.type || "নিয়মিত সঞ্চয়";
+        depBreakdown[t] = (depBreakdown[t] || 0) + (d.amount || 0);
+      });
+      const depEntries = Object.entries(depBreakdown);
+      if (el("apDepositBreakdown")) {
+        if (depEntries.length === 0) {
+          el("apDepositBreakdown").innerHTML = "এই সময়কালে কোনো জমা রেকর্ড পাওয়া যায়নি।";
+        } else {
+          el("apDepositBreakdown").innerHTML = depEntries.map(([k, v]) => `<div>• ${k}: <strong>৳${v.toLocaleString()}</strong></div>`).join("");
+        }
+      }
+
+      const expBreakdown = {};
+      filteredExpenses.forEach(e => {
+        const c = e.category || "অন্যান্য ব্যয়";
+        expBreakdown[c] = (expBreakdown[c] || 0) + (e.amount || 0);
+      });
+      const expEntries = Object.entries(expBreakdown);
+      if (el("apExpenseBreakdown")) {
+        if (expEntries.length === 0) {
+          el("apExpenseBreakdown").innerHTML = "এই সময়কালে কোনো খরচের ভাউচার নেই।";
+        } else {
+          el("apExpenseBreakdown").innerHTML = expEntries.map(([k, v]) => `<div>• ${k}: <strong>৳${v.toLocaleString()}</strong></div>`).join("");
+        }
+      }
+
+      // Committee Signatures
+      // President
+      const presName = s.presidentName || "জনাব আব্দুল করিম";
+      if (el("apPresidentName")) el("apPresidentName").innerText = presName;
+      const presWrap = el("apWrapPresident");
+      if (presWrap) {
+        const pScale = s.presidentSignScale !== undefined ? s.presidentSignScale : 100;
+        const pY = s.presidentSignY !== undefined ? s.presidentSignY : 0;
+        const pX = s.presidentSignX !== undefined ? s.presidentSignX : 0;
+        presWrap.style.transform = `translate(${pX}px, ${pY}px) scale(${pScale / 100})`;
+      }
+      const presSign = el("apSignPresident");
+      if (presSign) {
+        if (s.presidentSignImg) {
+          presSign.innerHTML = `<img src="${s.presidentSignImg}" alt="Sign" style="max-height: 28px; max-width: 80px; object-fit: contain;">`;
+        } else {
+          presSign.innerText = presName.replace("জনাব ", "").split(" ")[0] || "Karim";
+        }
+      }
+
+      // Secretary
+      const secName = s.secretaryName || "জনাব রফিকুল ইসলাম";
+      if (el("apSecretaryName")) el("apSecretaryName").innerText = secName;
+      const secWrap = el("apWrapSecretary");
+      if (secWrap) {
+        const sScale = s.secretarySignScale !== undefined ? s.secretarySignScale : 100;
+        const sY = s.secretarySignY !== undefined ? s.secretarySignY : 0;
+        const sX = s.secretarySignX !== undefined ? s.secretarySignX : 0;
+        secWrap.style.transform = `translate(${sX}px, ${sY}px) scale(${sScale / 100})`;
+      }
+      const secSign = el("apSignSecretary");
+      if (secSign) {
+        if (s.secretarySignImg) {
+          secSign.innerHTML = `<img src="${s.secretarySignImg}" alt="Sign" style="max-height: 28px; max-width: 80px; object-fit: contain;">`;
+        } else {
+          secSign.innerText = secName.replace("জনাব ", "").split(" ")[0] || "Rafiqul";
+        }
+      }
+
+      // Cashier
+      const cashName = s.cashierName || "সাজ্জাদ হোসেন";
+      if (el("apCashierName")) el("apCashierName").innerText = cashName;
+      const cashWrap = el("apWrapCashier");
+      if (cashWrap) {
+        const cScale = s.cashierSignScale !== undefined ? s.cashierSignScale : 100;
+        const cY = s.cashierSignY !== undefined ? s.cashierSignY : 0;
+        const cX = s.cashierSignX !== undefined ? s.cashierSignX : 0;
+        cashWrap.style.transform = `translate(${cX}px, ${cY}px) scale(${cScale / 100})`;
+      }
+      const cashSign = el("apSignCashier");
+      if (cashSign) {
+        if (s.cashierSignImg) {
+          cashSign.innerHTML = `<img src="${s.cashierSignImg}" alt="Sign" style="max-height: 28px; max-width: 80px; object-fit: contain;">`;
+        } else {
+          cashSign.innerText = cashName.replace("জনাব ", "").split(" ")[0] || "Sajjad";
+        }
+      }
+    }
+
+    function printAuditReport() {
+      calculateAndRenderAudit();
+      setTimeout(() => {
+        window.print();
+      }, 200);
+    }
+
+    function downloadAuditImage() {
+      const area = document.getElementById("auditPadPrintArea");
+      if (!area) return;
+      if (typeof html2canvas === 'undefined') {
+        alert("ছবি প্রস্তুতকারক লোড হচ্ছে, অনুগ্রহ করে ২ সেকেন্ড পর চেষ্টা করুন।");
+        return;
+      }
+      const sName = currentSomiti?.name || "Somiti";
+      html2canvas(area, {
+        scale: 2,
+        backgroundColor: '#FFFFFF',
+        useCORS: true
+      }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `Audit_BalanceSheet_${sName.slice(0, 15)}_${new Date().toISOString().split('T')[0]}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }).catch(err => {
+        alert("ছবি তৈরিতে ত্রুটি: " + err.message);
+      });
+    }
+
+    function shareAuditWhatsApp() {
+      const s = currentSomiti || {};
+      const periodName = document.getElementById("apPeriodText")?.innerText || "চলতি মাস";
+      const dep = document.getElementById("apDocDeposits")?.innerText || "৳০";
+      const exp = document.getElementById("apDocExpenses")?.innerText || "৳০";
+      const net = document.getElementById("apDocNet")?.innerText || "৳০";
+      const dateStr = document.getElementById("apDateText")?.innerText || "";
+
+      const text = `*${s.name || 'সমিতি'}*\n📊 *আর্থিক নিরীক্ষা ও উদ্বৃত্তপত্র (AUDIT & BALANCE SHEET)*\n\nসময়কাল: ${periodName}\nতারিখ: ${dateStr}\n\n📥 মোট সঞ্চয় আদায়: *${dep}*\n💸 মোট সাংগঠনিক ব্যয়: *${exp}*\n💰 *বর্তমান মোট ক্যাশ স্থিতি: ${net}*\n\nমোট সদস্য সংখ্যা: ${membersData.length} জন\nসমিতির কোষাধ্যক্ষ: ${s.cashierName || 'সাজ্জাদ হোসেন'}\n\nধন্যবাদান্তে,\n*${s.name || 'কর্তৃপক্ষ'}*`;
+
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    // ================= 6. DEDICATED A4 SIZE PDF SHEET PREVIEW LOGIC =================
+    let currentA4Scale = 1.0;
+    let currentA4Source = 'pad';
+
+    function openA4Preview(docType) {
+      currentA4Source = docType;
+      let srcAreaId = "fullPadPrintArea";
+      if (docType === 'receipt') srcAreaId = "receiptPrintArea";
+      else if (docType === 'notice') srcAreaId = "noticePrintArea";
+      else if (docType === 'audit') srcAreaId = "auditPadPrintArea";
+      else if (docType === 'idcard') srcAreaId = "memberIdCardPrintArea";
+
+      const srcArea = document.getElementById(srcAreaId);
+      const sheetContent = document.getElementById("a4SheetContent");
+      if (!srcArea || !sheetContent) return;
+
+      sheetContent.innerHTML = srcArea.innerHTML;
+      zoomA4Sheet(0, true);
+      document.getElementById("a4PdfPreviewModal").style.display = "flex";
+    }
+
+    function closeA4PdfPreviewModal() {
+      const m = document.getElementById("a4PdfPreviewModal");
+      if (m) m.style.display = "none";
+    }
+
+    function zoomA4Sheet(delta, reset) {
+      if (reset) {
+        currentA4Scale = 1.0;
+      } else {
+        currentA4Scale = Math.min(1.5, Math.max(0.6, Math.round((currentA4Scale + delta) * 10) / 10));
+      }
+      const sheet = document.getElementById("a4SheetContainer");
+      const label = document.getElementById("a4ZoomLabel");
+      if (sheet) sheet.style.transform = `scale(${currentA4Scale})`;
+      if (label) label.innerText = `${Math.round(currentA4Scale * 100)}%`;
+    }
+
+    function printA4Direct() {
+      const origScale = currentA4Scale;
+      zoomA4Sheet(0, true);
+      setTimeout(() => {
+        window.print();
+        setTimeout(() => {
+          currentA4Scale = origScale;
+          const sheet = document.getElementById("a4SheetContainer");
+          const label = document.getElementById("a4ZoomLabel");
+          if (sheet) sheet.style.transform = `scale(${currentA4Scale})`;
+          if (label) label.innerText = `${Math.round(currentA4Scale * 100)}%`;
+        }, 300);
+      }, 150);
+    }
+
+    function downloadA4Image() {
+      const sheet = document.getElementById("a4SheetContainer");
+      if (!sheet) return;
+      if (typeof html2canvas === 'undefined') {
+        alert("ছবি প্রস্তুতকারক লোড হচ্ছে, অনুগ্রহ করে ২ সেকেন্ড পর চেষ্টা করুন।");
+        return;
+      }
+
+      const prevTransform = sheet.style.transform;
+      sheet.style.transform = "none";
+
+      html2canvas(sheet, {
+        scale: 2,
+        backgroundColor: '#FFFFFF',
+        useCORS: true
+      }).then(canvas => {
+        sheet.style.transform = prevTransform;
+        const link = document.createElement('a');
+        link.download = `A4_Document_${currentA4Source}_${new Date().toISOString().split('T')[0]}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }).catch(err => {
+        sheet.style.transform = prevTransform;
+        alert("ছবি তৈরিতে ত্রুটি: " + err.message);
+      });
     }
 
     // ================= GOOGLE DRIVE CSV EXPORT =================
