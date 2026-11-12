@@ -18,11 +18,18 @@ class SomitiService {
 
   // User's linked Somitis (whether as creator or joined member)
   Stream<List<SomitiModel>> getUserSomitisStream(String userEmail, String userId) {
-    return _somitisCol()
-        .where('creatorId', isEqualTo: userId)
-        .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => SomitiModel.fromSnapshot(doc)).toList());
+    final lowerEmail = userEmail.trim().toLowerCase();
+    return _somitisCol().snapshots().map((snapshot) {
+      return snapshot.docs
+          .map((doc) => SomitiModel.fromSnapshot(doc))
+          .where((s) {
+            final isCreator = s.creatorId == userId ||
+                (lowerEmail.isNotEmpty && s.creatorEmail.toLowerCase() == lowerEmail);
+            final isAssigned = lowerEmail.isNotEmpty && s.assignedMemberEmails.contains(lowerEmail);
+            return isCreator || isAssigned;
+          })
+          .toList();
+    });
   }
 
   Future<SomitiModel> createSomiti({
@@ -54,10 +61,12 @@ class SomitiService {
       creatorId: creatorId,
       creatorEmail: creatorEmail,
       somitiCode: somitiCode,
+      assignedMemberEmails: [creatorEmail.trim().toLowerCase()],
       createdAt: DateTime.now(),
     );
 
     await docRef.set(somiti.toMap());
+
     return somiti;
   }
 
@@ -118,40 +127,77 @@ class SomitiService {
     required String name,
     required String phone,
     required String memberNumber,
+    String email = '',
   }) async {
     final docRef = _membersCol(somitiId).doc();
+    final cleanEmail = email.trim().toLowerCase();
     final member = MemberModel(
       id: docRef.id,
       name: name,
       phone: phone,
       memberNumber: memberNumber,
+      email: cleanEmail,
       totalDeposit: 0.0,
       createdAt: DateTime.now(),
     );
     await docRef.set(member.toMap());
+
+    if (cleanEmail.isNotEmpty) {
+      await _somitisCol().doc(somitiId).update({
+        'assignedMemberEmails': FieldValue.arrayUnion([cleanEmail]),
+      });
+    }
   }
 
-  Future<void> registerMemberApplication({
+  // Register user sign-up request into pending pool
+  Future<void> registerPendingUser({
+    required String uid,
     required String name,
     required String phone,
     required String email,
-    required String userId,
-    String somitiId = 'main',
   }) async {
-    final membersSnapshot = await _membersCol(somitiId).get();
-    final count = membersSnapshot.docs.length + 1;
-    final memberNumber = count < 10 ? '0$count' : '$count';
+    await _firestore.collection('user_requests').doc(uid).set({
+      'uid': uid,
+      'name': name,
+      'phone': phone,
+      'email': email.trim().toLowerCase(),
+      'status': 'pending',
+      'createdAt': FieldValue.serverTimestamp(),
+    });
+  }
 
-    final member = MemberModel(
-      id: userId,
+  // Stream of pending users waiting to be assigned to a Somiti
+  Stream<List<Map<String, dynamic>>> getPendingUsersStream() {
+    return _firestore.collection('user_requests')
+        .where('status', isEqualTo: 'pending')
+        .snapshots()
+        .map((s) => s.docs.map((d) => d.data()).toList());
+  }
+
+  // Admin assigns a pending user to a Somiti
+  Future<void> assignPendingUserToSomiti({
+    required String somitiId,
+    required String uid,
+    required String name,
+    required String phone,
+    required String email,
+    required String memberNumber,
+  }) async {
+    await addMember(
+      somitiId: somitiId,
       name: name,
       phone: phone,
       memberNumber: memberNumber,
-      totalDeposit: 0.0,
-      createdAt: DateTime.now(),
+      email: email,
     );
-    await _membersCol(somitiId).doc(userId).set(member.toMap());
+
+    await _firestore.collection('user_requests').doc(uid).update({
+      'status': 'assigned',
+      'somitiId': somitiId,
+      'assignedAt': FieldValue.serverTimestamp(),
+    });
   }
+
 
   Future<void> deleteMember(String somitiId, String memberId) async {
 

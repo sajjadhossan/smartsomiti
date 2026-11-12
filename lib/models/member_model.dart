@@ -5,6 +5,7 @@ class MemberModel {
   final String name;
   final String phone;
   final String memberNumber;
+  final String email;
   final double totalDeposit;
   final DateTime createdAt;
 
@@ -13,6 +14,7 @@ class MemberModel {
     required this.name,
     required this.phone,
     required this.memberNumber,
+    this.email = '',
     this.totalDeposit = 0.0,
     required this.createdAt,
   });
@@ -22,6 +24,7 @@ class MemberModel {
       'name': name,
       'phone': phone,
       'memberNumber': memberNumber,
+      'email': email,
       'totalDeposit': totalDeposit,
       'createdAt': Timestamp.fromDate(createdAt),
     };
@@ -42,10 +45,12 @@ class MemberModel {
       name: data['name'] ?? '',
       phone: data['phone'] ?? '',
       memberNumber: data['memberNumber'] ?? '',
+      email: data['email'] ?? '',
       totalDeposit: (data['totalDeposit'] as num?)?.toDouble() ?? 0.0,
       createdAt: date,
     );
   }
+
 
   MemberModel copyWith({
     String? id,

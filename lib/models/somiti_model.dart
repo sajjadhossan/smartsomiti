@@ -13,6 +13,7 @@ class SomitiModel {
   final String creatorId;
   final String creatorEmail;
   final String somitiCode;
+  final List<String> assignedMemberEmails;
   final DateTime createdAt;
 
   SomitiModel({
@@ -28,6 +29,7 @@ class SomitiModel {
     required this.creatorId,
     required this.creatorEmail,
     required this.somitiCode,
+    this.assignedMemberEmails = const [],
     required this.createdAt,
   });
 
@@ -44,6 +46,7 @@ class SomitiModel {
       'creatorId': creatorId,
       'creatorEmail': creatorEmail,
       'somitiCode': somitiCode,
+      'assignedMemberEmails': assignedMemberEmails,
       'createdAt': Timestamp.fromDate(createdAt),
     };
   }
@@ -56,6 +59,12 @@ class SomitiModel {
       date = timestamp.toDate();
     } else {
       date = DateTime.now();
+    }
+
+    final rawEmails = data['assignedMemberEmails'];
+    List<String> assignedEmails = [];
+    if (rawEmails is List) {
+      assignedEmails = rawEmails.map((e) => e.toString().toLowerCase()).toList();
     }
 
     return SomitiModel(
@@ -71,7 +80,9 @@ class SomitiModel {
       creatorId: data['creatorId'] ?? '',
       creatorEmail: data['creatorEmail'] ?? '',
       somitiCode: data['somitiCode'] ?? '',
+      assignedMemberEmails: assignedEmails,
       createdAt: date,
     );
   }
 }
+

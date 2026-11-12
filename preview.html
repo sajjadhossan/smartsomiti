@@ -302,9 +302,66 @@
     </div>
   </div>
 
+  <!-- ================= 2. PENDING APPROVAL SCREEN (LOCKED) ================= -->
+  <div id="pendingScreen" style="display: none; min-height: 100vh; padding: 20px; align-items: center; justify-content: center; background: linear-gradient(135deg, #FFFBEB 0%, #FFFFFF 50%, #F8FAFC 100%);">
+    <div class="login-card" style="max-width: 480px; text-align: center; border: 1px solid #FCD34D;">
+      <div style="width: 80px; height: 80px; background: #FEF3C7; border: 2px solid #F59E0B; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; font-size: 38px;">
+        🔒
+      </div>
+      <h2 style="font-size: 20px; font-weight: 800; color: #92400E; margin-bottom: 8px;">
+        আপনাকে এখনও কোনো সমিতিতে যুক্ত করা হয়নি
+      </h2>
+      <div style="display: inline-block; background: #F1F5F9; color: #475569; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 12px;" id="pendingEmailBadge">
+        ইমেইল: your@email.com
+      </div>
+      <p style="font-size: 13px; color: #64748B; line-height: 1.5; margin-bottom: 20px;">
+        আপনার অ্যাকাউন্টটি সফলভাবে সংরক্ষিত হয়েছে। তবে সমিতি কর্তৃপক্ষের অনুমোদন ও সদস্যপদ বরাদ্দ ছাড়া আপনি ভেতরে কোনো তথ্য দেখতে পারবেন না।
+      </p>
 
-  <!-- ================= 2. SOMITI MAIN DASHBOARD ================= -->
+      <!-- Authority Contact Box -->
+      <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 14px; text-align: left; margin-bottom: 18px;">
+        <div style="font-size: 13px; font-weight: 700; color: #0F172A; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+          <span>📞</span> <span>সমিতি কর্তৃপক্ষের সাথে যোগাযোগ করুন:</span>
+        </div>
+        <div style="font-size: 12px; color: #334155; margin-bottom: 10px;">
+          সদস্য হিসেবে যুক্ত হতে নিম্নের নম্বরে যোগাযোগ করে আপনার ইমেইলটি বলুন:
+        </div>
+        <div style="font-size: 13px; font-weight: 700; color: #1E293B;">
+          জনাব সাজ্জাদ হোসেন (প্রধান অ্যাডমিন/কোষাধ্যক্ষ)
+        </div>
+        <div style="font-size: 12px; color: #0F9D58; font-weight: 700; margin: 2px 0 10px 0;">
+          মোবাইল: ০১৭১২-৩৪৫৬৭৮
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <a href="tel:01712345678" style="flex: 1; text-align: center; background: #0F9D58; color: white; padding: 8px; border-radius: 8px; text-decoration: none; font-size: 12px; font-weight: 700;">
+            📞 কল করুন
+          </a>
+          <button onclick="contactViaWhatsApp()" style="flex: 1; background: #25D366; color: white; border: none; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;">
+            💬 WhatsApp
+          </button>
+        </div>
+      </div>
+
+      <button class="btn" onclick="checkApprovalStatus()" style="margin-bottom: 10px;">
+        <span>🔄 অনুমোদন স্থিতি যাচাই করুন</span>
+      </button>
+
+      <button class="btn btn-outline" onclick="handleSignOut()">
+        <span>🚪 লগআউট</span>
+      </button>
+
+      <div style="margin-top: 16px; border-top: 1px dashed #CBD5E1; padding-top: 12px;">
+        <button onclick="handleQuickTestLogin()" style="background: none; border: none; color: #0F9D58; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: underline;">
+          👑 অ্যাডমিন হিসেবে টেস্ট ড্যাশবোর্ডে প্রবেশ করুন
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 3. SOMITI MAIN DASHBOARD ================= -->
   <div id="dashboardScreen" style="display: none;">
+
     <header>
       <div class="brand">
         <div class="brand-icon">🏛️</div>
@@ -381,21 +438,40 @@
         <!-- Tab 1: Members -->
         <div id="tabMembers">
           <div class="card">
-            <div class="card-title">নতুন সদস্য যোগ করুন</div>
+            <div class="card-title">নতুন সদস্য যোগ ও বরাদ্দ করুন</div>
             <div class="form-group">
               <label>সদস্য নম্বর</label>
               <input type="text" id="mNumber" placeholder="যেমন: 01">
             </div>
             <div class="form-group">
-              <label>সদস্যের নাম</label>
+              <label>সদস্যের নাম *</label>
               <input type="text" id="mName" placeholder="পূর্ণ নাম">
             </div>
             <div class="form-group">
               <label>মোবাইল নম্বর</label>
               <input type="tel" id="mPhone" placeholder="017xxxxxxxx">
             </div>
-            <button class="btn" onclick="addMember()">➕ সদস্য সংরক্ষণ ও সিঙ্ক করুন</button>
+            <div class="form-group">
+              <label>সদস্যের জিমেইল/ইমেইল (লগইন অনুমোদনের জন্য)</label>
+              <input type="email" id="mEmail" placeholder="member@gmail.com">
+            </div>
+            <p style="font-size: 11px; color: #16A34A; margin-bottom: 12px;">
+              💡 এই ইমেইলটি বরাদ্দ দিলে ওই সদস্য তার ফোনে লগইন করলেই এই সমিতিতে সরাসরি ঢুকতে পারবে।
+            </p>
+            <button class="btn" onclick="addMember()">➕ সদস্য সংরক্ষণ ও বরাদ্দ দিন</button>
           </div>
+
+          <!-- Pending Applicants Section -->
+          <div class="card" id="pendingRequestsCard" style="border: 1px dashed #F59E0B; background: #FFFBEB;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+              <span style="font-weight: 700; font-size: 13px; color: #B45309;">⏳ অপেক্ষমাণ আবেদনকারীগণ:</span>
+              <span id="pendingCountBadge" style="background:#FDE68A; color:#78350F; font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px;">০ জন</span>
+            </div>
+            <div id="pendingRequestsList" style="font-size: 12px; color: #78350F;">
+              কোনো নতুন আবেদনকারী অপেক্ষমাণ নেই।
+            </div>
+          </div>
+
 
           <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 14px; display:flex; justify-content:space-between;">
             <span>সদস্য তালিকা (ক্লিক করে খতিয়ান দেখুন):</span>
@@ -636,10 +712,10 @@
     let activeReceiptData = null;
     let activeMemberData = null;
 
-    auth.onAuthStateChanged((user) => {
+    auth.onAuthStateChanged(async (user) => {
       if (user) {
         currentUser = user;
-        loadUserSomitis();
+        await checkAndRouteUser(user);
       } else {
         if (!currentUser) showScreen('login');
       }
@@ -647,7 +723,58 @@
 
     function showScreen(screen) {
       document.getElementById("loginScreen").style.display = screen === 'login' ? 'flex' : 'none';
+      document.getElementById("pendingScreen").style.display = screen === 'pending' ? 'flex' : 'none';
       document.getElementById("dashboardScreen").style.display = screen === 'dashboard' ? 'block' : 'none';
+    }
+
+    async function checkAndRouteUser(user) {
+      const email = (user.email || "").toLowerCase().trim();
+      document.getElementById("pendingEmailBadge").innerText = "আপনার ইমেইল: " + (email || "অনুল্লিখিত");
+
+      // Admin access check (Sajjad or test admin)
+      if (user.uid === "test-user-1" || email === "sajjad@somiti.app" || email === "admin@somiti.app") {
+        loadUserSomitis(true);
+        return;
+      }
+
+      // Check if user is approved/assigned in the Somiti's members collection
+      try {
+        const query = await db.collection("somiti").doc("main").collection("members")
+          .where("email", "==", email)
+          .get();
+
+        if (!query.empty) {
+          // Approved Member!
+          loadUserSomitis(false);
+        } else {
+          // Locked / Pending screen!
+          showScreen('pending');
+        }
+      } catch (err) {
+        console.error("Member lookup error:", err);
+        showScreen('pending');
+      }
+    }
+
+    async function checkApprovalStatus() {
+      if (!currentUser) return;
+      const email = (currentUser.email || "").toLowerCase().trim();
+      const query = await db.collection("somiti").doc("main").collection("members")
+        .where("email", "==", email)
+        .get();
+
+      if (!query.empty) {
+        alert("🎉 অভিনন্দন! সমিতি কর্তৃপক্ষ আপনাকে সদস্য হিসেবে বরাদ্দ দিয়েছে। ড্যাশবোর্ডে স্বাগতম!");
+        loadUserSomitis(false);
+      } else {
+        alert("⚠️ আপনাকে এখনও কোনো সমিতিতে সদস্য হিসেবে যুক্ত করা হয়নি। অনুগ্রহ করে অপেক্ষা করুন অথবা অ্যাডমিন/কোষাধ্যক্ষের সাথে যোগাযোগ করুন।");
+      }
+    }
+
+    function contactViaWhatsApp() {
+      const email = currentUser?.email || "";
+      const text = encodeURIComponent(`আসসালামু আলাইকুম,\nআমি সমিতিতে অ্যাকাউন্ট খুলেছি।\nআমার ইমেইল: ${email}\n\nঅনুগ্রহ করে আমাকে সমিতির সদস্য হিসেবে যুক্ত ও বরাদ্দ দিন।`);
+      window.open(`https://wa.me/8801712345678?text=${text}`, '_blank');
     }
 
     function setAuthMode(mode) {
@@ -682,11 +809,11 @@
         });
     }
 
-    // Email & Password Sign Up with Member Registration
+    // Email & Password Sign Up (Registered as PENDING applicant)
     function handleEmailSignUp() {
       const name = document.getElementById("signupName").value.trim();
       const phone = document.getElementById("signupPhone").value.trim();
-      const email = document.getElementById("signupEmail").value.trim();
+      const email = document.getElementById("signupEmail").value.trim().toLowerCase();
       const password = document.getElementById("signupPassword").value.trim();
 
       if (!name || !phone || !email || !password) {
@@ -703,21 +830,17 @@
           const user = res.user;
           await user.updateProfile({ displayName: name });
 
-          // Auto-generate Member Record & Application in Firestore
-          const count = membersData.length + 1;
-          const memberNum = count < 10 ? "0" + count : "" + count;
-
-          await db.collection("somiti").doc("main").collection("members").doc(user.uid).set({
+          // Save to user_requests collection as PENDING
+          await db.collection("user_requests").doc(user.uid).set({
+            uid: user.uid,
             name: name,
             phone: phone,
-            memberNumber: memberNum,
-            totalDeposit: 0,
             email: email,
-            userId: user.uid,
+            status: "pending",
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
           });
 
-          alert(`🎉 অভিনন্দন জনাব ${name}! আপনার সদস্য আবেদন সফল হয়েছে এবং সমিতি একাউন্ট চালু হয়েছে।`);
+          alert(`🎉 আপনার অ্যাকাউন্ট সফলভাবে সংরক্ষিত হয়েছে!\n\nসমিতি কর্তৃপক্ষের সদস্যপদ বরাদ্দ ছাড়া কোনো ড্যাশবোর্ড বা হিসাব দেখা যাবে না। অনুগ্রহ করে অপেক্ষা করুন।`);
         })
         .catch((err) => {
           alert("সাইন-আপ ত্রুটি: " + err.message);
@@ -771,8 +894,8 @@
     }
 
     function handleQuickTestLogin() {
-      currentUser = { uid: "test-user-1", email: "sajjad@somiti.app", displayName: "সাজ্জাদ হোসেন" };
-      loadUserSomitis();
+      currentUser = { uid: "test-user-1", email: "sajjad@somiti.app", displayName: "সাজ্জাদ হোসেন (অ্যাডমিন)" };
+      loadUserSomitis(true);
     }
 
     function handleSignOut() {
@@ -781,8 +904,7 @@
       auth.signOut().finally(() => showScreen('login'));
     }
 
-
-    function loadUserSomitis() {
+    function loadUserSomitis(isAdmin = false) {
       const defaultSomiti = {
         id: "main",
         name: "প্রগতি ক্ষুদ্র সঞ্চয় সমবায় সমিতি",
@@ -796,10 +918,10 @@
         somitiCode: "SMT-7890"
       };
       currentSomiti = defaultSomiti;
-      openSomitiDashboard(defaultSomiti);
+      openSomitiDashboard(defaultSomiti, isAdmin);
     }
 
-    function openSomitiDashboard(s) {
+    function openSomitiDashboard(s, isAdmin = true) {
       document.getElementById("dashSomitiName").innerText = s.name;
       document.getElementById("dashSomitiCode").innerText = s.somitiCode;
       document.getElementById("padTitle").innerText = s.name;
@@ -810,8 +932,11 @@
       document.getElementById("padCommittee").innerText = "👥 কোষাধ্যক্ষ: " + (s.cashierName || "সাজ্জাদ হোসেন");
 
       showScreen('dashboard');
+      switchDashboardView(isAdmin ? 'admin' : 'member');
       initRealtimeListeners();
+      if (isAdmin) initPendingRequestsListener();
     }
+
 
     function switchDashboardView(role) {
       document.getElementById("adminSections").style.display = role === 'admin' ? 'block' : 'none';
@@ -855,18 +980,78 @@
       const number = document.getElementById("mNumber").value.trim();
       const name = document.getElementById("mName").value.trim();
       const phone = document.getElementById("mPhone").value.trim();
+      const email = document.getElementById("mEmail").value.trim().toLowerCase();
       if (!number || !name) { alert("নাম ও সদস্য নম্বর আবশ্যক"); return; }
 
       db.collection("somiti").doc("main").collection("members").add({
-        memberNumber: number, name: name, phone: phone, totalDeposit: 0,
+        memberNumber: number,
+        name: name,
+        phone: phone,
+        email: email,
+        totalDeposit: 0,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       }).then(() => {
+        // If this email was in user_requests, update it to assigned
+        if (email) {
+          db.collection("user_requests").where("email", "==", email).get().then(snapshot => {
+            snapshot.forEach(doc => {
+              doc.ref.update({ status: "assigned", somitiId: "main" });
+            });
+          });
+        }
+
         document.getElementById("mNumber").value = "";
         document.getElementById("mName").value = "";
         document.getElementById("mPhone").value = "";
-        alert("✅ সদস্য সফলভাবে যুক্ত হয়েছে এবং ক্লাউডে সিঙ্ক হয়েছে!");
+        document.getElementById("mEmail").value = "";
+        alert(`✅ সদস্য "${name}" সফলভাবে যুক্ত ও বরাদ্দ হয়েছে! তিনি তার ফোনে সরাসরি প্রবেশ করতে পারবেন।`);
       });
     }
+
+    function initPendingRequestsListener() {
+      db.collection("user_requests").where("status", "==", "pending")
+        .onSnapshot((snapshot) => {
+          const list = document.getElementById("pendingRequestsList");
+          const badge = document.getElementById("pendingCountBadge");
+          if (!list || !badge) return;
+
+          badge.innerText = snapshot.size + " জন";
+
+          if (snapshot.empty) {
+            list.innerHTML = '<div style="color:#78350F; font-size:12px;">কোনো নতুন আবেদনকারী অপেক্ষমাণ নেই।</div>';
+            return;
+          }
+
+          let html = "";
+          snapshot.forEach((doc) => {
+            const u = doc.data();
+            html += `
+              <div style="background:white; border:1px solid #FCD34D; border-radius:8px; padding:8px 10px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <div style="font-weight:700; color:#1E293B;">${u.name || 'নাম নেই'}</div>
+                  <div style="font-size:11px; color:#64748B;">✉️ ${u.email} ${u.phone ? '• 📱 ' + u.phone : ''}</div>
+                </div>
+                <button onclick="assignPendingToForm('${u.name || ''}', '${u.phone || ''}', '${u.email || ''}')" style="background:#0F9D58; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">
+                  ➕ বরাদ্দ দিন
+                </button>
+              </div>
+            `;
+          });
+          list.innerHTML = html;
+        });
+    }
+
+    function assignPendingToForm(name, phone, email) {
+      document.getElementById("mName").value = name;
+      document.getElementById("mPhone").value = phone;
+      document.getElementById("mEmail").value = email;
+
+      const nextNum = membersData.length + 1;
+      document.getElementById("mNumber").value = nextNum < 10 ? "0" + nextNum : "" + nextNum;
+
+      window.scrollTo({ top: 300, behavior: 'smooth' });
+    }
+
 
     // Add Deposit & Generate Receipt
     function addDeposit() {
