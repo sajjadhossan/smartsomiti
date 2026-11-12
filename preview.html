@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>স্মার্ট সমিতি প্ল্যাটফর্ম - ড্রাইভ ব্যাকআপ ও লাইভ সিঙ্ক</title>
+  <title>স্মার্ট সমিতি প্ল্যাটফর্ম - রসিদ, খরচ খাতা ও ড্রাইভ ব্যাকআপ</title>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #0F9D58;
       --primary-dark: #0B8043;
       --primary-light: #E8F5E9;
+      --danger: #EF4444;
+      --danger-light: #FEE2E2;
       --bg: #F8F9FA;
       --card-bg: #FFFFFF;
       --text: #202124;
@@ -57,14 +59,16 @@
       border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold;
     }
 
-    .container { max-width: 600px; margin: 0 auto; padding: 16px; }
+    .container { max-width: 620px; margin: 0 auto; padding: 16px; }
 
     .btn {
-      width: 100%; padding: 12px; border: none; border-radius: 10px;
-      background: var(--primary); color: white; font-size: 15px; font-weight: 700;
+      width: 100%; padding: 11px; border: none; border-radius: 10px;
+      background: var(--primary); color: white; font-size: 14px; font-weight: 700;
       cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;
     }
     .btn:hover { background: var(--primary-dark); }
+    .btn-danger { background: #EF4444; }
+    .btn-danger:hover { background: #DC2626; }
     .btn-outline { background: white; color: var(--primary); border: 1px solid var(--primary); }
 
     .card { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 14px; }
@@ -79,50 +83,95 @@
     /* Official Letterhead / Pad */
     .pad-banner {
       background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
-      border: 2px solid #CBD5E1; border-radius: 14px; padding: 18px; margin-bottom: 16px;
+      border: 2px solid #CBD5E1; border-radius: 14px; padding: 16px; margin-bottom: 16px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
     .pad-header-row { display: flex; justify-content: space-between; align-items: flex-start; }
-    .pad-title { font-size: 19px; font-weight: 700; color: #0F172A; }
-    .pad-slogan { font-size: 12px; font-style: italic; color: #475569; margin: 3px 0 10px 0; }
+    .pad-title { font-size: 18px; font-weight: 700; color: #0F172A; }
+    .pad-slogan { font-size: 12px; font-style: italic; color: #475569; margin: 2px 0 8px 0; }
     .pad-tag { font-size: 10px; background: white; border: 1px solid #CBD5E1; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #475569; }
     .pad-info-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 12px; color: #334155;
-      padding-top: 10px; border-top: 1px dashed #CBD5E1; margin-top: 6px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11px; color: #334155;
+      padding-top: 8px; border-top: 1px dashed #CBD5E1; margin-top: 6px;
     }
 
+    /* Financial Summary Card */
     .summary-card {
       background: linear-gradient(135deg, #0F9D58, #0B8043);
-      color: white; border-radius: 16px; padding: 20px;
-      box-shadow: 0 4px 12px rgba(15,157,88,0.25); text-align: center; margin-bottom: 16px;
+      color: white; border-radius: 16px; padding: 18px;
+      box-shadow: 0 4px 12px rgba(15,157,88,0.25); margin-bottom: 16px;
     }
-    .fund-amount { font-size: 34px; font-weight: 700; margin: 4px 0; }
-    .stat-row { display: flex; justify-content: space-around; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; }
+    .cash-highlight-card {
+      background: rgba(255,255,255,0.18); backdrop-filter: blur(8px);
+      border-radius: 12px; padding: 12px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.3);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .cash-in-hand-amt { font-size: 26px; font-weight: 800; color: #FEF08A; }
+    .stat-row { display: flex; justify-content: space-between; gap: 8px; }
+    .stat-box { flex: 1; background: rgba(0,0,0,0.15); border-radius: 8px; padding: 8px; text-align: center; }
+    .stat-box h4 { font-size: 16px; font-weight: 700; }
+    .stat-box p { font-size: 11px; opacity: 0.85; }
 
     .tabs { display: flex; background: white; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 16px; }
     .tab-btn {
-      flex: 1; padding: 12px; border: none; background: none; font-size: 14px; font-weight: 600;
-      color: var(--text-muted); cursor: pointer;
+      flex: 1; padding: 10px 6px; border: none; background: none; font-size: 13px; font-weight: 600;
+      color: var(--text-muted); cursor: pointer; text-align: center;
     }
     .tab-btn.active { background: var(--primary-light); color: var(--primary); }
 
     .item-card {
       background: white; border: 1px solid var(--border); border-radius: 10px;
       padding: 12px 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;
+      transition: all 0.15s ease;
     }
+    .item-card:hover { border-color: #94A3B8; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
     .num-circle {
       width: 32px; height: 32px; background: var(--primary-light); color: var(--primary);
       border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;
     }
-
-    .view-switch-bar {
-      display: flex; gap: 8px; margin-bottom: 14px;
+    .num-circle-danger {
+      width: 32px; height: 32px; background: var(--danger-light); color: var(--danger);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;
     }
+
+    .view-switch-bar { display: flex; gap: 8px; margin-bottom: 14px; }
     .switch-btn {
       flex: 1; padding: 8px; font-size: 12px; font-weight: 700; border: 1px solid var(--border);
       border-radius: 8px; background: white; cursor: pointer;
     }
     .switch-btn.active { background: #1A73E8; color: white; border-color: #1A73E8; }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000; padding: 16px;
+    }
+    .modal-box {
+      background: white; border-radius: 18px; width: 100%; max-width: 460px;
+      max-height: 90vh; overflow-y: auto; padding: 22px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.25);
+    }
+    .receipt-container {
+      border: 2px dashed #0F9D58; border-radius: 12px; padding: 16px; background: #FAFCFA;
+      margin-bottom: 16px;
+    }
+    .receipt-pad-header { text-align: center; border-bottom: 1px solid #E2E8F0; padding-bottom: 10px; margin-bottom: 10px; }
+    .receipt-row { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; }
+    .receipt-amount-badge {
+      background: #E8F5E9; color: #1B5E20; font-size: 24px; font-weight: 800;
+      text-align: center; padding: 10px; border-radius: 8px; margin: 10px 0; border: 1px solid #C8E6C9;
+    }
+    .action-btn-row { display: flex; gap: 8px; margin-top: 10px; }
+    .wa-btn {
+      background: #25D366; color: white; flex: 1; border: none; border-radius: 8px;
+      padding: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .copy-btn {
+      background: #F1F5F9; color: #334155; border: 1px solid #CBD5E1; border-radius: 8px;
+      padding: 10px 14px; font-weight: 600; cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -133,7 +182,7 @@
       <div class="app-logo">🏛️</div>
       <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 6px;">স্মার্ট সমিতি প্ল্যাটফর্ম</h1>
       <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">
-        আপনার সমিতি ডিজিটালভাবে পরিচালনা করুন ও সরাসরি গুগল ড্রাইভে ব্যাকআপ রাখুন।
+        ডিজিটাল জমা রসিদ, খরচ খাতা ও ড্রাইভ ব্যাকআপসহ সম্পূর্ণ সমিতি ব্যবস্থাপনা।
       </p>
 
       <button class="google-signin-btn" onclick="handleGoogleSignIn()">
@@ -154,89 +203,7 @@
     </div>
   </div>
 
-  <!-- ================= 2. ONBOARDING SCREEN ================= -->
-  <div id="onboardingScreen" style="display: none;">
-    <header>
-      <div class="brand">
-        <div class="brand-icon">স</div>
-        <span style="font-weight: 700; font-size: 16px;">স্মার্ট সমিতি</span>
-      </div>
-      <button onclick="handleSignOut()" style="background:none; border:1px solid #EF4444; color:#EF4444; padding:4px 10px; border-radius:6px; font-size:12px; cursor:pointer;">লগআউট</button>
-    </header>
-
-    <div class="container">
-      <div class="card" style="text-align: center; padding: 32px 20px;">
-        <div style="font-size: 54px; margin-bottom: 12px;">🏛️</div>
-        <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">আপনার সমিতি শুরু করুন</h2>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5;">
-          সমিতির নাম, অফিসিয়াল প্যাড, বিকাশ ও ব্যাংক একাউন্ট দিয়ে আপনার সমিতি সেটআপ করুন।
-        </p>
-
-        <button class="btn" onclick="showScreen('createSomiti')">
-          <span>➕ নতুন সমিতি তৈরি করুন</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= 3. CREATE SOMITI SCREEN ================= -->
-  <div id="createSomitiScreen" style="display: none;">
-    <header>
-      <div class="brand">
-        <button onclick="showScreen('onboarding')" style="background:none; border:none; font-size:18px; cursor:pointer; margin-right:6px;">←</button>
-        <span style="font-weight: 700; font-size: 16px;">নতুন সমিতি সেটআপ</span>
-      </div>
-    </header>
-
-    <div class="container">
-      <div class="card">
-        <div class="card-title">সমিতির মূল পরিচিতি ও অফিশিয়াল প্যাড</div>
-        
-        <div class="form-group">
-          <label>সমিতির নাম *</label>
-          <input type="text" id="sName" value="প্রগতি ক্ষুদ্র সঞ্চয় সমবায় সমিতি" placeholder="সমিতির পূর্ণ নাম">
-        </div>
-        <div class="form-group">
-          <label>অফিসিয়াল প্যাডের স্লোগান / হেডার</label>
-          <input type="text" id="sPad" value="সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি" placeholder="যেমন: সঞ্চয়ে সমৃদ্ধি">
-        </div>
-        <div class="form-group">
-          <label>কার্যালয়ের পূর্ণ ঠিকানা</label>
-          <input type="text" id="sAddress" value="মিরপুর-১০, ঢাকা" placeholder="ঠিকানা">
-        </div>
-
-        <div class="card-title" style="margin-top: 18px;">আর্থিক একাউন্ট তথ্য</div>
-        <div class="form-group">
-          <label>ব্যাংক হিসাব নম্বর ও ব্যাংকের নাম</label>
-          <input type="text" id="sBank" value="সোনালী ব্যাংক - ১২৩৪৫৬৭৮" placeholder="ব্যাংক বিবরণ">
-        </div>
-        <div class="form-group">
-          <label>বিকাশ / নগদ নম্বর</label>
-          <input type="text" id="sBkash" value="০১৭১২-৩৪৫৬৭৮ (পার্সোনাল)" placeholder="বিকাশ বা নগদ নম্বর">
-        </div>
-
-        <div class="card-title" style="margin-top: 18px;">কমিটির দায়িত্বশীলগণ</div>
-        <div class="form-group">
-          <label>সভাপতির নাম</label>
-          <input type="text" id="sPresident" value="জনাব আব্দুল করিম" placeholder="সভাপতি">
-        </div>
-        <div class="form-group">
-          <label>সাধারণ সম্পাদকের নাম</label>
-          <input type="text" id="sSecretary" value="জনাব রফিকুল ইসলাম" placeholder="সাধারণ সম্পাদক">
-        </div>
-        <div class="form-group">
-          <label>কোষাধ্যক্ষের নাম</label>
-          <input type="text" id="sCashier" value="সাজ্জাদ হোসেন (এডমিন)" placeholder="কোষাধ্যক্ষ">
-        </div>
-
-        <button class="btn" style="margin-top: 16px;" onclick="createSomitiSubmit()">
-          <span>🚀 সমিতি সম্পন্ন ও চালু করুন</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= 4. SOMITI MAIN DASHBOARD ================= -->
+  <!-- ================= 2. SOMITI MAIN DASHBOARD ================= -->
   <div id="dashboardScreen" style="display: none;">
     <header>
       <div class="brand">
@@ -255,7 +222,7 @@
 
       <!-- View Switcher (Admin vs Member View) -->
       <div class="view-switch-bar">
-        <button class="switch-btn active" id="btnAdminView" onclick="switchDashboardView('admin')">👑 কোষাধ্যক্ষ / এডমিন ভিউ (টাকা জমা ও ড্রাইভ)</button>
+        <button class="switch-btn active" id="btnAdminView" onclick="switchDashboardView('admin')">👑 এডমিন/কোষাধ্যক্ষ ভিউ (জমা, খরচ ও ড্রাইভ)</button>
         <button class="switch-btn" id="btnMemberView" onclick="switchDashboardView('member')">👤 সদস্যের লাইভ পাসবুক ভিউ</button>
       </div>
 
@@ -276,13 +243,29 @@
         </div>
       </div>
 
-      <!-- Summary Box -->
+      <!-- Financial Summary Box with Cash in Hand -->
       <div class="summary-card">
-        <p style="font-size: 13px; opacity: 0.9;" id="summaryTitleText">সমিতির মোট সঞ্চিত তহবিল</p>
-        <div class="fund-amount" id="totalFund">৳০</div>
+        <div class="cash-highlight-card">
+          <div style="text-align: left;">
+            <div style="font-size: 12px; font-weight: 600; opacity: 0.9;">হাতে নগদ ক্যাশ (Cash in Hand)</div>
+            <div class="cash-in-hand-amt" id="cashInHand">৳০</div>
+          </div>
+          <div style="font-size: 26px;">💵</div>
+        </div>
+
         <div class="stat-row">
-          <div><h4 id="totalMembers">০ জন</h4><p style="font-size: 11px;">মোট সদস্য</p></div>
-          <div><h4 id="totalDeposits">০ টি</h4><p style="font-size: 11px;">জমা এন্ট্রি</p></div>
+          <div class="stat-box">
+            <h4 id="totalDepositFund" style="color: #BBF7D0;">৳০</h4>
+            <p>মোট সঞ্চয়</p>
+          </div>
+          <div class="stat-box">
+            <h4 id="totalExpenseFund" style="color: #FECACA;">৳০</h4>
+            <p>মোট খরচ</p>
+          </div>
+          <div class="stat-box">
+            <h4 id="totalMembers">০ জন</h4>
+            <p>মোট সদস্য</p>
+          </div>
         </div>
       </div>
 
@@ -291,10 +274,11 @@
         <div class="tabs">
           <button class="tab-btn active" onclick="showTab('members')">👥 সদস্যগণ</button>
           <button class="tab-btn" onclick="showTab('deposits')">💳 সঞ্চয় জমা</button>
+          <button class="tab-btn" onclick="showTab('expenses')">💸 খরচ খাতা</button>
           <button class="tab-btn" onclick="showTab('backup')">☁️ ড্রাইভ ব্যাকআপ</button>
         </div>
 
-        <!-- Tab: Members -->
+        <!-- Tab 1: Members -->
         <div id="tabMembers">
           <div class="card">
             <div class="card-title">নতুন সদস্য যোগ করুন</div>
@@ -313,16 +297,19 @@
             <button class="btn" onclick="addMember()">➕ সদস্য সংরক্ষণ ও সিঙ্ক করুন</button>
           </div>
 
-          <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 15px;">সকল সদস্য তালিকা ও সঞ্চয় স্থিতি:</div>
+          <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 14px; display:flex; justify-content:space-between;">
+            <span>সদস্য তালিকা (ক্লিক করে খতিয়ান দেখুন):</span>
+            <span style="color: var(--primary); font-size: 12px;">ট্যাপ = পাসবুক</span>
+          </div>
           <div id="membersList">
             <div style="text-align: center; padding: 20px; color: var(--text-muted);">লোড হচ্ছে...</div>
           </div>
         </div>
 
-        <!-- Tab: Deposits -->
+        <!-- Tab 2: Deposits -->
         <div id="tabDeposits" style="display: none;">
           <div class="card">
-            <div class="card-title">সঞ্চয় জমা এন্ট্রি দিন (এডমিন/কোষাধ্যক্ষ)</div>
+            <div class="card-title">সঞ্চয় জমা এন্ট্রি দিন (মানি রিসিট তৈরি হবে)</div>
             <div class="form-group">
               <label>সদস্য নির্বাচন করুন</label>
               <select id="depositMemberSelect"><option value="">আগে সদস্য যোগ করুন</option></select>
@@ -334,25 +321,63 @@
             <div class="form-group">
               <label>জমার ধরণ</label>
               <select id="depositType">
-                <option value="মাসিক">মাসিক সঞ্চয়</option>
-                <option value="সাপ্তাহিক">সাপ্তাহিক সঞ্চয়</option>
-                <option value="দৈনিক">দৈনিক সঞ্চয়</option>
+                <option value="মাসিক সঞ্চয়">মাসিক সঞ্চয়</option>
+                <option value="সাপ্তাহিক সঞ্চয়">সাপ্তাহিক সঞ্চয়</option>
+                <option value="দৈনিক সঞ্চয়">দৈনিক সঞ্চয়</option>
+                <option value="শেয়ার সঞ্চয়">শেয়ার সঞ্চয়</option>
+                <option value="এককালীন জমা">এককালীন জমা</option>
               </select>
             </div>
             <div class="form-group">
-              <label>মন্তব্য / রসিদ নং</label>
-              <input type="text" id="depositNote" placeholder="যেমন: ভাউচার নং ১০১">
+              <label>মন্তব্য / নোট</label>
+              <input type="text" id="depositNote" placeholder="যেমন: নভেম্বর মাসের কিস্তি">
             </div>
-            <button class="btn" onclick="addDeposit()">💰 জমা লিপিবদ্ধ করুন (লাইভ সিঙ্ক)</button>
+            <button class="btn" onclick="addDeposit()">💰 জমা লিপিবদ্ধ করুন ও রসিদ তৈরি করুন</button>
           </div>
 
-          <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 15px;">জমার হিসাবের স্টেটমেন্ট:</div>
+          <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 14px;">সাম্প্রতিক জমার খতিয়ান (ক্লিক করে রসিদ দেখুন):</div>
           <div id="depositsList">
             <div style="text-align: center; padding: 20px; color: var(--text-muted);">লোড হচ্ছে...</div>
           </div>
         </div>
 
-        <!-- Tab: Drive Backup -->
+        <!-- Tab 3: Expenses (খরচ খাতা) -->
+        <div id="tabExpenses" style="display: none;">
+          <div class="card">
+            <div class="card-title">সমিতির খরচের হিসাব এন্ট্রি দিন</div>
+            <div class="form-group">
+              <label>খরচের বিবরণ</label>
+              <input type="text" id="expenseTitle" placeholder="যেমন: অফিস ভাড়া, খাতা-কলম ক্রয়, চা-নাস্তা">
+            </div>
+            <div class="form-group">
+              <label>খরচের পরিমাণ (৳)</label>
+              <input type="number" id="expenseAmount" placeholder="যেমন: 350">
+            </div>
+            <div class="form-group">
+              <label>ক্যাটাগরি</label>
+              <select id="expenseCategory">
+                <option value="অফিস ভাড়া">অফিস ভাড়া</option>
+                <option value="ইউটিলিটি ও বিদ্যুৎ বিল">ইউটিলিটি ও বিদ্যুৎ বিল</option>
+                <option value="প্রিন্টিং ও স্টেশনারি">প্রিন্টিং ও স্টেশনারি</option>
+                <option value="আপ্যায়ন ও নাস্তা">আপ্যায়ন ও নাস্তা</option>
+                <option value="যাতায়াত খরচ">যাতায়াত খরচ</option>
+                <option value="অন্যান্য খরচ">অন্যান্য খরচ</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>ভাউচার নং / নোট (ঐচ্ছিক)</label>
+              <input type="text" id="expenseNote" placeholder="যেমন: মেমো নং ৪২">
+            </div>
+            <button class="btn btn-danger" onclick="addExpense()">💸 খরচের ভাউচার এন্ট্রি করুন</button>
+          </div>
+
+          <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 14px;">খরচের ভাউচার তালিকা:</div>
+          <div id="expensesList">
+            <div style="text-align: center; padding: 20px; color: var(--text-muted);">কোনো খরচের রেকর্ড নেই।</div>
+          </div>
+        </div>
+
+        <!-- Tab 4: Drive Backup -->
         <div id="tabBackup" style="display: none;">
           <div class="card" style="border: 2px solid #0F9D58;">
             <div class="card-title" style="display: flex; align-items: center; gap: 8px;">
@@ -360,7 +385,7 @@
               <span>Google Drive-এ সমিতির পূর্ণাঙ্গ ব্যাকআপ</span>
             </div>
             <p style="font-size: 13px; color: #334155; line-height: 1.5; margin: 6px 0 16px 0;">
-              এই সমিতির অফিসিয়াল প্যাডের সকল তথ্য (ঠিকানা, ব্যাংক, বিকাশ, কমিটি), সকল সদস্যের ব্যালেন্স এবং সম্পূর্ণ জমা ট্রানজেকশন একসাথে <strong>UTF-8 ফরম্যাটের অফিশিয়াল CSV/Excel স্টেটমেন্ট</strong> আকারে আপনার Google Drive-এ সরাসরি ব্যাকআপ রাখুন।
+              এই সমিতির অফিসিয়াল প্যাডের সকল তথ্য, কমিটি, সকল সদস্যের ব্যালেন্স, সম্পূর্ণ জমা এবং <strong>খরচ খাতা ও হাতে নগদ ক্যাশের পূর্ণাঙ্গ অফিশিয়াল CSV/Excel স্টেটমেন্ট</strong> সরাসরি আপনার Google Drive-এ আপলোড করুন।
             </p>
 
             <div style="margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center;">
@@ -369,7 +394,7 @@
             </div>
 
             <button class="btn" onclick="exportCsv()">
-              <span>📥 Google ড্রাইভে এই সমিতির রিপোর্ট ব্যাকআপ করুন</span>
+              <span>📥 Google ড্রাইভে পূর্ণাঙ্গ অডিট স্টেটমেন্ট ব্যাকআপ করুন</span>
             </button>
             <div id="backupFeedback" style="display: none; margin-top: 14px; padding: 12px; background: #E8F5E9; color: #1B5E20; border-radius: 8px; font-size: 13px; font-weight: 600;">
               ✅ আপনার Google Drive-এ স্টেটমেন্ট ফাইলটি প্রস্তুত ও ডাউনলোড সম্পন্ন হয়েছে!
@@ -387,12 +412,100 @@
           </p>
         </div>
 
-        <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 15px;">আমার জমা হওয়া কিস্তি ও রসিদসমূহ:</div>
+        <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 14px;">আমার জমা হওয়া কিস্তি ও রসিদসমূহ:</div>
         <div id="memberPassbookList">
           <div style="text-align: center; padding: 20px; color: var(--text-muted);">কোনো জমার রেকর্ড নেই।</div>
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- ================= DIGITAL MONEY RECEIPT MODAL ================= -->
+  <div id="receiptModal" class="modal-overlay" style="display: none;">
+    <div class="modal-box">
+      <div class="receipt-container" id="receiptPrintArea">
+        <div class="receipt-pad-header">
+          <h3 id="rcptSomitiName" style="color: #0F172A; font-size: 18px; font-weight: 800;">সমিতির নাম</h3>
+          <p id="rcptPadHeader" style="font-size: 12px; color: #475569; font-style: italic; margin-bottom: 4px;">স্লোগান</p>
+          <p id="rcptAddress" style="font-size: 11px; color: #64748B;">ঠিকানা</p>
+          <span style="display:inline-block; margin-top:6px; background:#0F9D58; color:white; font-size:11px; font-weight:700; padding:2px 10px; border-radius:12px;">ডিজিটাল মানি রিসিট</span>
+        </div>
+
+        <div class="receipt-row">
+          <span style="color: #64748B;">রসিদ নং:</span>
+          <strong id="rcptNo">RCT-001</strong>
+        </div>
+        <div class="receipt-row">
+          <span style="color: #64748B;">তারিখ ও সময়:</span>
+          <span id="rcptDate">-</span>
+        </div>
+        <div class="receipt-row">
+          <span style="color: #64748B;">সদস্যের নাম:</span>
+          <strong id="rcptMemberName">-</strong>
+        </div>
+        <div class="receipt-row">
+          <span style="color: #64748B;">সদস্য নম্বর:</span>
+          <span id="rcptMemberNum">-</span>
+        </div>
+        <div class="receipt-row">
+          <span style="color: #64748B;">জমার বিবরণ:</span>
+          <span id="rcptType">-</span>
+        </div>
+
+        <div class="receipt-amount-badge" id="rcptAmount">
+          ৳০
+        </div>
+
+        <div class="receipt-row" id="rcptNoteRow">
+          <span style="color: #64748B;">নোট / বিবরণ:</span>
+          <span id="rcptNote">-</span>
+        </div>
+        <div class="receipt-row" style="margin-top: 6px; border-top: 1px dashed #CBD5E1; padding-top: 6px;">
+          <span style="color: #64748B;">আদায়কারী:</span>
+          <span id="rcptCashier">কোষাধ্যক্ষ</span>
+        </div>
+      </div>
+
+      <div class="action-btn-row">
+        <button class="wa-btn" onclick="shareReceiptWhatsApp()">
+          <span>📲 WhatsApp-এ পাঠান</span>
+        </button>
+        <button class="copy-btn" onclick="copyReceiptText()">📋 কপি করুন</button>
+      </div>
+      <button class="btn btn-outline" style="margin-top: 8px;" onclick="closeReceiptModal()">✖️ বন্ধ করুন</button>
+    </div>
+  </div>
+
+  <!-- ================= MEMBER PASSBOOK & PROFILE MODAL ================= -->
+  <div id="memberModal" class="modal-overlay" style="display: none;">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div class="num-circle" style="width:44px; height:44px; font-size:18px;" id="mModalNum">01</div>
+          <div>
+            <h3 id="mModalName" style="font-size:17px; font-weight:700;">সদস্যের নাম</h3>
+            <p id="mModalPhone" style="font-size:12px; color:var(--text-muted);">📱 017xxxxxxxx</p>
+          </div>
+        </div>
+        <button onclick="closeMemberModal()" style="background:none; border:none; font-size:20px; cursor:pointer; color:#64748B;">✕</button>
+      </div>
+
+      <div style="background:#E8F5E9; border:1px solid #C8E6C9; border-radius:12px; padding:14px; text-align:center; margin-bottom:16px;">
+        <div style="font-size:12px; color:#1B5E20; font-weight:600;">সদস্যের মোট সঞ্চিত ব্যালেন্স</div>
+        <div style="font-size:26px; font-weight:800; color:#0F9D58;" id="mModalBalance">৳০</div>
+      </div>
+
+      <div style="font-weight:700; margin-bottom:8px; font-size:14px;">এই সদস্যের সকল জমার খতিয়ান:</div>
+      <div id="mModalDepositsList" style="max-height: 240px; overflow-y: auto;">
+        <div style="text-align:center; padding:14px; color:var(--text-muted);">কোনো জমার রেকর্ড নেই।</div>
+      </div>
+
+      <div style="margin-top:16px; display:flex; gap:8px;">
+        <button class="wa-btn" onclick="shareMemberPassbookWhatsApp()">
+          <span>📲 WhatsApp-এ স্টেটমেন্ট পাঠান</span>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -419,6 +532,9 @@
     let currentSomiti = null;
     let membersData = [];
     let depositsData = [];
+    let expensesData = [];
+    let activeReceiptData = null;
+    let activeMemberData = null;
 
     auth.onAuthStateChanged((user) => {
       if (user) {
@@ -431,14 +547,17 @@
 
     function showScreen(screen) {
       document.getElementById("loginScreen").style.display = screen === 'login' ? 'flex' : 'none';
-      document.getElementById("onboardingScreen").style.display = screen === 'onboarding' ? 'block' : 'none';
-      document.getElementById("createSomitiScreen").style.display = screen === 'createSomiti' ? 'block' : 'none';
       document.getElementById("dashboardScreen").style.display = screen === 'dashboard' ? 'block' : 'none';
     }
 
     function handleGoogleSignIn() {
       const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider).catch((e) => alert("গুগল লগইন তথ্য: " + e.message));
+      provider.addScope('https://www.googleapis.com/auth/drive.file');
+      auth.signInWithPopup(provider).then((result) => {
+        if (result.credential) {
+          googleAccessToken = result.credential.accessToken;
+        }
+      }).catch((e) => alert("গুগল লগইন তথ্য: " + e.message));
     }
 
     function handleQuickTestLogin() {
@@ -449,56 +568,24 @@
     function handleSignOut() {
       currentUser = null;
       currentSomiti = null;
-      localStorage.removeItem("active_somiti_data");
       auth.signOut().finally(() => showScreen('login'));
     }
 
     function loadUserSomitis() {
-      const savedSomitiJson = localStorage.getItem("active_somiti_data");
-      if (savedSomitiJson) {
-        currentSomiti = JSON.parse(savedSomitiJson);
-        openSomitiDashboard(currentSomiti);
-      } else {
-        // Pre-fill a ready-to-test default Somiti so user doesn't even need to type!
-        const defaultSomiti = {
-          id: "main",
-          name: "প্রগতি ক্ষুদ্র সঞ্চয় সমবায় সমিতি",
-          padHeader: "সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি",
-          address: "মিরপুর-১০, ঢাকা",
-          bankAccount: "সোনালী ব্যাংক - ১২৩৪৫৬৭৮",
-          bkashNumber: "০১৭১২-৩৪৫৬৭৮ (পার্সোনাল)",
-          presidentName: "জনাব আব্দুল করিম",
-          secretaryName: "জনাব রফিকুল ইসলাম",
-          cashierName: "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)",
-          somitiCode: "SMT-7890"
-        };
-        currentSomiti = defaultSomiti;
-        localStorage.setItem("active_somiti_data", JSON.stringify(defaultSomiti));
-        openSomitiDashboard(defaultSomiti);
-      }
-    }
-
-    function createSomitiSubmit() {
-      const name = document.getElementById("sName").value.trim();
-      if (!name) { alert("সমিতির নাম আবশ্যক"); return; }
-
-      const somitiData = {
-        id: "somiti_" + Date.now(),
-        name: name,
-        padHeader: document.getElementById("sPad").value.trim() || "সঞ্চয়ে সমৃদ্ধি",
-        address: document.getElementById("sAddress").value.trim() || "ঢাকা",
-        bankAccount: document.getElementById("sBank").value.trim() || "",
-        bkashNumber: document.getElementById("sBkash").value.trim() || "",
-        presidentName: document.getElementById("sPresident").value.trim() || "সভাপতি",
-        secretaryName: document.getElementById("sSecretary").value.trim() || "সাধারণ সম্পাদক",
-        cashierName: document.getElementById("sCashier").value.trim() || "সাজ্জাদ হোসেন",
-        somitiCode: "SMT-" + Math.floor(1000 + Math.random() * 9000)
+      const defaultSomiti = {
+        id: "main",
+        name: "প্রগতি ক্ষুদ্র সঞ্চয় সমবায় সমিতি",
+        padHeader: "সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি",
+        address: "মিরপুর-১০, ঢাকা",
+        bankAccount: "সোনালী ব্যাংক - ১২৩৪৫৬৭৮",
+        bkashNumber: "০১৭১২-৩৪৫৬৭৮ (পার্সোনাল)",
+        presidentName: "জনাব আব্দুল করিম",
+        secretaryName: "জনাব রফিকুল ইসলাম",
+        cashierName: "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)",
+        somitiCode: "SMT-7890"
       };
-
-      currentSomiti = somitiData;
-      localStorage.setItem("active_somiti_data", JSON.stringify(somitiData));
-      alert(`🎉 অভিনন্দন! "${name}" সমিতি সফলভাবে তৈরি হয়েছে।`);
-      openSomitiDashboard(somitiData);
+      currentSomiti = defaultSomiti;
+      openSomitiDashboard(defaultSomiti);
     }
 
     function openSomitiDashboard(s) {
@@ -520,11 +607,10 @@
       document.getElementById("memberSections").style.display = role === 'member' ? 'block' : 'none';
       document.getElementById("btnAdminView").classList.toggle("active", role === 'admin');
       document.getElementById("btnMemberView").classList.toggle("active", role === 'member');
-      document.getElementById("summaryTitleText").innerText = role === 'admin' ? 'সমিতির মোট সঞ্চিত তহবিল' : 'আপনার মোট জমা সঞ্চয়';
     }
 
     function initRealtimeListeners() {
-      // Real-time listener for Members
+      // 1. Members
       db.collection("somiti").doc("main").collection("members").orderBy("memberNumber")
         .onSnapshot((snapshot) => {
           membersData = [];
@@ -534,7 +620,7 @@
           updateDropdown();
         });
 
-      // Real-time listener for Deposits
+      // 2. Deposits
       db.collection("somiti").doc("main").collection("deposits").orderBy("date", "desc")
         .onSnapshot((snapshot) => {
           depositsData = [];
@@ -542,8 +628,18 @@
           renderDeposits();
           updateSummary();
         });
+
+      // 3. Expenses
+      db.collection("somiti").doc("main").collection("expenses").orderBy("date", "desc")
+        .onSnapshot((snapshot) => {
+          expensesData = [];
+          snapshot.forEach((doc) => expensesData.push({ id: doc.id, ...doc.data() }));
+          renderExpenses();
+          updateSummary();
+        });
     }
 
+    // Add Member
     function addMember() {
       const number = document.getElementById("mNumber").value.trim();
       const name = document.getElementById("mName").value.trim();
@@ -557,10 +653,11 @@
         document.getElementById("mNumber").value = "";
         document.getElementById("mName").value = "";
         document.getElementById("mPhone").value = "";
-        alert("সদস্য সফলভাবে যুক্ত হয়েছে এবং ক্লাউডে সিঙ্ক হয়েছে!");
+        alert("✅ সদস্য সফলভাবে যুক্ত হয়েছে এবং ক্লাউডে সিঙ্ক হয়েছে!");
       });
     }
 
+    // Add Deposit & Generate Receipt
     function addDeposit() {
       const select = document.getElementById("depositMemberSelect");
       const memberId = select.value;
@@ -570,18 +667,21 @@
       const type = document.getElementById("depositType").value;
       const note = document.getElementById("depositNote").value.trim();
 
-      if (!memberId || isNaN(amount) || amount <= 0) { alert("সদস্য ও জমার পরিমাণ দিন"); return; }
+      if (!memberId || isNaN(amount) || amount <= 0) { alert("সদস্য ও জমার সঠিক পরিমাণ দিন"); return; }
 
       const batch = db.batch();
       const depositRef = db.collection("somiti").doc("main").collection("deposits").doc();
 
-      batch.set(depositRef, {
+      const receiptNo = "RCT-" + Math.floor(10000 + Math.random() * 90000);
+      const depositObj = {
         memberId: memberId, memberName: memberName, memberNumber: memberNumber,
-        amount: amount, type: type, note: note,
+        amount: amount, type: type, note: note, receiptNo: receiptNo,
         date: firebase.firestore.FieldValue.serverTimestamp(),
-        recordedBy: "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)",
+        recordedBy: currentSomiti.cashierName || "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)",
         deviceSource: "Mobile / Web"
-      });
+      };
+
+      batch.set(depositRef, depositObj);
 
       const memberRef = db.collection("somiti").doc("main").collection("members").doc(memberId);
       batch.update(memberRef, { totalDeposit: firebase.firestore.FieldValue.increment(amount) });
@@ -589,8 +689,52 @@
       batch.commit().then(() => {
         document.getElementById("depositAmount").value = "";
         document.getElementById("depositNote").value = "";
-        alert(`৳${amount} টাকা সফলভাবে জমা হয়েছে এবং সদস্যের ফোনে তৎক্ষণাৎ সিঙ্ক হয়েছে!`);
+
+        // Show Digital Receipt Modal
+        showReceiptModal({
+          receiptNo: receiptNo,
+          memberName: memberName,
+          memberNumber: memberNumber,
+          amount: amount,
+          type: type,
+          note: note,
+          dateStr: new Date().toLocaleString('bn-BD')
+        });
       });
+    }
+
+    // Add Expense
+    function addExpense() {
+      const title = document.getElementById("expenseTitle").value.trim();
+      const amount = parseFloat(document.getElementById("expenseAmount").value);
+      const category = document.getElementById("expenseCategory").value;
+      const note = document.getElementById("expenseNote").value.trim();
+
+      if (!title || isNaN(amount) || amount <= 0) {
+        alert("খরচের বিবরণ ও সঠিক টাকার পরিমাণ লিখুন");
+        return;
+      }
+
+      db.collection("somiti").doc("main").collection("expenses").add({
+        title: title,
+        amount: amount,
+        category: category,
+        note: note,
+        date: firebase.firestore.FieldValue.serverTimestamp(),
+        recordedBy: currentSomiti.cashierName || "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)"
+      }).then(() => {
+        document.getElementById("expenseTitle").value = "";
+        document.getElementById("expenseAmount").value = "";
+        document.getElementById("expenseNote").value = "";
+        alert(`✅ ৳${amount} টাকা খরচের এন্ট্রি সফলভাবে সংরক্ষণ করা হয়েছে!`);
+      });
+    }
+
+    // Delete Expense
+    function deleteExpense(id) {
+      if (confirm("আপনি কি নিশ্চিত এই খরচের এন্ট্রি মুছে ফেলতে চান?")) {
+        db.collection("somiti").doc("main").collection("expenses").doc(id).delete();
+      }
     }
 
     function renderMembers() {
@@ -600,7 +744,7 @@
         return;
       }
       list.innerHTML = membersData.map(m => `
-        <div class="item-card">
+        <div class="item-card" onclick="openMemberModal('${m.id}')" style="cursor: pointer;">
           <div style="display:flex; align-items:center; gap:10px;">
             <div class="num-circle">${m.memberNumber || '0'}</div>
             <div>
@@ -626,17 +770,17 @@
       }
 
       const html = depositsData.map(d => `
-        <div class="item-card">
+        <div class="item-card" onclick="viewDepositReceipt('${d.id}')" style="cursor: pointer;">
           <div style="display:flex; align-items:center; gap:10px;">
             <div class="num-circle">৳</div>
             <div>
               <div style="font-weight:700;">[${d.memberNumber || ''}] ${d.memberName}</div>
-              <div style="font-size:12px; color:var(--text-muted);">${d.type} জমা ${d.note ? '• ' + d.note : ''}</div>
+              <div style="font-size:12px; color:var(--text-muted);">${d.type} ${d.note ? '• ' + d.note : ''}</div>
             </div>
           </div>
           <div style="text-align:right;">
             <div style="font-weight:700; color:var(--primary); font-size:16px;">৳${(d.amount || 0).toLocaleString()}</div>
-            <div style="font-size:10px; color:#16A34A;">● লাইভ সিঙ্কড</div>
+            <div style="font-size:10px; color:#16A34A;">রসিদ দেখুন ↗</div>
           </div>
         </div>
       `).join("");
@@ -645,11 +789,42 @@
       passbookList.innerHTML = html;
     }
 
+    function renderExpenses() {
+      const list = document.getElementById("expensesList");
+      if (expensesData.length === 0) {
+        list.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted);">কোনো খরচের এন্ট্রি নেই।</div>';
+        return;
+      }
+
+      list.innerHTML = expensesData.map(e => `
+        <div class="item-card">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="num-circle-danger">💸</div>
+            <div>
+              <div style="font-weight:700;">${e.title}</div>
+              <div style="font-size:12px; color:var(--text-muted);">${e.category || 'অন্যান্য'} ${e.note ? '• ' + e.note : ''}</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="text-align:right;">
+              <div style="font-weight:700; color:var(--danger); font-size:16px;">-৳${(e.amount || 0).toLocaleString()}</div>
+              <div style="font-size:10px; color:var(--text-muted);">${e.recordedBy || 'এডমিন'}</div>
+            </div>
+            <button onclick="deleteExpense('${e.id}')" style="background:none; border:none; color:#EF4444; font-size:16px; cursor:pointer; padding:4px;">🗑️</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
     function updateSummary() {
-      const totalFund = membersData.reduce((sum, m) => sum + (m.totalDeposit || 0), 0);
-      document.getElementById("totalFund").innerText = "৳" + totalFund.toLocaleString();
+      const totalDeposits = membersData.reduce((sum, m) => sum + (m.totalDeposit || 0), 0);
+      const totalExpenses = expensesData.reduce((sum, e) => sum + (e.amount || 0), 0);
+      const cashInHand = totalDeposits - totalExpenses;
+
+      document.getElementById("totalDepositFund").innerText = "৳" + totalDeposits.toLocaleString();
+      document.getElementById("totalExpenseFund").innerText = "৳" + totalExpenses.toLocaleString();
+      document.getElementById("cashInHand").innerText = "৳" + cashInHand.toLocaleString();
       document.getElementById("totalMembers").innerText = membersData.length + " জন";
-      document.getElementById("totalDeposits").innerText = depositsData.length + " টি";
     }
 
     function updateDropdown() {
@@ -663,23 +838,112 @@
     function showTab(tabName) {
       document.getElementById("tabMembers").style.display = tabName === 'members' ? 'block' : 'none';
       document.getElementById("tabDeposits").style.display = tabName === 'deposits' ? 'block' : 'none';
+      document.getElementById("tabExpenses").style.display = tabName === 'expenses' ? 'block' : 'none';
       document.getElementById("tabBackup").style.display = tabName === 'backup' ? 'block' : 'none';
+
+      const tabNames = ['members', 'deposits', 'expenses', 'backup'];
       document.querySelectorAll(".tab-btn").forEach((btn, idx) => {
-        btn.classList.toggle("active", (tabName === 'members' && idx === 0) || (tabName === 'deposits' && idx === 1) || (tabName === 'backup' && idx === 2));
+        btn.classList.toggle("active", tabNames[idx] === tabName);
       });
     }
 
-    let googleAccessToken = null;
+    // ================= RECEIPT MODAL LOGIC =================
+    function showReceiptModal(data) {
+      activeReceiptData = data;
+      document.getElementById("rcptSomitiName").innerText = currentSomiti.name;
+      document.getElementById("rcptPadHeader").innerText = `"${currentSomiti.padHeader || ''}"`;
+      document.getElementById("rcptAddress").innerText = currentSomiti.address || 'ঢাকা';
+      document.getElementById("rcptNo").innerText = data.receiptNo || "RCT-001";
+      document.getElementById("rcptDate").innerText = data.dateStr || new Date().toLocaleString('bn-BD');
+      document.getElementById("rcptMemberName").innerText = data.memberName;
+      document.getElementById("rcptMemberNum").innerText = data.memberNumber;
+      document.getElementById("rcptType").innerText = data.type;
+      document.getElementById("rcptAmount").innerText = "৳" + data.amount.toLocaleString();
+      document.getElementById("rcptNote").innerText = data.note || "কোনো বিশেষ মন্তব্য নেই";
+      document.getElementById("rcptCashier").innerText = currentSomiti.cashierName || "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)";
 
-    function handleGoogleSignIn() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      provider.addScope('https://www.googleapis.com/auth/drive.file');
-      auth.signInWithPopup(provider).then((result) => {
-        if (result.credential) {
-          googleAccessToken = result.credential.accessToken;
-        }
-      }).catch((e) => alert("গুগল লগইন তথ্য: " + e.message));
+      document.getElementById("receiptModal").style.display = "flex";
     }
+
+    function viewDepositReceipt(depositId) {
+      const d = depositsData.find(x => x.id === depositId);
+      if (!d) return;
+      showReceiptModal({
+        receiptNo: d.receiptNo || "RCT-" + d.id.substring(0, 5),
+        memberName: d.memberName,
+        memberNumber: d.memberNumber,
+        amount: d.amount,
+        type: d.type,
+        note: d.note,
+        dateStr: d.date?.toDate ? d.date.toDate().toLocaleString('bn-BD') : new Date().toLocaleString('bn-BD')
+      });
+    }
+
+    function closeReceiptModal() {
+      document.getElementById("receiptModal").style.display = "none";
+    }
+
+    function getReceiptPlainText() {
+      if (!activeReceiptData) return "";
+      return `*${currentSomiti.name}*\n"${currentSomiti.padHeader}"\n📍 ${currentSomiti.address}\n\n🧾 *ডিজিটাল মানি রিসিট*\nরসিদ নং: ${activeReceiptData.receiptNo}\nতারিখ: ${activeReceiptData.dateStr}\nসদস্য: [${activeReceiptData.memberNumber}] ${activeReceiptData.memberName}\nধরণ: ${activeReceiptData.type}\n*জমা টাকা: ৳${activeReceiptData.amount}*\nমন্তব্য: ${activeReceiptData.note || 'অনুল্লিখিত'}\nআদায়কারী: ${currentSomiti.cashierName}\n\nধন্যবাদ!`;
+    }
+
+    function shareReceiptWhatsApp() {
+      const text = encodeURIComponent(getReceiptPlainText());
+      window.open(`https://wa.me/?text=${text}`, '_blank');
+    }
+
+    function copyReceiptText() {
+      navigator.clipboard.writeText(getReceiptPlainText()).then(() => {
+        alert("✅ রসিদের লেখা কপি করা হয়েছে!");
+      });
+    }
+
+    // ================= MEMBER PASSBOOK MODAL LOGIC =================
+    function openMemberModal(memberId) {
+      const m = membersData.find(x => x.id === memberId);
+      if (!m) return;
+      activeMemberData = m;
+
+      document.getElementById("mModalNum").innerText = m.memberNumber || '0';
+      document.getElementById("mModalName").innerText = m.name;
+      document.getElementById("mModalPhone").innerText = "📱 " + (m.phone || 'ফোন নম্বর নেই');
+      document.getElementById("mModalBalance").innerText = "৳" + (m.totalDeposit || 0).toLocaleString();
+
+      const memberDeposits = depositsData.filter(d => d.memberId === memberId || d.memberNumber === m.memberNumber);
+      const listEl = document.getElementById("mModalDepositsList");
+      if (memberDeposits.length === 0) {
+        listEl.innerHTML = '<div style="text-align:center; padding:14px; color:var(--text-muted);">এই সদস্যের কোনো জমা নেই।</div>';
+      } else {
+        listEl.innerHTML = memberDeposits.map(d => `
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:8px 10px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-weight:700; font-size:13px;">${d.type}</div>
+              <div style="font-size:11px; color:var(--text-muted);">${d.note || 'নিয়মিত সঞ্চয়'}</div>
+            </div>
+            <div style="text-align:right;">
+              <strong style="color:var(--primary); font-size:14px;">৳${d.amount.toLocaleString()}</strong>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      document.getElementById("memberModal").style.display = "flex";
+    }
+
+    function closeMemberModal() {
+      document.getElementById("memberModal").style.display = "none";
+    }
+
+    function shareMemberPassbookWhatsApp() {
+      if (!activeMemberData) return;
+      const memberDeposits = depositsData.filter(d => d.memberId === activeMemberData.id || d.memberNumber === activeMemberData.memberNumber);
+      let text = `*${currentSomiti.name}*\nসদস্যের লাইভ সঞ্চয় স্টেটমেন্ট\n\nসদস্য নং: ${activeMemberData.memberNumber}\nনাম: ${activeMemberData.name}\nমোবাইল: ${activeMemberData.phone}\n*মোট সঞ্চিত ব্যালেন্স: ৳${activeMemberData.totalDeposit}*\n\nমোট কিস্তি সংখ্যা: ${memberDeposits.length} টি`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    // ================= GOOGLE DRIVE CSV EXPORT =================
+    let googleAccessToken = null;
 
     function connectGoogleDriveDirectly() {
       const provider = new firebase.auth.GoogleAuthProvider();
@@ -696,11 +960,13 @@
       });
     }
 
-    // Official Somiti Pad & Direct Google Drive CSV Backup
     function exportCsv() {
       const s = currentSomiti || { name: "সমিতি", somitiCode: "SMT-001" };
-      let csv = "\uFEFF"; // UTF-8 BOM
+      const totalDeposits = membersData.reduce((sum, m) => sum + (m.totalDeposit || 0), 0);
+      const totalExpenses = expensesData.reduce((sum, e) => sum + (e.amount || 0), 0);
+      const cashInHand = totalDeposits - totalExpenses;
 
+      let csv = "\uFEFF"; // UTF-8 BOM
       csv += "====================================================\n";
       csv += `              ${s.name}\n`;
       if (s.padHeader) csv += `          "${s.padHeader}"\n`;
@@ -713,8 +979,11 @@
       csv += `সাধারণ সম্পাদক,${s.secretaryName || "অনুল্লিখিত"}\n`;
       csv += `কোষাধ্যক্ষ,${s.cashierName || "সাজ্জাদ হোসেন"}\n`;
       csv += `মোট সদস্য,${membersData.length} জন\n`;
-      csv += `মোট সঞ্চিত তহবিল,৳${membersData.reduce((sum, m) => sum + (m.totalDeposit || 0), 0)}\n`;
-      csv += `মোট জমা এন্ট্রি,${depositsData.length} টি\n\n`;
+      csv += `মোট সঞ্চয় তহবিল,৳${totalDeposits}\n`;
+      csv += `মোট সমিতি খরচ,৳${totalExpenses}\n`;
+      csv += `হাতে নগদ ক্যাশ (Cash in Hand),৳${cashInHand}\n`;
+      csv += `মোট জমা এন্ট্রি,${depositsData.length} টি\n`;
+      csv += `মোট খরচ এন্ট্রি,${expensesData.length} টি\n\n`;
 
       csv += "----------------------------------------------------\n";
       csv += "              সদস্যভিত্তিক সঞ্চয় হিসাব\n";
@@ -730,18 +999,21 @@
         csv += `"${new Date().toLocaleDateString('bn-BD')}","${d.memberNumber}","${d.memberName}","${d.type}",${d.amount},"${d.note || ''}","${d.recordedBy || 'কোষাধ্যক্ষ'}"\n`;
       });
 
-      const fileName = `${s.name}_Official_Backup.csv`;
+      csv += "\n----------------------------------------------------\n";
+      csv += "               সমিতির দৈনন্দিন খরচ খতিয়ান\n";
+      csv += "----------------------------------------------------\n";
+      csv += "তারিখ,খরচের বিবরণ,ক্যাটাগরি,পরিমাণ (টাকা),নোট,রেকর্ডকারী\n";
+      expensesData.forEach(e => {
+        csv += `"${new Date().toLocaleDateString('bn-BD')}","${e.title}","${e.category || 'অন্যান্য'}",${e.amount},"${e.note || ''}","${e.recordedBy || 'এডমিন'}"\n`;
+      });
 
-      // If Google OAuth Token is present -> Upload DIRECTLY to Google Drive API!
+      const fileName = `${s.name}_Statement_${new Date().toISOString().split('T')[0]}.csv`;
+
       if (googleAccessToken) {
         document.getElementById("backupFeedback").innerText = "⏳ আপনার Google Drive-এ সরাসরি ফাইল আপলোড হচ্ছে...";
         document.getElementById("backupFeedback").style.display = "block";
 
-        const metadata = {
-          name: fileName,
-          mimeType: 'text/csv'
-        };
-
+        const metadata = { name: fileName, mimeType: 'text/csv' };
         const form = new FormData();
         form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
         form.append('file', new Blob([csv], { type: 'text/csv' }));
@@ -756,12 +1028,9 @@
           document.getElementById("backupFeedback").innerHTML = `🎉 <strong>সরাসরি Google Drive-এ আপলোড সম্পন্ন!</strong><br>ফাইল আইডি: ${file.id}<br><a href="https://drive.google.com/file/d/${file.id}/view" target="_blank" style="color:#0F9D58; text-decoration:underline;">Google Drive-এ ফাইলটি সরাসরি দেখুন ↗</a>`;
         })
         .catch(err => {
-          console.error(err);
-          // Fallback to local download
           downloadLocal(csv, fileName);
         });
       } else {
-        // Fallback for demo preview
         downloadLocal(csv, fileName);
         document.getElementById("backupFeedback").innerHTML = `✅ ব্যাকআপ ফাইল প্রস্তুত ও ডাউনলোড হয়েছে!<br><small style="color:#64748B;">(সরাসরি Google Drive ক্লাউডে সেভ করতে উপরের নীল বাটনে ক্লিক করে ড্রাইভ কানেক্ট করুন)</small>`;
         document.getElementById("backupFeedback").style.display = "block";

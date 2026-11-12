@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../models/somiti_model.dart';
 import '../models/member_model.dart';
 import '../models/deposit_model.dart';
+import '../models/expense_model.dart';
 import 'auth_service.dart';
 
 class DriveService {
@@ -26,6 +27,7 @@ class DriveService {
     required SomitiModel somiti,
     required List<MemberModel> members,
     required List<DepositModel> deposits,
+    List<ExpenseModel> expenses = const [],
   }) async {
     final driveApi = await _getDriveApi();
     if (driveApi == null) {
@@ -37,7 +39,9 @@ class DriveService {
     final sanitizedName = somiti.name.replaceAll(RegExp(r'[^\w\s\u0980-\u09FF]'), '_');
     final fileName = '${sanitizedName}_Statement_$dateStr.csv';
 
-    final double totalFund = members.fold(0.0, (sum, m) => sum + m.totalDeposit);
+    final double totalDeposit = members.fold(0.0, (sum, m) => sum + m.totalDeposit);
+    final double totalExpense = expenses.fold(0.0, (sum, e) => sum + e.amount);
+    final double cashInHand = totalDeposit - totalExpense;
 
     final buffer = StringBuffer();
     // UTF-8 BOM so Excel opens Bengali characters perfectly
@@ -62,8 +66,11 @@ class DriveService {
     buffer.writeln('কোষাধ্যক্ষ,${somiti.cashierName.isNotEmpty ? somiti.cashierName : "অনুল্লিখিত"}');
     buffer.writeln('রিপোর্ট তৈরির সময়,${DateFormat('dd-MMM-yyyy hh:mm a').format(now)}');
     buffer.writeln('মোট সদস্য সংখ্যা,${members.length} জন');
-    buffer.writeln('মোট সঞ্চিত তহবিল,৳$totalFund');
+    buffer.writeln('মোট সঞ্চয় তহবিল,৳$totalDeposit');
+    buffer.writeln('মোট সমিতি খরচ,৳$totalExpense');
+    buffer.writeln('হাতে নগদ ক্যাশ (Cash in Hand),৳$cashInHand');
     buffer.writeln('মোট জমা লেনদেন,${deposits.length} টি');
+    buffer.writeln('মোট খরচ এন্ট্রি,${expenses.length} টি');
     buffer.writeln('');
 
     buffer.writeln('----------------------------------------------------');
@@ -82,6 +89,16 @@ class DriveService {
     for (final d in deposits) {
       final formattedDate = DateFormat('dd-MM-yyyy hh:mm a').format(d.date);
       buffer.writeln('"$formattedDate","${d.memberNumber}","${d.memberName}","${d.type}",${d.amount},"${d.note}","${d.recordedBy}","${d.deviceSource}"');
+    }
+    buffer.writeln('');
+
+    buffer.writeln('----------------------------------------------------');
+    buffer.writeln('               সমিতির দৈনন্দিন খরচ খতিয়ান');
+    buffer.writeln('----------------------------------------------------');
+    buffer.writeln('তারিখ ও সময়,খরচের বিবরণ,ক্যাটাগরি,পরিমাণ (টাকা),নোট,রেকর্ডকারী');
+    for (final e in expenses) {
+      final formattedDate = DateFormat('dd-MM-yyyy hh:mm a').format(e.date);
+      buffer.writeln('"$formattedDate","${e.title}","${e.category}",${e.amount},"${e.note}","${e.recordedBy}"');
     }
 
     final bytes = utf8.encode(buffer.toString());

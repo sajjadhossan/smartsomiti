@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/somiti_model.dart';
 import '../models/member_model.dart';
 import '../models/deposit_model.dart';
+import '../models/expense_model.dart';
 
 class SomitiService {
   static final SomitiService _instance = SomitiService._internal();
@@ -185,5 +186,44 @@ class SomitiService {
     });
 
     await batch.commit();
+  }
+
+  // Expense Management (খরচ ও ক্যাশ খাতা)
+  CollectionReference<Map<String, dynamic>> _expensesCol(String somitiId) {
+    return _somitisCol().doc(somitiId).collection('expenses');
+  }
+
+  Stream<List<ExpenseModel>> getExpensesStream(String somitiId) {
+    return _expensesCol(somitiId)
+        .orderBy('date', descending: true)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => ExpenseModel.fromSnapshot(doc)).toList());
+  }
+
+  Future<void> addExpense({
+    required String somitiId,
+    required String title,
+    required double amount,
+    required String category,
+    required DateTime date,
+    required String note,
+    required String recordedBy,
+  }) async {
+    final docRef = _expensesCol(somitiId).doc();
+    final expense = ExpenseModel(
+      id: docRef.id,
+      title: title,
+      amount: amount,
+      category: category,
+      date: date,
+      note: note,
+      recordedBy: recordedBy,
+    );
+    await docRef.set(expense.toMap());
+  }
+
+  Future<void> deleteExpense(String somitiId, String expenseId) async {
+    await _expensesCol(somitiId).doc(expenseId).delete();
   }
 }
