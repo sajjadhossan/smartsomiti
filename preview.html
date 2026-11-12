@@ -866,7 +866,12 @@
       <div class="sidebar-nav">
         <button class="nav-item active" id="navItem-dashboard" onclick="navTo('dashboard')">
           <span class="nav-icon">📊</span>
-          <span>প্রধান ড্যাশবোর্ড ও প্যাড</span>
+          <span>প্রধান ড্যাশবোর্ড</span>
+        </button>
+
+        <button class="nav-item" id="navItem-somiti" onclick="navTo('somiti')">
+          <span class="nav-icon">🏛️</span>
+          <span>সমিতি প্রোফাইল ও অফিসিয়াল প্যাড</span>
         </button>
 
         <button class="nav-item" id="navItem-deposits" onclick="navTo('deposits')">
@@ -902,9 +907,9 @@
 
         <div class="nav-divider"></div>
 
-        <button class="nav-item" onclick="closeSidebar(); openEditSomitiModal();">
+        <button class="nav-item" onclick="navTo('somiti')">
           <span class="nav-icon">⚙️</span>
-          <span>সমিতি ও প্যাড সেটিংস</span>
+          <span>সমিতি, প্যাড ও সিল-সাইন সেটিংস</span>
         </button>
 
         <button class="nav-item" id="navItem-switchRole" onclick="toggleRoleView()">
@@ -947,69 +952,19 @@
 
       <!-- ================= 1. CLEAN MAIN DISPLAY: DASHBOARD VIEW ================= -->
       <div id="view-dashboard">
-        <!-- Ultra Professional Official Pad Banner -->
-        <div class="pad-banner" id="mainPadBanner">
-          <!-- Top Pad Row -->
-          <div class="pad-top-row">
-            <div class="pad-left-box">
-              <div class="pad-logo-box" id="padLogoEmoji">🏛️</div>
-              <div>
-                <div class="pad-title" id="padTitle">সমিতির নাম</div>
-                <div class="pad-slogan" id="padSlogan">"সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি"</div>
-              </div>
-            </div>
-            <div class="pad-right-info">
-              <div id="padAddress">📍 মিরপুর-১০, ঢাকা</div>
-              <div id="padBkash">📱 বিকাশ/নগদ: ০১৭১২-৩৪৫৬৭৮</div>
-              <div id="padBank">🏦 সোনালী ব্যাংক - ১২৩৪৫৬৭৮</div>
-              <div id="padCodeBadge" style="font-weight:700; color:var(--primary);">কোড: SMT-7890</div>
-            </div>
-          </div>
-
-          <!-- Official Notice Box -->
-          <div class="pad-notice-box" id="padNoticeBox">
-            <span style="font-size:16px;">📢</span>
+        <!-- Compact Clean Dashboard Somiti Header -->
+        <div class="dash-somiti-header-card" style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div id="dashBrandLogoIcon" style="width: 42px; height: 42px; border-radius: 10px; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 22px;">🏛️</div>
             <div>
-              <strong style="margin-right: 4px;">অফিসিয়াল নোটিশ:</strong>
-              <span id="padNoticeText">সকল সদস্যকে নিয়মিত মাসিক সঞ্চয় কিস্তি যথাসময়ে জমা দেওয়ার জন্য অনুরোধ করা যাচ্ছে।</span>
+              <div id="dashSomitiBrandTitle" style="font-size: 15px; font-weight: 800; color: var(--text);">প্রগতি ক্ষুদ্র সঞ্চয় সমবায় সমিতি</div>
+              <div id="dashSomitiBrandSlogan" style="font-size: 11px; color: var(--text-muted);">"সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি"</div>
             </div>
           </div>
-
-          <!-- Digital Signatures & Seals Row -->
-          <div class="pad-committee-row" id="padCommitteeRow">
-            <!-- President -->
-            <div class="committee-stamp-col">
-              <div class="digital-sign" id="padSignPresident">Karim</div>
-              <div class="official-seal-stamp">
-                <span>★ সিলমোহর ★</span>
-                <span>অনুমোদিত</span>
-              </div>
-              <div class="signatory-name" id="padPresidentName">জনাব আব্দুল করিম</div>
-              <div class="signatory-role">সভাপতি</div>
-            </div>
-
-            <!-- Secretary -->
-            <div class="committee-stamp-col">
-              <div class="digital-sign" id="padSignSecretary">Rafiqul</div>
-              <div class="official-seal-stamp">
-                <span>★ সিলমোহর ★</span>
-                <span>যাচাইকৃত</span>
-              </div>
-              <div class="signatory-name" id="padSecretaryName">জনাব রফিকুল ইসলাম</div>
-              <div class="signatory-role">সাধারণ সম্পাদক</div>
-            </div>
-
-            <!-- Cashier -->
-            <div class="committee-stamp-col">
-              <div class="digital-sign" id="padSignCashier">Sajjad</div>
-              <div class="official-seal-stamp">
-                <span>★ সিলমোহর ★</span>
-                <span>আদায়কারী</span>
-              </div>
-              <div class="signatory-name" id="padCashierName">সাজ্জাদ হোসেন</div>
-              <div class="signatory-role">কোষাধ্যক্ষ</div>
-            </div>
-          </div>
+          <button onclick="navTo('somiti')" style="background: var(--primary-light); color: var(--primary); border: 1px solid var(--border); padding: 7px 11px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 4px;">
+            <span>⚙️ প্রোফাইল</span>
+            <span>↗</span>
+          </button>
         </div>
 
         <!-- Financial Summary Box with Cash in Hand -->
@@ -1077,17 +1032,294 @@
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Dashboard Shortcut Card for Settings & Status -->
-        <div class="card" style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center; padding: 14px 16px;">
-          <div>
-            <div style="font-weight: 700; font-size: 13px;">⚙️ প্যাড ও সিল-সাইন কাস্টমাইজ</div>
-            <div style="font-size: 11px; color: var(--text-muted);">নাম, স্লোগান, ঠিকানা, সিল ও সাইন এডিট</div>
-          </div>
-          <button onclick="openEditSomitiModal()" style="background: var(--primary-light); color: var(--primary); border: 1px solid var(--border); padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;">
-            এডিট করুন ↗
-          </button>
+      <!-- ================= 1.5 SOMITI PROFILE & OFFICIAL PAD VIEW ================= -->
+      <div id="view-somiti" style="display: none;">
+        <div class="view-header-bar">
+          <button class="back-btn" onclick="navTo('dashboard')">← ড্যাশবোর্ডে ফিরুন</button>
+          <span style="font-weight: 700; font-size: 14px; color: var(--primary);">🏛️ সমিতি প্রোফাইল ও অফিসিয়াল প্যাড</span>
         </div>
+
+        <!-- 1. Basic Somiti Info Card -->
+        <div class="card">
+          <div class="card-title" style="display: flex; align-items: center; gap: 8px;">
+            <span>🏢</span>
+            <span>সমিতির মৌলিক পরিচিতি ও প্রোফাইল</span>
+          </div>
+
+          <div class="form-group">
+            <label>সমিতির পূর্ণ নাম *</label>
+            <input type="text" id="profSomitiName" placeholder="যেমন: প্রগতি ক্ষুদ্র সঞ্চয় সমবায় সমিতি" oninput="updateLivePadPreview()">
+          </div>
+
+          <div class="form-group">
+            <label>অফিসিয়াল স্লোগান / মোটো</label>
+            <input type="text" id="profSomitiSlogan" placeholder="যেমন: সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি" oninput="updateLivePadPreview()">
+          </div>
+
+          <div class="form-group">
+            <label>সমিতির পূর্ণ কার্যালয় ঠিকানা</label>
+            <input type="text" id="profSomitiAddress" placeholder="যেমন: মিরপুর-১০, ঢাকা" oninput="updateLivePadPreview()">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="form-group">
+              <label>সরকারি কোড নম্বর</label>
+              <input type="text" id="profSomitiCode" placeholder="SMT-7890" oninput="updateLivePadPreview()">
+            </div>
+            <div class="form-group">
+              <label>অফিসিয়াল বিকাশ / নগদ</label>
+              <input type="text" id="profSomitiBkash" placeholder="০১৭১২-৩৪৫৬৭৮" oninput="updateLivePadPreview()">
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Bank Details Card -->
+        <div class="card">
+          <div class="card-title" style="display: flex; align-items: center; gap: 8px;">
+            <span>🏦</span>
+            <span>সমিতির ব্যাংক একাউন্ট সংক্রান্ত তথ্য</span>
+          </div>
+
+          <div class="form-group">
+            <label>ব্যাংকের নাম</label>
+            <input type="text" id="profSomitiBankName" placeholder="যেমন: সোনালী ব্যাংক পিএলসি" oninput="updateLivePadPreview()">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="form-group">
+              <label>হিসাব (A/C) নম্বর</label>
+              <input type="text" id="profSomitiBankAcc" placeholder="যেমন: ১২৩৪৫৬৭৮৯০১" oninput="updateLivePadPreview()">
+            </div>
+            <div class="form-group">
+              <label>শাখা / ব্রাঞ্চ ও রাউটিং</label>
+              <input type="text" id="profSomitiBankBranch" placeholder="যেমন: মিরপুর শাখা" oninput="updateLivePadPreview()">
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Committee Executive Panel Card -->
+        <div class="card">
+          <div class="card-title" style="display: flex; align-items: center; gap: 8px;">
+            <span>👥</span>
+            <span>কার্যনির্বাহী কমিটি ও দায়িত্বশীল কর্মকর্তা</span>
+          </div>
+
+          <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin-bottom: 10px;">
+            <div style="font-weight: 700; font-size: 12px; color: var(--primary); margin-bottom: 6px;">১. সভাপতি (President)</div>
+            <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 8px;">
+              <input type="text" id="profPresidentName" placeholder="সভাপতির নাম" oninput="updateLivePadPreview()">
+              <input type="text" id="profPresidentPhone" placeholder="মোবাইল নম্বর">
+            </div>
+          </div>
+
+          <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin-bottom: 10px;">
+            <div style="font-weight: 700; font-size: 12px; color: var(--primary); margin-bottom: 6px;">২. সাধারণ সম্পাদক (General Secretary)</div>
+            <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 8px;">
+              <input type="text" id="profSecretaryName" placeholder="সাধারণ সম্পাদকের নাম" oninput="updateLivePadPreview()">
+              <input type="text" id="profSecretaryPhone" placeholder="মোবাইল নম্বর">
+            </div>
+          </div>
+
+          <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px;">
+            <div style="font-weight: 700; font-size: 12px; color: var(--primary); margin-bottom: 6px;">৩. কোষাধ্যক্ষ (Treasurer / Cashier)</div>
+            <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 8px;">
+              <input type="text" id="profCashierName" placeholder="কোষাধ্যক্ষের নাম" oninput="updateLivePadPreview()">
+              <input type="text" id="profCashierPhone" placeholder="মোবাইল নম্বর">
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Official Pad Setup & Notice Card -->
+        <div class="card">
+          <div class="card-title" style="display: flex; align-items: center; gap: 8px;">
+            <span>📄</span>
+            <span>অফিসিয়াল প্যাড, লোগো ও নোটিশ কনফিগারেশন</span>
+          </div>
+
+          <!-- Logo Picker & Upload -->
+          <div class="form-group">
+            <label>১. সমিতির প্রতীক বা লোগো নির্বাচন / আপলোড</label>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <select id="profSomitiLogoEmoji" style="flex: 1;" onchange="updateLivePadPreview()">
+                <option value="🏛️">🏛️ সরকারি / ব্যাংক স্মৃতিস্তম্ভ</option>
+                <option value="🏢">🏢 কর্পোরেট কার্যালয়</option>
+                <option value="🏦">🏦 বাণিজ্যিক ব্যাংক</option>
+                <option value="🤝">🤝 একতা ও সমবায় হাত</option>
+                <option value="🌾">🌾 সোনালী ফসল ও সমৃদ্ধি</option>
+                <option value="💎">💎 ডায়মন্ড সঞ্চয়</option>
+                <option value="🌟">🌟 স্টার কো-অপারেটিভ</option>
+                <option value="💰">💰 আর্থিক ক্যাশ ফান্ড</option>
+              </select>
+              <label style="background: var(--primary-light); color: var(--primary); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; margin-bottom: 0;">
+                📁 লোগো ছবি
+                <input type="file" id="profLogoFileInput" accept="image/*" style="display: none;" onchange="handleProfLogoUpload(this)">
+              </label>
+            </div>
+            <div id="profLogoPreviewContainer" style="display: none; margin-top: 6px;">
+              <img id="profLogoPreviewImg" src="" style="width: 48px; height: 48px; object-fit: contain; border-radius: 8px; border: 1px solid var(--border);">
+            </div>
+          </div>
+
+          <!-- Pad Header Banner Upload -->
+          <div class="form-group">
+            <label>২. প্যাডের টপ হেডার ব্যানার (ঐচ্ছিক ইমেজ আপলোড)</label>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <label style="background: var(--card-bg); border: 1.5px dashed var(--border); border-radius: 8px; padding: 10px; width: 100%; text-align: center; cursor: pointer; font-size: 12px; color: var(--text-muted);">
+                📷 প্যাড হেডার ব্যানার ছবি আপলোড করুন
+                <input type="file" id="profBannerFileInput" accept="image/*" style="display: none;" onchange="handleProfBannerUpload(this)">
+              </label>
+              <button type="button" onclick="clearProfBanner()" style="background: #FEE2E2; color: #DC2626; border: none; padding: 10px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer;">মুছুন</button>
+            </div>
+            <div id="profBannerPreviewContainer" style="display: none; margin-top: 6px;">
+              <img id="profBannerPreviewImg" src="" style="width: 100%; max-height: 90px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border);">
+            </div>
+          </div>
+
+          <!-- Pad Left Notice / Office Info Text -->
+          <div class="form-group">
+            <label>৩. প্যাডের বা-সাইডের নোটিশ / অফিস বার্তা (প্যাডে অটোমেটিক যুক্ত হবে)</label>
+            <textarea id="profSomitiNotice" rows="2" placeholder="যেমন: সকল সদস্যকে নিয়মিত সঞ্চয় কিস্তি যথাসময়ে জমা দেওয়ার জন্য অনুরোধ করা যাচ্ছে।" oninput="updateLivePadPreview()"></textarea>
+          </div>
+        </div>
+
+        <!-- 5. Interactive Seal & Signature Positioner (খাম ও স্লাইডার) -->
+        <div class="card" style="border: 2px solid var(--primary);">
+          <div class="card-title" style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span>✒️</span>
+              <span>সিল ও সাইন পজিশনিং কন্ট্রোলার (খাম ও স্লাইডার)</span>
+            </div>
+            <span style="font-size: 11px; background: var(--primary-light); color: var(--primary); padding: 2px 8px; border-radius: 6px; font-weight: 700;">ইন্টারঅ্যাক্টিভ</span>
+          </div>
+          <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">
+            নিচের স্লাইডার ডানে-বামে বা উপরে-নিচে টেনে সিল ও সাইনকে আপনার মনমতো নিখুঁত অবস্থানে সেট করুন। নিচের লাইভ প্রিভিউতে সাথে সাথে পরিবর্তন দেখতে পাবেন।
+          </p>
+
+          <!-- Signature Image Upload -->
+          <div class="form-group">
+            <label>ডিজিটাল সাইন ফাইল আপলোড (হস্তাক্ষরের ছবি)</label>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <label style="background: var(--bg); border: 1.5px dashed var(--border); border-radius: 8px; padding: 8px 12px; flex: 1; text-align: center; cursor: pointer; font-size: 12px; color: var(--text-muted); margin-bottom: 0;">
+                ✍️ সাইনের ছবি সিলেক্ট করুন
+                <input type="file" id="profSignFileInput" accept="image/*" style="display: none;" onchange="handleProfSignUpload(this)">
+              </label>
+              <button type="button" onclick="clearProfSign()" style="background: #FEE2E2; color: #DC2626; border: none; padding: 8px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer;">ডিফল্ট সাইন</button>
+            </div>
+          </div>
+
+          <!-- Vertical Movement Slider (উপরে-নিচে) -->
+          <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-weight: 700; font-size: 12px; color: var(--text);">↕️ উপরে-নিচে মুভ করার স্লাইডার:</span>
+              <span id="labelOffsetY" style="font-family: monospace; font-size: 12px; font-weight: 800; color: var(--primary); background: var(--card-bg); padding: 1px 8px; border-radius: 4px; border: 1px solid var(--border);">০ px</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <button type="button" onclick="nudgeSealY(-5)" style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-size: 11px; cursor: pointer;">⬆️ উপরে</button>
+              <input type="range" id="profSealOffsetY" min="-40" max="40" value="0" style="flex: 1; cursor: pointer;" oninput="onSealSliderChange()">
+              <button type="button" onclick="nudgeSealY(5)" style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-size: 11px; cursor: pointer;">⬇️ নিচে</button>
+            </div>
+          </div>
+
+          <!-- Horizontal Movement Slider (ডানে-বামে) -->
+          <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-weight: 700; font-size: 12px; color: var(--text);">↔️ ডানে-বামে মুভ করার স্লাইডার:</span>
+              <span id="labelOffsetX" style="font-family: monospace; font-size: 12px; font-weight: 800; color: var(--primary); background: var(--card-bg); padding: 1px 8px; border-radius: 4px; border: 1px solid var(--border);">০ px</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <button type="button" onclick="nudgeSealX(-5)" style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-size: 11px; cursor: pointer;">⬅️ বামে</button>
+              <input type="range" id="profSealOffsetX" min="-50" max="50" value="0" style="flex: 1; cursor: pointer;" oninput="onSealSliderChange()">
+              <button type="button" onclick="nudgeSealX(5)" style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-size: 11px; cursor: pointer;">➡️ ডানে</button>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end;">
+            <button type="button" onclick="resetSealSliders()" style="background: none; border: 1px dashed var(--border); border-radius: 6px; padding: 3px 10px; font-size: 11px; color: var(--text-muted); cursor: pointer;">↺ পজিশন রিসেট (০ px)</button>
+          </div>
+        </div>
+
+        <!-- 6. LIVE OFFICIAL PAD PREVIEW -->
+        <div style="font-weight: 800; margin: 16px 0 8px 4px; font-size: 14px; color: var(--text); display: flex; align-items: center; gap: 6px;">
+          <span>📜</span>
+          <span>লাইভ অফিসিয়াল প্যাড প্রিভিউ (সরাসরি প্রদর্শন):</span>
+        </div>
+
+        <!-- Live Pad Preview Banner -->
+        <div class="pad-banner" id="liveProfilePadBanner" style="margin-bottom: 16px;">
+          <!-- Banner Image if any -->
+          <div id="livePadBannerImgContainer" style="display: none; margin-bottom: 8px;">
+            <img id="livePadBannerImg" src="" style="width: 100%; max-height: 80px; object-fit: cover; border-radius: 6px;">
+          </div>
+
+          <!-- Top Pad Row -->
+          <div class="pad-top-row">
+            <div class="pad-left-box">
+              <div class="pad-logo-box" id="livePadLogoBox">🏛️</div>
+              <div>
+                <div class="pad-title" id="livePadTitle">প্রগতি ক্ষুদ্র সঞ্চয় সমবায় সমিতি</div>
+                <div class="pad-slogan" id="livePadSlogan">"সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি"</div>
+              </div>
+            </div>
+            <div class="pad-right-info">
+              <div id="livePadAddress">📍 মিরপুর-১০, ঢাকা</div>
+              <div id="livePadBkash">📱 বিকাশ/নগদ: ০১৭১২-৩৪৫৬৭৮</div>
+              <div id="livePadBank">🏦 সোনালী ব্যাংক - ১২৩৪৫৬৭৮</div>
+              <div id="livePadCodeBadge" style="font-weight:700; color:var(--primary);">কোড: SMT-7890</div>
+            </div>
+          </div>
+
+          <!-- Official Notice Box -->
+          <div class="pad-notice-box" id="livePadNoticeBox">
+            <span style="font-size:16px;">📢</span>
+            <div>
+              <strong style="margin-right: 4px;">অফিসিয়াল নোটিশ:</strong>
+              <span id="livePadNoticeText">সকল সদস্যকে নিয়মিত মাসিক সঞ্চয় কিস্তি যথাসময়ে জমা দেওয়ার জন্য অনুরোধ করা যাচ্ছে।</span>
+            </div>
+          </div>
+
+          <!-- Digital Signatures & Seals Row with Interactive Sliders Transformation -->
+          <div class="pad-committee-row" id="livePadCommitteeRow">
+            <!-- President -->
+            <div class="committee-stamp-col">
+              <div class="digital-sign live-sign-target" id="liveSignPresident">Karim</div>
+              <div class="official-seal-stamp live-seal-target">
+                <span>★ সিলমোহর ★</span>
+                <span>অনুমোদিত</span>
+              </div>
+              <div class="signatory-name" id="livePresidentName">জনাব আব্দুল করিম</div>
+              <div class="signatory-role">সভাপতি</div>
+            </div>
+
+            <!-- Secretary -->
+            <div class="committee-stamp-col">
+              <div class="digital-sign live-sign-target" id="liveSignSecretary">Rafiqul</div>
+              <div class="official-seal-stamp live-seal-target">
+                <span>★ সিলমোহর ★</span>
+                <span>যাচাইকৃত</span>
+              </div>
+              <div class="signatory-name" id="liveSecretaryName">জনাব রফিকুল ইসলাম</div>
+              <div class="signatory-role">সাধারণ সম্পাদক</div>
+            </div>
+
+            <!-- Cashier -->
+            <div class="committee-stamp-col">
+              <div class="digital-sign live-sign-target" id="liveSignCashier">Sajjad</div>
+              <div class="official-seal-stamp live-seal-target">
+                <span>★ সিলমোহর ★</span>
+                <span>আদায়কারী</span>
+              </div>
+              <div class="signatory-name" id="liveCashierName">সাজ্জাদ হোসেন</div>
+              <div class="signatory-role">কোষাধ্যক্ষ</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. Save Action Button -->
+        <button class="btn" onclick="saveSomitiProfileView()" style="margin-bottom: 24px; padding: 14px; font-size: 14px;">
+          <span>💾 সকল তথ্য, প্যাড ও সিল-সাইন স্থায়ীভাবে সংরক্ষণ করুন</span>
+        </button>
       </div>
 
       <!-- ================= 2. DEPOSITS VIEW ================= -->
@@ -1832,9 +2064,29 @@
       if (!s) s = currentSomiti;
       if (!s) return;
 
+      // Dashboard Compact Header Card
+      const dBrandTitle = document.getElementById("dashSomitiBrandTitle");
+      if (dBrandTitle) dBrandTitle.innerText = s.name || "সমিতি";
+      const dBrandSlogan = document.getElementById("dashSomitiBrandSlogan");
+      if (dBrandSlogan) dBrandSlogan.innerText = s.padHeader ? `"${s.padHeader}"` : "";
+      const dBrandIcon = document.getElementById("dashBrandLogoIcon");
+      if (dBrandIcon) {
+        if (s.logoImg) {
+          dBrandIcon.innerHTML = `<img src="${s.logoImg}" style="width:100%;height:100%;object-fit:contain;border-radius:8px;">`;
+        } else {
+          dBrandIcon.innerText = s.logoEmoji || "🏛️";
+        }
+      }
+
       // Header Brand
       const bIcon = document.getElementById("dashBrandIcon");
-      if (bIcon) bIcon.innerText = s.logoEmoji || "🏛️";
+      if (bIcon) {
+        if (s.logoImg) {
+          bIcon.innerHTML = `<img src="${s.logoImg}" style="width:100%;height:100%;object-fit:contain;border-radius:4px;">`;
+        } else {
+          bIcon.innerText = s.logoEmoji || "🏛️";
+        }
+      }
       const dashName = document.getElementById("dashSomitiName");
       if (dashName) dashName.innerText = s.name || "সমিতি";
       const dashCode = document.getElementById("dashSomitiCode");
@@ -1842,7 +2094,13 @@
 
       // Sidebar Brand
       const sideIcon = document.getElementById("sideBrandIcon");
-      if (sideIcon) sideIcon.innerText = s.logoEmoji || "🏛️";
+      if (sideIcon) {
+        if (s.logoImg) {
+          sideIcon.innerHTML = `<img src="${s.logoImg}" style="width:100%;height:100%;object-fit:contain;border-radius:6px;">`;
+        } else {
+          sideIcon.innerText = s.logoEmoji || "🏛️";
+        }
+      }
       const sideName = document.getElementById("sideSomitiName");
       if (sideName) sideName.innerText = s.name || "সমিতি";
       const sideCode = document.getElementById("sideSomitiCode");
@@ -1853,126 +2111,329 @@
         sideUser.innerText = currentUser.displayName || currentUser.email || "সাজ্জাদ হোসেন";
       }
 
-      // Pad Left Info
-      const pLogo = document.getElementById("padLogoEmoji");
-      if (pLogo) pLogo.innerText = s.logoEmoji || "🏛️";
-      const pTitle = document.getElementById("padTitle");
-      if (pTitle) pTitle.innerText = s.name || "সমিতি";
-      const pSlogan = document.getElementById("padSlogan");
-      if (pSlogan) pSlogan.innerText = s.padHeader ? `"${s.padHeader}"` : "";
+      // Apply Interactive Seal & Signature Transform
+      applySealOffsetStyles(s.sealOffsetX || 0, s.sealOffsetY || 0);
 
-      // Pad Right Info
-      const pAddr = document.getElementById("padAddress");
-      if (pAddr) pAddr.innerText = "📍 " + (s.address || "মিরপুর-১০, ঢাকা");
-      const pBkash = document.getElementById("padBkash");
-      if (pBkash) pBkash.innerText = "📱 বিকাশ/নগদ: " + (s.bkashNumber || "নেই");
-      const pBank = document.getElementById("padBank");
-      if (pBank) pBank.innerText = "🏦 " + (s.bankAccount || "নেই");
-      const pCode = document.getElementById("padCodeBadge");
-      if (pCode) pCode.innerText = "কোড: " + (s.somitiCode || "SMT-7890");
-
-      // Notice Box
-      const pNoticeBox = document.getElementById("padNoticeBox");
-      const pNoticeText = document.getElementById("padNoticeText");
-      if (pNoticeBox && pNoticeText) {
-        if (s.notice && s.notice.trim().length > 0) {
-          pNoticeText.innerText = s.notice.trim();
-          pNoticeBox.style.display = "flex";
-        } else {
-          pNoticeBox.style.display = "none";
-        }
-      }
-
-      // Committee Names & Signatures
-      const pPresName = document.getElementById("padPresidentName");
-      if (pPresName) pPresName.innerText = s.presidentName || "জনাব আব্দুল করিম";
-      const pSignPres = document.getElementById("padSignPresident");
-      if (pSignPres) pSignPres.innerText = (s.presidentName || "President").replace("জনাব ", "").split(" ")[0];
-
-      const pSecName = document.getElementById("padSecretaryName");
-      if (pSecName) pSecName.innerText = s.secretaryName || "জনাব রফিকুল ইসলাম";
-      const pSignSec = document.getElementById("padSignSecretary");
-      if (pSignSec) pSignSec.innerText = (s.secretaryName || "Secretary").replace("জনাব ", "").split(" ")[0];
-
-      const pCashName = document.getElementById("padCashierName");
-      if (pCashName) pCashName.innerText = s.cashierName || "সাজ্জাদ হোসেন";
-      const pSignCash = document.getElementById("padSignCashier");
-      if (pSignCash) pSignCash.innerText = (s.cashierName || "Cashier").replace("জনাব ", "").split(" ")[0];
-
-      // Vertical Position on Pad (Top vs Bottom)
-      const padBanner = document.getElementById("mainPadBanner");
-      const padRow = document.getElementById("padCommitteeRow");
-      if (padBanner && padRow) {
-        if (s.sealPos === "top") {
-          const topRow = padBanner.querySelector(".pad-top-row");
-          if (topRow && topRow.nextSibling) {
-            padBanner.insertBefore(padRow, topRow.nextSibling);
-          }
-        } else {
-          padBanner.appendChild(padRow);
-        }
-      }
-
-      // Horizontal Alignment (between / center / left / right)
-      if (padRow) {
-        padRow.className = "pad-committee-row align-" + (s.sealAlign || "between");
-      }
-
-      // Seal / Sign Order inside columns
-      const cols = document.querySelectorAll(".committee-stamp-col");
-      cols.forEach(col => {
-        col.className = "committee-stamp-col order-" + (s.sealOrder || "sign-seal");
-      });
+      // Also refresh live preview if on somiti profile view
+      updateLivePadPreview();
     }
 
     function openEditSomitiModal() {
+      navTo('somiti');
+    }
+
+    function populateSomitiProfileView() {
       const s = currentSomiti || {};
-      document.getElementById("editSomitiName").value = s.name || "";
-      document.getElementById("editSomitiLogo").value = s.logoEmoji || "🏛️";
-      document.getElementById("editSomitiPad").value = s.padHeader || "";
-      document.getElementById("editSomitiAddress").value = s.address || "";
-      document.getElementById("editSomitiBank").value = s.bankAccount || "";
-      document.getElementById("editSomitiBkash").value = s.bkashNumber || "";
-      document.getElementById("editSomitiPresident").value = s.presidentName || "";
-      document.getElementById("editSomitiSecretary").value = s.secretaryName || "";
-      document.getElementById("editSomitiCashier").value = s.cashierName || "";
-      document.getElementById("editSomitiNotice").value = s.notice || "";
-      document.getElementById("editSomitiSealPos").value = s.sealPos || "bottom";
-      if (document.getElementById("editSomitiSealAlign")) {
-        document.getElementById("editSomitiSealAlign").value = s.sealAlign || "between";
+      const el = id => document.getElementById(id);
+
+      if (el("profSomitiName")) el("profSomitiName").value = s.name || "";
+      if (el("profSomitiSlogan")) el("profSomitiSlogan").value = s.padHeader || "";
+      if (el("profSomitiAddress")) el("profSomitiAddress").value = s.address || "";
+      if (el("profSomitiCode")) el("profSomitiCode").value = s.somitiCode || "SMT-7890";
+      if (el("profSomitiBkash")) el("profSomitiBkash").value = s.bkashNumber || "";
+
+      if (el("profSomitiBankName")) el("profSomitiBankName").value = s.bankName || (s.bankAccount ? s.bankAccount.split('-')[0].trim() : "");
+      if (el("profSomitiBankAcc")) el("profSomitiBankAcc").value = s.bankAcc || (s.bankAccount && s.bankAccount.includes('-') ? s.bankAccount.split('-')[1].trim() : "");
+      if (el("profSomitiBankBranch")) el("profSomitiBankBranch").value = s.bankBranch || "";
+
+      if (el("profPresidentName")) el("profPresidentName").value = s.presidentName || "";
+      if (el("profPresidentPhone")) el("profPresidentPhone").value = s.presidentPhone || "";
+      if (el("profSecretaryName")) el("profSecretaryName").value = s.secretaryName || "";
+      if (el("profSecretaryPhone")) el("profSecretaryPhone").value = s.secretaryPhone || "";
+      if (el("profCashierName")) el("profCashierName").value = s.cashierName || "";
+      if (el("profCashierPhone")) el("profCashierPhone").value = s.cashierPhone || "";
+
+      if (el("profSomitiLogoEmoji")) el("profSomitiLogoEmoji").value = s.logoEmoji || "🏛️";
+      if (el("profSomitiNotice")) el("profSomitiNotice").value = s.notice || "";
+
+      const y = s.sealOffsetY || 0;
+      const x = s.sealOffsetX || 0;
+      if (el("profSealOffsetY")) el("profSealOffsetY").value = y;
+      if (el("profSealOffsetX")) el("profSealOffsetX").value = x;
+      onSealSliderChange();
+
+      if (s.logoImg) {
+        const prev = el("profLogoPreviewImg");
+        const cont = el("profLogoPreviewContainer");
+        if (prev && cont) {
+          prev.src = s.logoImg;
+          cont.style.display = "block";
+        }
       }
-      if (document.getElementById("editSomitiSealOrder")) {
-        document.getElementById("editSomitiSealOrder").value = s.sealOrder || "sign-seal";
+      if (s.padHeaderImg) {
+        const prev = el("profBannerPreviewImg");
+        const cont = el("profBannerPreviewContainer");
+        if (prev && cont) {
+          prev.src = s.padHeaderImg;
+          cont.style.display = "block";
+        }
       }
-      document.getElementById("editSomitiModal").style.display = "flex";
+
+      updateLivePadPreview();
     }
 
-    function closeEditSomitiModal() {
-      document.getElementById("editSomitiModal").style.display = "none";
+    function updateLivePadPreview() {
+      const s = currentSomiti || {};
+      const el = id => document.getElementById(id);
+
+      const name = el("profSomitiName")?.value.trim() || s.name || "সমিতি";
+      const slogan = el("profSomitiSlogan")?.value.trim() || s.padHeader || "";
+      const address = el("profSomitiAddress")?.value.trim() || s.address || "ঢাকা";
+      const code = el("profSomitiCode")?.value.trim() || s.somitiCode || "SMT-7890";
+      const bkash = el("profSomitiBkash")?.value.trim() || s.bkashNumber || "";
+
+      const bankName = el("profSomitiBankName")?.value.trim() || "";
+      const bankAcc = el("profSomitiBankAcc")?.value.trim() || "";
+      const bankStr = bankName ? `${bankName}${bankAcc ? ' - ' + bankAcc : ''}` : (s.bankAccount || "নেই");
+
+      const presName = el("profPresidentName")?.value.trim() || s.presidentName || "সভাপতি";
+      const secName = el("profSecretaryName")?.value.trim() || s.secretaryName || "সাধারণ সম্পাদক";
+      const cashName = el("profCashierName")?.value.trim() || s.cashierName || "কোষাধ্যক্ষ";
+
+      const notice = el("profSomitiNotice")?.value.trim() || "";
+      const logoEmoji = el("profSomitiLogoEmoji")?.value || s.logoEmoji || "🏛️";
+
+      if (el("livePadTitle")) el("livePadTitle").innerText = name;
+      if (el("livePadSlogan")) el("livePadSlogan").innerText = slogan ? `"${slogan}"` : "";
+      if (el("livePadAddress")) el("livePadAddress").innerText = "📍 " + address;
+      if (el("livePadBkash")) el("livePadBkash").innerText = "📱 বিকাশ/নগদ: " + (bkash || "নেই");
+      if (el("livePadBank")) el("livePadBank").innerText = "🏦 " + bankStr;
+      if (el("livePadCodeBadge")) el("livePadCodeBadge").innerText = "কোড: " + code;
+
+      const lpLogo = el("livePadLogoBox");
+      if (lpLogo) {
+        if (s.logoImg) {
+          lpLogo.innerHTML = `<img src="${s.logoImg}" style="width:100%;height:100%;object-fit:contain;border-radius:6px;">`;
+        } else {
+          lpLogo.innerHTML = logoEmoji;
+        }
+      }
+
+      const lpNoticeBox = el("livePadNoticeBox");
+      const lpNoticeText = el("livePadNoticeText");
+      if (lpNoticeBox && lpNoticeText) {
+        if (notice.length > 0) {
+          lpNoticeText.innerText = notice;
+          lpNoticeBox.style.display = "flex";
+        } else {
+          lpNoticeBox.style.display = "none";
+        }
+      }
+
+      if (el("livePresidentName")) el("livePresidentName").innerText = presName;
+      if (el("liveSignPresident")) {
+        if (s.customSignImg) {
+          el("liveSignPresident").innerHTML = `<img src="${s.customSignImg}" style="height:26px;object-fit:contain;">`;
+        } else {
+          el("liveSignPresident").innerText = presName.replace("জনাব ", "").split(" ")[0];
+        }
+      }
+
+      if (el("liveSecretaryName")) el("liveSecretaryName").innerText = secName;
+      if (el("liveSignSecretary")) {
+        if (s.customSignImg) {
+          el("liveSignSecretary").innerHTML = `<img src="${s.customSignImg}" style="height:26px;object-fit:contain;">`;
+        } else {
+          el("liveSignSecretary").innerText = secName.replace("জনাব ", "").split(" ")[0];
+        }
+      }
+
+      if (el("liveCashierName")) el("liveCashierName").innerText = cashName;
+      if (el("liveSignCashier")) {
+        if (s.customSignImg) {
+          el("liveSignCashier").innerHTML = `<img src="${s.customSignImg}" style="height:26px;object-fit:contain;">`;
+        } else {
+          el("liveSignCashier").innerText = cashName.replace("জনাব ", "").split(" ")[0];
+        }
+      }
+
+      const bannerCont = el("livePadBannerImgContainer");
+      const bannerImg = el("livePadBannerImg");
+      if (bannerCont && bannerImg) {
+        if (s.padHeaderImg) {
+          bannerImg.src = s.padHeaderImg;
+          bannerCont.style.display = "block";
+        } else {
+          bannerCont.style.display = "none";
+        }
+      }
     }
 
-    async function saveSomitiSettings() {
-      const name = document.getElementById("editSomitiName").value.trim();
+    function onSealSliderChange() {
+      const y = parseInt(document.getElementById("profSealOffsetY")?.value || 0);
+      const x = parseInt(document.getElementById("profSealOffsetX")?.value || 0);
+
+      const lblY = document.getElementById("labelOffsetY");
+      if (lblY) lblY.innerText = (y > 0 ? "+" : "") + y + " px";
+      const lblX = document.getElementById("labelOffsetX");
+      if (lblX) lblX.innerText = (x > 0 ? "+" : "") + x + " px";
+
+      applySealOffsetStyles(x, y);
+    }
+
+    function applySealOffsetStyles(x, y) {
+      const targets = document.querySelectorAll(".live-seal-target, .live-sign-target, .official-seal-stamp, .digital-sign");
+      targets.forEach(el => {
+        el.style.transform = `translate(${x}px, ${y}px)`;
+        el.style.transition = 'transform 0.08s ease-out';
+      });
+    }
+
+    function nudgeSealY(delta) {
+      const slider = document.getElementById("profSealOffsetY");
+      if (slider) {
+        slider.value = Math.max(-40, Math.min(40, parseInt(slider.value) + delta));
+        onSealSliderChange();
+      }
+    }
+
+    function nudgeSealX(delta) {
+      const slider = document.getElementById("profSealOffsetX");
+      if (slider) {
+        slider.value = Math.max(-50, Math.min(50, parseInt(slider.value) + delta));
+        onSealSliderChange();
+      }
+    }
+
+    function resetSealSliders() {
+      const sliderY = document.getElementById("profSealOffsetY");
+      const sliderX = document.getElementById("profSealOffsetX");
+      if (sliderY) sliderY.value = 0;
+      if (sliderX) sliderX.value = 0;
+      onSealSliderChange();
+    }
+
+    function handleProfLogoUpload(input) {
+      if (!input.files || !input.files[0]) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxW = 200;
+          const scale = Math.min(1, maxW / img.width);
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          const dataUrl = canvas.toDataURL('image/png', 0.85);
+
+          currentSomiti.logoImg = dataUrl;
+          const prev = document.getElementById("profLogoPreviewImg");
+          const cont = document.getElementById("profLogoPreviewContainer");
+          if (prev && cont) {
+            prev.src = dataUrl;
+            cont.style.display = "block";
+          }
+          updateLivePadPreview();
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+
+    function handleProfBannerUpload(input) {
+      if (!input.files || !input.files[0]) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxW = 600;
+          const scale = Math.min(1, maxW / img.width);
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+
+          currentSomiti.padHeaderImg = dataUrl;
+          const prev = document.getElementById("profBannerPreviewImg");
+          const cont = document.getElementById("profBannerPreviewContainer");
+          if (prev && cont) {
+            prev.src = dataUrl;
+            cont.style.display = "block";
+          }
+          updateLivePadPreview();
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+
+    function clearProfBanner() {
+      delete currentSomiti.padHeaderImg;
+      const cont = document.getElementById("profBannerPreviewContainer");
+      if (cont) cont.style.display = "none";
+      updateLivePadPreview();
+    }
+
+    function handleProfSignUpload(input) {
+      if (!input.files || !input.files[0]) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxW = 200;
+          const scale = Math.min(1, maxW / img.width);
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          const dataUrl = canvas.toDataURL('image/png', 0.85);
+
+          currentSomiti.customSignImg = dataUrl;
+          alert("✅ সাইন ইমেজ সফলভাবে যুক্ত হয়েছে!");
+          updateLivePadPreview();
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+
+    function clearProfSign() {
+      delete currentSomiti.customSignImg;
+      alert("ডিফল্ট সাইন সক্রিয় করা হয়েছে।");
+      updateLivePadPreview();
+    }
+
+    async function saveSomitiProfileView() {
+      const name = document.getElementById("profSomitiName").value.trim();
       if (!name) {
         alert("সমিতির নাম অবশ্যই প্রদান করতে হবে!");
         return;
       }
 
+      const bankName = document.getElementById("profSomitiBankName").value.trim();
+      const bankAcc = document.getElementById("profSomitiBankAcc").value.trim();
+      const bankBranch = document.getElementById("profSomitiBankBranch").value.trim();
+      const bankAccountStr = bankName ? `${bankName}${bankAcc ? ' - ' + bankAcc : ''}${bankBranch ? ' (' + bankBranch + ')' : ''}` : "";
+
+      const offsetY = parseInt(document.getElementById("profSealOffsetY")?.value || 0);
+      const offsetX = parseInt(document.getElementById("profSealOffsetX")?.value || 0);
+
       const updated = {
         ...currentSomiti,
         name: name,
-        logoEmoji: document.getElementById("editSomitiLogo").value,
-        padHeader: document.getElementById("editSomitiPad").value.trim(),
-        address: document.getElementById("editSomitiAddress").value.trim(),
-        bankAccount: document.getElementById("editSomitiBank").value.trim(),
-        bkashNumber: document.getElementById("editSomitiBkash").value.trim(),
-        presidentName: document.getElementById("editSomitiPresident").value.trim(),
-        secretaryName: document.getElementById("editSomitiSecretary").value.trim(),
-        cashierName: document.getElementById("editSomitiCashier").value.trim(),
-        notice: document.getElementById("editSomitiNotice").value.trim(),
-        sealPos: document.getElementById("editSomitiSealPos").value,
-        sealAlign: document.getElementById("editSomitiSealAlign") ? document.getElementById("editSomitiSealAlign").value : "between",
-        sealOrder: document.getElementById("editSomitiSealOrder") ? document.getElementById("editSomitiSealOrder").value : "sign-seal"
+        padHeader: document.getElementById("profSomitiSlogan").value.trim(),
+        address: document.getElementById("profSomitiAddress").value.trim(),
+        somitiCode: document.getElementById("profSomitiCode").value.trim() || "SMT-7890",
+        bkashNumber: document.getElementById("profSomitiBkash").value.trim(),
+        bankName: bankName,
+        bankAcc: bankAcc,
+        bankBranch: bankBranch,
+        bankAccount: bankAccountStr || currentSomiti.bankAccount || "",
+        presidentName: document.getElementById("profPresidentName").value.trim(),
+        presidentPhone: document.getElementById("profPresidentPhone").value.trim(),
+        secretaryName: document.getElementById("profSecretaryName").value.trim(),
+        secretaryPhone: document.getElementById("profSecretaryPhone").value.trim(),
+        cashierName: document.getElementById("profCashierName").value.trim(),
+        cashierPhone: document.getElementById("profCashierPhone").value.trim(),
+        logoEmoji: document.getElementById("profSomitiLogoEmoji").value,
+        notice: document.getElementById("profSomitiNotice").value.trim(),
+        sealOffsetY: offsetY,
+        sealOffsetX: offsetX
       };
 
       currentSomiti = updated;
@@ -1981,13 +2442,13 @@
 
       try {
         await db.collection("somiti").doc("main").set(updated, { merge: true });
-        alert("🎉 সমিতির সকল তথ্য, সিল-সাইন ও নোটিশ সফলভাবে ক্লাউডে সংরক্ষিত হয়েছে!");
+        alert("🎉 সমিতির সকল তথ্য, ব্যাংক, প্যাড ও সিল-সাইন সেটিংস সফলভাবে ক্লাউডে সংরক্ষিত হয়েছে!");
       } catch (err) {
-        console.warn("Firestore save note:", err);
+        console.warn("Firestore save error:", err);
         alert("✅ স্থানীয়ভাবে সংরক্ষিত হয়েছে!");
       }
 
-      closeEditSomitiModal();
+      navTo('dashboard');
     }
 
     function loadUserSomitis(isAdmin = false) {
@@ -2062,7 +2523,7 @@
       closeSidebar();
       currentActiveView = viewName;
 
-      const views = ['dashboard', 'deposits', 'members', 'expenses', 'backup', 'pending', 'verify', 'memberpassbook'];
+      const views = ['dashboard', 'somiti', 'deposits', 'members', 'expenses', 'backup', 'pending', 'verify', 'memberpassbook'];
       views.forEach(v => {
         const el = document.getElementById('view-' + v);
         if (el) el.style.display = (v === viewName) ? 'block' : 'none';
@@ -2073,6 +2534,7 @@
 
       const titles = {
         'dashboard': '📊 প্রধান ড্যাশবোর্ড',
+        'somiti': '🏛️ সমিতি প্রোফাইল ও অফিসিয়াল প্যাড',
         'deposits': '📥 কিস্তি জমা ও মানি রিসিট',
         'members': '👥 সদস্য তালিকা ও পাসবুক',
         'expenses': '💸 দৈনন্দিন খরচ খাতা',
@@ -2087,6 +2549,10 @@
 
       const backBtn = document.getElementById("headerBackBtn");
       if (backBtn) backBtn.style.display = (viewName === 'dashboard') ? 'none' : 'inline-block';
+
+      if (viewName === 'somiti') {
+        populateSomitiProfileView();
+      }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
