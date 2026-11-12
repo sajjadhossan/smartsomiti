@@ -1274,28 +1274,39 @@
 
           <div class="form-group">
             <label>সমিতির পূর্ণ নাম *</label>
-            <input type="text" id="profSomitiName" placeholder="যেমন: প্রগতি ক্ষুদ্র সঞ্চয় সমবায় সমিতি" oninput="updateLivePadPreview()">
-          </div>
-
-          <div class="form-group">
-            <label>অফিসিয়াল স্লোগান / মোটো</label>
-            <input type="text" id="profSomitiSlogan" placeholder="যেমন: সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি" oninput="updateLivePadPreview()">
-          </div>
-
-          <div class="form-group">
-            <label>সমিতির পূর্ণ কার্যালয় ঠিকানা</label>
-            <input type="text" id="profSomitiAddress" placeholder="যেমন: মিরপুর-১০, ঢাকা" oninput="updateLivePadPreview()">
+            <input type="text" id="profSomitiName" placeholder="যেমন: স্বপ্ন ছোঁয়া ঐক্য সমিতি" oninput="updateLivePadPreview()">
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <div class="form-group">
-              <label>সরকারি কোড নম্বর</label>
-              <input type="text" id="profSomitiCode" placeholder="SMT-7890" oninput="updateLivePadPreview()">
+              <label>অফিসিয়াল স্লোগান / মোটো</label>
+              <input type="text" id="profSomitiSlogan" placeholder="যেমন: ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।" oninput="updateLivePadPreview()">
             </div>
             <div class="form-group">
-              <label>অফিসিয়াল বিকাশ / নগদ</label>
-              <input type="text" id="profSomitiBkash" placeholder="০১৭১২-৩৪৫৬৭৮" oninput="updateLivePadPreview()">
+              <label>স্থাপিত সন / বছর</label>
+              <input type="text" id="profSomitiEstYear" placeholder="যেমন: ২০২৬ ইং" oninput="updateLivePadPreview()">
             </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="form-group">
+              <label>ট্যাগলাইন / উপ-শিরোনাম (প্যাডের ডানে)</label>
+              <input type="text" id="profSomitiTagline" placeholder="যেমন: স্বচ্ছতা ও ঐক্যের প্রতীক" oninput="updateLivePadPreview()">
+            </div>
+            <div class="form-group">
+              <label>সরকারি কোড নম্বর</label>
+              <input type="text" id="profSomitiCode" placeholder="যেমন: সছঐস" oninput="updateLivePadPreview()">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>সমিতির পূর্ণ কার্যালয় ঠিকানা</label>
+            <input type="text" id="profSomitiAddress" placeholder="যেমন: শ্রীনগর, মুন্সীগঞ্জ" oninput="updateLivePadPreview()">
+          </div>
+
+          <div class="form-group">
+            <label>অফিসিয়াল বিকাশ / নগদ</label>
+            <input type="text" id="profSomitiBkash" placeholder="০১৭১২-৩৪৫৬৭৮" oninput="updateLivePadPreview()">
           </div>
         </div>
 
@@ -1368,25 +1379,19 @@
 
           <!-- Logo Picker & Upload -->
           <div class="form-group">
-            <label>১. সমিতির প্রতীক বা লোগো নির্বাচন / আপলোড</label>
-            <div style="display: flex; gap: 8px; align-items: center;">
-              <select id="profSomitiLogoEmoji" style="flex: 1;" onchange="updateLivePadPreview()">
-                <option value="🏛️">🏛️ সরকারি / ব্যাংক স্মৃতিস্তম্ভ</option>
-                <option value="🏢">🏢 কর্পোরেট কার্যালয়</option>
-                <option value="🏦">🏦 বাণিজ্যিক ব্যাংক</option>
-                <option value="🤝">🤝 একতা ও সমবায় হাত</option>
-                <option value="🌾">🌾 সোনালী ফসল ও সমৃদ্ধি</option>
-                <option value="💎">💎 ডায়মন্ড সঞ্চয়</option>
-                <option value="🌟">🌟 স্টার কো-অপারেটিভ</option>
-                <option value="💰">💰 আর্থিক ক্যাশ ফান্ড</option>
-              </select>
-              <label style="background: var(--primary-light); color: var(--primary); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; margin-bottom: 0;">
-                📁 লোগো ছবি
+            <label>১. সমিতির অফিসিয়াল লোগো আপলোড</label>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <label style="background: var(--primary-light); color: var(--primary); border: 1px solid var(--border); padding: 8px 14px; border-radius: 8px; font-size: 11.5px; font-weight: 700; cursor: pointer; white-space: nowrap; margin-bottom: 0; display: inline-flex; align-items: center; gap: 5px;">
+                📁 লোগো ছবি নির্বাচন করুন
                 <input type="file" id="profLogoFileInput" accept="image/*" style="display: none;" onchange="handleProfLogoUpload(this)">
               </label>
+              <button type="button" onclick="clearProfLogo()" style="background: #FEE2E2; color: #DC2626; border: none; padding: 8px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer;">
+                🔄 ডিফল্ট সমবায় প্রতীকে ফিরুন
+              </button>
             </div>
-            <div id="profLogoPreviewContainer" style="display: none; margin-top: 6px;">
-              <img id="profLogoPreviewImg" src="" style="width: 48px; height: 48px; object-fit: contain; border-radius: 8px; border: 1px solid var(--border);">
+            <div id="profLogoPreviewContainer" style="display: none; margin-top: 8px; align-items: center; gap: 10px;">
+              <img id="profLogoPreviewImg" src="" style="width: 48px; height: 48px; object-fit: contain; border-radius: 50%; border: 1.5px solid #165B33; background: white; padding: 2px;">
+              <span style="font-size: 11px; color: var(--text-muted);">আপলোডকৃত লোগো প্যাডে লাইভ সেট হয়েছে</span>
             </div>
           </div>
 
@@ -3350,6 +3355,49 @@
       return `${day} ${month} ${year} ইং, ${period} ${displayHours}:${minutes} মি.`;
     }
 
+    // Dynamic Logo Renderer: shows uploaded logo or universal cooperative wreath emblem
+    function renderPadLogo(logoHolderId, s = currentSomiti || {}, uid = "default") {
+      const box = document.getElementById(logoHolderId);
+      if (!box) return;
+      if (s.logoImg) {
+        box.innerHTML = `<img src="${s.logoImg}" alt="Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 50%; display: block; background: white;">`;
+      } else {
+        const arcId = "wreathArc_" + uid;
+        const sealText = s.padHeader ? (s.padHeader.length > 32 ? s.padHeader.substring(0, 32) + '...' : s.padHeader) : "একতা আমাদের শক্তি, একতা আমাদের ভবিষ্যৎ";
+        box.innerHTML = `
+          <svg viewBox="0 0 130 130" style="width: 100%; height: 100%; display: block;" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="65" cy="65" r="62" fill="#FFFFFF" stroke="#165B33" stroke-width="2.5"/>
+            <circle cx="65" cy="65" r="56" fill="none" stroke="#165B33" stroke-width="1" stroke-dasharray="2,2"/>
+            <path d="M 22 80 C 15 58, 26 36, 48 22" fill="none" stroke="#165B33" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M 20 70 Q 14 65 19 62 Q 23 68 20 70 Z" fill="#165B33"/>
+            <path d="M 23 58 Q 16 52 22 49 Q 26 55 23 58 Z" fill="#165B33"/>
+            <path d="M 28 46 Q 22 39 29 37 Q 32 44 28 46 Z" fill="#165B33"/>
+            <path d="M 37 35 Q 31 28 38 27 Q 41 33 37 35 Z" fill="#165B33"/>
+            <path d="M 108 80 C 115 58, 104 36, 82 22" fill="none" stroke="#165B33" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M 110 70 Q 116 65 111 62 Q 107 68 110 70 Z" fill="#165B33"/>
+            <path d="M 107 58 Q 114 52 108 49 Q 104 55 107 58 Z" fill="#165B33"/>
+            <path d="M 102 46 Q 108 39 101 37 Q 98 44 102 46 Z" fill="#165B33"/>
+            <path d="M 93 35 Q 99 28 92 27 Q 89 33 93 35 Z" fill="#165B33"/>
+            <defs><path id="${arcId}" d="M 22 62 A 44 44 0 0 1 108 62"/></defs>
+            <text font-size="6.8" font-weight="bold" fill="#165B33" letter-spacing="0.3">
+              <textPath href="#${arcId}" startOffset="50%" text-anchor="middle">${sealText}</textPath>
+            </text>
+            <circle cx="65" cy="44" r="5.5" fill="#B91C1C"/>
+            <circle cx="52" cy="49" r="4.8" fill="#165B33"/>
+            <circle cx="78" cy="49" r="4.8" fill="#165B33"/>
+            <path d="M 44 65 C 48 54, 82 54, 86 65 C 76 60, 54 60, 44 65 Z" fill="#B91C1C"/>
+            <path d="M 52 64 C 55 57, 75 57, 78 64 Z" fill="#FFFFFF"/>
+            <path d="M 65 77 C 57 69, 52 65, 47 67 C 49 74, 57 77, 65 77 Z" fill="#165B33"/>
+            <path d="M 65 77 C 73 69, 78 65, 83 67 C 81 74, 73 77, 65 77 Z" fill="#165B33"/>
+            <ellipse cx="65" cy="80" rx="14" ry="4.5" fill="#EAB308" stroke="#CA8A04" stroke-width="0.8"/>
+            <ellipse cx="65" cy="84" rx="16" ry="5" fill="#FACC15" stroke="#CA8A04" stroke-width="0.8"/>
+            <ellipse cx="65" cy="88" rx="17" ry="5.2" fill="#EAB308" stroke="#CA8A04" stroke-width="0.8"/>
+            <text x="65" y="106" font-size="12" fill="#165B33" text-anchor="middle" font-weight="bold" letter-spacing="3">★ ★ ★</text>
+          </svg>
+        `;
+      }
+    }
+
     function renderPad(s) {
       if (!s) s = currentSomiti;
       if (!s) return;
@@ -3453,6 +3501,8 @@
 
       if (el("profSomitiName")) el("profSomitiName").value = s.name || "";
       if (el("profSomitiSlogan")) el("profSomitiSlogan").value = s.padHeader || "";
+      if (el("profSomitiEstYear")) el("profSomitiEstYear").value = s.estYear || "";
+      if (el("profSomitiTagline")) el("profSomitiTagline").value = s.tagline || "";
       if (el("profSomitiAddress")) el("profSomitiAddress").value = s.address || "";
       if (el("profSomitiCode")) el("profSomitiCode").value = s.somitiCode || "SMT-7890";
       if (el("profSomitiBkash")) el("profSomitiBkash").value = s.bkashNumber || "";
@@ -3677,6 +3727,9 @@
 
       const name = el("profSomitiName")?.value.trim() || s.name || "সমিতি";
       const slogan = el("profSomitiSlogan")?.value.trim() || s.padHeader || "";
+      const rawEst = el("profSomitiEstYear")?.value.trim() || s.estYear || "২০২৬ ইং";
+      const estYear = rawEst.startsWith("স্থাপিত") ? rawEst : ("স্থাপিত: " + rawEst);
+      const tagline = el("profSomitiTagline")?.value.trim() || s.tagline || "স্বচ্ছতা ও ঐক্যের প্রতীক";
       const address = el("profSomitiAddress")?.value.trim() || s.address || "ঢাকা";
       const code = el("profSomitiCode")?.value.trim() || s.somitiCode || "SMT-7890";
       const bkash = el("profSomitiBkash")?.value.trim() || s.bkashNumber || "";
@@ -3694,18 +3747,17 @@
       const bankStr = bankParts.length ? `${bankParts.join(' - ')}${subParts.length ? ' (' + subParts.join(', ') + ')' : ''}` : (s.bankAccount || "নেই");
 
       const notice = el("profSomitiNotice")?.value.trim() || "";
-      const logoEmoji = el("profSomitiLogoEmoji")?.value || s.logoEmoji || "🏛️";
 
       if (el("livePadTitle")) el("livePadTitle").innerHTML = formatTwoToneTitle(name);
-      if (el("livePadSlogan")) el("livePadSlogan").innerText = slogan || "ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।";
-      if (el("livePadEst")) el("livePadEst").innerText = "স্থাপিত: " + (s.estYear || "২০২৬ ইং");
+      if (el("livePadSlogan")) el("livePadSlogan").innerText = slogan ? `"${slogan}"` : "";
+      if (el("livePadEst")) el("livePadEst").innerText = estYear;
       if (el("livePadRightName")) el("livePadRightName").innerText = name;
       if (el("livePadRightAddress")) el("livePadRightAddress").innerText = address;
-      if (el("livePadRightTagline")) el("livePadRightTagline").innerText = s.tagline || "স্বচ্ছতা ও ঐক্যের প্রতীক";
+      if (el("livePadRightTagline")) el("livePadRightTagline").innerText = tagline;
 
       if (el("livePadFootName")) el("livePadFootName").innerText = name;
       if (el("livePadFootAddress")) el("livePadFootAddress").innerText = "ঠিকানা: " + address;
-      if (el("livePadFootEst")) el("livePadFootEst").innerText = "স্থাপিত: " + (s.estYear || "২০২৬ ইং");
+      if (el("livePadFootEst")) el("livePadFootEst").innerText = estYear;
 
       // Legacy fallbacks
       if (el("livePadAddress")) el("livePadAddress").innerText = "📍 " + address;
@@ -3713,10 +3765,8 @@
       if (el("livePadBank")) el("livePadBank").innerText = "🏦 " + bankStr;
       if (el("livePadCodeBadge")) el("livePadCodeBadge").innerText = "কোড: " + code;
 
-      const lpLogo = el("livePadLogoBox");
-      if (lpLogo && s.logoImg) {
-        lpLogo.innerHTML = `<img src="${s.logoImg}" style="width:100%;height:100%;object-fit:contain;border-radius:50%;">`;
-      }
+      // Render logo dynamically
+      renderPadLogo("livePadLogoBox", s, "live");
 
       const lpNoticeBox = el("livePadNoticeBox");
       const lpNoticeText = el("livePadNoticeText");
@@ -3833,6 +3883,15 @@
       reader.readAsDataURL(input.files[0]);
     }
 
+    function clearProfLogo() {
+      if (currentSomiti) delete currentSomiti.logoImg;
+      const prev = document.getElementById("profLogoPreviewImg");
+      const cont = document.getElementById("profLogoPreviewContainer");
+      if (prev) prev.src = "";
+      if (cont) cont.style.display = "none";
+      updateLivePadPreview();
+    }
+
     function clearProfBanner() {
       delete currentSomiti.padHeaderImg;
       const cont = document.getElementById("profBannerPreviewContainer");
@@ -3863,6 +3922,8 @@
         ...currentSomiti,
         name: name,
         padHeader: document.getElementById("profSomitiSlogan").value.trim(),
+        estYear: document.getElementById("profSomitiEstYear")?.value.trim() || currentSomiti.estYear || "২০২৬ ইং",
+        tagline: document.getElementById("profSomitiTagline")?.value.trim() || currentSomiti.tagline || "স্বচ্ছতা ও ঐক্যের প্রতীক",
         address: document.getElementById("profSomitiAddress").value.trim(),
         somitiCode: document.getElementById("profSomitiCode").value.trim() || "SMT-7890",
         bkashNumber: document.getElementById("profSomitiBkash").value.trim(),
@@ -3886,7 +3947,6 @@
         cashierSignScale: currentSomiti.cashierSignScale !== undefined ? currentSomiti.cashierSignScale : 100,
         cashierSignY: currentSomiti.cashierSignY !== undefined ? currentSomiti.cashierSignY : 0,
         cashierSignX: currentSomiti.cashierSignX !== undefined ? currentSomiti.cashierSignX : 0,
-        logoEmoji: document.getElementById("profSomitiLogoEmoji").value,
         notice: document.getElementById("profSomitiNotice").value.trim()
       };
 
@@ -4401,19 +4461,20 @@
       const s = currentSomiti || {};
       const el = id => document.getElementById(id);
 
-      const somitiName = s.name || "স্বপ্ন ছোঁয়া ঐক্য সমিতি";
+      const somitiName = s.name || "সমিতি";
       const somitiSlogan = s.padHeader || "ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।";
       const somitiTagline = s.tagline || "স্বচ্ছতা ও ঐক্যের প্রতীক";
-      const somitiAddress = s.address || "শ্রীনগর, মুন্সীগঞ্জ";
-      const somitiEst = s.estYear || "২০২৬ ইং";
+      const somitiAddress = s.address || "ঠিকানা";
+      const rawEst = s.estYear || "২০২৬ ইং";
+      const somitiEst = rawEst.startsWith("স্থাপিত") ? rawEst : ("স্থাপিত: " + rawEst);
       const somitiCode = s.somitiCode || "সছঐস";
-      const bankName = s.bankName || "CITY BANK PLC (REKABI BAZAR)";
-      const bankAccount = s.bankAccount || "2305158045001 (MD RAHIM, SUMAYA AKTER AND DELWARA BEGUM)";
+      const bankName = s.bankName || (s.bankAccount ? s.bankAccount.split('-')[0].trim() : "সিটি ব্যাংক পিএলসি");
+      const bankAccount = s.bankAccount || "ব্যাংক হিসাব নেই";
 
       // Top Pad Header Elements
       if (el("rcptSomitiName")) el("rcptSomitiName").innerHTML = formatTwoToneTitle(somitiName);
       if (el("rcptPadHeader")) el("rcptPadHeader").innerText = somitiSlogan;
-      if (el("rcptEstYear")) el("rcptEstYear").innerText = "স্থাপিত: " + somitiEst;
+      if (el("rcptEstYear")) el("rcptEstYear").innerText = somitiEst;
       if (el("rcptRightName")) el("rcptRightName").innerText = somitiName;
       if (el("rcptRightAddress")) el("rcptRightAddress").innerText = somitiAddress;
       if (el("rcptRightTagline")) el("rcptRightTagline").innerText = somitiTagline;
@@ -4424,18 +4485,16 @@
       if (el("rcptBank")) el("rcptBank").innerText = "🏦 " + bankAccount;
       if (el("rcptCodeBadge")) el("rcptCodeBadge").innerText = "কোড: " + somitiCode;
 
-      // Logo
-      const rcptLogo = el("rcptPadLogoBox");
-      if (rcptLogo && s.logoImg) {
-        rcptLogo.innerHTML = `<img src="${s.logoImg}" style="width:100%;height:100%;object-fit:contain;border-radius:50%;">`;
-      }
+      // Dynamic Logo (uploaded logo or universal seal)
+      renderPadLogo("rcptPadLogoBox", s, "rcpt");
 
-      // Receipt number formatting: সছঐস/রিসিট/২০২৬-০৭
+      // Receipt number formatting: ${somitiCode}/রিসিট/${currentYear}-${seqNum}
       let rawNo = data.receiptNo || "RCT-001";
       let seqNum = rawNo.replace(/[^0-9]/g, '');
       if (!seqNum) seqNum = "০১";
       else seqNum = toBnDigits(seqNum.slice(-4));
-      const formattedRcptNo = `${somitiCode}/রিসিট/২০২৬-${seqNum}`;
+      const curYearBn = toBnDigits(new Date().getFullYear());
+      const formattedRcptNo = `${somitiCode}/রিসিট/${curYearBn}-${seqNum}`;
 
       if (el("rcptNoFormatted")) el("rcptNoFormatted").innerText = formattedRcptNo;
       if (el("rcptNo")) el("rcptNo").innerText = rawNo;
@@ -4616,16 +4675,17 @@
       const s = currentSomiti || {};
       const el = id => document.getElementById(id);
 
-      const somitiName = s.name || "স্বপ্ন ছোঁয়া ঐক্য সমিতি";
+      const somitiName = s.name || "সমিতি";
       const somitiSlogan = s.padHeader || "ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।";
       const somitiTagline = s.tagline || "স্বচ্ছতা ও ঐক্যের প্রতীক";
-      const somitiAddress = s.address || "শ্রীনগর, মুন্সীগঞ্জ";
-      const somitiEst = s.estYear || "২০২৬ ইং";
+      const somitiAddress = s.address || "ঠিকানা";
+      const rawEst = s.estYear || "২০২৬ ইং";
+      const somitiEst = rawEst.startsWith("স্থাপিত") ? rawEst : ("স্থাপিত: " + rawEst);
 
       // Pad Header on Notice
       if (el("npSomitiName")) el("npSomitiName").innerHTML = formatTwoToneTitle(somitiName);
       if (el("npPadHeader")) el("npPadHeader").innerText = somitiSlogan;
-      if (el("npEstYear")) el("npEstYear").innerText = "স্থাপিত: " + somitiEst;
+      if (el("npEstYear")) el("npEstYear").innerText = somitiEst;
       if (el("npRightName")) el("npRightName").innerText = somitiName;
       if (el("npRightAddress")) el("npRightAddress").innerText = somitiAddress;
       if (el("npRightTagline")) el("npRightTagline").innerText = somitiTagline;
@@ -4636,10 +4696,8 @@
       if (el("npBank")) el("npBank").innerText = "🏦 " + (s.bankAccount || "নেই");
       if (el("npCodeBadge")) el("npCodeBadge").innerText = "কোড: " + (s.somitiCode || "সছঐস");
 
-      const npLogo = el("npPadLogoBox");
-      if (npLogo && s.logoImg) {
-        npLogo.innerHTML = `<img src="${s.logoImg}" style="width:100%;height:100%;object-fit:contain;border-radius:50%;">`;
-      }
+      // Dynamic Logo
+      renderPadLogo("npPadLogoBox", s, "notice");
 
       const memoNo = el("noticeMemoNo")?.value.trim() || "স্মারক-০১/২০২৬";
       const dateStr = el("noticeDate")?.value.trim() || formatBengaliDate(new Date());
@@ -4783,15 +4841,16 @@
       const s = currentSomiti || {};
       const el = id => document.getElementById(id);
 
-      const somitiName = s.name || "স্বপ্ন ছোঁয়া ঐক্য সমিতি";
+      const somitiName = s.name || "সমিতি";
       const somitiSlogan = s.padHeader || "ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।";
       const somitiTagline = s.tagline || "স্বচ্ছতা ও ঐক্যের প্রতীক";
-      const somitiAddress = s.address || "শ্রীনগর, মুন্সীগঞ্জ";
-      const somitiEst = s.estYear || "২০২৬ ইং";
+      const somitiAddress = s.address || "ঠিকানা";
+      const rawEst = s.estYear || "২০২৬ ইং";
+      const somitiEst = rawEst.startsWith("স্থাপিত") ? rawEst : ("স্থাপিত: " + rawEst);
 
       if (el("fpSomitiName")) el("fpSomitiName").innerHTML = formatTwoToneTitle(somitiName);
       if (el("fpPadHeader")) el("fpPadHeader").innerText = somitiSlogan;
-      if (el("fpEstYear")) el("fpEstYear").innerText = "স্থাপিত: " + somitiEst;
+      if (el("fpEstYear")) el("fpEstYear").innerText = somitiEst;
       if (el("fpRightName")) el("fpRightName").innerText = somitiName;
       if (el("fpRightAddress")) el("fpRightAddress").innerText = somitiAddress;
       if (el("fpRightTagline")) el("fpRightTagline").innerText = somitiTagline;
@@ -4802,10 +4861,8 @@
       if (el("fpBank")) el("fpBank").innerText = "🏦 " + (s.bankAccount || "নেই");
       if (el("fpCodeBadge")) el("fpCodeBadge").innerText = "কোড: " + (s.somitiCode || "সছঐস");
 
-      const fpLogo = el("fpPadLogoBox");
-      if (fpLogo && s.logoImg) {
-        fpLogo.innerHTML = `<img src="${s.logoImg}" style="width:100%;height:100%;object-fit:contain;border-radius:50%;">`;
-      }
+      // Dynamic Logo
+      renderPadLogo("fpPadLogoBox", s, "fp");
 
       // Committee Signatures
       // 1. Cashier
@@ -5497,15 +5554,16 @@
 
       // Pad Header elements
       const s = currentSomiti || {};
-      const somitiName = s.name || "স্বপ্ন ছোঁয়া ঐক্য সমিতি";
+      const somitiName = s.name || "সমিতি";
       const somitiSlogan = s.padHeader || "ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।";
       const somitiTagline = s.tagline || "স্বচ্ছতা ও ঐক্যের প্রতীক";
-      const somitiAddress = s.address || "শ্রীনগর, মুন্সীগঞ্জ";
-      const somitiEst = s.estYear || "২০২৬ ইং";
+      const somitiAddress = s.address || "ঠিকানা";
+      const rawEst = s.estYear || "২০২৬ ইং";
+      const somitiEst = rawEst.startsWith("স্থাপিত") ? rawEst : ("স্থাপিত: " + rawEst);
 
       if (el("apSomitiName")) el("apSomitiName").innerHTML = formatTwoToneTitle(somitiName);
       if (el("apPadHeader")) el("apPadHeader").innerText = somitiSlogan;
-      if (el("apEstYear")) el("apEstYear").innerText = "স্থাপিত: " + somitiEst;
+      if (el("apEstYear")) el("apEstYear").innerText = somitiEst;
       if (el("apRightName")) el("apRightName").innerText = somitiName;
       if (el("apRightAddress")) el("apRightAddress").innerText = somitiAddress;
       if (el("apRightTagline")) el("apRightTagline").innerText = somitiTagline;
@@ -5516,10 +5574,8 @@
       if (el("apBank")) el("apBank").innerText = "🏦 " + (s.bankAccount || "নেই");
       if (el("apCodeBadge")) el("apCodeBadge").innerText = "কোড: " + (s.somitiCode || "সছঐস");
 
-      const logoBox = el("apPadLogoBox");
-      if (logoBox && s.logoImg) {
-        logoBox.innerHTML = `<img src="${s.logoImg}" style="width:100%;height:100%;object-fit:contain;border-radius:50%;">`;
-      }
+      // Dynamic Logo
+      renderPadLogo("apPadLogoBox", s, "audit");
 
       if (el("apPeriodText")) el("apPeriodText").innerText = filterName;
       if (el("apDateText")) el("apDateText").innerText = formatBengaliDate(now);
