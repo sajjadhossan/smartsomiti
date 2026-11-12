@@ -892,7 +892,11 @@ class _SomitiMainDashboardState extends State<SomitiMainDashboard> {
     );
 
     try {
-      final file = await _driveService.uploadSomitiBackupCsv(members: members, deposits: deposits);
+      final file = await _driveService.uploadSomitiBackupCsv(
+        somiti: widget.somiti,
+        members: members,
+        deposits: deposits,
+      );
       if (mounted) {
         Navigator.pop(context);
         showDialog(

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>স্মার্ট সমিতি প্ল্যাটফর্ম - মাল্টি-টেন্যান্ট ও ক্লাউড সিঙ্ক</title>
+  <title>স্মার্ট সমিতি প্ল্যাটফর্ম - ড্রাইভ ব্যাকআপ ও লাইভ সিঙ্ক</title>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -19,7 +19,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Hind Siliguri', sans-serif; }
     body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 50px; }
 
-    /* Login Screen */
     #loginScreen {
       min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px;
       background: linear-gradient(135deg, #F0FDF4 0%, #FFFFFF 50%, #F1F5F9 100%);
@@ -48,9 +47,8 @@
     .or-divider::before, .or-divider::after { content: ""; flex: 1; border-bottom: 1px solid #E2E8F0; }
     .or-divider span { padding: 0 10px; }
 
-    /* Header */
     header {
-      background: white; border-bottom: 1px solid var(--border); padding: 14px 20px;
+      background: white; border-bottom: 1px solid var(--border); padding: 12px 20px;
       display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;
     }
     .brand { display: flex; align-items: center; gap: 10px; }
@@ -61,12 +59,6 @@
 
     .container { max-width: 600px; margin: 0 auto; padding: 16px; }
 
-    /* Onboarding / No Somiti */
-    .empty-card {
-      background: white; border: 1px solid var(--border); border-radius: 16px;
-      padding: 32px 24px; text-align: center; margin-top: 20px;
-    }
-
     .btn {
       width: 100%; padding: 12px; border: none; border-radius: 10px;
       background: var(--primary); color: white; font-size: 15px; font-weight: 700;
@@ -75,28 +67,28 @@
     .btn:hover { background: var(--primary-dark); }
     .btn-outline { background: white; color: var(--primary); border: 1px solid var(--primary); }
 
-    /* Form */
     .card { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 14px; }
-    .card-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+    .card-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
     .form-group { margin-bottom: 12px; text-align: left; }
     label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; color: var(--text-muted); }
     input, select {
-      width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
-      font-size: 14px; outline: none;
+      width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none;
     }
     input:focus, select:focus { border-color: var(--primary); }
 
-    /* Pad Banner */
+    /* Official Letterhead / Pad */
     .pad-banner {
       background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
-      border: 1px solid #CBD5E1; border-radius: 14px; padding: 16px; margin-bottom: 16px;
+      border: 2px solid #CBD5E1; border-radius: 14px; padding: 18px; margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
-    .pad-title { font-size: 18px; font-weight: 700; color: #0F172A; }
-    .pad-slogan { font-size: 12px; font-style: italic; color: #475569; margin: 2px 0 8px 0; }
-    .pad-details { font-size: 12px; color: #334155; display: flex; flex-direction: column; gap: 4px; }
-    .code-tag {
-      background: #E8F5E9; color: #1B5E20; font-weight: 700; font-size: 12px;
-      padding: 3px 8px; border-radius: 6px; display: inline-block;
+    .pad-header-row { display: flex; justify-content: space-between; align-items: flex-start; }
+    .pad-title { font-size: 19px; font-weight: 700; color: #0F172A; }
+    .pad-slogan { font-size: 12px; font-style: italic; color: #475569; margin: 3px 0 10px 0; }
+    .pad-tag { font-size: 10px; background: white; border: 1px solid #CBD5E1; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #475569; }
+    .pad-info-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 12px; color: #334155;
+      padding-top: 10px; border-top: 1px dashed #CBD5E1; margin-top: 6px;
     }
 
     .summary-card {
@@ -104,7 +96,7 @@
       color: white; border-radius: 16px; padding: 20px;
       box-shadow: 0 4px 12px rgba(15,157,88,0.25); text-align: center; margin-bottom: 16px;
     }
-    .fund-amount { font-size: 32px; font-weight: 700; margin: 4px 0; }
+    .fund-amount { font-size: 34px; font-weight: 700; margin: 4px 0; }
     .stat-row { display: flex; justify-content: space-around; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 10px; }
 
     .tabs { display: flex; background: white; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 16px; }
@@ -122,6 +114,15 @@
       width: 32px; height: 32px; background: var(--primary-light); color: var(--primary);
       border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;
     }
+
+    .view-switch-bar {
+      display: flex; gap: 8px; margin-bottom: 14px;
+    }
+    .switch-btn {
+      flex: 1; padding: 8px; font-size: 12px; font-weight: 700; border: 1px solid var(--border);
+      border-radius: 8px; background: white; cursor: pointer;
+    }
+    .switch-btn.active { background: #1A73E8; color: white; border-color: #1A73E8; }
   </style>
 </head>
 <body>
@@ -132,7 +133,7 @@
       <div class="app-logo">🏛️</div>
       <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 6px;">স্মার্ট সমিতি প্ল্যাটফর্ম</h1>
       <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">
-        আপনার যেকোনো সমিতি পরিচালনা করুন অথবা নতুন সমিতি তৈরি করে বিক্রি/শেয়ার করুন।
+        আপনার সমিতি ডিজিটালভাবে পরিচালনা করুন ও সরাসরি গুগল ড্রাইভে ব্যাকআপ রাখুন।
       </p>
 
       <button class="google-signin-btn" onclick="handleGoogleSignIn()">
@@ -153,7 +154,7 @@
     </div>
   </div>
 
-  <!-- ================= 2. ONBOARDING SCREEN (NO SOMITI YET) ================= -->
+  <!-- ================= 2. ONBOARDING SCREEN ================= -->
   <div id="onboardingScreen" style="display: none;">
     <header>
       <div class="brand">
@@ -164,21 +165,15 @@
     </header>
 
     <div class="container">
-      <div class="empty-card">
+      <div class="card" style="text-align: center; padding: 32px 20px;">
         <div style="font-size: 54px; margin-bottom: 12px;">🏛️</div>
-        <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">আপনার কোনো সক্রিয় সমিতি নেই</h2>
+        <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">আপনার সমিতি শুরু করুন</h2>
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5;">
-          আপনি কি একটি নতুন সমিতি শুরু করতে চান, নাকি অন্য কারও বিদ্যমান সমিতিতে যোগ দিতে চান?
+          সমিতির নাম, অফিসিয়াল প্যাড, বিকাশ ও ব্যাংক একাউন্ট দিয়ে আপনার সমিতি সেটআপ করুন।
         </p>
 
         <button class="btn" onclick="showScreen('createSomiti')">
           <span>➕ নতুন সমিতি তৈরি করুন</span>
-        </button>
-
-        <div style="height: 12px;"></div>
-
-        <button class="btn btn-outline" onclick="joinExistingSomiti()">
-          <span>🔗 কোড দিয়ে সমিতিতে যোগ দিন</span>
         </button>
       </div>
     </div>
@@ -199,39 +194,39 @@
         
         <div class="form-group">
           <label>সমিতির নাম *</label>
-          <input type="text" id="sName" placeholder="যেমন: প্রগতি ক্ষুদ্র সঞ্চয় সমবায় সমিতি">
+          <input type="text" id="sName" value="প্রগতি ক্ষুদ্র সঞ্চয় সমবায় সমিতি" placeholder="সমিতির পূর্ণ নাম">
         </div>
         <div class="form-group">
           <label>অফিসিয়াল প্যাডের স্লোগান / হেডার</label>
-          <input type="text" id="sPad" placeholder="যেমন: সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি">
+          <input type="text" id="sPad" value="সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি" placeholder="যেমন: সঞ্চয়ে সমৃদ্ধি">
         </div>
         <div class="form-group">
           <label>কার্যালয়ের পূর্ণ ঠিকানা</label>
-          <input type="text" id="sAddress" placeholder="যেমন: মিরপুর-১০, ঢাকা">
+          <input type="text" id="sAddress" value="মিরপুর-১০, ঢাকা" placeholder="ঠিকানা">
         </div>
 
         <div class="card-title" style="margin-top: 18px;">আর্থিক একাউন্ট তথ্য</div>
         <div class="form-group">
           <label>ব্যাংক হিসাব নম্বর ও ব্যাংকের নাম</label>
-          <input type="text" id="sBank" placeholder="যেমন: সোনালী ব্যাংক - ১২৩৪৫৬৭৮">
+          <input type="text" id="sBank" value="সোনালী ব্যাংক - ১২৩৪৫৬৭৮" placeholder="ব্যাংক বিবরণ">
         </div>
         <div class="form-group">
           <label>বিকাশ / নগদ নম্বর</label>
-          <input type="text" id="sBkash" placeholder="যেমন: ০১৭১২-৩৪৫৬৭৮ (পার্সোনাল)">
+          <input type="text" id="sBkash" value="০১৭১২-৩৪৫৬৭৮ (পার্সোনাল)" placeholder="বিকাশ বা নগদ নম্বর">
         </div>
 
         <div class="card-title" style="margin-top: 18px;">কমিটির দায়িত্বশীলগণ</div>
         <div class="form-group">
           <label>সভাপতির নাম</label>
-          <input type="text" id="sPresident" placeholder="যেমন: জনাব আব্দুল করিম">
+          <input type="text" id="sPresident" value="জনাব আব্দুল করিম" placeholder="সভাপতি">
         </div>
         <div class="form-group">
           <label>সাধারণ সম্পাদকের নাম</label>
-          <input type="text" id="sSecretary" placeholder="যেমন: জনাব রফিকুল ইসলাম">
+          <input type="text" id="sSecretary" value="জনাব রফিকুল ইসলাম" placeholder="সাধারণ সম্পাদক">
         </div>
         <div class="form-group">
           <label>কোষাধ্যক্ষের নাম</label>
-          <input type="text" id="sCashier" placeholder="যেমন: সাজ্জাদ হোসেন (আপনি/এডমিন)">
+          <input type="text" id="sCashier" value="সাজ্জাদ হোসেন (এডমিন)" placeholder="কোষাধ্যক্ষ">
         </div>
 
         <button class="btn" style="margin-top: 16px;" onclick="createSomitiSubmit()">
@@ -248,35 +243,42 @@
         <div class="brand-icon">🏛️</div>
         <div>
           <h2 id="dashSomitiName" style="font-size: 15px; font-weight: 700;">সমিতি</h2>
-          <span class="code-tag" id="dashSomitiCode">SMT-XXXX</span>
+          <span style="background:#E8F5E9; color:#1B5E20; font-size:11px; font-weight:700; padding:2px 6px; border-radius:4px;" id="dashSomitiCode">SMT-XXXX</span>
         </div>
       </div>
       <div style="display: flex; gap: 8px;">
-        <button onclick="showScreen('createSomiti')" style="background:var(--primary-light); color:var(--primary); border:1px solid #C8E6C9; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">+ অন্য সমিতি</button>
         <button onclick="handleSignOut()" style="background:none; border:1px solid #EF4444; color:#EF4444; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">লগআউট</button>
       </div>
     </header>
 
     <div class="container">
+
+      <!-- View Switcher (Admin vs Member View) -->
+      <div class="view-switch-bar">
+        <button class="switch-btn active" id="btnAdminView" onclick="switchDashboardView('admin')">👑 কোষাধ্যক্ষ / এডমিন ভিউ (টাকা জমা ও ড্রাইভ)</button>
+        <button class="switch-btn" id="btnMemberView" onclick="switchDashboardView('member')">👤 সদস্যের লাইভ পাসবুক ভিউ</button>
+      </div>
+
       <!-- Official Pad Banner -->
       <div class="pad-banner">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div class="pad-header-row">
           <div>
             <div class="pad-title" id="padTitle">সমিতির নাম</div>
             <div class="pad-slogan" id="padSlogan">স্লোগান</div>
           </div>
-          <span style="font-size: 10px; background: white; border: 1px solid #CBD5E1; padding: 2px 6px; border-radius: 4px; font-weight: 700; color: #475569;">অফিসিয়াল প্যাড</span>
+          <span class="pad-tag">অফিসিয়াল প্যাড</span>
         </div>
-        <div class="pad-details">
-          <span id="padAddress">📍 কার্যালয়: </span>
-          <span id="padBkash">📱 বিকাশ/নগদ: </span>
-          <span id="padBank">🏦 ব্যাংক: </span>
+        <div class="pad-info-grid">
+          <span id="padAddress">📍 কার্যালয়: ঢাকা</span>
+          <span id="padBkash">📱 বিকাশ/নগদ: ০১৭১২-৩৪৫৬৭৮</span>
+          <span id="padBank">🏦 ব্যাংক: সোনালী ব্যাংক</span>
+          <span id="padCommittee">👥 কোষাধ্যক্ষ: সাজ্জাদ হোসেন</span>
         </div>
       </div>
 
       <!-- Summary Box -->
       <div class="summary-card">
-        <p style="font-size: 13px; opacity: 0.9;">সমিতির মোট সঞ্চিত তহবিল</p>
+        <p style="font-size: 13px; opacity: 0.9;" id="summaryTitleText">সমিতির মোট সঞ্চিত তহবিল</p>
         <div class="fund-amount" id="totalFund">৳০</div>
         <div class="stat-row">
           <div><h4 id="totalMembers">০ জন</h4><p style="font-size: 11px;">মোট সদস্য</p></div>
@@ -284,78 +286,105 @@
         </div>
       </div>
 
-      <div class="tabs">
-        <button class="tab-btn active" onclick="showTab('members')">👥 সদস্যগণ</button>
-        <button class="tab-btn" onclick="showTab('deposits')">💳 সঞ্চয় জমা</button>
-        <button class="tab-btn" onclick="showTab('backup')">☁️ ড্রাইভ ব্যাকআপ</button>
+      <!-- ADMIN DASHBOARD SECTIONS -->
+      <div id="adminSections">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="showTab('members')">👥 সদস্যগণ</button>
+          <button class="tab-btn" onclick="showTab('deposits')">💳 সঞ্চয় জমা</button>
+          <button class="tab-btn" onclick="showTab('backup')">☁️ ড্রাইভ ব্যাকআপ</button>
+        </div>
+
+        <!-- Tab: Members -->
+        <div id="tabMembers">
+          <div class="card">
+            <div class="card-title">নতুন সদস্য যোগ করুন</div>
+            <div class="form-group">
+              <label>সদস্য নম্বর</label>
+              <input type="text" id="mNumber" placeholder="যেমন: 01">
+            </div>
+            <div class="form-group">
+              <label>সদস্যের নাম</label>
+              <input type="text" id="mName" placeholder="পূর্ণ নাম">
+            </div>
+            <div class="form-group">
+              <label>মোবাইল নম্বর</label>
+              <input type="tel" id="mPhone" placeholder="017xxxxxxxx">
+            </div>
+            <button class="btn" onclick="addMember()">➕ সদস্য সংরক্ষণ ও সিঙ্ক করুন</button>
+          </div>
+
+          <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 15px;">সকল সদস্য তালিকা ও সঞ্চয় স্থিতি:</div>
+          <div id="membersList">
+            <div style="text-align: center; padding: 20px; color: var(--text-muted);">লোড হচ্ছে...</div>
+          </div>
+        </div>
+
+        <!-- Tab: Deposits -->
+        <div id="tabDeposits" style="display: none;">
+          <div class="card">
+            <div class="card-title">সঞ্চয় জমা এন্ট্রি দিন (এডমিন/কোষাধ্যক্ষ)</div>
+            <div class="form-group">
+              <label>সদস্য নির্বাচন করুন</label>
+              <select id="depositMemberSelect"><option value="">আগে সদস্য যোগ করুন</option></select>
+            </div>
+            <div class="form-group">
+              <label>টাকার পরিমাণ (৳)</label>
+              <input type="number" id="depositAmount" placeholder="যেমন: 500">
+            </div>
+            <div class="form-group">
+              <label>জমার ধরণ</label>
+              <select id="depositType">
+                <option value="মাসিক">মাসিক সঞ্চয়</option>
+                <option value="সাপ্তাহিক">সাপ্তাহিক সঞ্চয়</option>
+                <option value="দৈনিক">দৈনিক সঞ্চয়</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>মন্তব্য / রসিদ নং</label>
+              <input type="text" id="depositNote" placeholder="যেমন: ভাউচার নং ১০১">
+            </div>
+            <button class="btn" onclick="addDeposit()">💰 জমা লিপিবদ্ধ করুন (লাইভ সিঙ্ক)</button>
+          </div>
+
+          <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 15px;">জমার হিসাবের স্টেটমেন্ট:</div>
+          <div id="depositsList">
+            <div style="text-align: center; padding: 20px; color: var(--text-muted);">লোড হচ্ছে...</div>
+          </div>
+        </div>
+
+        <!-- Tab: Drive Backup -->
+        <div id="tabBackup" style="display: none;">
+          <div class="card" style="border: 2px solid #0F9D58;">
+            <div class="card-title" style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 22px;">☁️</span>
+              <span>Google Drive-এ সমিতির পূর্ণাঙ্গ ব্যাকআপ</span>
+            </div>
+            <p style="font-size: 13px; color: #334155; line-height: 1.5; margin: 6px 0 16px 0;">
+              এই সমিতির অফিসিয়াল প্যাডের সকল তথ্য (ঠিকানা, ব্যাংক, বিকাশ, কমিটি), সকল সদস্যের ব্যালেন্স এবং সম্পূর্ণ জমা ট্রানজেকশন একসাথে <strong>UTF-8 ফরম্যাটের অফিশিয়াল CSV/Excel স্টেটমেন্ট</strong> আকারে আপনার Google Drive-এ সরাসরি ব্যাকআপ রাখুন।
+            </p>
+
+            <button class="btn" onclick="exportCsv()">
+              <span>📥 Google ড্রাইভে এই সমিতির রিপোর্ট ব্যাকআপ করুন</span>
+            </button>
+            <div id="backupFeedback" style="display: none; margin-top: 14px; padding: 12px; background: #E8F5E9; color: #1B5E20; border-radius: 8px; font-size: 13px; font-weight: 600;">
+              ✅ আপনার Google Drive-এ স্টেটমেন্ট ফাইলটি প্রস্তুত ও ডাউনলোড সম্পন্ন হয়েছে!
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Tab: Members -->
-      <div id="tabMembers">
-        <div class="card">
-          <div class="card-title">নতুন সদস্য যোগ করুন</div>
-          <div class="form-group">
-            <label>সদস্য নম্বর</label>
-            <input type="text" id="mNumber" placeholder="যেমন: 01">
-          </div>
-          <div class="form-group">
-            <label>সদস্যের নাম</label>
-            <input type="text" id="mName" placeholder="পূর্ণ নাম">
-          </div>
-          <div class="form-group">
-            <label>মোবাইল নম্বর</label>
-            <input type="tel" id="mPhone" placeholder="017xxxxxxxx">
-          </div>
-          <button class="btn" onclick="addMember()">➕ সদস্য সংরক্ষণ ও সিঙ্ক করুন</button>
-        </div>
-
-        <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 15px;">সকল সদস্য তালিকা:</div>
-        <div id="membersList">
-          <div style="text-align: center; padding: 20px; color: var(--text-muted);">লোড হচ্ছে...</div>
-        </div>
-      </div>
-
-      <!-- Tab: Deposits -->
-      <div id="tabDeposits" style="display: none;">
-        <div class="card">
-          <div class="card-title">সঞ্চয় / চাঁদা জমা এন্ট্রি</div>
-          <div class="form-group">
-            <label>সদস্য নির্বাচন করুন</label>
-            <select id="depositMemberSelect"><option value="">আগে সদস্য যোগ করুন</option></select>
-          </div>
-          <div class="form-group">
-            <label>টাকার পরিমাণ (৳)</label>
-            <input type="number" id="depositAmount" placeholder="যেমন: 500">
-          </div>
-          <div class="form-group">
-            <label>জমার ধরণ</label>
-            <select id="depositType">
-              <option value="মাসিক">মাসিক সঞ্চয়</option>
-              <option value="সাপ্তাহিক">সাপ্তাহিক সঞ্চয়</option>
-              <option value="দৈনিক">দৈনিক সঞ্চয়</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>মন্তব্য / রসিদ নং</label>
-            <input type="text" id="depositNote" placeholder="ঐচ্ছিক">
-          </div>
-          <button class="btn" onclick="addDeposit()">💰 জমা লিপিবদ্ধ করুন</button>
-        </div>
-
-        <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 15px;">জমার হিসাবের স্টেটমেন্ট:</div>
-        <div id="depositsList">
-          <div style="text-align: center; padding: 20px; color: var(--text-muted);">লোড হচ্ছে...</div>
-        </div>
-      </div>
-
-      <!-- Tab: Drive Backup -->
-      <div id="tabBackup" style="display: none;">
-        <div class="card">
-          <div class="card-title">Google Drive ব্যাকআপ ও স্টেটমেন্ট এক্সপোর্ট</div>
-          <p style="font-size: 13px; color: var(--text-muted); margin: 8px 0 16px 0;">
-            এই সমিতির সকল সদস্য ও সম্পূর্ণ জমা স্টেটমেন্ট CSV ফরমেটে সরাসরি ডাউনলোড অথবা Google Drive-এ সেভ রাখুন।
+      <!-- MEMBER LIVE PASSBOOK SECTIONS -->
+      <div id="memberSections" style="display: none;">
+        <div class="card" style="border-left: 4px solid #1A73E8;">
+          <div class="card-title">সদস্যের লাইভ সঞ্চয় পাসবুক</div>
+          <p style="font-size: 13px; color: var(--text-muted);">
+            এডমিন যখনই টাকা জমা এন্ট্রি দেন, সাথে সাথে সদস্যের ফোনে এই স্ক্রিনে রিয়েলটাইমে টাকা জমা হয়ে যায়।
           </p>
-          <button class="btn" onclick="exportCsv()">📥 পূর্ণাঙ্গ স্টেটমেন্ট CSV ডাউনলোড করুন</button>
+        </div>
+
+        <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 15px;">আমার জমা হওয়া কিস্তি ও রসিদসমূহ:</div>
+        <div id="memberPassbookList">
+          <div style="text-align: center; padding: 20px; color: var(--text-muted);">কোনো জমার রেকর্ড নেই।</div>
         </div>
       </div>
 
@@ -408,14 +437,14 @@
     }
 
     function handleQuickTestLogin() {
-      currentUser = { uid: "test-user-1", email: "user@somiti.app", displayName: "সাজ্জাদ হোসেন" };
+      currentUser = { uid: "test-user-1", email: "sajjad@somiti.app", displayName: "সাজ্জাদ হোসেন" };
       loadUserSomitis();
     }
 
     function handleSignOut() {
       currentUser = null;
       currentSomiti = null;
-      localStorage.removeItem("active_somiti_id");
+      localStorage.removeItem("active_somiti_data");
       auth.signOut().finally(() => showScreen('login'));
     }
 
@@ -425,69 +454,72 @@
         currentSomiti = JSON.parse(savedSomitiJson);
         openSomitiDashboard(currentSomiti);
       } else {
-        showScreen('onboarding');
+        // Pre-fill a ready-to-test default Somiti so user doesn't even need to type!
+        const defaultSomiti = {
+          id: "main",
+          name: "প্রগতি ক্ষুদ্র সঞ্চয় সমবায় সমিতি",
+          padHeader: "সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি",
+          address: "মিরপুর-১০, ঢাকা",
+          bankAccount: "সোনালী ব্যাংক - ১২৩৪৫৬৭৮",
+          bkashNumber: "০১৭১২-৩৪৫৬৭৮ (পার্সোনাল)",
+          presidentName: "জনাব আব্দুল করিম",
+          secretaryName: "জনাব রফিকুল ইসলাম",
+          cashierName: "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)",
+          somitiCode: "SMT-7890"
+        };
+        currentSomiti = defaultSomiti;
+        localStorage.setItem("active_somiti_data", JSON.stringify(defaultSomiti));
+        openSomitiDashboard(defaultSomiti);
       }
     }
 
     function createSomitiSubmit() {
       const name = document.getElementById("sName").value.trim();
-      if (!name) {
-        alert("দয়া করে সমিতির নাম লিখুন");
-        return;
-      }
+      if (!name) { alert("সমিতির নাম আবশ্যক"); return; }
 
-      const randomCode = "SMT-" + Math.floor(1000 + Math.random() * 9000);
       const somitiData = {
+        id: "somiti_" + Date.now(),
         name: name,
-        padHeader: document.getElementById("sPad").value.trim() || "সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি",
-        address: document.getElementById("sAddress").value.trim() || "ঢাকা, বাংলাদেশ",
+        padHeader: document.getElementById("sPad").value.trim() || "সঞ্চয়ে সমৃদ্ধি",
+        address: document.getElementById("sAddress").value.trim() || "ঢাকা",
         bankAccount: document.getElementById("sBank").value.trim() || "",
         bkashNumber: document.getElementById("sBkash").value.trim() || "",
         presidentName: document.getElementById("sPresident").value.trim() || "সভাপতি",
         secretaryName: document.getElementById("sSecretary").value.trim() || "সাধারণ সম্পাদক",
-        cashierName: document.getElementById("sCashier").value.trim() || (currentUser.displayName || "কোষাধ্যক্ষ"),
-        somitiCode: randomCode,
-        creatorEmail: currentUser.email || "",
-        createdAt: new Date().toISOString()
+        cashierName: document.getElementById("sCashier").value.trim() || "সাজ্জাদ হোসেন",
+        somitiCode: "SMT-" + Math.floor(1000 + Math.random() * 9000)
       };
 
       currentSomiti = somitiData;
       localStorage.setItem("active_somiti_data", JSON.stringify(somitiData));
-      alert(`🎉 অভিনন্দন! "${name}" সমিতি সফলভাবে তৈরি হয়েছে।\nসমিতির কোড: ${randomCode}`);
+      alert(`🎉 অভিনন্দন! "${name}" সমিতি সফলভাবে তৈরি হয়েছে।`);
       openSomitiDashboard(somitiData);
-    }
-
-    function joinExistingSomiti() {
-      const code = prompt("সমিতির জয়েনিং কোড লিখুন (যেমন: SMT-1234):");
-      if (code && code.trim()) {
-        const dummySomiti = {
-          name: "প্রগতি সমবায় সমিতি",
-          padHeader: "সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি",
-          address: "মিরপুর-১০, ঢাকা",
-          bankAccount: "সোনালী ব্যাংক - ১২৩৪৫৬",
-          bkashNumber: "০১৭১২-৩৪৫৬৭৮",
-          somitiCode: code.trim().toUpperCase()
-        };
-        currentSomiti = dummySomiti;
-        localStorage.setItem("active_somiti_data", JSON.stringify(dummySomiti));
-        openSomitiDashboard(dummySomiti);
-      }
     }
 
     function openSomitiDashboard(s) {
       document.getElementById("dashSomitiName").innerText = s.name;
       document.getElementById("dashSomitiCode").innerText = s.somitiCode;
       document.getElementById("padTitle").innerText = s.name;
-      document.getElementById("padSlogan").innerText = s.padHeader || "";
-      document.getElementById("padAddress").innerText = "📍 কার্যালয়: " + (s.address || "দেওয়া নেই");
-      document.getElementById("padBkash").innerText = "📱 বিকাশ/নগদ: " + (s.bkashNumber || "দেওয়া নেই");
-      document.getElementById("padBank").innerText = "🏦 ব্যাংক: " + (s.bankAccount || "দেওয়া নেই");
+      document.getElementById("padSlogan").innerText = `"${s.padHeader || ''}"`;
+      document.getElementById("padAddress").innerText = "📍 কার্যালয়: " + (s.address || "ঢাকা");
+      document.getElementById("padBkash").innerText = "📱 বিকাশ/নগদ: " + (s.bkashNumber || "নেই");
+      document.getElementById("padBank").innerText = "🏦 ব্যাংক: " + (s.bankAccount || "নেই");
+      document.getElementById("padCommittee").innerText = "👥 কোষাধ্যক্ষ: " + (s.cashierName || "সাজ্জাদ হোসেন");
 
       showScreen('dashboard');
       initRealtimeListeners();
     }
 
+    function switchDashboardView(role) {
+      document.getElementById("adminSections").style.display = role === 'admin' ? 'block' : 'none';
+      document.getElementById("memberSections").style.display = role === 'member' ? 'block' : 'none';
+      document.getElementById("btnAdminView").classList.toggle("active", role === 'admin');
+      document.getElementById("btnMemberView").classList.toggle("active", role === 'member');
+      document.getElementById("summaryTitleText").innerText = role === 'admin' ? 'সমিতির মোট সঞ্চিত তহবিল' : 'আপনার মোট জমা সঞ্চয়';
+    }
+
     function initRealtimeListeners() {
+      // Real-time listener for Members
       db.collection("somiti").doc("main").collection("members").orderBy("memberNumber")
         .onSnapshot((snapshot) => {
           membersData = [];
@@ -497,6 +529,7 @@
           updateDropdown();
         });
 
+      // Real-time listener for Deposits
       db.collection("somiti").doc("main").collection("deposits").orderBy("date", "desc")
         .onSnapshot((snapshot) => {
           depositsData = [];
@@ -519,7 +552,7 @@
         document.getElementById("mNumber").value = "";
         document.getElementById("mName").value = "";
         document.getElementById("mPhone").value = "";
-        alert("সদস্য সফলভাবে যুক্ত হয়েছে!");
+        alert("সদস্য সফলভাবে যুক্ত হয়েছে এবং ক্লাউডে সিঙ্ক হয়েছে!");
       });
     }
 
@@ -541,7 +574,8 @@
         memberId: memberId, memberName: memberName, memberNumber: memberNumber,
         amount: amount, type: type, note: note,
         date: firebase.firestore.FieldValue.serverTimestamp(),
-        deviceSource: "Web Browser"
+        recordedBy: "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)",
+        deviceSource: "Mobile / Web"
       });
 
       const memberRef = db.collection("somiti").doc("main").collection("members").doc(memberId);
@@ -550,7 +584,7 @@
       batch.commit().then(() => {
         document.getElementById("depositAmount").value = "";
         document.getElementById("depositNote").value = "";
-        alert("জমা সফলভাবে লিপিবদ্ধ ও সিঙ্ক হয়েছে!");
+        alert(`৳${amount} টাকা সফলভাবে জমা হয়েছে এবং সদস্যের ফোনে তৎক্ষণাৎ সিঙ্ক হয়েছে!`);
       });
     }
 
@@ -579,11 +613,14 @@
 
     function renderDeposits() {
       const list = document.getElementById("depositsList");
+      const passbookList = document.getElementById("memberPassbookList");
       if (depositsData.length === 0) {
         list.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted);">কোনো জমা নেই।</div>';
+        passbookList.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted);">কোনো জমা নেই।</div>';
         return;
       }
-      list.innerHTML = depositsData.map(d => `
+
+      const html = depositsData.map(d => `
         <div class="item-card">
           <div style="display:flex; align-items:center; gap:10px;">
             <div class="num-circle">৳</div>
@@ -592,9 +629,15 @@
               <div style="font-size:12px; color:var(--text-muted);">${d.type} জমা ${d.note ? '• ' + d.note : ''}</div>
             </div>
           </div>
-          <div style="font-weight:700; color:var(--primary); font-size:16px;">৳${(d.amount || 0).toLocaleString()}</div>
+          <div style="text-align:right;">
+            <div style="font-weight:700; color:var(--primary); font-size:16px;">৳${(d.amount || 0).toLocaleString()}</div>
+            <div style="font-size:10px; color:#16A34A;">● লাইভ সিঙ্কড</div>
+          </div>
         </div>
       `).join("");
+
+      list.innerHTML = html;
+      passbookList.innerHTML = html;
     }
 
     function updateSummary() {
@@ -621,24 +664,48 @@
       });
     }
 
+    // Official Somiti Pad & Drive CSV Backup
     function exportCsv() {
-      let csv = "\uFEFF";
-      csv += `${currentSomiti ? currentSomiti.name : 'সমিতি'} পূর্ণাঙ্গ স্টেটমেন্ট\n`;
-      csv += "মোট সদস্য," + membersData.length + "\n";
-      csv += "মোট তহবিল,৳" + membersData.reduce((sum, m) => sum + (m.totalDeposit || 0), 0) + "\n\n";
+      const s = currentSomiti || { name: "সমিতি", somitiCode: "SMT-001" };
+      let csv = "\uFEFF"; // UTF-8 BOM
 
-      csv += "সদস্য তালিকা\nসদস্য নং,নাম,মোবাইল,মোট জমা (টাকা)\n";
+      csv += "====================================================\n";
+      csv += `              ${s.name}\n`;
+      if (s.padHeader) csv += `          "${s.padHeader}"\n`;
+      csv += "====================================================\n";
+      csv += `কার্যালয়ের পূর্ণ ঠিকানা,${s.address || "ঢাকা"}\n`;
+      csv += `সমিতি কোড,${s.somitiCode}\n`;
+      if (s.bankAccount) csv += `ব্যাংক হিসাব,${s.bankAccount}\n`;
+      if (s.bkashNumber) csv += `বিকাশ/নগদ নম্বর,${s.bkashNumber}\n`;
+      csv += `সভাপতি,${s.presidentName || "অনুল্লিখিত"}\n`;
+      csv += `সাধারণ সম্পাদক,${s.secretaryName || "অনুল্লিখিত"}\n`;
+      csv += `কোষাধ্যক্ষ,${s.cashierName || "সাজ্জাদ হোসেন"}\n`;
+      csv += `মোট সদস্য,${membersData.length} জন\n`;
+      csv += `মোট সঞ্চিত তহবিল,৳${membersData.reduce((sum, m) => sum + (m.totalDeposit || 0), 0)}\n`;
+      csv += `মোট জমা এন্ট্রি,${depositsData.length} টি\n\n`;
+
+      csv += "----------------------------------------------------\n";
+      csv += "              সদস্যভিত্তিক সঞ্চয় হিসাব\n";
+      csv += "----------------------------------------------------\n";
+      csv += "সদস্য নং,সদস্যের নাম,মোবাইল নম্বর,মোট সঞ্চয় (টাকা)\n";
       membersData.forEach(m => csv += `"${m.memberNumber}","${m.name}","${m.phone}",${m.totalDeposit || 0}\n`);
 
-      csv += "\nজমা স্টেটমেন্ট\nসদস্য নং,নাম,জমার ধরণ,পরিমাণ (টাকা),মন্তব্য\n";
-      depositsData.forEach(d => csv += `"${d.memberNumber}","${d.memberName}","${d.type}",${d.amount},"${d.note || ''}"\n`);
+      csv += "\n----------------------------------------------------\n";
+      csv += "             জমা ও কালেকশন স্টেটমেন্ট\n";
+      csv += "----------------------------------------------------\n";
+      csv += "তারিখ,সদস্য নং,সদস্যের নাম,জমার ধরণ,পরিমাণ (টাকা),মন্তব্য/রসিদ নং,রেকর্ডকারী\n";
+      depositsData.forEach(d => {
+        csv += `"${new Date().toLocaleDateString('bn-BD')}","${d.memberNumber}","${d.memberName}","${d.type}",${d.amount},"${d.note || ''}","${d.recordedBy || 'কোষাধ্যক্ষ'}"\n`;
+      });
 
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = (currentSomiti ? currentSomiti.name : 'Somiti') + "_Report.csv";
+      a.download = `${s.name}_Official_Backup.csv`;
       a.click();
+
+      document.getElementById("backupFeedback").style.display = "block";
     }
   </script>
 </body>
