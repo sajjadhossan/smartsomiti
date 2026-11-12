@@ -1,9 +1,8 @@
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../models/somiti_model.dart';
 import '../models/member_model.dart';
 import '../models/deposit_model.dart';
-import '../models/user_profile.dart';
-import '../models/access_code_model.dart';
 
 class SomitiService {
   static final SomitiService _instance = SomitiService._internal();
@@ -12,144 +11,100 @@ class SomitiService {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  CollectionReference<Map<String, dynamic>> _membersCol() {
-    return _firestore.collection('somiti').doc('main').collection('members');
+  CollectionReference<Map<String, dynamic>> _somitisCol() {
+    return _firestore.collection('somitis');
   }
 
-  CollectionReference<Map<String, dynamic>> _depositsCol() {
-    return _firestore.collection('somiti').doc('main').collection('deposits');
+  // User's linked Somitis (whether as creator or joined member)
+  Stream<List<SomitiModel>> getUserSomitisStream(String userEmail, String userId) {
+    return _somitisCol()
+        .where('creatorId', isEqualTo: userId)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => SomitiModel.fromSnapshot(doc)).toList());
   }
 
-  CollectionReference<Map<String, dynamic>> _codesCol() {
-    return _firestore.collection('somiti').doc('main').collection('access_codes');
-  }
+  Future<SomitiModel> createSomiti({
+    required String name,
+    required String padHeader,
+    required String address,
+    required String bankAccount,
+    required String bkashNumber,
+    required String presidentName,
+    required String secretaryName,
+    required String cashierName,
+    required String creatorId,
+    required String creatorEmail,
+  }) async {
+    final randomNum = (1000 + Random().nextInt(9000)).toString();
+    final somitiCode = 'SMT-$randomNum';
 
-  DocumentReference<Map<String, dynamic>> _userProfileDoc(String userId) {
-    return _firestore.collection('somiti_users').doc(userId);
-  }
-
-  Stream<UserProfile> getUserProfileStream(String userId) {
-    return _userProfileDoc(userId).snapshots().map((snapshot) {
-      if (snapshot.exists && snapshot.data() != null) {
-        return UserProfile.fromMap(snapshot.data()!, userId);
-      }
-      return UserProfile(
-        uid: userId,
-        email: '',
-        displayName: 'ব্যবহারকারী',
-        role: 'pending',
-      );
-    });
-  }
-
-  Future<UserProfile> ensureUserProfile(User user) async {
-    final doc = await _userProfileDoc(user.uid).get();
-    if (doc.exists && doc.data() != null) {
-      return UserProfile.fromMap(doc.data()!, user.uid);
-    }
-
-    // Initialize default access codes if not yet present
-    await _initDefaultCodes();
-
-    final newProfile = UserProfile(
-      uid: user.uid,
-      email: user.email ?? '',
-      displayName: user.displayName ?? 'ইউজার',
-      role: 'pending', // কোড দেওয়ার অপেক্ষায় থাকবে
-      roleTitle: 'অপেক্ষমান',
+    final docRef = _somitisCol().doc();
+    final somiti = SomitiModel(
+      id: docRef.id,
+      name: name,
+      padHeader: padHeader,
+      address: address,
+      bankAccount: bankAccount,
+      bkashNumber: bkashNumber,
+      presidentName: presidentName,
+      secretaryName: secretaryName,
+      cashierName: cashierName.isEmpty ? 'কোষাধ্যক্ষ (এডমিন)' : cashierName,
+      creatorId: creatorId,
+      creatorEmail: creatorEmail,
+      somitiCode: somitiCode,
+      createdAt: DateTime.now(),
     );
 
-    await _userProfileDoc(user.uid).set(newProfile.toMap());
-    return newProfile;
+    await docRef.set(somiti.toMap());
+    return somiti;
   }
 
-  Future<void> _initDefaultCodes() async {
-    final defaultCodes = [
-      {
-        'code': 'ADM-2026',
-        'role': 'admin',
-        'roleTitle': 'প্রধান এডমিন ও কোষাধ্যক্ষ',
-      },
-      {
-        'code': 'PRE-2026',
-        'role': 'president',
-        'roleTitle': 'সভাপতি',
-      },
-      {
-        'code': 'SEC-2026',
-        'role': 'secretary',
-        'roleTitle': 'সাধারণ সম্পাদক',
-      },
-    ];
+  Future<SomitiModel> joinSomitiByCode({
+    required String somitiCode,
+    required String userId,
+    required String userEmail,
+  }) async {
+    final query = await _somitisCol()
+        .where('somitiCode', isEqualTo: somitiCode.trim().toUpperCase())
+        .limit(1)
+        .get();
 
-    for (final item in defaultCodes) {
-      final docRef = _codesCol().doc(item['code']!);
-      final exists = (await docRef.get()).exists;
-      if (!exists) {
-        await docRef.set(item);
-      }
-    }
-  }
-
-  Future<UserProfile> verifyAndApplyCode(User user, String rawCode) async {
-    final code = rawCode.trim().toUpperCase();
-    if (code.isEmpty) {
-      throw Exception('দয়া করে কোডটি প্রবেশ করুন');
+    if (query.docs.isEmpty) {
+      throw Exception('সমিতির কোডটি সঠিক নয়! দয়া করে সঠিক কোড দিন।');
     }
 
-    final codeDoc = await _codesCol().doc(code).get();
-    if (!codeDoc.exists) {
-      throw Exception('ভুল কোড! আপনার অ্যাডমিনের দেওয়া সঠিক সিক্রেট কোড লিখুন।');
-    }
-
-    final data = codeDoc.data()!;
-    final role = data['role'] ?? 'member';
-    final roleTitle = data['roleTitle'] ?? 'সাধারণ সদস্য';
-    final memberNumber = data['memberNumber'];
-
-    final updatedProfile = UserProfile(
-      uid: user.uid,
-      email: user.email ?? '',
-      displayName: user.displayName ?? 'ব্যবহারকারী',
-      role: role,
-      roleTitle: roleTitle,
-      memberNumber: memberNumber,
-      secretCode: code,
-    );
-
-    await _userProfileDoc(user.uid).set(updatedProfile.toMap(), SetOptions(merge: true));
-    await _codesCol().doc(code).update({'linkedEmail': user.email});
-
-    return updatedProfile;
+    final somitiDoc = query.docs.first;
+    return SomitiModel.fromSnapshot(somitiDoc);
   }
 
-  Future<void> resetUserRole(String userId) async {
-    await _userProfileDoc(userId).update({
-      'role': 'pending',
-      'roleTitle': 'অপেক্ষমান',
-      'secretCode': null,
-      'memberNumber': null,
-    });
+  // Sub-collections per Somiti
+  CollectionReference<Map<String, dynamic>> _membersCol(String somitiId) {
+    return _somitisCol().doc(somitiId).collection('members');
   }
 
-  Stream<List<MemberModel>> getMembersStream() {
-    return _membersCol()
+  CollectionReference<Map<String, dynamic>> _depositsCol(String somitiId) {
+    return _somitisCol().doc(somitiId).collection('deposits');
+  }
+
+  Stream<List<MemberModel>> getMembersStream(String somitiId) {
+    return _membersCol(somitiId)
         .orderBy('memberNumber')
         .snapshots()
         .map((snapshot) =>
             snapshot.docs.map((doc) => MemberModel.fromSnapshot(doc)).toList());
   }
 
-  Stream<List<DepositModel>> getDepositsStream() {
-    return _depositsCol()
+  Stream<List<DepositModel>> getDepositsStream(String somitiId) {
+    return _depositsCol(somitiId)
         .orderBy('date', descending: true)
         .snapshots()
         .map((snapshot) =>
             snapshot.docs.map((doc) => DepositModel.fromSnapshot(doc)).toList());
   }
 
-  Stream<List<DepositModel>> getMemberDepositsStream(String memberNumber) {
-    return _depositsCol()
+  Stream<List<DepositModel>> getMemberDepositsStream(String somitiId, String memberNumber) {
+    return _depositsCol(somitiId)
         .where('memberNumber', isEqualTo: memberNumber)
         .orderBy('date', descending: true)
         .snapshots()
@@ -157,19 +112,13 @@ class SomitiService {
             snapshot.docs.map((doc) => DepositModel.fromSnapshot(doc)).toList());
   }
 
-  Stream<List<AccessCodeModel>> getAccessCodesStream() {
-    return _codesCol()
-        .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => AccessCodeModel.fromSnapshot(doc)).toList());
-  }
-
   Future<void> addMember({
+    required String somitiId,
     required String name,
     required String phone,
     required String memberNumber,
   }) async {
-    final docRef = _membersCol().doc();
+    final docRef = _membersCol(somitiId).doc();
     final member = MemberModel(
       id: docRef.id,
       name: name,
@@ -179,24 +128,14 @@ class SomitiService {
       createdAt: DateTime.now(),
     );
     await docRef.set(member.toMap());
-
-    // Automatically create a member secret code
-    final memberCode = 'MEM-$memberNumber';
-    await _codesCol().doc(memberCode).set({
-      'code': memberCode,
-      'role': 'member',
-      'roleTitle': 'সাধারণ সদস্য',
-      'memberNumber': memberNumber,
-      'memberName': name,
-    });
   }
 
-  Future<void> deleteMember(String memberId, String memberNumber) async {
-    await _membersCol().doc(memberId).delete();
-    await _codesCol().doc('MEM-$memberNumber').delete();
+  Future<void> deleteMember(String somitiId, String memberId) async {
+    await _membersCol(somitiId).doc(memberId).delete();
   }
 
   Future<void> addDeposit({
+    required String somitiId,
     required String memberId,
     required String memberName,
     required String memberNumber,
@@ -208,7 +147,7 @@ class SomitiService {
     required String deviceSource,
   }) async {
     final batch = _firestore.batch();
-    final depositRef = _depositsCol().doc();
+    final depositRef = _depositsCol(somitiId).doc();
 
     final deposit = DepositModel(
       id: depositRef.id,
@@ -224,7 +163,7 @@ class SomitiService {
 
     batch.set(depositRef, deposit.toMap());
 
-    final memberRef = _membersCol().doc(memberId);
+    final memberRef = _membersCol(somitiId).doc(memberId);
     batch.update(memberRef, {
       'totalDeposit': FieldValue.increment(amount),
     });
@@ -232,12 +171,15 @@ class SomitiService {
     await batch.commit();
   }
 
-  Future<void> deleteDeposit(DepositModel deposit) async {
+  Future<void> deleteDeposit({
+    required String somitiId,
+    required DepositModel deposit,
+  }) async {
     final batch = _firestore.batch();
-    final depositRef = _depositsCol().doc(deposit.id);
+    final depositRef = _depositsCol(somitiId).doc(deposit.id);
     batch.delete(depositRef);
 
-    final memberRef = _membersCol().doc(deposit.memberId);
+    final memberRef = _membersCol(somitiId).doc(deposit.memberId);
     batch.update(memberRef, {
       'totalDeposit': FieldValue.increment(-deposit.amount),
     });
