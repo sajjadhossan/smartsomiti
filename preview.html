@@ -591,42 +591,46 @@
     .official-sample-pad {
       background: #FFFFFF !important;
       border: 2.5px solid #14532D !important;
-      padding: 4px !important;
+      padding: 3px !important;
       border-radius: 4px !important;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       font-family: 'Hind Siliguri', sans-serif !important;
       color: #0F172A !important;
       box-sizing: border-box !important;
       width: 100%;
-      max-width: 580px;
+      max-width: 600px;
       margin: 0 auto;
+      overflow: hidden;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
     }
     .official-sample-pad-inner {
       border: 1px solid #14532D !important;
-      padding: 16px 20px !important;
+      padding: 14px 16px !important;
       background: #FFFFFF !important;
       position: relative !important;
       box-sizing: border-box !important;
     }
     .pad-top-bismillah {
       text-align: center;
-      font-size: 13px;
+      font-size: clamp(10.5px, 2.5vw, 13px);
       color: #14532D;
       font-weight: 600;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       letter-spacing: 0.5px;
     }
     .pad-top-header-grid {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      width: 100%;
+      box-sizing: border-box;
     }
     .pad-logo-holder {
-      width: 76px;
-      height: 76px;
+      width: 66px;
+      height: 66px;
+      min-width: 44px;
       flex-shrink: 0;
       display: flex;
       align-items: center;
@@ -634,14 +638,19 @@
     }
     .pad-header-center {
       text-align: center;
-      flex: 1;
+      flex: 1 1 auto;
+      min-width: 0;
       padding: 0 4px;
+      overflow: hidden;
     }
     .pad-title-main {
-      font-size: 26px;
+      font-size: clamp(14px, 3.8vw, 24px);
       font-weight: 900;
       line-height: 1.15;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .pad-title-green { color: #165B33; }
     .pad-title-red { color: #B91C1C; }
@@ -649,70 +658,87 @@
       display: inline-block;
       background: #14532D;
       color: #FEF08A;
-      font-size: 11px;
+      font-size: clamp(7.5px, 2vw, 10.5px);
       font-weight: 700;
-      padding: 3px 18px;
+      padding: 2px 10px;
       border-radius: 20px;
-      margin-bottom: 4px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-      letter-spacing: 0.3px;
+      margin-bottom: 3px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
     }
     .pad-est-badge {
       background: #0F172A;
       color: #FFFFFF;
-      font-size: 9.5px;
+      font-size: clamp(7.5px, 1.8vw, 9.5px);
       font-weight: 700;
-      padding: 1px 10px;
+      padding: 1px 7px;
       border-radius: 10px;
       display: inline-block;
+      white-space: nowrap;
     }
     .pad-header-right {
       text-align: right;
-      line-height: 1.35;
+      line-height: 1.25;
       flex-shrink: 0;
-      min-width: 120px;
+      max-width: 120px;
+      overflow: hidden;
     }
     .pad-right-title {
-      font-size: 13px;
+      font-size: clamp(9px, 2.2vw, 12px);
       font-weight: 800;
       color: #B91C1C;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .pad-right-sub {
-      font-size: 11px;
+      font-size: clamp(8px, 1.9vw, 10.5px);
       color: #334155;
       font-weight: 600;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .pad-right-tag {
-      font-size: 10px;
+      font-size: clamp(7.5px, 1.7vw, 9.5px);
       color: #165B33;
       font-style: italic;
       font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .pad-double-divider {
       border-top: 2.5px solid #14532D;
       border-bottom: 1px solid #14532D;
       height: 3px;
-      margin: 10px 0 12px 0;
+      margin: 8px 0 10px 0;
     }
     .pad-meta-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       color: #1E293B;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .pad-doc-badge-wrap {
       text-align: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .pad-doc-badge {
       background: #0D5C3A;
       color: white;
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 800;
-      padding: 5px 22px;
+      padding: 4px 18px;
       border-radius: 20px;
       display: inline-block;
       letter-spacing: 0.5px;
@@ -721,20 +747,20 @@
     .pad-content-box {
       border: 1.5px solid #15803D;
       border-radius: 8px;
-      padding: 12px 16px;
+      padding: 10px 14px;
       background: #FFFFFF;
       position: relative;
-      margin-bottom: 22px;
+      margin-bottom: 18px;
     }
     .pad-paid-stamp {
       position: absolute;
-      right: 14px;
-      top: 12px;
+      right: 12px;
+      top: 10px;
       border: 2px solid #0D5C3A;
       color: #0D5C3A;
       font-weight: 800;
-      font-size: 13px;
-      padding: 3px 14px;
+      font-size: 12px;
+      padding: 2px 10px;
       border-radius: 8px;
       background: #F0FDF4;
       letter-spacing: 0.5px;
@@ -743,10 +769,11 @@
       display: flex;
       padding-bottom: 5px;
       border-bottom: 1px solid #E2E8F0;
-      font-size: 12.5px;
+      font-size: 12px;
+      align-items: flex-start;
     }
     .pad-table-label {
-      width: 170px;
+      width: clamp(95px, 32%, 160px);
       font-weight: 700;
       color: #1E293B;
       flex-shrink: 0;
@@ -754,39 +781,119 @@
     .pad-table-val {
       font-weight: 600;
       color: #0F172A;
-      line-height: 1.4;
+      line-height: 1.35;
       flex: 1;
+      word-break: break-word;
+    }
+    .pad-signatures-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 24px;
+      padding: 0 6px;
+      gap: 6px;
+    }
+    .pad-sig-col {
+      text-align: center;
+      flex: 1 1 0;
+      max-width: 180px;
+      min-width: 75px;
+    }
+    .pad-sig-center {
+      text-align: center;
+      flex: 0 0 auto;
+      width: 58px;
     }
     .pad-footer-strip {
       border-top: 1px solid #15803D;
-      margin-top: 20px;
+      margin-top: 16px;
       padding-top: 6px;
       text-align: center;
-      font-size: 11px;
+      font-size: 10.5px;
       color: #475569;
     }
 
-    /* Print Styles: Clean paper / PDF isolation for Receipts, Notices, ID Cards, Audit & Official Letterhead Pad */
+    @media (max-width: 480px) {
+      .official-sample-pad {
+        padding: 2px !important;
+      }
+      .official-sample-pad-inner {
+        padding: 8px 6px !important;
+      }
+      .pad-logo-holder {
+        width: 42px !important;
+        height: 42px !important;
+      }
+      .pad-header-right {
+        max-width: 82px !important;
+      }
+      .pad-title-main {
+        font-size: clamp(13px, 3.8vw, 17px) !important;
+      }
+      .pad-slogan-ribbon {
+        font-size: clamp(7.5px, 2vw, 9.5px) !important;
+        padding: 1.5px 6px !important;
+      }
+      .pad-est-badge {
+        font-size: 8px !important;
+        padding: 1px 5px !important;
+      }
+      .pad-meta-row {
+        font-size: 9.5px !important;
+        margin-bottom: 6px !important;
+      }
+      .pad-doc-badge {
+        font-size: 11px !important;
+        padding: 3px 10px !important;
+      }
+      .pad-content-box {
+        padding: 6px 8px !important;
+        margin-bottom: 12px !important;
+      }
+      .pad-table-label {
+        width: 90px !important;
+        font-size: 10.5px !important;
+      }
+      .pad-table-val {
+        font-size: 10.5px !important;
+      }
+      .pad-signatures-row {
+        margin-top: 16px !important;
+        padding: 0 2px !important;
+      }
+      .pad-sig-col {
+        font-size: 10px !important;
+      }
+      .pad-footer-strip {
+        font-size: 8.5px !important;
+        margin-top: 10px !important;
+      }
+    }
+
+    /* ================= A4 PAPER PRINT ENGINE (210mm x 297mm) ================= */
+    @page {
+      size: A4 portrait;
+      margin: 8mm 10mm 8mm 10mm;
+    }
     @media print {
+      html, body {
+        background: #FFFFFF !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
       body * {
         visibility: hidden !important;
       }
-      #receiptModal, #receiptPrintArea, #receiptPrintArea *,
-      #noticeModal, #noticePrintArea, #noticePrintArea *,
-      #fullPadModal, #fullPadPrintArea, #fullPadPrintArea *,
-      #memberIdCardModal, #memberIdCardPrintArea, #memberIdCardPrintArea *,
-      #a4PdfPreviewModal, #a4SheetContainer, #a4SheetContainer *,
-      #auditModal, #auditPadPrintArea, #auditPadPrintArea * {
-        visibility: visible !important;
-      }
-      #receiptModal, #noticeModal, #fullPadModal, #memberIdCardModal, #a4PdfPreviewModal, #auditModal {
-        position: absolute !important;
-        left: 0 !important;
-        top: 0 !important;
-        width: 100% !important;
+      .modal-overlay {
+        position: static !important;
         background: none !important;
         padding: 0 !important;
         display: block !important;
+        width: 100% !important;
       }
       .modal-box {
         box-shadow: none !important;
@@ -794,34 +901,91 @@
         max-width: 100% !important;
         padding: 0 !important;
         background: none !important;
+        width: 100% !important;
       }
-      #receiptPrintArea, #noticePrintArea, #fullPadPrintArea, #auditPadPrintArea, #a4SheetContainer {
+      /* Only the marked target is visible and positioned for authentic A4 letterhead printing */
+      .print-current-target, .print-current-target * {
+        visibility: visible !important;
+      }
+      .print-current-target {
         position: absolute !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        top: 15px !important;
-        width: 580px !important;
-        max-width: 98% !important;
+        left: 0 !important;
+        right: 0 !important;
+        top: 0 !important;
+        margin: 0 auto !important;
+        width: 100% !important;
+        max-width: 190mm !important;
+        min-height: 260mm !important;
         border: 2.5px solid #14532D !important;
         background: #FFFFFF !important;
         color: #000000 !important;
         box-shadow: none !important;
         padding: 4px !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
       }
-      #memberIdCardPrintArea {
-        position: absolute !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        top: 20px !important;
-        width: 320px !important;
-        border: 2px solid #000000 !important;
-        background: #FFFFFF !important;
-        color: #000000 !important;
-        box-shadow: none !important;
+      .print-current-target .official-sample-pad-inner {
+        border: 1px solid #14532D !important;
+        padding: 20px 22px !important;
+        min-height: calc(260mm - 10px) !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
       }
-      .action-btn-row, .receipt-actions-grid, .btn-outline, .no-print, .btn, .modal-close-btn {
+      .print-current-target .pad-title-main {
+        font-size: 26px !important;
+        white-space: normal !important;
+      }
+      .print-current-target .pad-logo-holder {
+        width: 80px !important;
+        height: 80px !important;
+      }
+      .print-current-target .pad-header-right {
+        max-width: 160px !important;
+        font-size: 11.5px !important;
+      }
+      .print-current-target .pad-slogan-ribbon {
+        font-size: 11.5px !important;
+        padding: 3px 18px !important;
+      }
+      .print-current-target .pad-table-label {
+        width: 170px !important;
+        font-size: 12.5px !important;
+      }
+      .print-current-target.id-card-print-target,
+      #memberIdCardPrintArea.print-current-target {
+        max-width: 86mm !important;
+        min-height: auto !important;
+        border: 1.5px solid #000 !important;
+        margin: 15mm auto !important;
+        display: block !important;
+      }
+      #a4SheetContainer.print-current-target {
+        border: none !important;
+        padding: 0 !important;
+        min-height: auto !important;
+        max-width: 190mm !important;
+        transform: none !important;
+      }
+      /* Fallback when printing directly without JS trigger */
+      body:not(.is-printing-doc) #receiptModal:not([style*="display: none"]) #receiptPrintArea,
+      body:not(.is-printing-doc) #receiptModal:not([style*="display: none"]) #receiptPrintArea *,
+      body:not(.is-printing-doc) #noticeModal:not([style*="display: none"]) #noticePrintArea,
+      body:not(.is-printing-doc) #noticeModal:not([style*="display: none"]) #noticePrintArea *,
+      body:not(.is-printing-doc) #fullPadModal:not([style*="display: none"]) #fullPadPrintArea,
+      body:not(.is-printing-doc) #fullPadModal:not([style*="display: none"]) #fullPadPrintArea *,
+      body:not(.is-printing-doc) #auditModal:not([style*="display: none"]) #auditPadPrintArea,
+      body:not(.is-printing-doc) #auditModal:not([style*="display: none"]) #auditPadPrintArea *,
+      body:not(.is-printing-doc) #a4PdfPreviewModal:not([style*="display: none"]) #a4SheetContainer,
+      body:not(.is-printing-doc) #a4PdfPreviewModal:not([style*="display: none"]) #a4SheetContainer * {
+        visibility: visible !important;
+      }
+      /* Hide all interactive UI buttons during print */
+      button, .action-btn-row, .receipt-actions-grid, .btn-outline, .no-print, .btn, .modal-close-btn, input, select, textarea, .nav-bar, .app-header {
         display: none !important;
       }
     }
@@ -2044,9 +2208,9 @@
             </div>
 
             <!-- Committee Seal & Signatures Row (Sample Layout) -->
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 28px; padding: 0 10px;">
+            <div class="pad-signatures-row">
               <!-- Left: Cashier -->
-              <div style="text-align: center; width: 175px;">
+              <div class="pad-sig-col">
                 <div class="stamp-transform-wrapper" id="apWrapCashier" style="min-height: 28px;">
                   <div class="digital-sign" id="apSignCashier" style="font-size: 14px; color: #0D5C3A;">Sajjad</div>
                   <div class="official-seal-stamp" style="width: 34px; height: 34px; font-size: 5px; margin: 1px auto;">
@@ -2061,7 +2225,7 @@
               </div>
 
               <!-- Center: Audit Verification Stamp -->
-              <div style="text-align: center;">
+              <div class="pad-sig-center">
                 <div style="width: 48px; height: 48px; border-radius: 50%; border: 1.5px dashed #165B33; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 7px; color: #165B33; font-weight: 800; margin: 0 auto;">
                   <span>★ অডিট ★</span>
                   <span>অনুমোদিত</span>
@@ -2070,7 +2234,7 @@
               </div>
 
               <!-- Right: President / Secretary -->
-              <div style="text-align: center; width: 195px;">
+              <div class="pad-sig-col">
                 <div class="stamp-transform-wrapper" id="apWrapPresident" style="min-height: 28px;">
                   <div class="digital-sign" id="apSignPresident" style="font-size: 14px; color: #1E3A8A;">Karim</div>
                   <div class="official-seal-stamp" style="width: 34px; height: 34px; font-size: 5px; margin: 1px auto;">
@@ -2328,9 +2492,9 @@
           </div>
 
           <!-- Committee Seal & Signatures Row (Sample Layout) -->
-          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 28px; padding: 0 10px;">
+          <div class="pad-signatures-row">
             <!-- Left: Cashier -->
-            <div style="text-align: center; width: 175px;">
+            <div class="pad-sig-col">
               <div class="stamp-transform-wrapper" id="rcptWrapCashier" style="min-height: 28px;">
                 <div class="digital-sign" id="rcptSignCashier" style="font-size: 14px; color: #0D5C3A;">Sajjad</div>
                 <div class="official-seal-stamp" style="width: 34px; height: 34px; font-size: 5px; margin: 1px auto;">
@@ -2345,13 +2509,13 @@
             </div>
 
             <!-- Center: Real dynamic QR Code for security scan -->
-            <div style="text-align: center;">
-              <div id="receiptQrCodeBox" style="width: 58px; height: 58px; margin: 0 auto; background: white; padding: 2px; border: 1px solid #CBD5E1; border-radius: 4px; display: flex; align-items: center; justify-content: center;"></div>
+            <div class="pad-sig-center">
+              <div id="receiptQrCodeBox" style="width: 54px; height: 54px; margin: 0 auto; background: white; padding: 2px; border: 1px solid #CBD5E1; border-radius: 4px; display: flex; align-items: center; justify-content: center;"></div>
               <div style="font-size: 7.5px; color: #64748B; font-weight: 700; margin-top: 2px;">অনলাইন ভেরিফাইড</div>
             </div>
 
             <!-- Right: President / Secretary -->
-            <div style="text-align: center; width: 195px;">
+            <div class="pad-sig-col">
               <div class="stamp-transform-wrapper" id="rcptWrapPresident" style="min-height: 28px;">
                 <div class="digital-sign" id="rcptSignPresident" style="font-size: 14px; color: #1E3A8A;">Karim</div>
                 <div class="official-seal-stamp" style="width: 34px; height: 34px; font-size: 5px; margin: 1px auto;">
@@ -2493,9 +2657,9 @@
           </div>
 
           <!-- Committee Seal & Signatures Row -->
-          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 28px; padding: 0 10px;">
+          <div class="pad-signatures-row">
             <!-- Left: Cashier -->
-            <div style="text-align: center; width: 175px;">
+            <div class="pad-sig-col" id="npColCashier">
               <div class="stamp-transform-wrapper" id="npWrapCashier" style="min-height: 28px;">
                 <div class="digital-sign" id="npSignCashier" style="font-size: 14px; color: #0D5C3A;">Sajjad</div>
                 <div class="official-seal-stamp" style="width: 34px; height: 34px; font-size: 5px; margin: 1px auto;">
@@ -2510,7 +2674,7 @@
             </div>
 
             <!-- Center: Verification info / Seal -->
-            <div style="text-align: center;">
+            <div class="pad-sig-center">
               <div style="width: 48px; height: 48px; border-radius: 50%; border: 1.5px dashed #165B33; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 7px; color: #165B33; font-weight: 800; margin: 0 auto;">
                 <span>★ সমবায় ★</span>
                 <span>অফিসিয়াল</span>
@@ -2519,7 +2683,7 @@
             </div>
 
             <!-- Right: President / Secretary -->
-            <div style="text-align: center; width: 195px;">
+            <div class="pad-sig-col" id="npColPresident">
               <div class="stamp-transform-wrapper" id="npWrapPresident" style="min-height: 28px;">
                 <div class="digital-sign" id="npSignPresident" style="font-size: 14px; color: #1E3A8A;">Karim</div>
                 <div class="official-seal-stamp" style="width: 34px; height: 34px; font-size: 5px; margin: 1px auto;">
@@ -2647,9 +2811,9 @@
           </div>
 
           <!-- Committee Seal & Signatures Row (Sample Layout) -->
-          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 28px; padding: 0 10px;">
+          <div class="pad-signatures-row">
             <!-- Left: Cashier -->
-            <div style="text-align: center; width: 175px;">
+            <div class="pad-sig-col">
               <div class="stamp-transform-wrapper" id="fpWrapCashier" style="min-height: 28px;">
                 <div class="digital-sign" id="fpSignCashier" style="font-size: 14px; color: #0D5C3A;">Sajjad</div>
                 <div class="official-seal-stamp" style="width: 34px; height: 34px; font-size: 5px; margin: 1px auto;">
@@ -2664,7 +2828,7 @@
             </div>
 
             <!-- Center: Verification seal -->
-            <div style="text-align: center;">
+            <div class="pad-sig-center">
               <div style="width: 48px; height: 48px; border-radius: 50%; border: 1.5px dashed #165B33; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 7px; color: #165B33; font-weight: 800; margin: 0 auto;">
                 <span>★ সমবায় ★</span>
                 <span>অফিসিয়াল</span>
@@ -2673,7 +2837,7 @@
             </div>
 
             <!-- Right: President / Secretary -->
-            <div style="text-align: center; width: 195px;">
+            <div class="pad-sig-col">
               <div class="stamp-transform-wrapper" id="fpWrapPresident" style="min-height: 28px;">
                 <div class="digital-sign" id="fpSignPresident" style="font-size: 14px; color: #1E3A8A;">Karim</div>
                 <div class="official-seal-stamp" style="width: 34px; height: 34px; font-size: 5px; margin: 1px auto;">
@@ -4634,8 +4798,32 @@
       }
     }
 
+    // Universal Authentic A4 Print Engine
+    function triggerA4Print(elementId) {
+      document.querySelectorAll('.print-current-target').forEach(el => el.classList.remove('print-current-target'));
+      const target = document.getElementById(elementId);
+      if (!target) {
+        window.print();
+        return;
+      }
+      target.classList.add('print-current-target');
+      document.body.classList.add('is-printing-doc');
+
+      const cleanup = () => {
+        target.classList.remove('print-current-target');
+        document.body.classList.remove('is-printing-doc');
+        window.removeEventListener('afterprint', cleanup);
+      };
+      window.addEventListener('afterprint', cleanup);
+
+      setTimeout(() => {
+        window.print();
+        setTimeout(cleanup, 2500);
+      }, 150);
+    }
+
     function printReceipt() {
-      window.print();
+      triggerA4Print('receiptPrintArea');
     }
 
     function downloadReceiptImage() {
@@ -4771,7 +4959,7 @@
     }
 
     function printNoticePad() {
-      window.print();
+      triggerA4Print('noticePrintArea');
     }
 
     function downloadNoticeImage() {
@@ -4919,8 +5107,8 @@
     function printFullPad() {
       openFullPadModal();
       setTimeout(() => {
-        window.print();
-      }, 250);
+        triggerA4Print('fullPadPrintArea');
+      }, 200);
     }
 
     function downloadFullPadImage() {
@@ -5320,7 +5508,7 @@
     }
 
     function printMemberIdCard() {
-      window.print();
+      triggerA4Print('memberIdCardPrintArea');
     }
 
     function downloadMemberIdCardImage() {
@@ -5663,7 +5851,7 @@
     function printAuditReport() {
       calculateAndRenderAudit();
       setTimeout(() => {
-        window.print();
+        triggerA4Print('auditPadPrintArea');
       }, 200);
     }
 
@@ -5718,7 +5906,11 @@
       const sheetContent = document.getElementById("a4SheetContent");
       if (!srcArea || !sheetContent) return;
 
-      sheetContent.innerHTML = srcArea.innerHTML;
+      if (srcArea.classList.contains("official-sample-pad")) {
+        sheetContent.innerHTML = `<div class="official-sample-pad" style="max-width: 100%; border: 2.5px solid #14532D; box-shadow: none;">${srcArea.innerHTML}</div>`;
+      } else {
+        sheetContent.innerHTML = srcArea.outerHTML || srcArea.innerHTML;
+      }
       zoomA4Sheet(0, true);
       document.getElementById("a4PdfPreviewModal").style.display = "flex";
     }
@@ -5744,15 +5936,15 @@
       const origScale = currentA4Scale;
       zoomA4Sheet(0, true);
       setTimeout(() => {
-        window.print();
+        triggerA4Print('a4SheetContainer');
         setTimeout(() => {
           currentA4Scale = origScale;
           const sheet = document.getElementById("a4SheetContainer");
           const label = document.getElementById("a4ZoomLabel");
           if (sheet) sheet.style.transform = `scale(${currentA4Scale})`;
           if (label) label.innerText = `${Math.round(currentA4Scale * 100)}%`;
-        }, 300);
-      }, 150);
+        }, 400);
+      }, 100);
     }
 
     function downloadA4Image() {
