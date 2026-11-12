@@ -97,13 +97,221 @@
     .or-divider span { padding: 0 10px; }
 
     header {
-      background: white; border-bottom: 1px solid var(--border); padding: 12px 20px;
+      background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 10px 16px;
       display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
     }
-    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand { display: flex; align-items: center; gap: 8px; }
     .brand-icon {
-      background: var(--primary-light); color: var(--primary); width: 38px; height: 38px;
+      background: var(--primary-light); color: var(--primary); width: 36px; height: 36px;
       border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold;
+    }
+    .menu-toggle-btn {
+      background: var(--primary-light);
+      border: 1px solid var(--border);
+      color: var(--primary);
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+    .menu-toggle-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Sidebar Drawer Styles */
+    .sidebar-backdrop {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .sidebar-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .sidebar-drawer {
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: 310px;
+      max-width: 86vw;
+      background: var(--card-bg);
+      color: var(--text);
+      z-index: 1001;
+      transform: translateX(-100%);
+      transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      box-shadow: 6px 0 30px rgba(0,0,0,0.18);
+      border-right: 1px solid var(--border);
+    }
+    .sidebar-drawer.active {
+      transform: translateX(0);
+    }
+    .sidebar-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sidebar-brand-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sidebar-user-card {
+      margin: 10px 14px;
+      padding: 10px 12px;
+      background: var(--primary-light);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sidebar-nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+    }
+    .nav-item:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+    .nav-item.active {
+      background: var(--primary);
+      color: white !important;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+    .nav-item.active .nav-icon {
+      color: white;
+    }
+    .nav-icon {
+      font-size: 18px;
+      width: 24px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .nav-badge {
+      margin-left: auto;
+      background: #EF4444;
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+    }
+    .nav-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 8px 6px;
+    }
+
+    /* Quick Action Cards on Clean Dashboard */
+    .quick-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 16px 0;
+    }
+    .quick-action-btn {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 13px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .quick-action-btn:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+    }
+    .qa-icon-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .qa-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .qa-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Back Nav Header for Sub-Views */
+    .view-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding: 10px 14px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .back-btn {
+      background: var(--primary-light);
+      color: var(--primary);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .container { max-width: 620px; margin: 0 auto; padding: 16px; }
@@ -116,14 +324,15 @@
     .btn:hover { background: var(--primary-dark); }
     .btn-danger { background: #EF4444; }
     .btn-danger:hover { background: #DC2626; }
-    .btn-outline { background: white; color: var(--primary); border: 1px solid var(--primary); }
+    .btn-outline { background: var(--card-bg); color: var(--primary); border: 1px solid var(--primary); }
 
-    .card { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 14px; }
-    .card-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 14px; }
+    .card-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
     .form-group { margin-bottom: 12px; text-align: left; }
     label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; color: var(--text-muted); }
     input, select {
       width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none;
+      background: var(--card-bg); color: var(--text);
     }
     input:focus, select:focus { border-color: var(--primary); }
 
@@ -512,294 +721,471 @@
   <!-- ================= 3. SOMITI MAIN DASHBOARD ================= -->
   <div id="dashboardScreen" style="display: none;">
 
+    <!-- Top Sticky Header with Hamburger Menu -->
     <header>
-      <div class="brand">
-        <div class="brand-icon" id="dashBrandIcon">🏛️</div>
-        <div>
-          <h2 id="dashSomitiName" style="font-size: 15px; font-weight: 700;">সমিতি</h2>
-          <span style="background:var(--primary-light); color:var(--primary); font-size:11px; font-weight:700; padding:2px 6px; border-radius:4px;" id="dashSomitiCode">SMT-XXXX</span>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <button class="menu-toggle-btn" onclick="openSidebar()" title="মেনু খুলুন">
+          ☰
+        </button>
+        <div class="brand">
+          <div class="brand-icon" id="dashBrandIcon">🏛️</div>
+          <div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <h2 id="dashSomitiName" style="font-size: 15px; font-weight: 700;">সমিতি</h2>
+              <span style="background:var(--primary-light); color:var(--primary); font-size:10px; font-weight:700; padding:1px 6px; border-radius:4px;" id="dashSomitiCode">SMT-XXXX</span>
+            </div>
+            <div id="headerActiveViewTitle" style="font-size: 11px; color: var(--primary); font-weight: 600;">📊 প্রধান ড্যাশবোর্ড</div>
+          </div>
         </div>
       </div>
-      <div style="display: flex; align-items: center; gap: 6px;">
-        <!-- Multi-Theme Switcher -->
-        <select id="themeSelector" onchange="changeTheme(this.value)" style="padding: 4px 6px; font-size: 11px; font-weight: 700; border-radius: 6px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); cursor: pointer;">
-          <option value="emerald">🟢 এমারেল্ড গ্রিন</option>
-          <option value="navy">🔵 রয়্যাল নেভি</option>
-          <option value="purple">🟣 লাক্সারি পার্পল</option>
-          <option value="golden">🟠 গোল্ডেন সানসেট</option>
-          <option value="crimson">🔴 রুবি রেড</option>
-          <option value="dark">🌙 ডার্ক নাইট</option>
-          <option value="slate">⚪ মিনিমাল স্লেট</option>
-          <option value="teal">🌊 ওশান টিল</option>
-          <option value="orange">🍁 অ্যাম্বার অরেঞ্জ</option>
-          <option value="neon">⚡ সাইবার নিয়ন</option>
-        </select>
 
-        <button onclick="openEditSomitiModal()" style="background:var(--primary-light); color:var(--primary); border:1px solid var(--border); padding:5px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">
-          ⚙️ প্যাড এডিট
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <!-- Quick Back Button if on other views -->
+        <button id="headerBackBtn" onclick="navTo('dashboard')" style="display: none; background: var(--primary-light); color: var(--primary); border: 1px solid var(--border); padding: 5px 8px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer;">
+          🏠 ড্যাশবোর্ড
         </button>
 
-        <button onclick="handleSignOut()" style="background:none; border:1px solid #EF4444; color:#EF4444; padding:5px 8px; border-radius:6px; font-size:11px; cursor:pointer;">
-          লগআউট
+        <!-- Multi-Theme Quick Switcher -->
+        <select id="themeSelector" onchange="changeTheme(this.value)" style="padding: 4px 6px; font-size: 11px; font-weight: 700; border-radius: 6px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); cursor: pointer;">
+          <option value="emerald">🟢 এমারেল্ড</option>
+          <option value="navy">🔵 নেভি</option>
+          <option value="purple">🟣 পার্পল</option>
+          <option value="golden">🟠 গোল্ডেন</option>
+          <option value="crimson">🔴 রুবি</option>
+          <option value="dark">🌙 ডার্ক</option>
+          <option value="slate">⚪ স্লেট</option>
+          <option value="teal">🌊 টিল</option>
+          <option value="orange">🍁 অরেঞ্জ</option>
+          <option value="neon">⚡ নিয়ন</option>
+        </select>
+
+        <button onclick="openSidebar()" style="background:none; border:none; font-size:22px; cursor:pointer; color:var(--text); padding: 0 4px;" title="সকল অপশন">
+          ⋮
         </button>
       </div>
     </header>
 
+    <!-- ================= LEFT SIDEBAR DRAWER & BACKDROP ================= -->
+    <div id="sidebarBackdrop" class="sidebar-backdrop" onclick="closeSidebar()"></div>
+
+    <div id="sidebarDrawer" class="sidebar-drawer">
+      <div class="sidebar-header">
+        <div class="sidebar-brand-box">
+          <div class="brand-icon" id="sideBrandIcon" style="width:38px; height:38px; font-size:18px;">🏛️</div>
+          <div>
+            <h3 id="sideSomitiName" style="font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.2;">স্মার্ট সমিতি</h3>
+            <span id="sideSomitiCode" style="font-size: 10px; background: var(--primary-light); color: var(--primary); font-weight: 700; padding: 1px 6px; border-radius: 4px;">SMT-7890</span>
+          </div>
+        </div>
+        <button onclick="closeSidebar()" style="background: none; border: none; font-size: 22px; color: var(--text-muted); cursor: pointer; padding: 4px;">✕</button>
+      </div>
+
+      <div class="sidebar-user-card">
+        <div style="font-size: 20px;">👤</div>
+        <div style="flex: 1; overflow: hidden;">
+          <div id="sideUserName" style="font-size: 12px; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">সাজ্জাদ হোসেন</div>
+          <div id="sideUserRoleBadge" style="font-size: 10px; color: var(--primary); font-weight: 700;">👑 সুপার এডমিন</div>
+        </div>
+      </div>
+
+      <div class="sidebar-nav">
+        <button class="nav-item active" id="navItem-dashboard" onclick="navTo('dashboard')">
+          <span class="nav-icon">📊</span>
+          <span>প্রধান ড্যাশবোর্ড ও প্যাড</span>
+        </button>
+
+        <button class="nav-item" id="navItem-deposits" onclick="navTo('deposits')">
+          <span class="nav-icon">📥</span>
+          <span>কিস্তি জমা ও মানি রিসিট</span>
+        </button>
+
+        <button class="nav-item" id="navItem-members" onclick="navTo('members')">
+          <span class="nav-icon">👥</span>
+          <span>সদস্য তালিকা ও পাসবুক</span>
+        </button>
+
+        <button class="nav-item" id="navItem-expenses" onclick="navTo('expenses')">
+          <span class="nav-icon">💸</span>
+          <span>দৈনন্দিন খরচ খাতা</span>
+        </button>
+
+        <button class="nav-item" id="navItem-backup" onclick="navTo('backup')">
+          <span class="nav-icon">☁️</span>
+          <span>গুগল ড্রাইভ ক্লাউড ব্যাকআপ</span>
+        </button>
+
+        <button class="nav-item" id="navItem-pending" onclick="navTo('pending')">
+          <span class="nav-icon">⏳</span>
+          <span>অপেক্ষমাণ আবেদনকারী</span>
+          <span class="nav-badge" id="sidePendingBadge" style="display:none;">০</span>
+        </button>
+
+        <div class="nav-divider"></div>
+
+        <button class="nav-item" onclick="closeSidebar(); openEditSomitiModal();">
+          <span class="nav-icon">⚙️</span>
+          <span>সমিতি ও প্যাড সেটিংস</span>
+        </button>
+
+        <button class="nav-item" id="navItem-switchRole" onclick="toggleRoleView()">
+          <span class="nav-icon">🔄</span>
+          <span id="sideRoleToggleText">সদস্য পাসবুক ভিউতে যান</span>
+        </button>
+
+        <div class="nav-divider"></div>
+
+        <div style="padding: 4px 14px 2px 14px; font-size: 11px; font-weight: 700; color: var(--text-muted);">
+          🎨 দ্রুত থিম পরিবর্তন (১০টি মোড):
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; padding: 6px 14px 8px 14px;">
+          <button onclick="changeTheme('emerald')" style="height:24px; border-radius:6px; background:#0F9D58; border:none; cursor:pointer;" title="এমারেল্ড"></button>
+          <button onclick="changeTheme('navy')" style="height:24px; border-radius:6px; background:#1A73E8; border:none; cursor:pointer;" title="নেভি"></button>
+          <button onclick="changeTheme('purple')" style="height:24px; border-radius:6px; background:#7C3AED; border:none; cursor:pointer;" title="পার্পল"></button>
+          <button onclick="changeTheme('golden')" style="height:24px; border-radius:6px; background:#D97706; border:none; cursor:pointer;" title="গোল্ডেন"></button>
+          <button onclick="changeTheme('crimson')" style="height:24px; border-radius:6px; background:#E11D48; border:none; cursor:pointer;" title="রুবি"></button>
+          <button onclick="changeTheme('dark')" style="height:24px; border-radius:6px; background:#0F172A; border:1px solid #475569; cursor:pointer;" title="ডার্ক নাইট"></button>
+          <button onclick="changeTheme('slate')" style="height:24px; border-radius:6px; background:#475569; border:none; cursor:pointer;" title="স্লেট"></button>
+          <button onclick="changeTheme('teal')" style="height:24px; border-radius:6px; background:#0D9488; border:none; cursor:pointer;" title="টিল"></button>
+          <button onclick="changeTheme('orange')" style="height:24px; border-radius:6px; background:#EA580C; border:none; cursor:pointer;" title="অরেঞ্জ"></button>
+          <button onclick="changeTheme('neon')" style="height:24px; border-radius:6px; background:#06B6D4; border:none; cursor:pointer;" title="নিয়ন"></button>
+        </div>
+
+        <div class="nav-divider"></div>
+
+        <button class="nav-item" onclick="closeSidebar(); handleSignOut();" style="color: #EF4444;">
+          <span class="nav-icon">🚪</span>
+          <span>লগআউট</span>
+        </button>
+      </div>
+
+      <div style="padding: 10px; border-top: 1px solid var(--border); font-size: 11px; text-align: center; color: var(--text-muted); background: var(--bg);">
+        স্মার্ট সমিতি প্ল্যাটফর্ম v2.0
+      </div>
+    </div>
+
     <div class="container">
 
-      <!-- View Switcher (Admin vs Member View) -->
-      <div class="view-switch-bar">
-        <button class="switch-btn active" id="btnAdminView" onclick="switchDashboardView('admin')">👑 এডমিন/কোষাধ্যক্ষ ভিউ (জমা, খরচ ও ড্রাইভ)</button>
-        <button class="switch-btn" id="btnMemberView" onclick="switchDashboardView('member')">👤 সদস্যের লাইভ পাসবুক ভিউ</button>
-      </div>
+      <!-- ================= 1. CLEAN MAIN DISPLAY: DASHBOARD VIEW ================= -->
+      <div id="view-dashboard">
+        <!-- Ultra Professional Official Pad Banner -->
+        <div class="pad-banner" id="mainPadBanner">
+          <!-- Top Pad Row -->
+          <div class="pad-top-row">
+            <div class="pad-left-box">
+              <div class="pad-logo-box" id="padLogoEmoji">🏛️</div>
+              <div>
+                <div class="pad-title" id="padTitle">সমিতির নাম</div>
+                <div class="pad-slogan" id="padSlogan">"সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি"</div>
+              </div>
+            </div>
+            <div class="pad-right-info">
+              <div id="padAddress">📍 মিরপুর-১০, ঢাকা</div>
+              <div id="padBkash">📱 বিকাশ/নগদ: ০১৭১২-৩৪৫৬৭৮</div>
+              <div id="padBank">🏦 সোনালী ব্যাংক - ১২৩৪৫৬৭৮</div>
+              <div id="padCodeBadge" style="font-weight:700; color:var(--primary);">কোড: SMT-7890</div>
+            </div>
+          </div>
 
-      <!-- Ultra Professional Official Pad Banner -->
-      <div class="pad-banner" id="mainPadBanner">
-        <!-- Top Pad Row -->
-        <div class="pad-top-row">
-          <div class="pad-left-box">
-            <div class="pad-logo-box" id="padLogoEmoji">🏛️</div>
+          <!-- Official Notice Box -->
+          <div class="pad-notice-box" id="padNoticeBox">
+            <span style="font-size:16px;">📢</span>
             <div>
-              <div class="pad-title" id="padTitle">সমিতির নাম</div>
-              <div class="pad-slogan" id="padSlogan">"সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি"</div>
+              <strong style="margin-right: 4px;">অফিসিয়াল নোটিশ:</strong>
+              <span id="padNoticeText">সকল সদস্যকে নিয়মিত মাসিক সঞ্চয় কিস্তি যথাসময়ে জমা দেওয়ার জন্য অনুরোধ করা যাচ্ছে।</span>
             </div>
           </div>
-          <div class="pad-right-info">
-            <div id="padAddress">📍 মিরপুর-১০, ঢাকা</div>
-            <div id="padBkash">📱 বিকাশ/নগদ: ০১৭১২-৩৪৫৬৭৮</div>
-            <div id="padBank">🏦 সোনালী ব্যাংক - ১২৩৪৫৬৭৮</div>
-            <div id="padCodeBadge" style="font-weight:700; color:var(--primary);">কোড: SMT-7890</div>
+
+          <!-- Digital Signatures & Seals Row -->
+          <div class="pad-committee-row" id="padCommitteeRow">
+            <!-- President -->
+            <div class="committee-stamp-col">
+              <div class="digital-sign" id="padSignPresident">Karim</div>
+              <div class="official-seal-stamp">
+                <span>★ সিলমোহর ★</span>
+                <span>অনুমোদিত</span>
+              </div>
+              <div class="signatory-name" id="padPresidentName">জনাব আব্দুল করিম</div>
+              <div class="signatory-role">সভাপতি</div>
+            </div>
+
+            <!-- Secretary -->
+            <div class="committee-stamp-col">
+              <div class="digital-sign" id="padSignSecretary">Rafiqul</div>
+              <div class="official-seal-stamp">
+                <span>★ সিলমোহর ★</span>
+                <span>যাচাইকৃত</span>
+              </div>
+              <div class="signatory-name" id="padSecretaryName">জনাব রফিকুল ইসলাম</div>
+              <div class="signatory-role">সাধারণ সম্পাদক</div>
+            </div>
+
+            <!-- Cashier -->
+            <div class="committee-stamp-col">
+              <div class="digital-sign" id="padSignCashier">Sajjad</div>
+              <div class="official-seal-stamp">
+                <span>★ সিলমোহর ★</span>
+                <span>আদায়কারী</span>
+              </div>
+              <div class="signatory-name" id="padCashierName">সাজ্জাদ হোসেন</div>
+              <div class="signatory-role">কোষাধ্যক্ষ</div>
+            </div>
           </div>
         </div>
 
-        <!-- Official Notice Box -->
-        <div class="pad-notice-box" id="padNoticeBox">
-          <span style="font-size:16px;">📢</span>
+        <!-- Financial Summary Box with Cash in Hand -->
+        <div class="summary-card">
+          <div class="cash-highlight-card">
+            <div style="text-align: left;">
+              <div style="font-size: 12px; font-weight: 600; opacity: 0.9;">হাতে নগদ ক্যাশ (Cash in Hand)</div>
+              <div class="cash-in-hand-amt" id="cashInHand">৳০</div>
+            </div>
+            <div style="font-size: 26px;">💵</div>
+          </div>
+
+          <div class="stat-row">
+            <div class="stat-box">
+              <h4 id="totalDepositFund" style="color: #BBF7D0;">৳০</h4>
+              <p>মোট সঞ্চয়</p>
+            </div>
+            <div class="stat-box">
+              <h4 id="totalExpenseFund" style="color: #FECACA;">৳০</h4>
+              <p>মোট খরচ</p>
+            </div>
+            <div class="stat-box">
+              <h4 id="totalMembers">০ জন</h4>
+              <p>মোট সদস্য</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Action Menu Cards Grid -->
+        <div style="font-weight: 700; margin: 18px 0 8px 2px; font-size: 14px; color: var(--text); display: flex; justify-content: space-between; align-items: center;">
+          <span>⚡ প্রয়োজনীয় মেনু ও কাজসমূহ:</span>
+          <span style="font-size: 11px; color: var(--text-muted); cursor: pointer;" onclick="openSidebar()">☰ সকল মেনু</span>
+        </div>
+
+        <div class="quick-actions-grid">
+          <div class="quick-action-btn" onclick="navTo('deposits')">
+            <div class="qa-icon-circle">📥</div>
+            <div>
+              <div class="qa-title">কিস্তি জমা নিন</div>
+              <div class="qa-sub">টাকা এন্ট্রি ও রসিদ তৈরি</div>
+            </div>
+          </div>
+
+          <div class="quick-action-btn" onclick="navTo('members')">
+            <div class="qa-icon-circle">👥</div>
+            <div>
+              <div class="qa-title">সদস্য ও পাসবুক</div>
+              <div class="qa-sub">সদস্য খতিয়ান ও ব্যালেন্স</div>
+            </div>
+          </div>
+
+          <div class="quick-action-btn" onclick="navTo('expenses')">
+            <div class="qa-icon-circle">💸</div>
+            <div>
+              <div class="qa-title">দৈনন্দিন খরচ</div>
+              <div class="qa-sub">খরচের খাতা ও ভাউচার</div>
+            </div>
+          </div>
+
+          <div class="quick-action-btn" onclick="navTo('backup')">
+            <div class="qa-icon-circle">☁️</div>
+            <div>
+              <div class="qa-title">ড্রাইভ ব্যাকআপ</div>
+              <div class="qa-sub">ক্লাউড সিঙ্ক ও CSV</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Shortcut Card for Settings & Status -->
+        <div class="card" style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center; padding: 14px 16px;">
           <div>
-            <strong style="margin-right: 4px;">অফিসিয়াল নোটিশ:</strong>
-            <span id="padNoticeText">সকল সদস্যকে নিয়মিত মাসিক সঞ্চয় কিস্তি যথাসময়ে জমা দেওয়ার জন্য অনুরোধ করা যাচ্ছে।</span>
+            <div style="font-weight: 700; font-size: 13px;">⚙️ প্যাড ও সিল-সাইন কাস্টমাইজ</div>
+            <div style="font-size: 11px; color: var(--text-muted);">নাম, স্লোগান, ঠিকানা, সিল ও সাইন এডিট</div>
           </div>
+          <button onclick="openEditSomitiModal()" style="background: var(--primary-light); color: var(--primary); border: 1px solid var(--border); padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;">
+            এডিট করুন ↗
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= 2. DEPOSITS VIEW ================= -->
+      <div id="view-deposits" style="display: none;">
+        <div class="view-header-bar">
+          <button class="back-btn" onclick="navTo('dashboard')">← ড্যাশবোর্ডে ফিরুন</button>
+          <span style="font-weight: 700; font-size: 14px; color: var(--primary);">📥 কিস্তি জমা ও মানি রিসিট</span>
         </div>
 
-        <!-- Digital Signatures & Seals Row -->
-        <div class="pad-committee-row" id="padCommitteeRow">
-          <!-- President -->
-          <div class="committee-stamp-col">
-            <div class="digital-sign" id="padSignPresident">Karim</div>
-            <div class="official-seal-stamp">
-              <span>★ সিলমোহর ★</span>
-              <span>অনুমোদিত</span>
-            </div>
-            <div class="signatory-name" id="padPresidentName">জনাব আব্দুল করিম</div>
-            <div class="signatory-role">সভাপতি</div>
+        <div class="card">
+          <div class="card-title">সঞ্চয় জমা এন্ট্রি দিন (স্বয়ংক্রিয় রসিদ তৈরি হবে)</div>
+          <div class="form-group">
+            <label>সদস্য নির্বাচন করুন</label>
+            <select id="depositMemberSelect"><option value="">আগে সদস্য যোগ করুন</option></select>
+          </div>
+          <div class="form-group">
+            <label>টাকার পরিমাণ (৳)</label>
+            <input type="number" id="depositAmount" placeholder="যেমন: 500">
+          </div>
+          <div class="form-group">
+            <label>জমার ধরণ</label>
+            <select id="depositType">
+              <option value="মাসিক সঞ্চয়">মাসিক সঞ্চয়</option>
+              <option value="সাপ্তাহিক সঞ্চয়">সাপ্তাহিক সঞ্চয়</option>
+              <option value="দৈনিক সঞ্চয়">দৈনিক সঞ্চয়</option>
+              <option value="শেয়ার সঞ্চয়">শেয়ার সঞ্চয়</option>
+              <option value="এককালীন জমা">এককালীন জমা</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>মন্তব্য / নোট</label>
+            <input type="text" id="depositNote" placeholder="যেমন: নভেম্বর মাসের কিস্তি">
+          </div>
+          <button class="btn" onclick="addDeposit()">💰 জমা লিপিবদ্ধ করুন ও রসিদ তৈরি করুন</button>
+        </div>
+
+        <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 14px;">সাম্প্রতিক জমার খতিয়ান (ক্লিক করে রসিদ দেখুন):</div>
+        <div id="depositsList">
+          <div style="text-align: center; padding: 20px; color: var(--text-muted);">লোড হচ্ছে...</div>
+        </div>
+      </div>
+
+      <!-- ================= 3. MEMBERS VIEW ================= -->
+      <div id="view-members" style="display: none;">
+        <div class="view-header-bar">
+          <button class="back-btn" onclick="navTo('dashboard')">← ড্যাশবোর্ডে ফিরুন</button>
+          <span style="font-weight: 700; font-size: 14px; color: var(--primary);">👥 সদস্য তালিকা ও পাসবুক</span>
+        </div>
+
+        <div class="card">
+          <div class="card-title">নতুন সদস্য যোগ ও বরাদ্দ করুন</div>
+          <div class="form-group">
+            <label>সদস্য নম্বর</label>
+            <input type="text" id="mNumber" placeholder="যেমন: 01">
+          </div>
+          <div class="form-group">
+            <label>সদস্যের নাম *</label>
+            <input type="text" id="mName" placeholder="পূর্ণ নাম">
+          </div>
+          <div class="form-group">
+            <label>মোবাইল নম্বর</label>
+            <input type="tel" id="mPhone" placeholder="017xxxxxxxx">
+          </div>
+          <div class="form-group">
+            <label>সদস্যের জিমেইল/ইমেইল (লগইন অনুমোদনের জন্য)</label>
+            <input type="email" id="mEmail" placeholder="member@gmail.com">
+          </div>
+          <p style="font-size: 11px; color: #16A34A; margin-bottom: 12px;">
+            💡 এই ইমেইলটি বরাদ্দ দিলে ওই সদস্য তার ফোনে লগইন করলেই এই সমিতিতে সরাসরি ঢুকতে পারবে।
+          </p>
+          <button class="btn" onclick="addMember()">➕ সদস্য সংরক্ষণ ও বরাদ্দ দিন</button>
+        </div>
+
+        <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 14px; display:flex; justify-content:space-between;">
+          <span>সদস্য তালিকা (ক্লিক করে খতিয়ান দেখুন):</span>
+          <span style="color: var(--primary); font-size: 12px;">ট্যাপ = পাসবুক</span>
+        </div>
+        <div id="membersList">
+          <div style="text-align: center; padding: 20px; color: var(--text-muted);">লোড হচ্ছে...</div>
+        </div>
+      </div>
+
+      <!-- ================= 4. EXPENSES VIEW ================= -->
+      <div id="view-expenses" style="display: none;">
+        <div class="view-header-bar">
+          <button class="back-btn" onclick="navTo('dashboard')">← ড্যাশবোর্ডে ফিরুন</button>
+          <span style="font-weight: 700; font-size: 14px; color: var(--danger);">💸 দৈনন্দিন খরচ খাতা</span>
+        </div>
+
+        <div class="card">
+          <div class="card-title">সমিতির খরচের হিসাব এন্ট্রি দিন</div>
+          <div class="form-group">
+            <label>খরচের বিবরণ</label>
+            <input type="text" id="expenseTitle" placeholder="যেমন: অফিস ভাড়া, খাতা-কলম ক্রয়, চা-নাস্তা">
+          </div>
+          <div class="form-group">
+            <label>খরচের পরিমাণ (৳)</label>
+            <input type="number" id="expenseAmount" placeholder="যেমন: 350">
+          </div>
+          <div class="form-group">
+            <label>ক্যাটাগরি</label>
+            <select id="expenseCategory">
+              <option value="অফিস ভাড়া">অফিস ভাড়া</option>
+              <option value="ইউটিলিটি ও বিদ্যুৎ বিল">ইউটিলিটি ও বিদ্যুৎ বিল</option>
+              <option value="প্রিন্টিং ও স্টেশনারি">প্রিন্টিং ও স্টেশনারি</option>
+              <option value="আপ্যায়ন ও নাস্তা">আপ্যায়ন ও নাস্তা</option>
+              <option value="যাতায়াত খরচ">যাতায়াত খরচ</option>
+              <option value="অন্যান্য খরচ">অন্যান্য খরচ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>ভাউচার নং / নোট (ঐচ্ছিক)</label>
+            <input type="text" id="expenseNote" placeholder="যেমন: মেমো নং ৪২">
+          </div>
+          <button class="btn btn-danger" onclick="addExpense()">💸 খরচের ভাউচার এন্ট্রি করুন</button>
+        </div>
+
+        <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 14px;">খরচের ভাউচার তালিকা:</div>
+        <div id="expensesList">
+          <div style="text-align: center; padding: 20px; color: var(--text-muted);">কোনো খরচের রেকর্ড নেই।</div>
+        </div>
+      </div>
+
+      <!-- ================= 5. BACKUP VIEW ================= -->
+      <div id="view-backup" style="display: none;">
+        <div class="view-header-bar">
+          <button class="back-btn" onclick="navTo('dashboard')">← ড্যাশবোর্ডে ফিরুন</button>
+          <span style="font-weight: 700; font-size: 14px; color: #10B981;">☁️ গুগল ড্রাইভ ক্লাউড ব্যাকআপ</span>
+        </div>
+
+        <div class="card" style="border: 2px solid #0F9D58;">
+          <div class="card-title" style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 22px;">☁️</span>
+            <span>Google Drive-এ সমিতির পূর্ণাঙ্গ ব্যাকআপ</span>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 6px 0 16px 0;">
+            এই সমিতির অফিসিয়াল প্যাডের সকল তথ্য, কমিটি, সকল সদস্যের ব্যালেন্স, সম্পূর্ণ জমা এবং <strong>খরচ খাতা ও হাতে নগদ ক্যাশের পূর্ণাঙ্গ অফিশিয়াল CSV/Excel স্টেটমেন্ট</strong> সরাসরি আপনার Google Drive-এ আপলোড করুন।
+          </p>
+
+          <div style="margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center;">
+            <span id="driveStatusBadge" style="font-size: 12px; font-weight: 700; color: #64748B;">⚪ Google Drive কানেক্ট করা হয়নি</span>
+            <button onclick="connectGoogleDriveDirectly()" style="background:#4285F4; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">🔑 Google Drive দিয়ে লগইন করুন</button>
           </div>
 
-          <!-- Secretary -->
-          <div class="committee-stamp-col">
-            <div class="digital-sign" id="padSignSecretary">Rafiqul</div>
-            <div class="official-seal-stamp">
-              <span>★ সিলমোহর ★</span>
-              <span>যাচাইকৃত</span>
-            </div>
-            <div class="signatory-name" id="padSecretaryName">জনাব রফিকুল ইসলাম</div>
-            <div class="signatory-role">সাধারণ সম্পাদক</div>
-          </div>
-
-          <!-- Cashier -->
-          <div class="committee-stamp-col">
-            <div class="digital-sign" id="padSignCashier">Sajjad</div>
-            <div class="official-seal-stamp">
-              <span>★ সিলমোহর ★</span>
-              <span>আদায়কারী</span>
-            </div>
-            <div class="signatory-name" id="padCashierName">সাজ্জাদ হোসেন</div>
-            <div class="signatory-role">কোষাধ্যক্ষ</div>
+          <button class="btn" onclick="exportCsv()">
+            <span>📥 Google ড্রাইভে পূর্ণাঙ্গ অডিট স্টেটমেন্ট ব্যাকআপ করুন</span>
+          </button>
+          <div id="backupFeedback" style="display: none; margin-top: 14px; padding: 12px; background: #E8F5E9; color: #1B5E20; border-radius: 8px; font-size: 13px; font-weight: 600;">
+            ✅ আপনার Google Drive-এ স্টেটমেন্ট ফাইলটি প্রস্তুত ও ডাউনলোড সম্পন্ন হয়েছে!
           </div>
         </div>
       </div>
 
-
-      <!-- Financial Summary Box with Cash in Hand -->
-      <div class="summary-card">
-        <div class="cash-highlight-card">
-          <div style="text-align: left;">
-            <div style="font-size: 12px; font-weight: 600; opacity: 0.9;">হাতে নগদ ক্যাশ (Cash in Hand)</div>
-            <div class="cash-in-hand-amt" id="cashInHand">৳০</div>
-          </div>
-          <div style="font-size: 26px;">💵</div>
+      <!-- ================= 6. PENDING APPLICANTS VIEW ================= -->
+      <div id="view-pending" style="display: none;">
+        <div class="view-header-bar">
+          <button class="back-btn" onclick="navTo('dashboard')">← ড্যাশবোর্ডে ফিরুন</button>
+          <span style="font-weight: 700; font-size: 14px; color: #D97706;">⏳ অপেক্ষমাণ আবেদনকারী বরাদ্দ</span>
         </div>
 
-        <div class="stat-row">
-          <div class="stat-box">
-            <h4 id="totalDepositFund" style="color: #BBF7D0;">৳০</h4>
-            <p>মোট সঞ্চয়</p>
+        <div class="card" id="pendingRequestsCard" style="border: 1px dashed #F59E0B; background: #FFFBEB;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+            <span style="font-weight: 700; font-size: 13px; color: #B45309;">⏳ অপেক্ষমাণ আবেদনকারীগণ:</span>
+            <span id="pendingCountBadge" style="background:#FDE68A; color:#78350F; font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px;">০ জন</span>
           </div>
-          <div class="stat-box">
-            <h4 id="totalExpenseFund" style="color: #FECACA;">৳০</h4>
-            <p>মোট খরচ</p>
-          </div>
-          <div class="stat-box">
-            <h4 id="totalMembers">০ জন</h4>
-            <p>মোট সদস্য</p>
+          <div id="pendingRequestsList" style="font-size: 12px; color: #78350F;">
+            কোনো নতুন আবেদনকারী অপেক্ষমাণ নেই।
           </div>
         </div>
       </div>
 
-      <!-- ADMIN DASHBOARD SECTIONS -->
-      <div id="adminSections">
-        <div class="tabs">
-          <button class="tab-btn active" onclick="showTab('members')">👥 সদস্যগণ</button>
-          <button class="tab-btn" onclick="showTab('deposits')">💳 সঞ্চয় জমা</button>
-          <button class="tab-btn" onclick="showTab('expenses')">💸 খরচ খাতা</button>
-          <button class="tab-btn" onclick="showTab('backup')">☁️ ড্রাইভ ব্যাকআপ</button>
+      <!-- ================= 7. MEMBER LIVE PASSBOOK VIEW ================= -->
+      <div id="view-memberpassbook" style="display: none;">
+        <div class="view-header-bar">
+          <button class="back-btn" onclick="navTo('dashboard')">← ড্যাশবোর্ডে ফিরুন</button>
+          <span style="font-weight: 700; font-size: 14px; color: #1A73E8;">👤 সদস্যের লাইভ পাসবুক</span>
         </div>
 
-        <!-- Tab 1: Members -->
-        <div id="tabMembers">
-          <div class="card">
-            <div class="card-title">নতুন সদস্য যোগ ও বরাদ্দ করুন</div>
-            <div class="form-group">
-              <label>সদস্য নম্বর</label>
-              <input type="text" id="mNumber" placeholder="যেমন: 01">
-            </div>
-            <div class="form-group">
-              <label>সদস্যের নাম *</label>
-              <input type="text" id="mName" placeholder="পূর্ণ নাম">
-            </div>
-            <div class="form-group">
-              <label>মোবাইল নম্বর</label>
-              <input type="tel" id="mPhone" placeholder="017xxxxxxxx">
-            </div>
-            <div class="form-group">
-              <label>সদস্যের জিমেইল/ইমেইল (লগইন অনুমোদনের জন্য)</label>
-              <input type="email" id="mEmail" placeholder="member@gmail.com">
-            </div>
-            <p style="font-size: 11px; color: #16A34A; margin-bottom: 12px;">
-              💡 এই ইমেইলটি বরাদ্দ দিলে ওই সদস্য তার ফোনে লগইন করলেই এই সমিতিতে সরাসরি ঢুকতে পারবে।
-            </p>
-            <button class="btn" onclick="addMember()">➕ সদস্য সংরক্ষণ ও বরাদ্দ দিন</button>
-          </div>
-
-          <!-- Pending Applicants Section -->
-          <div class="card" id="pendingRequestsCard" style="border: 1px dashed #F59E0B; background: #FFFBEB;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
-              <span style="font-weight: 700; font-size: 13px; color: #B45309;">⏳ অপেক্ষমাণ আবেদনকারীগণ:</span>
-              <span id="pendingCountBadge" style="background:#FDE68A; color:#78350F; font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px;">০ জন</span>
-            </div>
-            <div id="pendingRequestsList" style="font-size: 12px; color: #78350F;">
-              কোনো নতুন আবেদনকারী অপেক্ষমাণ নেই।
-            </div>
-          </div>
-
-
-          <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 14px; display:flex; justify-content:space-between;">
-            <span>সদস্য তালিকা (ক্লিক করে খতিয়ান দেখুন):</span>
-            <span style="color: var(--primary); font-size: 12px;">ট্যাপ = পাসবুক</span>
-          </div>
-          <div id="membersList">
-            <div style="text-align: center; padding: 20px; color: var(--text-muted);">লোড হচ্ছে...</div>
-          </div>
-        </div>
-
-        <!-- Tab 2: Deposits -->
-        <div id="tabDeposits" style="display: none;">
-          <div class="card">
-            <div class="card-title">সঞ্চয় জমা এন্ট্রি দিন (মানি রিসিট তৈরি হবে)</div>
-            <div class="form-group">
-              <label>সদস্য নির্বাচন করুন</label>
-              <select id="depositMemberSelect"><option value="">আগে সদস্য যোগ করুন</option></select>
-            </div>
-            <div class="form-group">
-              <label>টাকার পরিমাণ (৳)</label>
-              <input type="number" id="depositAmount" placeholder="যেমন: 500">
-            </div>
-            <div class="form-group">
-              <label>জমার ধরণ</label>
-              <select id="depositType">
-                <option value="মাসিক সঞ্চয়">মাসিক সঞ্চয়</option>
-                <option value="সাপ্তাহিক সঞ্চয়">সাপ্তাহিক সঞ্চয়</option>
-                <option value="দৈনিক সঞ্চয়">দৈনিক সঞ্চয়</option>
-                <option value="শেয়ার সঞ্চয়">শেয়ার সঞ্চয়</option>
-                <option value="এককালীন জমা">এককালীন জমা</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>মন্তব্য / নোট</label>
-              <input type="text" id="depositNote" placeholder="যেমন: নভেম্বর মাসের কিস্তি">
-            </div>
-            <button class="btn" onclick="addDeposit()">💰 জমা লিপিবদ্ধ করুন ও রসিদ তৈরি করুন</button>
-          </div>
-
-          <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 14px;">সাম্প্রতিক জমার খতিয়ান (ক্লিক করে রসিদ দেখুন):</div>
-          <div id="depositsList">
-            <div style="text-align: center; padding: 20px; color: var(--text-muted);">লোড হচ্ছে...</div>
-          </div>
-        </div>
-
-        <!-- Tab 3: Expenses (খরচ খাতা) -->
-        <div id="tabExpenses" style="display: none;">
-          <div class="card">
-            <div class="card-title">সমিতির খরচের হিসাব এন্ট্রি দিন</div>
-            <div class="form-group">
-              <label>খরচের বিবরণ</label>
-              <input type="text" id="expenseTitle" placeholder="যেমন: অফিস ভাড়া, খাতা-কলম ক্রয়, চা-নাস্তা">
-            </div>
-            <div class="form-group">
-              <label>খরচের পরিমাণ (৳)</label>
-              <input type="number" id="expenseAmount" placeholder="যেমন: 350">
-            </div>
-            <div class="form-group">
-              <label>ক্যাটাগরি</label>
-              <select id="expenseCategory">
-                <option value="অফিস ভাড়া">অফিস ভাড়া</option>
-                <option value="ইউটিলিটি ও বিদ্যুৎ বিল">ইউটিলিটি ও বিদ্যুৎ বিল</option>
-                <option value="প্রিন্টিং ও স্টেশনারি">প্রিন্টিং ও স্টেশনারি</option>
-                <option value="আপ্যায়ন ও নাস্তা">আপ্যায়ন ও নাস্তা</option>
-                <option value="যাতায়াত খরচ">যাতায়াত খরচ</option>
-                <option value="অন্যান্য খরচ">অন্যান্য খরচ</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>ভাউচার নং / নোট (ঐচ্ছিক)</label>
-              <input type="text" id="expenseNote" placeholder="যেমন: মেমো নং ৪২">
-            </div>
-            <button class="btn btn-danger" onclick="addExpense()">💸 খরচের ভাউচার এন্ট্রি করুন</button>
-          </div>
-
-          <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 14px;">খরচের ভাউচার তালিকা:</div>
-          <div id="expensesList">
-            <div style="text-align: center; padding: 20px; color: var(--text-muted);">কোনো খরচের রেকর্ড নেই।</div>
-          </div>
-        </div>
-
-        <!-- Tab 4: Drive Backup -->
-        <div id="tabBackup" style="display: none;">
-          <div class="card" style="border: 2px solid #0F9D58;">
-            <div class="card-title" style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 22px;">☁️</span>
-              <span>Google Drive-এ সমিতির পূর্ণাঙ্গ ব্যাকআপ</span>
-            </div>
-            <p style="font-size: 13px; color: #334155; line-height: 1.5; margin: 6px 0 16px 0;">
-              এই সমিতির অফিসিয়াল প্যাডের সকল তথ্য, কমিটি, সকল সদস্যের ব্যালেন্স, সম্পূর্ণ জমা এবং <strong>খরচ খাতা ও হাতে নগদ ক্যাশের পূর্ণাঙ্গ অফিশিয়াল CSV/Excel স্টেটমেন্ট</strong> সরাসরি আপনার Google Drive-এ আপলোড করুন।
-            </p>
-
-            <div style="margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center;">
-              <span id="driveStatusBadge" style="font-size: 12px; font-weight: 700; color: #64748B;">⚪ Google Drive কানেক্ট করা হয়নি</span>
-              <button onclick="connectGoogleDriveDirectly()" style="background:#4285F4; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">🔑 Google Drive দিয়ে লগইন করুন</button>
-            </div>
-
-            <button class="btn" onclick="exportCsv()">
-              <span>📥 Google ড্রাইভে পূর্ণাঙ্গ অডিট স্টেটমেন্ট ব্যাকআপ করুন</span>
-            </button>
-            <div id="backupFeedback" style="display: none; margin-top: 14px; padding: 12px; background: #E8F5E9; color: #1B5E20; border-radius: 8px; font-size: 13px; font-weight: 600;">
-              ✅ আপনার Google Drive-এ স্টেটমেন্ট ফাইলটি প্রস্তুত ও ডাউনলোড সম্পন্ন হয়েছে!
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- MEMBER LIVE PASSBOOK SECTIONS -->
-      <div id="memberSections" style="display: none;">
         <div class="card" style="border-left: 4px solid #1A73E8;">
           <div class="card-title">সদস্যের লাইভ সঞ্চয় পাসবুক</div>
           <p style="font-size: 13px; color: var(--text-muted);">
@@ -1261,6 +1647,19 @@
       const dashCode = document.getElementById("dashSomitiCode");
       if (dashCode) dashCode.innerText = s.somitiCode || "SMT-7890";
 
+      // Sidebar Brand
+      const sideIcon = document.getElementById("sideBrandIcon");
+      if (sideIcon) sideIcon.innerText = s.logoEmoji || "🏛️";
+      const sideName = document.getElementById("sideSomitiName");
+      if (sideName) sideName.innerText = s.name || "সমিতি";
+      const sideCode = document.getElementById("sideSomitiCode");
+      if (sideCode) sideCode.innerText = s.somitiCode || "SMT-7890";
+
+      const sideUser = document.getElementById("sideUserName");
+      if (sideUser && currentUser) {
+        sideUser.innerText = currentUser.displayName || currentUser.email || "সাজ্জাদ হোসেন";
+      }
+
       // Pad Left Info
       const pLogo = document.getElementById("padLogoEmoji");
       if (pLogo) pLogo.innerText = s.logoEmoji || "🏛️";
@@ -1449,11 +1848,87 @@
     }
 
 
+    let currentRole = 'admin';
+    let currentActiveView = 'dashboard';
+
+    function openSidebar() {
+      const b = document.getElementById("sidebarBackdrop");
+      const d = document.getElementById("sidebarDrawer");
+      if (b) b.classList.add("active");
+      if (d) d.classList.add("active");
+    }
+
+    function closeSidebar() {
+      const b = document.getElementById("sidebarBackdrop");
+      const d = document.getElementById("sidebarDrawer");
+      if (b) b.classList.remove("active");
+      if (d) d.classList.remove("active");
+    }
+
+    function navTo(viewName) {
+      closeSidebar();
+      currentActiveView = viewName;
+
+      const views = ['dashboard', 'deposits', 'members', 'expenses', 'backup', 'pending', 'memberpassbook'];
+      views.forEach(v => {
+        const el = document.getElementById('view-' + v);
+        if (el) el.style.display = (v === viewName) ? 'block' : 'none';
+
+        const navBtn = document.getElementById('navItem-' + v);
+        if (navBtn) navBtn.classList.toggle('active', v === viewName);
+      });
+
+      const titles = {
+        'dashboard': '📊 প্রধান ড্যাশবোর্ড',
+        'deposits': '📥 কিস্তি জমা ও মানি রিসিট',
+        'members': '👥 সদস্য তালিকা ও পাসবুক',
+        'expenses': '💸 দৈনন্দিন খরচ খাতা',
+        'backup': '☁️ গুগল ড্রাইভ ক্লাউড ব্যাকআপ',
+        'pending': '⏳ অপেক্ষমাণ আবেদনকারী',
+        'memberpassbook': '👤 সদস্যের লাইভ পাসবুক'
+      };
+
+      const titleEl = document.getElementById("headerActiveViewTitle");
+      if (titleEl) titleEl.innerText = titles[viewName] || '📊 প্রধান ড্যাশবোর্ড';
+
+      const backBtn = document.getElementById("headerBackBtn");
+      if (backBtn) backBtn.style.display = (viewName === 'dashboard') ? 'none' : 'inline-block';
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleRoleView() {
+      const newRole = (currentRole === 'admin') ? 'member' : 'admin';
+      switchDashboardView(newRole);
+      closeSidebar();
+    }
+
     function switchDashboardView(role) {
-      document.getElementById("adminSections").style.display = role === 'admin' ? 'block' : 'none';
-      document.getElementById("memberSections").style.display = role === 'member' ? 'block' : 'none';
-      document.getElementById("btnAdminView").classList.toggle("active", role === 'admin');
-      document.getElementById("btnMemberView").classList.toggle("active", role === 'member');
+      currentRole = role;
+      const isAdm = (role === 'admin');
+
+      const roleBadge = document.getElementById("sideUserRoleBadge");
+      if (roleBadge) {
+        roleBadge.innerText = isAdm ? "👑 সুপার এডমিন" : "👤 সাধারণ সদস্য";
+      }
+
+      const toggleText = document.getElementById("sideRoleToggleText");
+      if (toggleText) {
+        toggleText.innerText = isAdm ? "👤 সদস্য পাসবুক ভিউতে যান" : "👑 এডমিন ড্যাশবোর্ডে ফিরুন";
+      }
+
+      // Hide or show admin-only views in sidebar
+      const adminNavs = ['deposits', 'expenses', 'backup', 'pending'];
+      adminNavs.forEach(v => {
+        const btn = document.getElementById('navItem-' + v);
+        if (btn) btn.style.display = isAdm ? 'flex' : 'none';
+      });
+
+      if (!isAdm) {
+        navTo('memberpassbook');
+      } else {
+        navTo('dashboard');
+      }
     }
 
     function initRealtimeListeners() {
@@ -1524,9 +1999,14 @@
         .onSnapshot((snapshot) => {
           const list = document.getElementById("pendingRequestsList");
           const badge = document.getElementById("pendingCountBadge");
+          const sideBadge = document.getElementById("sidePendingBadge");
           if (!list || !badge) return;
 
           badge.innerText = snapshot.size + " জন";
+          if (sideBadge) {
+            sideBadge.innerText = snapshot.size;
+            sideBadge.style.display = snapshot.empty ? "none" : "inline-block";
+          }
 
           if (snapshot.empty) {
             list.innerHTML = '<div style="color:#78350F; font-size:12px;">কোনো নতুন আবেদনকারী অপেক্ষমাণ নেই।</div>';
@@ -1553,6 +2033,7 @@
     }
 
     function assignPendingToForm(name, phone, email) {
+      navTo('members');
       document.getElementById("mName").value = name;
       document.getElementById("mPhone").value = phone;
       document.getElementById("mEmail").value = email;
@@ -1560,7 +2041,7 @@
       const nextNum = membersData.length + 1;
       document.getElementById("mNumber").value = nextNum < 10 ? "0" + nextNum : "" + nextNum;
 
-      window.scrollTo({ top: 300, behavior: 'smooth' });
+      window.scrollTo({ top: 80, behavior: 'smooth' });
     }
 
 
