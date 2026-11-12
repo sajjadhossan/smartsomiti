@@ -39,8 +39,41 @@ class AuthService {
     }
   }
 
+  // Email & Password Sign In
+  Future<UserCredential> signInWithEmailPassword(String email, String password) async {
+    return await _auth.signInWithEmailAndPassword(
+      email: email.trim(),
+      password: password.trim(),
+    );
+  }
+
+  // Email & Password Sign Up with Member Registration
+  Future<UserCredential> signUpWithEmailPassword({
+    required String email,
+    required String password,
+    required String name,
+    required String phone,
+  }) async {
+    final credential = await _auth.createUserWithEmailAndPassword(
+      email: email.trim(),
+      password: password.trim(),
+    );
+
+    if (credential.user != null) {
+      await credential.user!.updateDisplayName(name.trim());
+    }
+
+    return credential;
+  }
+
+  // Password Reset Email
+  Future<void> sendPasswordResetEmail(String email) async {
+    await _auth.sendPasswordResetEmail(email: email.trim());
+  }
+
   Future<void> signOut() async {
     await _googleSignIn.signOut();
     await _auth.signOut();
   }
 }
+

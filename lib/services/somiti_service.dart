@@ -131,7 +131,30 @@ class SomitiService {
     await docRef.set(member.toMap());
   }
 
+  Future<void> registerMemberApplication({
+    required String name,
+    required String phone,
+    required String email,
+    required String userId,
+    String somitiId = 'main',
+  }) async {
+    final membersSnapshot = await _membersCol(somitiId).get();
+    final count = membersSnapshot.docs.length + 1;
+    final memberNumber = count < 10 ? '0$count' : '$count';
+
+    final member = MemberModel(
+      id: userId,
+      name: name,
+      phone: phone,
+      memberNumber: memberNumber,
+      totalDeposit: 0.0,
+      createdAt: DateTime.now(),
+    );
+    await _membersCol(somitiId).doc(userId).set(member.toMap());
+  }
+
   Future<void> deleteMember(String somitiId, String memberId) async {
+
     await _membersCol(somitiId).doc(memberId).delete();
   }
 

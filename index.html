@@ -172,19 +172,102 @@
       background: #F1F5F9; color: #334155; border: 1px solid #CBD5E1; border-radius: 8px;
       padding: 10px 14px; font-weight: 600; cursor: pointer;
     }
+
+    /* Auth Switch & Form Styles */
+    .auth-toggle-bar {
+      display: flex; background: #F1F5F9; border-radius: 10px; padding: 4px; margin-bottom: 18px;
+    }
+    .auth-toggle-btn {
+      flex: 1; padding: 10px 4px; border: none; background: none; border-radius: 8px;
+      font-size: 13px; font-weight: 700; color: #64748B; cursor: pointer; transition: all 0.2s;
+    }
+    .auth-toggle-btn.active {
+      background: white; color: var(--primary); box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .auth-checkbox-row {
+      display: flex; justify-content: space-between; align-items: center; margin: 10px 0 14px 0; font-size: 13px;
+    }
+    .auth-checkbox-row label {
+      display: flex; align-items: center; gap: 6px; cursor: pointer; margin-bottom: 0; color: var(--text);
+    }
+    .forgot-link {
+      color: #1A73E8; text-decoration: none; font-weight: 600; font-size: 12px; cursor: pointer;
+    }
+    .forgot-link:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
 
-  <!-- ================= 1. LOGIN SCREEN ================= -->
+  <!-- ================= 1. LOGIN & SIGN-UP SCREEN ================= -->
   <div id="loginScreen">
     <div class="login-card">
       <div class="app-logo">🏛️</div>
-      <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 6px;">স্মার্ট সমিতি প্ল্যাটফর্ম</h1>
-      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">
-        ডিজিটাল জমা রসিদ, খরচ খাতা ও ড্রাইভ ব্যাকআপসহ সম্পূর্ণ সমিতি ব্যবস্থাপনা।
+      <h1 style="font-size: 22px; font-weight: 700; margin-bottom: 4px;">স্মার্ট সমিতি প্ল্যাটফর্ম</h1>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 18px;">
+        ডিজিটাল জমা রসিদ, খরচ খাতা ও ক্লাউড ব্যাকআপ
       </p>
 
+      <!-- Auth Mode Switcher -->
+      <div class="auth-toggle-bar">
+        <button class="auth-toggle-btn active" id="btnTabSignIn" onclick="setAuthMode('signin')">🔐 সাইন-ইন / লগইন</button>
+        <button class="auth-toggle-btn" id="btnTabSignUp" onclick="setAuthMode('signup')">📝 সদস্য আবেদন (সাইন-আপ)</button>
+      </div>
+
+      <!-- Form 1: Sign In -->
+      <div id="formSignIn">
+        <div class="form-group">
+          <label>ইমেইল এড্রেস</label>
+          <input type="email" id="authEmail" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label>পাসওয়ার্ড</label>
+          <input type="password" id="authPassword" placeholder="আপনার গোপন পাসওয়ার্ড">
+        </div>
+
+        <div class="auth-checkbox-row">
+          <label>
+            <input type="checkbox" id="authRememberMe" checked>
+            <span>আমাকে মনে রাখুন</span>
+          </label>
+          <a class="forgot-link" onclick="openForgotModal()">পাসওয়ার্ড ভুলে গেছেন?</a>
+        </div>
+
+        <button class="btn" onclick="handleEmailSignIn()">
+          <span>🔐 সাইন-ইন করুন</span>
+        </button>
+      </div>
+
+      <!-- Form 2: Sign Up & Member Application -->
+      <div id="formSignUp" style="display: none;">
+        <div class="form-group">
+          <label>পূর্ণ নাম *</label>
+          <input type="text" id="signupName" placeholder="যেমন: জনাব মোঃ আব্দুল্লাহ">
+        </div>
+        <div class="form-group">
+          <label>মোবাইল নম্বর *</label>
+          <input type="tel" id="signupPhone" placeholder="০১৭১২-৩৪৫৬৭৮">
+        </div>
+        <div class="form-group">
+          <label>ইমেইল এড্রেস *</label>
+          <input type="email" id="signupEmail" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label>পাসওয়ার্ড (কমপক্ষে ৬ ডিজিট) *</label>
+          <input type="password" id="signupPassword" placeholder="নূন্যতম ৬ অক্ষরের পাসওয়ার্ড">
+        </div>
+
+        <p style="font-size: 11px; color: #16A34A; text-align: left; margin-bottom: 12px; background: #F0FDF4; padding: 8px; border-radius: 6px; border: 1px solid #BBF7D0;">
+          💡 আবেদন সম্পন্ন হলে আপনার নামে সরাসরি সদস্য আইডি বরাদ্দ হবে এবং সমিতির লাইভ পাসবুক সচল হবে।
+        </p>
+
+        <button class="btn" onclick="handleEmailSignUp()">
+          <span>📝 সদস্য আবেদন জমা ও সাইন-আপ</span>
+        </button>
+      </div>
+
+      <div class="or-divider"><span>অথবা অন্য মাধ্যমে</span></div>
+
+      <!-- Google Sign In -->
       <button class="google-signin-btn" onclick="handleGoogleSignIn()">
         <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24">
           <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
@@ -192,16 +275,33 @@
           <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.17 0 9.97 0 12s.45 3.83 1.25 5.42l4.03-3.15z"/>
           <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
         </svg>
-        <span>Google দিয়ে সাইন-ইন করুন</span>
+        <span>Google দিয়ে সরাসরি প্রবেশ করুন</span>
       </button>
-
-      <div class="or-divider"><span>অথবা টেস্ট করার জন্য</span></div>
 
       <button class="quick-test-btn" onclick="handleQuickTestLogin()">
         <span>⚡ টেস্ট সাইন-ইন দিয়ে প্রবেশ করুন</span>
       </button>
     </div>
   </div>
+
+  <!-- ================= FORGOT PASSWORD MODAL ================= -->
+  <div id="forgotModal" class="modal-overlay" style="display: none;">
+    <div class="modal-box" style="max-width: 400px;">
+      <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">পাসওয়ার্ড রিসেট করুন</h3>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">
+        আপনার একাউন্টের ইমেইল ঠিকানা দিন। আপনার ইনবক্সে পাসওয়ার্ড পরিবর্তনের লিংক পাঠানো হবে।
+      </p>
+      <div class="form-group">
+        <label>ইমেইল এড্রেস</label>
+        <input type="email" id="forgotEmail" placeholder="your@email.com">
+      </div>
+      <button class="btn" onclick="handleForgotPassword()" style="margin-bottom: 8px;">
+        <span>📩 রিসেট লিংক পাঠান</span>
+      </button>
+      <button class="btn btn-outline" onclick="closeForgotModal()">বাতিল</button>
+    </div>
+  </div>
+
 
   <!-- ================= 2. SOMITI MAIN DASHBOARD ================= -->
   <div id="dashboardScreen" style="display: none;">
@@ -550,6 +650,116 @@
       document.getElementById("dashboardScreen").style.display = screen === 'dashboard' ? 'block' : 'none';
     }
 
+    function setAuthMode(mode) {
+      const isSignIn = mode === 'signin';
+      document.getElementById("formSignIn").style.display = isSignIn ? 'block' : 'none';
+      document.getElementById("formSignUp").style.display = isSignIn ? 'none' : 'block';
+      document.getElementById("btnTabSignIn").classList.toggle("active", isSignIn);
+      document.getElementById("btnTabSignUp").classList.toggle("active", !isSignIn);
+    }
+
+    // Email & Password Sign In
+    function handleEmailSignIn() {
+      const email = document.getElementById("authEmail").value.trim();
+      const password = document.getElementById("authPassword").value.trim();
+      const remember = document.getElementById("authRememberMe").checked;
+
+      if (!email || !password) {
+        alert("ইমেইল ও পাসওয়ার্ড প্রদান করুন");
+        return;
+      }
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then((res) => {
+          if (remember) {
+            localStorage.setItem("somiti_remember_email", email);
+          } else {
+            localStorage.removeItem("somiti_remember_email");
+          }
+        })
+        .catch((err) => {
+          alert("লগইন ত্রুটি: " + err.message);
+        });
+    }
+
+    // Email & Password Sign Up with Member Registration
+    function handleEmailSignUp() {
+      const name = document.getElementById("signupName").value.trim();
+      const phone = document.getElementById("signupPhone").value.trim();
+      const email = document.getElementById("signupEmail").value.trim();
+      const password = document.getElementById("signupPassword").value.trim();
+
+      if (!name || !phone || !email || !password) {
+        alert("সবগুলো তথ্য সঠিকভাবে পূরণ করুন");
+        return;
+      }
+      if (password.length < 6) {
+        alert("পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে");
+        return;
+      }
+
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(async (res) => {
+          const user = res.user;
+          await user.updateProfile({ displayName: name });
+
+          // Auto-generate Member Record & Application in Firestore
+          const count = membersData.length + 1;
+          const memberNum = count < 10 ? "0" + count : "" + count;
+
+          await db.collection("somiti").doc("main").collection("members").doc(user.uid).set({
+            name: name,
+            phone: phone,
+            memberNumber: memberNum,
+            totalDeposit: 0,
+            email: email,
+            userId: user.uid,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+
+          alert(`🎉 অভিনন্দন জনাব ${name}! আপনার সদস্য আবেদন সফল হয়েছে এবং সমিতি একাউন্ট চালু হয়েছে।`);
+        })
+        .catch((err) => {
+          alert("সাইন-আপ ত্রুটি: " + err.message);
+        });
+    }
+
+    // Forgot Password Modal
+    function openForgotModal() {
+      const curEmail = document.getElementById("authEmail").value.trim();
+      if (curEmail) document.getElementById("forgotEmail").value = curEmail;
+      document.getElementById("forgotModal").style.display = "flex";
+    }
+
+    function closeForgotModal() {
+      document.getElementById("forgotModal").style.display = "none";
+    }
+
+    function handleForgotPassword() {
+      const email = document.getElementById("forgotEmail").value.trim();
+      if (!email) {
+        alert("ইমেইল ঠিকানা দিন");
+        return;
+      }
+      auth.sendPasswordResetEmail(email)
+        .then(() => {
+          alert(`✅ "${email}" ঠিকানায় পাসওয়ার্ড রিসেট লিংক সফলভাবে পাঠানো হয়েছে! ইনবক্স বা স্প্যাম ফোল্ডার চেক করুন।`);
+          closeForgotModal();
+        })
+        .catch((err) => {
+          alert("পাসওয়ার্ড রিসেট ত্রুটি: " + err.message);
+        });
+    }
+
+    // Restore Remembered Email on load
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedEmail = localStorage.getItem("somiti_remember_email");
+      if (savedEmail) {
+        const el = document.getElementById("authEmail");
+        if (el) el.value = savedEmail;
+      }
+    });
+
     function handleGoogleSignIn() {
       const provider = new firebase.auth.GoogleAuthProvider();
       provider.addScope('https://www.googleapis.com/auth/drive.file');
@@ -570,6 +780,7 @@
       currentSomiti = null;
       auth.signOut().finally(() => showScreen('login'));
     }
+
 
     function loadUserSomitis() {
       const defaultSomiti = {
