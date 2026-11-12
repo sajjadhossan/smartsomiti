@@ -1910,6 +1910,36 @@
             <label>সদস্য নির্বাচন করুন</label>
             <select id="depositMemberSelect"><option value="">আগে সদস্য যোগ করুন</option></select>
           </div>
+
+          <!-- টাকা জমাকারী কে? (Deposited By) -->
+          <div class="form-group" style="background: #F8FAFC; border: 1.5px solid #CBD5E1; border-radius: 8px; padding: 12px; margin-bottom: 14px;">
+            <label style="font-weight: 700; color: #1E293B; margin-bottom: 6px; display: block; font-size: 13px;">টাকা জমাকারী কে? (Deposited By)</label>
+            <div style="display: flex; gap: 16px; margin-bottom: 6px;">
+              <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 600; font-size: 13px;">
+                <input type="radio" name="depositorType" value="self" checked onchange="toggleDepositorType()">
+                <span>সদস্য নিজে</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 600; font-size: 13px;">
+                <input type="radio" name="depositorType" value="representative" onchange="toggleDepositorType()">
+                <span>প্রতিনিধি / অন্য কেউ</span>
+              </label>
+            </div>
+
+            <!-- Representative Details Box -->
+            <div id="depositorRepBox" style="display: none; background: #FFFFFF; border: 1.5px dashed #94A3B8; border-radius: 6px; padding: 10px; margin-top: 8px;">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <div>
+                  <label style="font-size: 11.5px; font-weight: 700; color: #334155;">জমাকারীর নাম *</label>
+                  <input type="text" id="depositorName" placeholder="যেমন: মোঃ রফিক (ভাই/বন্ধু)" style="font-size: 12px; padding: 8px;">
+                </div>
+                <div>
+                  <label style="font-size: 11.5px; font-weight: 700; color: #334155;">জমাকারীর ফোন নম্বর *</label>
+                  <input type="tel" id="depositorPhone" placeholder="যেমন: 017xxxxxxxx" style="font-size: 12px; padding: 8px;">
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="form-group">
             <label>টাকার পরিমাণ (৳)</label>
             <input type="number" id="depositAmount" placeholder="যেমন: 500">
@@ -1928,6 +1958,23 @@
             <label>মন্তব্য / নোট</label>
             <input type="text" id="depositNote" placeholder="যেমন: নভেম্বর মাসের কিস্তি">
           </div>
+
+          <!-- জমার স্লিপ / রসিদের কপি এটাচমেন্ট (Proof Slip Attachment) -->
+          <div class="form-group" style="background: #F0FDF4; border: 1.5px solid #86EFAC; border-radius: 8px; padding: 12px; margin-bottom: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label style="font-weight: 700; color: #166534; font-size: 12.5px; margin: 0;">📎 জমার স্লিপ / রসিদের কপি এটাচ করুন (ঐচ্ছিক)</label>
+              <span style="font-size: 10.5px; color: #15803D;">ব্যাংক স্লিপ / বিকাশ স্ক্রিনশট</span>
+            </div>
+            <input type="file" id="depositSlipInput" accept="image/*" onchange="handleDepositSlipSelect(event)" style="font-size: 12px;">
+            <div id="depositSlipPreviewWrap" style="display: none; margin-top: 8px; align-items: center; gap: 10px;">
+              <img id="depositSlipPreviewImg" src="" alt="Slip Preview" style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px; border: 1.5px solid #16A34A;">
+              <div>
+                <span id="depositSlipFileName" style="font-size: 11.5px; font-weight: 700; color: #166534; display: block;">slip.jpg</span>
+                <button type="button" onclick="clearDepositSlip()" style="background: #FEE2E2; color: #DC2626; border: 1px solid #FCA5A5; padding: 3px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; margin-top: 4px;">❌ ছবি বাতিল</button>
+              </div>
+            </div>
+          </div>
+
           <button class="btn" onclick="addDeposit()">💰 জমা লিপিবদ্ধ করুন ও রসিদ তৈরি করুন</button>
         </div>
 
@@ -2465,8 +2512,12 @@
                 <span class="pad-table-val" id="rcptTableMemberName" style="font-weight: 700; color: #0F172A;">-</span>
               </div>
               <div class="pad-table-row">
-                <span class="pad-table-label">প্রেরকের নাম:</span>
-                <span class="pad-table-val" id="rcptTableSender">-</span>
+                <span class="pad-table-label">টাকা জমাকারী:</span>
+                <span class="pad-table-val" id="rcptTableDepositor" style="font-weight: 700; color: #166534;">-</span>
+              </div>
+              <div class="pad-table-row" id="rcptRowDepositorPhone" style="display: none;">
+                <span class="pad-table-label">জমাকারীর মোবাইল:</span>
+                <span class="pad-table-val" id="rcptTableDepositorPhone" style="font-weight: 600; color: #0F172A;">-</span>
               </div>
               <div class="pad-table-row">
                 <span class="pad-table-label">জমার পরিমাণ:</span>
@@ -2482,12 +2533,29 @@
               </div>
               <div class="pad-table-row">
                 <span class="pad-table-label">সমিতির ব্যাংক হিসাব:</span>
-                <span class="pad-table-val" id="rcptTableAccount" style="font-weight: 700;">2305158045001 (MD RAHIM, SUMAYA AKTER AND DELWARA BEGUM)</span>
+                <span class="pad-table-val" id="rcptTableAccount" style="font-weight: 700;">2305158045001</span>
               </div>
               <div class="pad-table-row" style="border-bottom: none; padding-bottom: 0;">
                 <span class="pad-table-label">পেমেন্ট মাধ্যম ও রেফারেন্স:</span>
-                <span class="pad-table-val" id="rcptTablePayment">Other Bank Transfer (Ref: 1896516)</span>
+                <span class="pad-table-val" id="rcptTablePayment">নিয়মিত সঞ্চয় জমা</span>
               </div>
+              <!-- Google Drive Link Row in Official Letterhead -->
+              <div class="pad-table-row" id="rcptRowDrive" style="display: none; background: #F0FDF4; border: 1px dashed #16A34A; border-radius: 6px; padding: 4px 8px; margin-top: 4px;">
+                <span class="pad-table-label" style="color: #166534; font-size: 11.5px;">গুগল ড্রাইভ কপি:</span>
+                <span class="pad-table-val">
+                  <a id="rcptDriveLink" href="#" target="_blank" style="color: #0F9D58; font-weight: 800; text-decoration: underline; font-size: 11.5px; display: inline-flex; align-items: center; gap: 4px;">
+                    <span>☁️ ড্রাইভে মূল রসিদ দেখুন ↗</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+
+            <!-- Attached Deposit Slip Proof Box (Adjusted directly with receipt) -->
+            <div id="rcptAttachedSlipBox" style="display: none; margin-top: 10px; padding: 8px; border: 1.5px dashed #16A34A; border-radius: 6px; background: #F8FAFC; text-align: center;">
+              <div style="font-size: 11px; font-weight: 700; color: #166534; margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                <span>📎 সংযুক্ত জমার প্রমাণক / স্লিপের কপি (Attached Deposit Slip)</span>
+              </div>
+              <img id="rcptAttachedSlipImg" src="" alt="Attached Slip" style="max-width: 100%; max-height: 150px; object-fit: contain; border-radius: 4px; border: 1px solid #CBD5E1; cursor: pointer;" onclick="openImageLightbox(this.src)" title="বড় আকারে দেখতে ক্লিক করুন">
             </div>
           </div>
 
@@ -2537,13 +2605,44 @@
         </div>
       </div>
 
+      <!-- Google Drive Cloud Upload & Link Banner -->
+      <div id="rcptDriveActionBox" style="margin-top: 10px; background: #F0FDF4; border: 1.5px solid #86EFAC; border-radius: 8px; padding: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 18px;">☁️</span>
+            <div>
+              <div id="rcptDriveStatusText" style="font-size: 12px; font-weight: 700; color: #166534;">Google Drive ক্লাউড রসিদ ব্যাকআপ</div>
+              <div style="font-size: 10px; color: #15803D;">ড্রাইভে সেভ করে শেয়ারেবল পাবলিক লিংক তৈরি করুন</div>
+            </div>
+          </div>
+          <button id="rcptDriveUploadBtn" type="button" onclick="uploadActiveReceiptToDrive()" style="background: #0F9D58; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-size: 11.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; box-shadow: 0 2px 5px rgba(15,157,88,0.25);">
+            <span>☁️ ড্রাইভে সেভ ও লিংক তৈরি</span>
+          </button>
+        </div>
+        <!-- Drive Link View / Copy Row (shown when driveUrl exists) -->
+        <div id="rcptDriveLinkBanner" style="display: none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #86EFAC;">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              <span style="font-size: 10.5px; color: #166534; font-weight: 700;">ড্রাইভ লিংক: </span>
+              <a id="rcptDriveBannerUrl" href="#" target="_blank" style="color: #0F9D58; font-size: 11px; font-weight: 700; text-decoration: underline;">
+                drive.google.com/file/d/...
+              </a>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button type="button" onclick="copyDriveReceiptLink()" style="background: white; border: 1px solid #16A34A; color: #16A34A; padding: 4px 8px; border-radius: 4px; font-size: 10.5px; font-weight: 700; cursor: pointer;">📋 কপি লিংক</button>
+              <a id="rcptDriveOpenBtn" href="#" target="_blank" style="background: #16A34A; color: white; padding: 4px 10px; border-radius: 4px; font-size: 10.5px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 2px;">↗️ ড্রাইভে খুলুন</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Action Buttons Grid -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
         <button class="wa-btn" onclick="shareReceiptWhatsApp()">
           <span>📲 WhatsApp</span>
         </button>
         <button class="copy-btn" onclick="copyReceiptText()" style="padding: 10px; text-align: center;">
-          <span>📋 কপি করুন</span>
+          <span>📋 টেক্সট কপি</span>
         </button>
         <button onclick="printReceipt()" style="background: #1A73E8; color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
           <span>🖨️ প্রিন্ট / PDF</span>
@@ -3174,6 +3273,21 @@
       <button class="btn btn-outline" onclick="closeEditSomitiModal()" style="margin-top: 8px;">
         <span>বাতিল</span>
       </button>
+    </div>
+  </div>
+
+  <!-- ================= IMAGE LIGHTBOX MODAL (FOR ENLARGED SLIP VIEW) ================= -->
+  <div id="imageLightboxModal" class="modal-overlay" style="display: none; z-index: 3500; background: rgba(0,0,0,0.88); backdrop-filter: blur(4px);" onclick="closeImageLightbox()">
+    <div style="position: relative; max-width: 92vw; max-height: 92vh; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: auto;" onclick="event.stopPropagation()">
+      <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <span style="color: white; font-weight: 700; font-size: 13px;">🔍 জমার স্লিপ / রসিদের প্রমাণক কপি</span>
+        <button type="button" onclick="closeImageLightbox()" style="background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center;">✕</button>
+      </div>
+      <img id="lightboxImg" src="" alt="Enlarged Document" style="max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); border: 2px solid #FFFFFF;">
+      <div style="margin-top: 10px; display: flex; gap: 10px;">
+        <a id="lightboxDownloadBtn" href="#" download="deposit_slip.jpg" target="_blank" style="background: #0F9D58; color: white; padding: 7px 16px; border-radius: 6px; font-size: 12px; font-weight: 700; text-decoration: none;">📥 ছবি ডাউনলোড</a>
+        <button type="button" onclick="closeImageLightbox()" style="background: white; color: #0F172A; border: none; padding: 7px 16px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer;">✖️ বন্ধ</button>
+      </div>
     </div>
   </div>
 
@@ -4421,17 +4535,95 @@
     }
 
 
+    // ================= DEPOSITOR & SLIP ATTACHMENT HELPERS =================
+    let currentDepositSlipDataUrl = null;
+
+    function toggleDepositorType() {
+      const repRadio = document.querySelector('input[name="depositorType"][value="representative"]');
+      const repBox = document.getElementById("depositorRepBox");
+      if (repBox) {
+        repBox.style.display = (repRadio && repRadio.checked) ? "block" : "none";
+      }
+    }
+
+    function handleDepositSlipSelect(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+
+      if (file.size > 4 * 1024 * 1024) {
+        alert("ফাইলের সাইজ ৪ মেগাবাইট (4MB)-এর নিচে হতে হবে।");
+        e.target.value = "";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        currentDepositSlipDataUrl = evt.target.result;
+        const wrap = document.getElementById("depositSlipPreviewWrap");
+        const img = document.getElementById("depositSlipPreviewImg");
+        const nameEl = document.getElementById("depositSlipFileName");
+        if (wrap) wrap.style.display = "flex";
+        if (img) img.src = currentDepositSlipDataUrl;
+        if (nameEl) nameEl.innerText = file.name;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearDepositSlip() {
+      currentDepositSlipDataUrl = null;
+      const input = document.getElementById("depositSlipInput");
+      const wrap = document.getElementById("depositSlipPreviewWrap");
+      const img = document.getElementById("depositSlipPreviewImg");
+      if (input) input.value = "";
+      if (wrap) wrap.style.display = "none";
+      if (img) img.src = "";
+    }
+
+    function openImageLightbox(src) {
+      const m = document.getElementById("imageLightboxModal");
+      const img = document.getElementById("lightboxImg");
+      const dl = document.getElementById("lightboxDownloadBtn");
+      if (m && img) {
+        img.src = src;
+        if (dl) dl.href = src;
+        m.style.display = "flex";
+      }
+    }
+
+    function closeImageLightbox() {
+      const m = document.getElementById("imageLightboxModal");
+      if (m) m.style.display = "none";
+    }
+
     // Add Deposit & Generate Receipt
     function addDeposit() {
       const select = document.getElementById("depositMemberSelect");
       const memberId = select.value;
       const memberName = select.options[select.selectedIndex]?.dataset.name || "";
       const memberNumber = select.options[select.selectedIndex]?.dataset.number || "";
+      const memberPhone = select.options[select.selectedIndex]?.dataset.phone || "";
       const amount = parseFloat(document.getElementById("depositAmount").value);
       const type = document.getElementById("depositType").value;
       const note = document.getElementById("depositNote").value.trim();
 
       if (!memberId || isNaN(amount) || amount <= 0) { alert("সদস্য ও জমার সঠিক পরিমাণ দিন"); return; }
+
+      const isRep = document.querySelector('input[name="depositorType"][value="representative"]')?.checked;
+      const depositorType = isRep ? "representative" : "self";
+      let depositorName = memberName;
+      let depositorPhone = memberPhone;
+
+      if (isRep) {
+        const repNameInput = document.getElementById("depositorName")?.value.trim();
+        const repPhoneInput = document.getElementById("depositorPhone")?.value.trim();
+        if (!repNameInput) {
+          alert("প্রতিনিধির নাম প্রদান করুন");
+          document.getElementById("depositorName")?.focus();
+          return;
+        }
+        depositorName = repNameInput;
+        depositorPhone = repPhoneInput || "";
+      }
 
       const batch = db.batch();
       const depositRef = db.collection("somiti").doc("main").collection("deposits").doc();
@@ -4440,8 +4632,14 @@
       const depositObj = {
         memberId: memberId, memberName: memberName, memberNumber: memberNumber,
         amount: amount, type: type, note: note, receiptNo: receiptNo,
+        depositorType: depositorType,
+        depositorName: depositorName,
+        depositorPhone: depositorPhone,
+        slipImg: currentDepositSlipDataUrl || null,
+        driveUrl: null,
+        driveFileId: null,
         date: firebase.firestore.FieldValue.serverTimestamp(),
-        recordedBy: currentSomiti.cashierName || "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)",
+        recordedBy: currentSomiti?.cashierName || "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)",
         deviceSource: "Mobile / Web"
       };
 
@@ -4453,15 +4651,28 @@
       batch.commit().then(() => {
         document.getElementById("depositAmount").value = "";
         document.getElementById("depositNote").value = "";
+        if (document.getElementById("depositorName")) document.getElementById("depositorName").value = "";
+        if (document.getElementById("depositorPhone")) document.getElementById("depositorPhone").value = "";
+        const selfRadio = document.querySelector('input[name="depositorType"][value="self"]');
+        if (selfRadio) selfRadio.checked = true;
+        toggleDepositorType();
+        const attachedSlip = currentDepositSlipDataUrl;
+        clearDepositSlip();
 
         // Show Digital Receipt Modal
         showReceiptModal({
+          id: depositRef.id,
           receiptNo: receiptNo,
           memberName: memberName,
           memberNumber: memberNumber,
           amount: amount,
           type: type,
           note: note,
+          depositorType: depositorType,
+          depositorName: depositorName,
+          depositorPhone: depositorPhone,
+          slipImg: attachedSlip || null,
+          driveUrl: null,
           dateStr: new Date().toLocaleString('bn-BD')
         });
       });
@@ -4539,21 +4750,34 @@
         return;
       }
 
-      const html = depositsData.map(d => `
+      const html = depositsData.map(d => {
+        const isRep = d.depositorType === 'representative' || (d.depositorName && d.depositorName !== d.memberName);
+        const depositorBadge = isRep 
+          ? `<span style="font-size:11px; color:#B91C1C; background:#FEF2F2; padding:1px 6px; border-radius:4px; border:1px solid #FECACA;">👤 জমাকারী: ${d.depositorName} (প্রতিনিধি)</span>`
+          : `<span style="font-size:11px; color:#15803D; background:#F0FDF4; padding:1px 6px; border-radius:4px;">👤 জমাকারী: সদস্য নিজে</span>`;
+        const slipBadge = d.slipImg ? `<span style="font-size:10.5px; color:#166534; background:#DCFCE7; padding:1px 5px; border-radius:4px; font-weight:700;">📎 স্লিপ কপি</span>` : '';
+        const driveBadge = d.driveUrl ? `<a href="${d.driveUrl}" target="_blank" onclick="event.stopPropagation()" style="font-size:10.5px; color:#1E40AF; background:#DBEAFE; padding:1px 6px; border-radius:4px; text-decoration:none; font-weight:700; border:1px solid #BFDBFE;">☁️ ড্রাইভ কপি ↗</a>` : '';
+
+        return `
         <div class="item-card" onclick="viewDepositReceipt('${d.id}')" style="cursor: pointer;">
           <div style="display:flex; align-items:center; gap:10px;">
             <div class="num-circle">৳</div>
             <div>
               <div style="font-weight:700;">[${d.memberNumber || ''}] ${d.memberName}</div>
-              <div style="font-size:12px; color:var(--text-muted);">${d.type} ${d.note ? '• ' + d.note : ''}</div>
+              <div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">${d.type} ${d.note ? '• ' + d.note : ''}</div>
+              <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
+                ${depositorBadge}
+                ${slipBadge}
+                ${driveBadge}
+              </div>
             </div>
           </div>
           <div style="text-align:right;">
             <div style="font-weight:700; color:var(--primary); font-size:16px;">৳${(d.amount || 0).toLocaleString()}</div>
-            <div style="font-size:10px; color:#16A34A;">রসিদ দেখুন ↗</div>
+            <div style="font-size:10px; color:#16A34A; margin-top:3px;">রসিদ দেখুন ↗</div>
           </div>
         </div>
-      `).join("");
+      `}).join("");
 
       list.innerHTML = html;
       passbookList.innerHTML = html;
@@ -4601,7 +4825,7 @@
       const select = document.getElementById("depositMemberSelect");
       if (membersData.length === 0) { select.innerHTML = '<option value="">আগে সদস্য যোগ করুন</option>'; return; }
       select.innerHTML = '<option value="">সদস্য নির্বাচন করুন</option>' + membersData.map(m => `
-        <option value="${m.id}" data-name="${m.name}" data-number="${m.memberNumber}">[${m.memberNumber}] ${m.name}</option>
+        <option value="${m.id}" data-name="${m.name}" data-number="${m.memberNumber}" data-phone="${m.phone || ''}">[${m.memberNumber}] ${m.name}</option>
       `).join("");
     }
 
@@ -4682,8 +4906,53 @@
       if (el("rcptMemberName")) el("rcptMemberName").innerText = memName;
       if (el("rcptMemberNum")) el("rcptMemberNum").innerText = data.memberNumber || "";
 
-      // Table Row: Sender Name
-      if (el("rcptTableSender")) el("rcptTableSender").innerText = data.sender || memName;
+      // Table Row: Depositor Name & Status
+      const isRep = data.depositorType === 'representative' || (data.depositorName && data.depositorName !== data.memberName);
+      if (el("rcptTableDepositor")) {
+        if (isRep) {
+          el("rcptTableDepositor").innerHTML = `<span style="color:#B91C1C; font-weight:800;">${data.depositorName}</span> <span style="font-size:10.5px; color:#64748B;">(প্রতিনিধি)</span>`;
+        } else {
+          el("rcptTableDepositor").innerHTML = `<span style="color:#166534; font-weight:700;">${memName}</span> <span style="font-size:10.5px; color:#15803D;">(সদস্য নিজে)</span>`;
+        }
+      }
+      const rowPhone = el("rcptRowDepositorPhone");
+      if (rowPhone) {
+        if (isRep && data.depositorPhone) {
+          rowPhone.style.display = "flex";
+          if (el("rcptTableDepositorPhone")) el("rcptTableDepositorPhone").innerText = data.depositorPhone;
+        } else {
+          rowPhone.style.display = "none";
+        }
+      }
+
+      // Attached Deposit Slip Box in Receipt Pad
+      const slipBox = el("rcptAttachedSlipBox");
+      const slipImg = el("rcptAttachedSlipImg");
+      if (slipBox && slipImg) {
+        if (data.slipImg) {
+          slipImg.src = data.slipImg;
+          slipBox.style.display = "block";
+        } else {
+          slipBox.style.display = "none";
+          slipImg.src = "";
+        }
+      }
+
+      // Google Drive Row in Receipt Pad
+      const rowDrive = el("rcptRowDrive");
+      const linkDrive = el("rcptDriveLink");
+      if (rowDrive && linkDrive) {
+        if (data.driveUrl) {
+          rowDrive.style.display = "flex";
+          linkDrive.href = data.driveUrl;
+          linkDrive.innerHTML = `<span>☁️ ড্রাইভে মূল রসিদ দেখুন ↗</span>`;
+        } else {
+          rowDrive.style.display = "none";
+        }
+      }
+
+      // Google Drive action banner in modal
+      renderReceiptDriveBanner(data.driveUrl);
 
       // Table Row: Amount in digits and Bengali words
       const amtNum = parseFloat(data.amount) || 0;
@@ -4757,24 +5026,24 @@
       const codeEl = el("rcptSecretCode");
       if (codeEl) codeEl.innerText = secretCode;
 
-      generateReceiptQr(secretCode);
+      generateReceiptQr(secretCode, data.driveUrl);
 
       document.getElementById("receiptModal").style.display = "flex";
     }
 
-    function generateReceiptQr(receiptNo) {
+    function generateReceiptQr(receiptNo, driveUrl) {
       const qrBox = document.getElementById("receiptQrCodeBox");
       if (!qrBox) return;
 
       qrBox.innerHTML = "";
-      // Keep QR URL short and ultra-clean for instant mobile camera focus and scan
-      const verifyUrl = `${window.location.origin}${window.location.pathname}?verify=${encodeURIComponent(receiptNo)}`;
+      // If direct Google Drive link exists, point QR code directly to Google Drive view
+      const targetUrl = driveUrl || `${window.location.origin}${window.location.pathname}?verify=${encodeURIComponent(receiptNo)}`;
 
       // Generate sharp high-contrast QR code (92x92)
       try {
         if (typeof QRCode !== 'undefined') {
           new QRCode(qrBox, {
-            text: verifyUrl,
+            text: targetUrl,
             width: 92,
             height: 92,
             colorDark: "#0F172A",
@@ -4782,10 +5051,218 @@
             correctLevel: QRCode.CorrectLevel.M
           });
         } else {
-          qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=92x92&margin=0&data=${encodeURIComponent(verifyUrl)}" alt="QR Code" style="width:92px;height:92px;border-radius:4px;display:block;">`;
+          qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=92x92&margin=0&data=${encodeURIComponent(targetUrl)}" alt="QR Code" style="width:92px;height:92px;border-radius:4px;display:block;">`;
         }
       } catch (err) {
-        qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=92x92&margin=0&data=${encodeURIComponent(verifyUrl)}" alt="QR Code" style="width:92px;height:92px;border-radius:4px;display:block;">`;
+        qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=92x92&margin=0&data=${encodeURIComponent(targetUrl)}" alt="QR Code" style="width:92px;height:92px;border-radius:4px;display:block;">`;
+      }
+    }
+
+    function renderReceiptDriveBanner(driveUrl) {
+      const banner = document.getElementById("rcptDriveLinkBanner");
+      const bannerUrl = document.getElementById("rcptDriveBannerUrl");
+      const openBtn = document.getElementById("rcptDriveOpenBtn");
+      const statusText = document.getElementById("rcptDriveStatusText");
+      const uploadBtn = document.getElementById("rcptDriveUploadBtn");
+
+      if (driveUrl) {
+        if (banner) banner.style.display = "block";
+        if (bannerUrl) {
+          bannerUrl.href = driveUrl;
+          bannerUrl.innerText = driveUrl;
+        }
+        if (openBtn) openBtn.href = driveUrl;
+        if (statusText) statusText.innerText = "✅ Google Drive-এ রসিদ সংরক্ষিত ও লিঙ্কযুক্ত!";
+        if (uploadBtn) {
+          uploadBtn.style.background = "#15803D";
+          uploadBtn.innerHTML = `<span>↗️ ড্রাইভে দেখুন</span>`;
+          uploadBtn.onclick = () => window.open(driveUrl, '_blank');
+        }
+      } else {
+        if (banner) banner.style.display = "none";
+        if (statusText) statusText.innerText = "Google Drive ক্লাউড রসিদ ব্যাকআপ";
+        if (uploadBtn) {
+          uploadBtn.style.background = "#0F9D58";
+          uploadBtn.innerHTML = `<span>☁️ ড্রাইভে সেভ ও লিংক তৈরি</span>`;
+          uploadBtn.onclick = uploadActiveReceiptToDrive;
+        }
+      }
+    }
+
+    function copyDriveReceiptLink() {
+      if (activeReceiptData && activeReceiptData.driveUrl) {
+        navigator.clipboard.writeText(activeReceiptData.driveUrl).then(() => {
+          alert("✅ Google Drive লিংকটি ক্লিপবোর্ডে কপি করা হয়েছে:\n\n" + activeReceiptData.driveUrl);
+        });
+      } else {
+        alert("কোনো গুগল ড্রাইভ লিংক পাওয়া যায়নি। আগে ড্রাইভে আপলোড করুন।");
+      }
+    }
+
+    async function uploadActiveReceiptToDrive() {
+      if (!activeReceiptData) {
+        alert("রসিদের তথ্য পাওয়া যায়নি");
+        return;
+      }
+
+      if (activeReceiptData.driveUrl) {
+        window.open(activeReceiptData.driveUrl, '_blank');
+        return;
+      }
+
+      const btn = document.getElementById("rcptDriveUploadBtn");
+      const statusText = document.getElementById("rcptDriveStatusText");
+
+      // Verify Google Drive OAuth access token
+      if (!googleAccessToken) {
+        const confirmLogin = confirm("Google Drive-এ সরাসরি রসিদ ও এটাচমেন্ট সেভ করে শেয়ারেবল লিংক তৈরির জন্য গুগল ড্রাইভ অ্যাক্সেস প্রয়োজন। আপনি কি গুগল দিয়ে লগইন করবেন?");
+        if (!confirmLogin) return;
+
+        try {
+          const provider = new firebase.auth.GoogleAuthProvider();
+          provider.addScope('https://www.googleapis.com/auth/drive.file');
+          const result = await auth.signInWithPopup(provider);
+          if (result.credential) {
+            googleAccessToken = result.credential.accessToken;
+            const badge = document.getElementById("driveStatusBadge");
+            if (badge) {
+              badge.innerText = "🟢 Google Drive কানেক্টেড";
+              badge.style.color = "#0F9D58";
+            }
+          }
+        } catch (authErr) {
+          alert("গুগল অথেনটিকেশন তথ্য: " + authErr.message);
+          return;
+        }
+      }
+
+      if (!googleAccessToken) {
+        alert("Google Drive অ্যাক্সেস টোকেন পাওয়া যায়নি।");
+        return;
+      }
+
+      if (typeof html2canvas === 'undefined') {
+        alert("ছবি প্রস্তুতকারক লাইব্রেরি লোড হচ্ছে, অনুগ্রহ করে ২ সেকেন্ড অপেক্ষা করুন।");
+        return;
+      }
+
+      const area = document.getElementById("receiptPrintArea");
+      if (!area) return;
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<span>⏳ আপলোড হচ্ছে...</span>`;
+      }
+      if (statusText) statusText.innerText = "রসিদ ও স্লিপ ক্যাপচার করে ড্রাইভে আপলোড করা হচ্ছে...";
+
+      try {
+        const canvas = await html2canvas(area, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#FFFFFF'
+        });
+
+        canvas.toBlob(async (blob) => {
+          if (!blob) {
+            alert("রসিদ ইমেজ প্রক্রিয়াকরণে সমস্যা হয়েছে।");
+            if (btn) { btn.disabled = false; btn.innerHTML = `<span>☁️ ড্রাইভে সেভ ও লিংক তৈরি</span>`; }
+            return;
+          }
+
+          const s = currentSomiti || {};
+          const code = s.somitiCode || "SMT";
+          const rNo = (activeReceiptData.receiptNo || "RCT-001").replace(/[^a-zA-Z0-9_-]/g, '_');
+          const mName = (activeReceiptData.memberName || "member").replace(/\s+/g, '_');
+          const fileName = `${code}_Receipt_${rNo}_${mName}.png`;
+
+          const metadata = {
+            name: fileName,
+            mimeType: 'image/png',
+            description: `অফিসিয়াল মানি রিসিট: ${activeReceiptData.receiptNo}, সদস্য: ${activeReceiptData.memberName}, জমাকারী: ${activeReceiptData.depositorName || activeReceiptData.memberName}`
+          };
+
+          const form = new FormData();
+          form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+          form.append('file', blob);
+
+          try {
+            const uploadRes = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+              method: 'POST',
+              headers: new Headers({ 'Authorization': 'Bearer ' + googleAccessToken }),
+              body: form
+            });
+            const fileData = await uploadRes.json();
+
+            if (!fileData || !fileData.id) {
+              throw new Error(fileData.error?.message || "ফাইল আইডি পাওয়া যায়নি");
+            }
+
+            // Set public permission so anyone with the link can view it
+            try {
+              await fetch(`https://www.googleapis.com/drive/v3/files/${fileData.id}/permissions`, {
+                method: 'POST',
+                headers: {
+                  'Authorization': 'Bearer ' + googleAccessToken,
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ role: 'reader', type: 'anyone' })
+              });
+            } catch (permErr) {
+              console.warn("Permission warning:", permErr);
+            }
+
+            const driveUrl = `https://drive.google.com/file/d/${fileData.id}/view`;
+            activeReceiptData.driveUrl = driveUrl;
+            activeReceiptData.driveFileId = fileData.id;
+
+            // If deposit document ID exists in Firestore, update it
+            if (activeReceiptData.id) {
+              db.collection("somiti").doc("main").collection("deposits").doc(activeReceiptData.id).update({
+                driveUrl: driveUrl,
+                driveFileId: fileData.id
+              }).catch(e => console.warn("Firestore update error:", e));
+            }
+
+            // Update in-memory deposit item in depositsData
+            const depItem = depositsData.find(d => d.id === activeReceiptData.id || d.receiptNo === activeReceiptData.receiptNo);
+            if (depItem) {
+              depItem.driveUrl = driveUrl;
+              depItem.driveFileId = fileData.id;
+              renderDeposits();
+            }
+
+            // Update row in receipt pad
+            const rowDrive = document.getElementById("rcptRowDrive");
+            const linkDrive = document.getElementById("rcptDriveLink");
+            if (rowDrive) rowDrive.style.display = "flex";
+            if (linkDrive) {
+              linkDrive.href = driveUrl;
+              linkDrive.innerHTML = `<span>☁️ ড্রাইভে মূল রসিদ দেখুন ↗</span>`;
+            }
+
+            // Re-generate QR Code pointing directly to Drive view link
+            generateReceiptQr(activeReceiptData.receiptNo, driveUrl);
+
+            // Update banner
+            renderReceiptDriveBanner(driveUrl);
+
+            alert(`🎉 রসিদটি সফলভাবে Google Drive-এ আপলোড সম্পন্ন হয়েছে!\n\nভিউ লিংক:\n${driveUrl}`);
+          } catch (uploadErr) {
+            console.error("Drive upload error:", uploadErr);
+            alert("Google Drive আপলোডে ত্রুটি: " + uploadErr.message);
+            if (btn) {
+              btn.disabled = false;
+              btn.innerHTML = `<span>☁️ ড্রাইভে সেভ ও লিংক তৈরি</span>`;
+            }
+          }
+        }, 'image/png');
+      } catch (err) {
+        console.error("Capture error:", err);
+        alert("রসিদ তৈরি করতে সমস্যা: " + err.message);
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `<span>☁️ ড্রাইভে সেভ ও লিংক তৈরি</span>`;
+        }
       }
     }
 
@@ -5340,12 +5817,19 @@
       const d = depositsData.find(x => x.id === depositId);
       if (!d) return;
       showReceiptModal({
+        id: d.id,
         receiptNo: d.receiptNo || ("RCT-" + d.id.substring(0, 6).toUpperCase()),
         memberName: d.memberName,
         memberNumber: d.memberNumber,
         amount: d.amount,
         type: d.type,
         note: d.note,
+        depositorType: d.depositorType || 'self',
+        depositorName: d.depositorName || d.memberName,
+        depositorPhone: d.depositorPhone || '',
+        slipImg: d.slipImg || null,
+        driveUrl: d.driveUrl || null,
+        driveFileId: d.driveFileId || null,
         dateStr: d.date?.toDate ? d.date.toDate().toLocaleString('bn-BD') : new Date().toLocaleString('bn-BD')
       });
     }
@@ -5356,8 +5840,21 @@
 
     function getReceiptPlainText() {
       if (!activeReceiptData) return "";
+      const s = currentSomiti || {};
       const verifyUrl = `${window.location.origin}${window.location.pathname}?verify=${encodeURIComponent(activeReceiptData.receiptNo)}`;
-      return `*${currentSomiti.name}*\n"${currentSomiti.padHeader}"\n📍 ${currentSomiti.address}\n\n🧾 *ডিজিটাল মানি রিসিট*\nরসিদ নং: ${activeReceiptData.receiptNo}\n🔐 *সিক্রেট যাচাই কোড:* ${activeReceiptData.receiptNo}\nতারিখ: ${activeReceiptData.dateStr}\nসদস্য: [${activeReceiptData.memberNumber}] ${activeReceiptData.memberName}\nধরণ: ${activeReceiptData.type}\n*জমা টাকা: ৳${activeReceiptData.amount}*\nমন্তব্য: ${activeReceiptData.note || 'অনুল্লিখিত'}\nআদায়কারী: ${currentSomiti.cashierName}\n\n🔍 *অনলাইনে রসিদ যাচাই লিংক:*\n${verifyUrl}\n\nধন্যবাদ!`;
+
+      const isRep = activeReceiptData.depositorType === 'representative' || (activeReceiptData.depositorName && activeReceiptData.depositorName !== activeReceiptData.memberName);
+      const depositorInfo = isRep 
+        ? `${activeReceiptData.depositorName} (প্রতিনিধি)${activeReceiptData.depositorPhone ? ` [মোবাইল: ${activeReceiptData.depositorPhone}]` : ''}`
+        : `${activeReceiptData.memberName} (সদস্য নিজে)`;
+
+      let text = `*${s.name || 'সমিতি'}*\n"${s.padHeader || 'ছোট সঞ্চয়, বড় স্বপ্ন'}"\n📍 ${s.address || 'কার্যালয়'}\n\n🧾 *ডিজিটাল মানি রিসিট*\nরসিদ নং: ${activeReceiptData.receiptNo}\n🔐 *সিক্রেট যাচাই কোড:* ${activeReceiptData.receiptNo}\nতারিখ: ${activeReceiptData.dateStr || ''}\nসদস্য: [${activeReceiptData.memberNumber || ''}] ${activeReceiptData.memberName}\n👤 *টাকা জমাকারী:* ${depositorInfo}\nধরণ: ${activeReceiptData.type}\n*জমা টাকা: ৳${activeReceiptData.amount}*\nমন্তব্য: ${activeReceiptData.note || 'অনুল্লিখিত'}\nআদায়কারী: ${s.cashierName || 'কোষাধ্যক্ষ'}`;
+
+      if (activeReceiptData.driveUrl) {
+        text += `\n\n☁️ *গুগল ড্রাইভ মূল রসিদ কপি:* \n${activeReceiptData.driveUrl}`;
+      }
+      text += `\n\n🔍 *অনলাইনে রসিদ সত্যতা যাচাই:*\n${verifyUrl}\n\nধন্যবাদ!`;
+      return text;
     }
 
     function shareReceiptWhatsApp() {
@@ -5387,17 +5884,22 @@
       if (memberDeposits.length === 0) {
         listEl.innerHTML = '<div style="text-align:center; padding:14px; color:var(--text-muted);">এই সদস্যের কোনো জমা নেই।</div>';
       } else {
-        listEl.innerHTML = memberDeposits.map(d => `
-          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:8px 10px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+        listEl.innerHTML = memberDeposits.map(d => {
+          const isRep = d.depositorType === 'representative' || (d.depositorName && d.depositorName !== d.memberName);
+          const depositorInfo = isRep ? ` <span style="color:#B91C1C; font-size:10.5px;">• জমাকারী: ${d.depositorName} (প্রতিনিধি)</span>` : '';
+          const driveBtn = d.driveUrl ? `<a href="${d.driveUrl}" target="_blank" onclick="event.stopPropagation()" style="font-size:10px; color:#1E40AF; text-decoration:underline; margin-left:6px; font-weight:700;">☁️ ড্রাইভ রসিদ ↗</a>` : '';
+          return `
+          <div onclick="viewDepositReceipt('${d.id}')" style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:8px 10px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;" title="রসিদ দেখতে ক্লিক করুন">
             <div>
-              <div style="font-weight:700; font-size:13px;">${d.type}</div>
-              <div style="font-size:11px; color:var(--text-muted);">${d.note || 'নিয়মিত সঞ্চয়'}</div>
+              <div style="font-weight:700; font-size:12.5px;">${d.type}${depositorInfo}</div>
+              <div style="font-size:11px; color:var(--text-muted);">${d.note || 'নিয়মিত সঞ্চয়'}${driveBtn}</div>
             </div>
             <div style="text-align:right;">
               <strong style="color:var(--primary); font-size:14px;">৳${d.amount.toLocaleString()}</strong>
+              <div style="font-size:9.5px; color:#16A34A;">রসিদ দেখুন ↗</div>
             </div>
           </div>
-        `).join("");
+        `}).join("");
       }
 
       document.getElementById("memberModal").style.display = "flex";
