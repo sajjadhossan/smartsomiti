@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'models/member_model.dart';
 import 'models/deposit_model.dart';
 import 'models/user_profile.dart';
+import 'models/access_code_model.dart';
 import 'firebase_options.dart';
 import 'services/auth_service.dart';
 import 'services/drive_service.dart';
@@ -87,13 +88,21 @@ class AuthGate extends StatelessWidget {
                     uid: user.uid,
                     email: user.email ?? '',
                     displayName: user.displayName ?? '',
-                    role: 'admin',
+                    role: 'pending',
+                    roleTitle: 'অপেক্ষমান',
                   );
 
+              // যদি রোল নির্ধারণ না হয়ে থাকে (সিক্রেট কোড প্রবেশ স্ক্রিন)
+              if (profile.role == 'pending') {
+                return SecretCodeScreen(user: user);
+              }
+
+              // সাধারণ সদস্য মোড
               if (profile.role == 'member') {
                 return SomitiMemberDashboard(user: user, profile: profile);
               }
 
+              // প্রধান এডমিন বা কোষাধ্যক্ষ
               return SomitiAdminDashboard(user: user, profile: profile);
             },
           );
@@ -105,6 +114,9 @@ class AuthGate extends StatelessWidget {
   }
 }
 
+/// ============================================================
+/// লগইন স্ক্রিন (Login Screen)
+/// ============================================================
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -171,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'এডমিন ও সদস্য উভয় মোডসহ রিয়েলটাইম ক্লাউড সিঙ্ক এবং ড্রাইভ ব্যাকআপ',
+                  'সিক্রেট কোড সিস্টেম ও গুগল ড্রাইভ ব্যাকআপসহ ক্লাউড সিঙ্ক অ্যাপ',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
@@ -179,15 +191,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 36),
                 _FeatureRow(
-                  icon: Icons.admin_panel_settings_outlined,
-                  title: 'এডমিন ও সদস্য প্যানেল',
-                  subtitle: 'ম্যানেজারদের জন্য পূর্ণ হিসাব এবং সদস্যদের জন্য নিজস্ব সঞ্চয় খাতা',
+                  icon: Icons.key_rounded,
+                  title: 'সিক্রেট কোড সিকিউরিটি',
+                  subtitle: 'সভাপতি, সম্পাদক, কোষাধ্যক্ষ ও সদস্যদের জন্য স্বতন্ত্র কোড',
                 ),
                 const SizedBox(height: 16),
                 _FeatureRow(
                   icon: Icons.sync_rounded,
                   title: 'রিয়েলটাইম ক্রস-ডিভাইস সিঙ্ক',
-                  subtitle: 'এক মোবাইলে হিসাব দিলে সাথে সাথে অন্য সব ডিভাইসে আপডেট',
+                  subtitle: 'এক মোবাইলে হিসাব তুললে সাথে সাথে সব ডিভাইসে আপডেট',
                 ),
                 const SizedBox(height: 16),
                 _FeatureRow(
@@ -203,7 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: _handleGoogleSignIn,
                     icon: const Icon(Icons.login_rounded),
                     label: const Text(
-                      'Google দিয়ে সাইন-ইন করুন',
+                      'Google দিয়ে সরাসরি সাইন-ইন করুন',
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     style: FilledButton.styleFrom(
@@ -274,7 +286,173 @@ class _FeatureRow extends StatelessWidget {
 }
 
 /// ============================================================
-/// ১. এডমিন ড্যাশবোর্ড (Somiti Admin Dashboard)
+/// সিক্রেট কোড এন্ট্রি স্ক্রিন (Secret Code Screen)
+/// ============================================================
+class SecretCodeScreen extends StatefulWidget {
+  final User user;
+  const SecretCodeScreen({super.key, required this.user});
+
+  @override
+  State<SecretCodeScreen> createState() => _SecretCodeScreenState();
+}
+
+class _SecretCodeScreenState extends State<SecretCodeScreen> {
+  final TextEditingController _codeController = TextEditingController();
+  bool _isVerifying = false;
+
+  Future<void> _verifyCode() async {
+    final code = _codeController.text.trim();
+    if (code.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('দয়া করে আপনার সিক্রেট কোডটি লিখুন')),
+      );
+      return;
+    }
+
+    setState(() => _isVerifying = true);
+    try {
+      final profile = await SomitiService().verifyAndApplyCode(widget.user, code);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('স্বাগতম! আপনার পদবি: ${profile.roleTitle}')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('ত্রুটি: $e')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isVerifying = false);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('সিক্রেট কোড ভেরিফিকেশন'),
+        actions: [
+          IconButton(
+            tooltip: 'লগআউট',
+            icon: const Icon(Icons.logout_rounded),
+            onPressed: () => AuthService().signOut(),
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primaryContainer,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.lock_person_rounded,
+                    size: 64,
+                    color: theme.colorScheme.onPrimaryContainer,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'আপনার সিক্রেট কোডটি দিন',
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'এডমিন, সভাপতি, সম্পাদক বা সাধারণ সদস্য হিসেবে প্রবেশ করতে আপনার জন্য নির্ধারিত কোডটি লিখুন।',
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 28),
+                TextField(
+                  controller: _codeController,
+                  textCapitalization: TextCapitalization.characters,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    letterSpacing: 3,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: 'যেমন: ADM-2026',
+                    prefixIcon: const Icon(Icons.key_rounded),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                if (_isVerifying)
+                  const CircularProgressIndicator()
+                else
+                  SizedBox(
+                    width: double.infinity,
+                    child: FilledButton.icon(
+                      onPressed: _verifyCode,
+                      icon: const Icon(Icons.check_circle_outline_rounded),
+                      label: const Text(
+                        'কোড যাচাই ও প্রবেশ করুন',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      style: FilledButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
+                const SizedBox(height: 28),
+                Card(
+                  color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '💡 ডিফল্ট টেস্ট কোডসমূহ:',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                        ),
+                        SizedBox(height: 6),
+                        Text('• প্রধান এডমিন ও কোষাধ্যক্ষ: ADM-2026', style: TextStyle(fontSize: 12)),
+                        Text('• সভাপতি: PRE-2026', style: TextStyle(fontSize: 12)),
+                        Text('• সাধারণ সম্পাদক: SEC-2026', style: TextStyle(fontSize: 12)),
+                        Text('• সদস্য কোড: MEM-01 (সদস্য নম্বর অনুযায়ী)', style: TextStyle(fontSize: 12)),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// ============================================================
+/// এডমিন ও কোষাধ্যক্ষ ড্যাশবোর্ড (Somiti Admin Dashboard)
 /// ============================================================
 class SomitiAdminDashboard extends StatefulWidget {
   final User user;
@@ -358,7 +536,6 @@ class _SomitiAdminDashboardState extends State<SomitiAdminDashboard> {
                         setDialogState(() => isSaving = true);
                         try {
                           await _somitiService.addMember(
-                            userId: widget.user.uid,
                             name: name,
                             phone: phone,
                             memberNumber: number,
@@ -366,7 +543,7 @@ class _SomitiAdminDashboardState extends State<SomitiAdminDashboard> {
                           if (mounted) {
                             Navigator.pop(ctx);
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('সদস্য সফলভাবে যুক্ত ও সিঙ্ক হয়েছে')),
+                              SnackBar(content: Text('সদস্য যুক্ত হয়েছে! সদস্য কোড: MEM-$number')),
                             );
                           }
                         } catch (e) {
@@ -495,7 +672,6 @@ class _SomitiAdminDashboardState extends State<SomitiAdminDashboard> {
                         try {
                           final device = kIsWeb ? 'Web Browser' : 'Mobile Device';
                           await _somitiService.addDeposit(
-                            userId: widget.user.uid,
                             memberId: selectedMember.id,
                             memberName: selectedMember.name,
                             memberNumber: selectedMember.memberNumber,
@@ -503,6 +679,7 @@ class _SomitiAdminDashboardState extends State<SomitiAdminDashboard> {
                             type: depositType,
                             date: selectedDate,
                             note: noteController.text.trim(),
+                            recordedBy: widget.user.email ?? 'এডমিন',
                             deviceSource: device,
                           );
 
@@ -596,12 +773,12 @@ class _SomitiAdminDashboardState extends State<SomitiAdminDashboard> {
     final user = widget.user;
 
     return StreamBuilder<List<MemberModel>>(
-      stream: _somitiService.getMembersStream(user.uid),
+      stream: _somitiService.getMembersStream(),
       builder: (context, memberSnapshot) {
         final members = memberSnapshot.data ?? [];
 
         return StreamBuilder<List<DepositModel>>(
-          stream: _somitiService.getDepositsStream(user.uid),
+          stream: _somitiService.getDepositsStream(),
           builder: (context, depositSnapshot) {
             final deposits = depositSnapshot.data ?? [];
             final totalFund = members.fold(0.0, (sum, m) => sum + m.totalDeposit);
@@ -625,7 +802,7 @@ class _SomitiAdminDashboardState extends State<SomitiAdminDashboard> {
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
-                            'এডমিন',
+                            widget.profile.roleTitle,
                             style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
@@ -648,20 +825,20 @@ class _SomitiAdminDashboardState extends State<SomitiAdminDashboard> {
                   PopupMenuButton<String>(
                     icon: const Icon(Icons.more_vert_rounded),
                     onSelected: (val) async {
-                      if (val == 'switch_member') {
-                        await _somitiService.switchRole(user.uid, 'member');
+                      if (val == 'reset_code') {
+                        await _somitiService.resetUserRole(user.uid);
                       } else if (val == 'logout') {
                         await AuthService().signOut();
                       }
                     },
                     itemBuilder: (context) => [
                       const PopupMenuItem(
-                        value: 'switch_member',
+                        value: 'reset_code',
                         child: Row(
                           children: [
-                            Icon(Icons.person_pin_rounded, size: 20),
+                            Icon(Icons.vpn_key_rounded, size: 20),
                             SizedBox(width: 8),
-                            Text('সদস্য মোড দেখুন'),
+                            Text('কোড রিসেট / পরিবর্তন'),
                           ],
                         ),
                       ),
@@ -685,13 +862,13 @@ class _SomitiAdminDashboardState extends State<SomitiAdminDashboard> {
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     color: Colors.green.withOpacity(0.12),
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Icon(Icons.sensors_rounded, color: Colors.green, size: 18),
-                        SizedBox(width: 8),
+                        const Icon(Icons.sensors_rounded, color: Colors.green, size: 18),
+                        const SizedBox(width: 8),
                         Text(
-                          'লাইভ ক্লাউড সিঙ্ক সক্রিয় (এডমিন মোড)',
-                          style: TextStyle(
+                          'লাইভ ক্লাউড সিঙ্ক সক্রিয় (${widget.profile.roleTitle})',
+                          style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
                             color: Colors.green,
@@ -798,7 +975,7 @@ class _SomitiAdminDashboardState extends State<SomitiAdminDashboard> {
               member.name,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            subtitle: Text('ফোন: ${member.phone.isEmpty ? 'দেওয়া হয়নি' : member.phone}'),
+            subtitle: Text('ফোন: ${member.phone.isEmpty ? 'দেওয়া হয়নি' : member.phone} • কোড: MEM-${member.memberNumber}'),
             trailing: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -1024,7 +1201,7 @@ class _SomitiAdminDashboardState extends State<SomitiAdminDashboard> {
 }
 
 /// ============================================================
-/// ২. সদস্য ড্যাশবোর্ড (Somiti Member Dashboard)
+/// সদস্য ড্যাশবোর্ড (Somiti Member Dashboard)
 /// ============================================================
 class SomitiMemberDashboard extends StatelessWidget {
   final User user;
@@ -1046,7 +1223,7 @@ class SomitiMemberDashboard extends StatelessWidget {
             Row(
               children: [
                 const Text(
-                  'আমার সঞ্চয় খাতা',
+                  'আমার সঞ্চয় পাসবুক',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(width: 8),
@@ -1056,9 +1233,9 @@ class SomitiMemberDashboard extends StatelessWidget {
                     color: Colors.blue.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  child: const Text(
-                    'সদস্য ভিউ',
-                    style: TextStyle(
+                  child: Text(
+                    'সদস্য নং: ${profile.memberNumber ?? 'N/A'}',
+                    style: const TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
                       color: Colors.blue,
@@ -1080,20 +1257,20 @@ class SomitiMemberDashboard extends StatelessWidget {
           PopupMenuButton<String>(
             icon: const Icon(Icons.more_vert_rounded),
             onSelected: (val) async {
-              if (val == 'switch_admin') {
-                await somitiService.switchRole(user.uid, 'admin');
+              if (val == 'reset_code') {
+                await somitiService.resetUserRole(user.uid);
               } else if (val == 'logout') {
                 await AuthService().signOut();
               }
             },
             itemBuilder: (context) => [
               const PopupMenuItem(
-                value: 'switch_admin',
+                value: 'reset_code',
                 child: Row(
                   children: [
-                    Icon(Icons.admin_panel_settings_rounded, size: 20),
+                    Icon(Icons.vpn_key_rounded, size: 20),
                     SizedBox(width: 8),
-                    Text('এডমিন প্যানেলে যান'),
+                    Text('কোড পরিবর্তন'),
                   ],
                 ),
               ),
@@ -1112,7 +1289,7 @@ class SomitiMemberDashboard extends StatelessWidget {
         ],
       ),
       body: StreamBuilder<List<DepositModel>>(
-        stream: somitiService.getDepositsStream(user.uid),
+        stream: somitiService.getMemberDepositsStream(profile.memberNumber ?? ''),
         builder: (context, snapshot) {
           final deposits = snapshot.data ?? [];
           final double myTotal = deposits.fold(0.0, (sum, d) => sum + d.amount);
