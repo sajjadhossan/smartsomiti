@@ -587,41 +587,46 @@
       transition: transform 0.08s ease-out;
     }
 
-    /* Print Styles: Clean paper / PDF isolation */
+    /* Print Styles: Clean paper / PDF isolation for Receipts, Notices & Official Letterhead Pad */
     @media print {
       body * {
         visibility: hidden !important;
       }
-      #receiptModal, #receiptPrintArea, #receiptPrintArea * {
+      #receiptModal, #receiptPrintArea, #receiptPrintArea *,
+      #noticeModal, #noticePrintArea, #noticePrintArea *,
+      #fullPadModal, #fullPadPrintArea, #fullPadPrintArea * {
         visibility: visible !important;
       }
-      #receiptModal {
+      #receiptModal, #noticeModal, #fullPadModal {
         position: absolute !important;
         left: 0 !important;
         top: 0 !important;
         width: 100% !important;
         background: none !important;
         padding: 0 !important;
+        display: block !important;
       }
       .modal-box {
         box-shadow: none !important;
         border: none !important;
         max-width: 100% !important;
         padding: 0 !important;
+        background: none !important;
       }
-      #receiptPrintArea {
+      #receiptPrintArea, #noticePrintArea, #fullPadPrintArea {
         position: absolute !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
-        top: 20px !important;
-        width: 380px !important;
-        border: 2px solid #000000 !important;
+        top: 15px !important;
+        width: 520px !important;
+        max-width: 96% !important;
+        border: 1.5px solid #000000 !important;
         background: #FFFFFF !important;
         color: #000000 !important;
         box-shadow: none !important;
-        padding: 20px !important;
+        padding: 16px !important;
       }
-      .action-btn-row, .receipt-actions-grid, .btn-outline {
+      .action-btn-row, .receipt-actions-grid, .btn-outline, .no-print, .btn, .modal-close-btn {
         display: none !important;
       }
     }
@@ -1112,9 +1117,13 @@
               <input type="text" id="profSomitiBankAcc" placeholder="যেমন: ১২৩৪৫৬৭৮৯০১" oninput="updateLivePadPreview()">
             </div>
             <div class="form-group">
-              <label>শাখা / ব্রাঞ্চ ও রাউটিং</label>
+              <label>শাখা / ব্রাঞ্চ</label>
               <input type="text" id="profSomitiBankBranch" placeholder="যেমন: মিরপুর শাখা" oninput="updateLivePadPreview()">
             </div>
+          </div>
+          <div class="form-group">
+            <label>রাউটিং নম্বর (Routing Number)</label>
+            <input type="text" id="profSomitiBankRouting" placeholder="যেমন: 123456789" oninput="updateLivePadPreview()">
           </div>
         </div>
 
@@ -1313,10 +1322,81 @@
           </div>
         </div>
 
-        <!-- 6. LIVE OFFICIAL PAD PREVIEW -->
-        <div style="font-weight: 800; margin: 16px 0 8px 4px; font-size: 14px; color: var(--text); display: flex; align-items: center; gap: 6px;">
-          <span>📜</span>
-          <span>লাইভ অফিসিয়াল প্যাড প্রিভিউ (সরাসরি প্রদর্শন):</span>
+        <!-- 6. OFFICIAL NOTICE & CIRCULAR GENERATOR -->
+        <div class="card" style="border: 1.5px solid #1A73E8; background: #F8FAFC;">
+          <div class="card-title" style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span>📜</span>
+              <span>অফিসিয়াল নোটিশ ও চিঠি প্রস্তুতকারক (Notice on Official Pad)</span>
+            </div>
+            <span style="font-size: 11px; background: #E8F0FE; color: #1A73E8; font-weight: 700; padding: 2px 8px; border-radius: 12px;">প্যাডের ওপর লাইভ নোটিশ</span>
+          </div>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+            সমিতির অফিসিয়াল প্যাডের ওপর যেকোনো সাধারণ সভা, জরুরি বিজ্ঞপ্তি বা অফিসিয়াল চিঠি লিখুন এবং এক ক্লিকেই লাইভ প্রিভিউ, A4 প্রিন্ট বা ছবি হিসেবে ডাউনলোড করুন।
+          </p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="form-group">
+              <label>স্মারক নং (Memo / Ref No)</label>
+              <input type="text" id="noticeMemoNo" placeholder="যেমন: স্মারক-০১/২০২৬">
+            </div>
+            <div class="form-group">
+              <label>জারির তারিখ (Issue Date)</label>
+              <input type="text" id="noticeDate" placeholder="যেমন: ১২ নভেম্বর, ২০২৬">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>নোটিশের বিষয় / টাইটেল (Subject / Title)</label>
+            <input type="text" id="noticeTitle" placeholder="যেমন: বার্ষিক সাধারণ সভা ও সঞ্চয় কিস্তি জমা সংক্রান্ত জরুরি বিজ্ঞপ্তি" style="font-weight: 700;">
+          </div>
+
+          <div class="form-group">
+            <label>নোটিশের বিস্তারিত বক্তব্য / বিবরণ (Notice Details)</label>
+            <textarea id="noticeBody" rows="5" placeholder="সম্মানিত সদস্যবৃন্দ, আসসালামু আলাইকুম। সমিতির সকল সদস্যকে জানানো যাচ্ছে যে..."></textarea>
+          </div>
+
+          <!-- Signatory Selection Checkboxes -->
+          <div style="background: white; border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin-bottom: 12px;">
+            <label style="font-size: 11.5px; font-weight: 700; color: var(--text); display: block; margin-bottom: 6px;">নোটিশে কোন কোন কর্মকর্তার সিল ও সাইন থাকবে:</label>
+            <div style="display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px;">
+              <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 600;">
+                <input type="checkbox" id="noticeSignPresident" checked> 👑 সভাপতি
+              </label>
+              <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 600;">
+                <input type="checkbox" id="noticeSignSecretary" checked> 📝 সাধারণ সম্পাদক
+              </label>
+              <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 600;">
+                <input type="checkbox" id="noticeSignCashier" checked> 💼 কোষাধ্যক্ষ
+              </label>
+            </div>
+          </div>
+
+          <!-- Notice Action Buttons -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <button type="button" onclick="openNoticePadModal()" style="background: #1A73E8; color: white; border: none; padding: 11px; border-radius: 8px; font-weight: 700; font-size: 12.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+              <span>👁️ অফিসিয়াল প্যাডে নোটিশ প্রিভিউ ও প্রিন্ট</span>
+            </button>
+            <button type="button" onclick="saveCurrentNoticeData()" style="background: white; color: var(--text); border: 1px solid var(--border); padding: 11px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+              <span>💾 নোটিশের খসড়া সেভ রাখুন</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 7. LIVE OFFICIAL PAD PREVIEW & MASTER LETTERHEAD -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 18px 0 8px 4px; flex-wrap: wrap; gap: 8px;">
+          <div style="font-weight: 800; font-size: 14px; color: var(--text); display: flex; align-items: center; gap: 6px;">
+            <span>🏛️</span>
+            <span>লাইভ অফিসিয়াল প্যাড প্রিভিউ:</span>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button type="button" onclick="openFullPadModal()" style="background: #0F9D58; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+              <span>👁️ বড় আকারে প্যাড প্রিভিউ</span>
+            </button>
+            <button type="button" onclick="printFullPad()" style="background: #1A73E8; color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 11.5px; font-weight: 700; cursor: pointer;">
+              <span>🖨️ ব্ল্যাঙ্ক প্যাড প্রিন্ট</span>
+            </button>
+          </div>
         </div>
 
         <!-- Live Pad Preview Banner -->
@@ -1628,79 +1708,130 @@
   <!-- ================= DIGITAL MONEY RECEIPT MODAL ================= -->
   <div id="receiptModal" class="modal-overlay" style="display: none;">
     <div class="modal-box">
-      <div class="receipt-container" id="receiptPrintArea">
-        <div class="receipt-pad-header">
-          <h3 id="rcptSomitiName" style="color: #0F172A; font-size: 18px; font-weight: 800;">সমিতির নাম</h3>
-          <p id="rcptPadHeader" style="font-size: 12px; color: #475569; font-style: italic; margin-bottom: 4px;">স্লোগান</p>
-          <p id="rcptAddress" style="font-size: 11px; color: #64748B;">ঠিকানা</p>
-          <span style="display:inline-block; margin-top:6px; background:#0F9D58; color:white; font-size:11px; font-weight:700; padding:2px 10px; border-radius:12px;">ডিজিটাল মানি রিসিট</span>
+      <div class="receipt-container" id="receiptPrintArea" style="background: white; border: 2px solid var(--primary); padding: 14px; border-radius: 12px; max-width: 520px; margin: 0 auto 16px auto;">
+        <!-- Official Pad Banner Image if any -->
+        <div id="rcptPadBannerImgContainer" style="display: none; margin-bottom: 8px;">
+          <img id="rcptPadBannerImg" src="" style="width: 100%; max-height: 70px; object-fit: cover; border-radius: 6px;">
         </div>
 
-        <div class="receipt-row">
-          <span style="color: #64748B;">রসিদ নং:</span>
-          <strong id="rcptNo">RCT-001</strong>
-        </div>
-        <div class="receipt-row">
-          <span style="color: #64748B;">তারিখ ও সময়:</span>
-          <span id="rcptDate">-</span>
-        </div>
-        <div class="receipt-row">
-          <span style="color: #64748B;">সদস্যের নাম:</span>
-          <strong id="rcptMemberName">-</strong>
-        </div>
-        <div class="receipt-row">
-          <span style="color: #64748B;">সদস্য নম্বর:</span>
-          <span id="rcptMemberNum">-</span>
-        </div>
-        <div class="receipt-row">
-          <span style="color: #64748B;">জমার বিবরণ:</span>
-          <span id="rcptType">-</span>
+        <!-- Official Pad Header Row -->
+        <div class="pad-top-row" style="border-bottom: 2px solid #E2E8F0; padding-bottom: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+          <div class="pad-left-box" style="display: flex; align-items: center; gap: 8px;">
+            <div class="pad-logo-box" id="rcptPadLogoBox" style="font-size: 26px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: #F1F5F9; border-radius: 8px; flex-shrink: 0;">🏛️</div>
+            <div>
+              <div class="pad-title" id="rcptSomitiName" style="font-size: 15px; font-weight: 800; color: #0F172A; line-height: 1.2;">সমিতির নাম</div>
+              <div class="pad-slogan" id="rcptPadHeader" style="font-size: 11px; color: #64748B; font-style: italic;">স্লোগান</div>
+            </div>
+          </div>
+          <div class="pad-right-info" style="text-align: right; font-size: 10px; color: #475569; line-height: 1.35;">
+            <div id="rcptAddress">📍 ঢাকা</div>
+            <div id="rcptBkash">📱 বিকাশ/নগদ: নেই</div>
+            <div id="rcptBank">🏦 ব্যাংক: নেই</div>
+            <div id="rcptCodeBadge" style="font-weight: 800; color: #1A73E8; font-size: 10.5px;">কোড: SMT-7890</div>
+          </div>
         </div>
 
-        <div class="receipt-amount-badge" id="rcptAmount">
+        <!-- Document Type Banner -->
+        <div style="text-align: center; margin-bottom: 10px;">
+          <span style="display: inline-block; background: #0F9D58; color: white; font-size: 11.5px; font-weight: 800; padding: 3px 14px; border-radius: 20px; letter-spacing: 0.5px;">
+            📄 অফিসিয়াল ডিজিটাল মানি রিসিট (MONEY RECEIPT)
+          </span>
+        </div>
+
+        <!-- Receipt Rows -->
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 8px 10px; margin-bottom: 8px;">
+          <div class="receipt-row">
+            <span style="color: #64748B;">রসিদ নং:</span>
+            <strong id="rcptNo" style="font-family: monospace; font-size: 13px; color: #0F172A;">RCT-001</strong>
+          </div>
+          <div class="receipt-row">
+            <span style="color: #64748B;">তারিখ ও সময়:</span>
+            <span id="rcptDate" style="font-weight: 600;">-</span>
+          </div>
+          <div class="receipt-row">
+            <span style="color: #64748B;">সদস্যের নাম:</span>
+            <strong id="rcptMemberName" style="color: #1A73E8;">-</strong>
+          </div>
+          <div class="receipt-row">
+            <span style="color: #64748B;">সদস্য নম্বর:</span>
+            <span id="rcptMemberNum" style="font-weight: 700;">-</span>
+          </div>
+          <div class="receipt-row">
+            <span style="color: #64748B;">জমার খাত / বিবরণ:</span>
+            <span id="rcptType" style="font-weight: 700; color: #0F9D58;">-</span>
+          </div>
+        </div>
+
+        <div class="receipt-amount-badge" id="rcptAmount" style="margin: 8px 0; font-size: 22px; padding: 8px; font-weight: 800;">
           ৳০
         </div>
 
-        <div class="receipt-row" id="rcptNoteRow">
-          <span style="color: #64748B;">নোট / বিবরণ:</span>
+        <div class="receipt-row" id="rcptNoteRow" style="padding: 2px 4px; font-size: 11px;">
+          <span style="color: #64748B;">মন্তব্য / নোট:</span>
           <span id="rcptNote">-</span>
         </div>
 
         <!-- Real Dynamic QR Code & Verification Banner -->
-        <div class="receipt-qr-section">
-          <div id="receiptQrCodeBox" class="receipt-qr-box">
+        <div class="receipt-qr-section" style="margin: 8px 0; padding: 8px;">
+          <div id="receiptQrCodeBox" class="receipt-qr-box" style="width: 80px; height: 80px;">
             <!-- QR code generated here -->
           </div>
-          <div class="receipt-verify-meta">
-            <div style="font-weight: 800; font-size: 11px; color: #0F9D58; display: flex; align-items: center; gap: 4px; margin-bottom: 3px;">
+          <div class="receipt-verify-meta" style="flex: 1;">
+            <div style="font-weight: 800; font-size: 11px; color: #0F9D58; display: flex; align-items: center; gap: 4px; margin-bottom: 2px;">
               <span>✅</span> <span>ডিজিটাল সত্যতা যাচাইকৃত</span>
             </div>
-            <div style="background: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 6px; padding: 5px 8px; margin: 3px 0;">
-              <div style="font-size: 9.5px; color: #64748B; font-weight: 700;">🔐 সিক্রেট যাচাই কোড:</div>
-              <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 1px;">
-                <span id="rcptSecretCode" style="font-family: monospace; font-size: 13px; font-weight: 800; color: #0F172A; letter-spacing: 0.5px;">RCT-000000</span>
-                <button type="button" onclick="copySecretCode()" style="background: white; border: 1px solid #94A3B8; border-radius: 4px; padding: 2px 6px; font-size: 9px; cursor: pointer; color: #1E293B; font-weight: 700;">📋 কপি</button>
+            <div style="background: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 6px; padding: 4px 6px; margin: 2px 0;">
+              <div style="font-size: 9px; color: #64748B; font-weight: 700;">🔐 সিক্রেট যাচাই কোড:</div>
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <span id="rcptSecretCode" style="font-family: monospace; font-size: 12px; font-weight: 800; color: #0F172A; letter-spacing: 0.5px;">RCT-000000</span>
+                <button type="button" onclick="copySecretCode()" style="background: white; border: 1px solid #94A3B8; border-radius: 4px; padding: 1px 5px; font-size: 9px; cursor: pointer; color: #1E293B; font-weight: 700;">📋 কপি</button>
               </div>
             </div>
-            <div style="font-size: 9.5px; color: #64748B; line-height: 1.3;">
+            <div style="font-size: 8.5px; color: #64748B; line-height: 1.2;">
               ক্যামেরা দিয়ে QR স্ক্যান করুন অথবা যাচাই মেনুতে সিক্রেট কোডটি দিন।
             </div>
           </div>
         </div>
 
-        <!-- Committee Seal & Cashier Signature on Receipt -->
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 10px; padding-top: 8px; border-top: 1px dashed #CBD5E1;">
-          <div style="text-align: left; font-size: 10px; color: #64748B;">
-            <div>আদায়কারী: <strong id="rcptCashier">কোষাধ্যক্ষ</strong></div>
-            <div style="color: #0F9D58; font-weight: 700; font-size: 9px;">✓ ডিজিটাল ভেরিফাইড রসিদ</div>
-          </div>
-          <div style="text-align: center;">
-            <div class="digital-sign" id="rcptSignCashier" style="font-size: 16px; color: #1E3A8A;">Sajjad</div>
-            <div class="official-seal-stamp" style="width: 44px; height: 44px; font-size: 6.5px; margin: 2px auto;">
-              <span>★ সিলমোহর ★</span>
-              <span>আদায়কৃত</span>
+        <!-- Committee Seal & Signatures Row (Direct from Official Pad) -->
+        <div class="pad-committee-row" style="margin-top: 10px; padding-top: 8px; border-top: 1.5px dashed #CBD5E1; display: flex; justify-content: space-between; gap: 6px;">
+          <!-- President -->
+          <div class="committee-stamp-col" style="flex: 1; text-align: center;">
+            <div class="stamp-transform-wrapper" id="rcptWrapPresident">
+              <div class="digital-sign" id="rcptSignPresident" style="font-size: 14px; min-height: 24px; display: flex; align-items: center; justify-content: center;">Karim</div>
+              <div class="official-seal-stamp" style="width: 36px; height: 36px; font-size: 5.5px; margin: 1px auto;">
+                <span>★ সিলমোহর ★</span>
+                <span>অনুমোদিত</span>
+              </div>
             </div>
-            <div style="font-size: 9px; font-weight: 700; color: #475569;">অনুমোদিত আদায়কারী</div>
+            <div class="signatory-name" id="rcptPresidentName" style="font-size: 9.5px; margin-top: 2px;">সভাপতি</div>
+            <div class="signatory-role" style="font-size: 8px; color: #64748B;">সভাপতি</div>
+          </div>
+
+          <!-- Secretary -->
+          <div class="committee-stamp-col" style="flex: 1; text-align: center;">
+            <div class="stamp-transform-wrapper" id="rcptWrapSecretary">
+              <div class="digital-sign" id="rcptSignSecretary" style="font-size: 14px; min-height: 24px; display: flex; align-items: center; justify-content: center;">Rafiqul</div>
+              <div class="official-seal-stamp" style="width: 36px; height: 36px; font-size: 5.5px; margin: 1px auto;">
+                <span>★ সিলমোহর ★</span>
+                <span>যাচাইকৃত</span>
+              </div>
+            </div>
+            <div class="signatory-name" id="rcptSecretaryName" style="font-size: 9.5px; margin-top: 2px;">সম্পাদক</div>
+            <div class="signatory-role" style="font-size: 8px; color: #64748B;">সাধারণ সম্পাদক</div>
+          </div>
+
+          <!-- Cashier -->
+          <div class="committee-stamp-col" style="flex: 1; text-align: center;">
+            <div class="stamp-transform-wrapper" id="rcptWrapCashier">
+              <div class="digital-sign" id="rcptSignCashier" style="font-size: 14px; min-height: 24px; display: flex; align-items: center; justify-content: center;">Sajjad</div>
+              <div class="official-seal-stamp" style="width: 36px; height: 36px; font-size: 5.5px; margin: 1px auto;">
+                <span>★ সিলমোহর ★</span>
+                <span>আদায়কৃত</span>
+              </div>
+            </div>
+            <div class="signatory-name" id="rcptCashier" style="font-size: 9.5px; margin-top: 2px;">সাজ্জাদ হোসেন</div>
+            <div class="signatory-role" style="font-size: 8px; font-weight: 800; color: #0F9D58;">কোষাধ্যক্ষ / আদায়কারী</div>
           </div>
         </div>
       </div>
@@ -1729,6 +1860,225 @@
           ✖️ বন্ধ
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- ================= OFFICIAL NOTICE & CIRCULAR PAD MODAL ================= -->
+  <div id="noticeModal" class="modal-overlay" style="display: none; z-index: 2400;">
+    <div class="modal-box" style="max-width: 580px; max-height: 90vh; overflow-y: auto;">
+      <!-- Notice Pad Container (Print Area) -->
+      <div class="pad-banner" id="noticePrintArea" style="background: white; border: 2px solid var(--primary); padding: 16px; border-radius: 12px; margin-bottom: 14px;">
+        <!-- Banner Image if any -->
+        <div id="npPadBannerImgContainer" style="display: none; margin-bottom: 8px;">
+          <img id="npPadBannerImg" src="" style="width: 100%; max-height: 75px; object-fit: cover; border-radius: 6px;">
+        </div>
+
+        <!-- Official Pad Top Row -->
+        <div class="pad-top-row" style="border-bottom: 2px solid #E2E8F0; padding-bottom: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+          <div class="pad-left-box" style="display: flex; align-items: center; gap: 8px;">
+            <div class="pad-logo-box" id="npPadLogoBox" style="font-size: 28px; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; background: #F1F5F9; border-radius: 8px; flex-shrink: 0;">🏛️</div>
+            <div>
+              <div class="pad-title" id="npSomitiName" style="font-size: 16px; font-weight: 800; color: #0F172A; line-height: 1.2;">সমিতির নাম</div>
+              <div class="pad-slogan" id="npPadHeader" style="font-size: 11px; color: #64748B; font-style: italic;">স্লোগান</div>
+            </div>
+          </div>
+          <div class="pad-right-info" style="text-align: right; font-size: 10px; color: #475569; line-height: 1.35;">
+            <div id="npAddress">📍 ঢাকা</div>
+            <div id="npBkash">📱 বিকাশ/নগদ: নেই</div>
+            <div id="npBank">🏦 ব্যাংক: নেই</div>
+            <div id="npCodeBadge" style="font-weight: 800; color: #1A73E8; font-size: 10.5px;">কোড: SMT-7890</div>
+          </div>
+        </div>
+
+        <!-- Official Notice Header Badge -->
+        <div style="text-align: center; margin-bottom: 12px;">
+          <span style="display: inline-block; background: #1E3A8A; color: white; font-size: 12px; font-weight: 800; padding: 3px 16px; border-radius: 20px; letter-spacing: 0.5px;">
+            📢 অফিসিয়াল বিজ্ঞপ্তি / নোটিশ
+          </span>
+        </div>
+
+        <!-- Notice Meta: Memo No & Date -->
+        <div style="display: flex; justify-content: space-between; font-size: 11px; color: #475569; border-bottom: 1px dashed #CBD5E1; padding-bottom: 6px; margin-bottom: 12px;">
+          <div><strong>স্মারক নং:</strong> <span id="npMemoText">-</span></div>
+          <div><strong>তারিখ:</strong> <span id="npDateText">-</span></div>
+        </div>
+
+        <!-- Subject -->
+        <div style="font-size: 13.5px; font-weight: 800; color: #0F172A; margin-bottom: 12px; background: #F8FAFC; border-left: 3px solid #1A73E8; padding: 6px 10px; border-radius: 4px;">
+          <span>বিষয়: </span><span id="npSubjectText">-</span>
+        </div>
+
+        <!-- Body -->
+        <div id="npBodyText" style="font-size: 12.5px; line-height: 1.8; color: #1E293B; margin-bottom: 24px; white-space: pre-wrap; text-align: justify; min-height: 90px;">
+          নোটিশের বিস্তারিত বক্তব্য...
+        </div>
+
+        <!-- Committee Seal & Signatures Row -->
+        <div class="pad-committee-row" style="margin-top: 16px; padding-top: 10px; border-top: 1.5px dashed #CBD5E1; display: flex; justify-content: space-between; gap: 8px;">
+          <!-- President -->
+          <div class="committee-stamp-col" id="npColPresident" style="flex: 1; text-align: center;">
+            <div class="stamp-transform-wrapper" id="npWrapPresident">
+              <div class="digital-sign" id="npSignPresident" style="font-size: 14px; min-height: 24px; display: flex; align-items: center; justify-content: center;">Karim</div>
+              <div class="official-seal-stamp" style="width: 38px; height: 38px; font-size: 5.5px; margin: 1px auto;">
+                <span>★ সিলমোহর ★</span>
+                <span>অনুমোদিত</span>
+              </div>
+            </div>
+            <div class="signatory-name" id="npPresidentName" style="font-size: 10px; margin-top: 2px;">সভাপতি</div>
+            <div class="signatory-role" style="font-size: 8.5px; color: #64748B;">সভাপতি</div>
+          </div>
+
+          <!-- Secretary -->
+          <div class="committee-stamp-col" id="npColSecretary" style="flex: 1; text-align: center;">
+            <div class="stamp-transform-wrapper" id="npWrapSecretary">
+              <div class="digital-sign" id="npSignSecretary" style="font-size: 14px; min-height: 24px; display: flex; align-items: center; justify-content: center;">Rafiqul</div>
+              <div class="official-seal-stamp" style="width: 38px; height: 38px; font-size: 5.5px; margin: 1px auto;">
+                <span>★ সিলমোহর ★</span>
+                <span>যাচাইকৃত</span>
+              </div>
+            </div>
+            <div class="signatory-name" id="npSecretaryName" style="font-size: 10px; margin-top: 2px;">সাধারণ সম্পাদক</div>
+            <div class="signatory-role" style="font-size: 8.5px; color: #64748B;">সাধারণ সম্পাদক</div>
+          </div>
+
+          <!-- Cashier -->
+          <div class="committee-stamp-col" id="npColCashier" style="flex: 1; text-align: center;">
+            <div class="stamp-transform-wrapper" id="npWrapCashier">
+              <div class="digital-sign" id="npSignCashier" style="font-size: 14px; min-height: 24px; display: flex; align-items: center; justify-content: center;">Sajjad</div>
+              <div class="official-seal-stamp" style="width: 38px; height: 38px; font-size: 5.5px; margin: 1px auto;">
+                <span>★ সিলমোহর ★</span>
+                <span>আদায়কৃত</span>
+              </div>
+            </div>
+            <div class="signatory-name" id="npCashierName" style="font-size: 10px; margin-top: 2px;">কোষাধ্যক্ষ</div>
+            <div class="signatory-role" style="font-size: 8.5px; color: #64748B;">কোষাধ্যক্ষ</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+        <button type="button" onclick="printNoticePad()" style="background: #1A73E8; color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <span>🖨️ প্রিন্ট / PDF</span>
+        </button>
+        <button type="button" onclick="downloadNoticeImage()" style="background: #7C3AED; color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <span>🖼️ ছবি ডাউনলোড</span>
+        </button>
+        <button type="button" onclick="shareNoticeWhatsApp()" class="wa-btn" style="padding: 10px;">
+          <span>📲 WhatsApp</span>
+        </button>
+        <button type="button" onclick="closeNoticeModal()" class="btn btn-outline" style="padding: 10px;">
+          <span>✖️ বন্ধ করুন</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MASTER OFFICIAL PAD PREVIEW & PRINT MODAL ================= -->
+  <div id="fullPadModal" class="modal-overlay" style="display: none; z-index: 2400;">
+    <div class="modal-box" style="max-width: 580px; max-height: 90vh; overflow-y: auto;">
+      <!-- Master Pad Print Area -->
+      <div class="pad-banner" id="fullPadPrintArea" style="background: white; border: 2px solid var(--primary); padding: 16px; border-radius: 12px; margin-bottom: 14px;">
+        <!-- Banner Image if any -->
+        <div id="fpPadBannerImgContainer" style="display: none; margin-bottom: 8px;">
+          <img id="fpPadBannerImg" src="" style="width: 100%; max-height: 75px; object-fit: cover; border-radius: 6px;">
+        </div>
+
+        <!-- Official Pad Top Row -->
+        <div class="pad-top-row" style="border-bottom: 2px solid #E2E8F0; padding-bottom: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+          <div class="pad-left-box" style="display: flex; align-items: center; gap: 8px;">
+            <div class="pad-logo-box" id="fpPadLogoBox" style="font-size: 28px; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; background: #F1F5F9; border-radius: 8px; flex-shrink: 0;">🏛️</div>
+            <div>
+              <div class="pad-title" id="fpSomitiName" style="font-size: 16px; font-weight: 800; color: #0F172A; line-height: 1.2;">সমিতির নাম</div>
+              <div class="pad-slogan" id="fpPadHeader" style="font-size: 11px; color: #64748B; font-style: italic;">স্লোগান</div>
+            </div>
+          </div>
+          <div class="pad-right-info" style="text-align: right; font-size: 10px; color: #475569; line-height: 1.35;">
+            <div id="fpAddress">📍 ঢাকা</div>
+            <div id="fpBkash">📱 বিকাশ/নগদ: নেই</div>
+            <div id="fpBank">🏦 ব্যাংক: নেই</div>
+            <div id="fpCodeBadge" style="font-weight: 800; color: #1A73E8; font-size: 10.5px;">কোড: SMT-7890</div>
+          </div>
+        </div>
+
+        <!-- Official Notice Box if any -->
+        <div class="pad-notice-box" id="fpNoticeBox" style="display: none; margin-bottom: 14px;">
+          <span style="font-size:16px;">📢</span>
+          <div>
+            <strong style="margin-right: 4px;">অফিসিয়াল নোটিশ:</strong>
+            <span id="fpNoticeText"></span>
+          </div>
+        </div>
+
+        <!-- Blank Official Letterhead Body Area -->
+        <div style="min-height: 180px; border: 1px dashed #CBD5E1; border-radius: 8px; padding: 14px; margin-bottom: 20px; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%);">
+          <div style="display: flex; justify-content: space-between; font-size: 10.5px; color: #94A3B8;">
+            <span>স্মারক নং: .......................................</span>
+            <span>তারিখ: .......................................</span>
+          </div>
+          <div style="text-align: center; color: #CBD5E1; font-size: 13px; font-style: italic; letter-spacing: 1px;">
+            [ অফিসিয়াল চিঠি ও প্রস্তাবনা লেখার স্থান ]
+          </div>
+          <div style="font-size: 9.5px; color: #94A3B8; text-align: center;">
+            সমিতির সকল বিজ্ঞপ্তি, চুক্তিপত্র ও আবেদনপত্র এই অফিসিয়াল প্যাডে মুদ্রিত হবে
+          </div>
+        </div>
+
+        <!-- Committee Seal & Signatures Row (Direct from Official Pad) -->
+        <div class="pad-committee-row" style="margin-top: 14px; padding-top: 10px; border-top: 1.5px dashed #CBD5E1; display: flex; justify-content: space-between; gap: 8px;">
+          <!-- President -->
+          <div class="committee-stamp-col" style="flex: 1; text-align: center;">
+            <div class="stamp-transform-wrapper" id="fpWrapPresident">
+              <div class="digital-sign" id="fpSignPresident" style="font-size: 14px; min-height: 24px; display: flex; align-items: center; justify-content: center;">Karim</div>
+              <div class="official-seal-stamp" style="width: 38px; height: 38px; font-size: 5.5px; margin: 1px auto;">
+                <span>★ সিলমোহর ★</span>
+                <span>অনুমোদিত</span>
+              </div>
+            </div>
+            <div class="signatory-name" id="fpPresidentName" style="font-size: 10px; margin-top: 2px;">সভাপতি</div>
+            <div class="signatory-role" style="font-size: 8.5px; color: #64748B;">সভাপতি</div>
+          </div>
+
+          <!-- Secretary -->
+          <div class="committee-stamp-col" style="flex: 1; text-align: center;">
+            <div class="stamp-transform-wrapper" id="fpWrapSecretary">
+              <div class="digital-sign" id="fpSignSecretary" style="font-size: 14px; min-height: 24px; display: flex; align-items: center; justify-content: center;">Rafiqul</div>
+              <div class="official-seal-stamp" style="width: 38px; height: 38px; font-size: 5.5px; margin: 1px auto;">
+                <span>★ সিলমোহর ★</span>
+                <span>যাচাইকৃত</span>
+              </div>
+            </div>
+            <div class="signatory-name" id="fpSecretaryName" style="font-size: 10px; margin-top: 2px;">সাধারণ সম্পাদক</div>
+            <div class="signatory-role" style="font-size: 8.5px; color: #64748B;">সাধারণ সম্পাদক</div>
+          </div>
+
+          <!-- Cashier -->
+          <div class="committee-stamp-col" style="flex: 1; text-align: center;">
+            <div class="stamp-transform-wrapper" id="fpWrapCashier">
+              <div class="digital-sign" id="fpSignCashier" style="font-size: 14px; min-height: 24px; display: flex; align-items: center; justify-content: center;">Sajjad</div>
+              <div class="official-seal-stamp" style="width: 38px; height: 38px; font-size: 5.5px; margin: 1px auto;">
+                <span>★ সিলমোহর ★</span>
+                <span>আদায়কৃত</span>
+              </div>
+            </div>
+            <div class="signatory-name" id="fpCashierName" style="font-size: 10px; margin-top: 2px;">সাজ্জাদ হোসেন</div>
+            <div class="signatory-role" style="font-size: 8.5px; color: #64748B;">কোষাধ্যক্ষ</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+        <button type="button" onclick="printFullPad()" style="background: #1A73E8; color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <span>🖨️ ব্ল্যাঙ্ক প্যাড প্রিন্ট / PDF</span>
+        </button>
+        <button type="button" onclick="downloadFullPadImage()" style="background: #7C3AED; color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <span>🖼️ প্যাড ছবি ডাউনলোড</span>
+        </button>
+      </div>
+      <button type="button" onclick="closeFullPadModal()" class="btn btn-outline" style="margin-top: 8px; padding: 9px;">
+        <span>✖️ বন্ধ করুন</span>
+      </button>
     </div>
   </div>
 
@@ -2249,6 +2599,7 @@
       if (el("profSomitiBankName")) el("profSomitiBankName").value = s.bankName || (s.bankAccount ? s.bankAccount.split('-')[0].trim() : "");
       if (el("profSomitiBankAcc")) el("profSomitiBankAcc").value = s.bankAcc || (s.bankAccount && s.bankAccount.includes('-') ? s.bankAccount.split('-')[1].trim() : "");
       if (el("profSomitiBankBranch")) el("profSomitiBankBranch").value = s.bankBranch || "";
+      if (el("profSomitiBankRouting")) el("profSomitiBankRouting").value = s.bankRouting || "";
 
       if (el("profPresidentName")) el("profPresidentName").value = s.presidentName || "";
       if (el("profPresidentPhone")) el("profPresidentPhone").value = s.presidentPhone || "";
@@ -2259,6 +2610,16 @@
 
       if (el("profSomitiLogoEmoji")) el("profSomitiLogoEmoji").value = s.logoEmoji || "🏛️";
       if (el("profSomitiNotice")) el("profSomitiNotice").value = s.notice || "";
+
+      // Populate Notice Draft
+      const sn = s.savedNotice || {};
+      if (el("noticeMemoNo")) el("noticeMemoNo").value = sn.memoNo || "স্মারক-০১/২০২৬";
+      if (el("noticeDate")) el("noticeDate").value = sn.date || new Date().toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' });
+      if (el("noticeTitle")) el("noticeTitle").value = sn.title || "জরুরি সাধারণ সভা ও সঞ্চয় কিস্তি জমা সংক্রান্ত বিজ্ঞপ্তি";
+      if (el("noticeBody")) el("noticeBody").value = sn.body || "সম্মানিত সদস্যবৃন্দ, আসসালামু আলাইকুম।\nসমিতির সকল সম্মানিত সদস্যকে বিনীতভাবে জানানো যাচ্ছে যে, আগামী মাসের সাধারণ সভা এবং মাসিক সঞ্চয় কিস্তি যথাসময়ে জমা দেওয়ার জন্য বিশেষভাবে অনুরোধ করা হচ্ছে।\n\nসমিতির সার্বিক উন্নয়ন ও আর্থিক শৃঙ্খলায় আপনাদের সহযোগিতা একান্ত কাম্য।";
+      if (el("noticeSignPresident") && sn.signPresident !== undefined) el("noticeSignPresident").checked = sn.signPresident;
+      if (el("noticeSignSecretary") && sn.signSecretary !== undefined) el("noticeSignSecretary").checked = sn.signSecretary;
+      if (el("noticeSignCashier") && sn.signCashier !== undefined) el("noticeSignCashier").checked = sn.signCashier;
 
       if (s.logoImg) {
         const prev = el("profLogoPreviewImg");
@@ -2459,9 +2820,17 @@
       const code = el("profSomitiCode")?.value.trim() || s.somitiCode || "SMT-7890";
       const bkash = el("profSomitiBkash")?.value.trim() || s.bkashNumber || "";
 
-      const bankName = el("profSomitiBankName")?.value.trim() || "";
-      const bankAcc = el("profSomitiBankAcc")?.value.trim() || "";
-      const bankStr = bankName ? `${bankName}${bankAcc ? ' - ' + bankAcc : ''}` : (s.bankAccount || "নেই");
+      const bankName = el("profSomitiBankName")?.value.trim() || s.bankName || "";
+      const bankAcc = el("profSomitiBankAcc")?.value.trim() || s.bankAcc || "";
+      const bankBranch = el("profSomitiBankBranch")?.value.trim() || s.bankBranch || "";
+      const bankRouting = el("profSomitiBankRouting")?.value.trim() || s.bankRouting || "";
+      let bankParts = [];
+      if (bankName) bankParts.push(bankName);
+      if (bankAcc) bankParts.push(bankAcc);
+      let subParts = [];
+      if (bankBranch) subParts.push(bankBranch);
+      if (bankRouting) subParts.push('রাউটিং: ' + bankRouting);
+      const bankStr = bankParts.length ? `${bankParts.join(' - ')}${subParts.length ? ' (' + subParts.join(', ') + ')' : ''}` : (s.bankAccount || "নেই");
 
       const notice = el("profSomitiNotice")?.value.trim() || "";
       const logoEmoji = el("profSomitiLogoEmoji")?.value || s.logoEmoji || "🏛️";
@@ -2614,7 +2983,14 @@
       const bankName = document.getElementById("profSomitiBankName").value.trim();
       const bankAcc = document.getElementById("profSomitiBankAcc").value.trim();
       const bankBranch = document.getElementById("profSomitiBankBranch").value.trim();
-      const bankAccountStr = bankName ? `${bankName}${bankAcc ? ' - ' + bankAcc : ''}${bankBranch ? ' (' + bankBranch + ')' : ''}` : "";
+      const bankRouting = document.getElementById("profSomitiBankRouting")?.value.trim() || "";
+      let bankParts = [];
+      if (bankName) bankParts.push(bankName);
+      if (bankAcc) bankParts.push(bankAcc);
+      let subParts = [];
+      if (bankBranch) subParts.push(bankBranch);
+      if (bankRouting) subParts.push('রাউটিং: ' + bankRouting);
+      const bankAccountStr = bankParts.length ? `${bankParts.join(' - ')}${subParts.length ? ' (' + subParts.join(', ') + ')' : ''}` : "";
 
       const updated = {
         ...currentSomiti,
@@ -2626,6 +3002,7 @@
         bankName: bankName,
         bankAcc: bankAcc,
         bankBranch: bankBranch,
+        bankRouting: bankRouting,
         bankAccount: bankAccountStr || currentSomiti.bankAccount || "",
         presidentName: document.getElementById("profPresidentName").value.trim(),
         presidentPhone: document.getElementById("profPresidentPhone").value.trim(),
@@ -3118,32 +3495,105 @@
 
     function showReceiptModal(data) {
       activeReceiptData = data;
-      document.getElementById("rcptSomitiName").innerText = currentSomiti.name;
-      document.getElementById("rcptPadHeader").innerText = `"${currentSomiti.padHeader || ''}"`;
-      document.getElementById("rcptAddress").innerText = currentSomiti.address || 'ঢাকা';
-      document.getElementById("rcptNo").innerText = data.receiptNo || "RCT-001";
-      document.getElementById("rcptDate").innerText = data.dateStr || new Date().toLocaleString('bn-BD');
-      document.getElementById("rcptMemberName").innerText = data.memberName;
-      document.getElementById("rcptMemberNum").innerText = data.memberNumber;
-      document.getElementById("rcptType").innerText = data.type;
-      document.getElementById("rcptAmount").innerText = "৳" + data.amount.toLocaleString();
-      document.getElementById("rcptNote").innerText = data.note || "কোনো বিশেষ মন্তব্য নেই";
-      
-      const cashierName = currentSomiti.cashierName || "সাজ্জাদ হোসেন";
-      document.getElementById("rcptCashier").innerText = cashierName;
-      const cashierSign = cashierName.replace("জনাব ", "").split(" ")[0];
-      const signEl = document.getElementById("rcptSignCashier");
-      if (signEl) {
-        if (currentSomiti.cashierSignImg) {
-          signEl.innerHTML = `<img src="${currentSomiti.cashierSignImg}" alt="Sign" style="max-height: 28px; max-width: 80px; object-fit: contain; display: inline-block;">`;
+      const s = currentSomiti || {};
+      const el = id => document.getElementById(id);
+
+      if (el("rcptSomitiName")) el("rcptSomitiName").innerText = s.name || "সমিতি";
+      if (el("rcptPadHeader")) el("rcptPadHeader").innerText = s.padHeader ? `"${s.padHeader}"` : "";
+      if (el("rcptAddress")) el("rcptAddress").innerText = "📍 " + (s.address || "ঢাকা");
+      if (el("rcptBkash")) el("rcptBkash").innerText = "📱 বিকাশ/নগদ: " + (s.bkashNumber || "নেই");
+      if (el("rcptBank")) el("rcptBank").innerText = "🏦 " + (s.bankAccount || "নেই");
+      if (el("rcptCodeBadge")) el("rcptCodeBadge").innerText = "কোড: " + (s.somitiCode || "SMT-7890");
+
+      const rcptLogo = el("rcptPadLogoBox");
+      if (rcptLogo) {
+        if (s.logoImg) {
+          rcptLogo.innerHTML = `<img src="${s.logoImg}" style="width:100%;height:100%;object-fit:contain;border-radius:6px;">`;
         } else {
-          signEl.innerText = cashierSign;
+          rcptLogo.innerHTML = s.logoEmoji || "🏛️";
+        }
+      }
+
+      const rCont = el("rcptPadBannerImgContainer");
+      const rImg = el("rcptPadBannerImg");
+      if (rCont && rImg) {
+        if (s.padHeaderImg) {
+          rImg.src = s.padHeaderImg;
+          rCont.style.display = "block";
+        } else {
+          rCont.style.display = "none";
+        }
+      }
+
+      if (el("rcptNo")) el("rcptNo").innerText = data.receiptNo || "RCT-001";
+      if (el("rcptDate")) el("rcptDate").innerText = data.dateStr || new Date().toLocaleString('bn-BD');
+      if (el("rcptMemberName")) el("rcptMemberName").innerText = data.memberName;
+      if (el("rcptMemberNum")) el("rcptMemberNum").innerText = data.memberNumber;
+      if (el("rcptType")) el("rcptType").innerText = data.type;
+      if (el("rcptAmount")) el("rcptAmount").innerText = "৳" + data.amount.toLocaleString();
+      if (el("rcptNote")) el("rcptNote").innerText = data.note || "কোনো বিশেষ মন্তব্য নেই";
+      
+      // Populate 3 Committee Signatures on the Pad Receipt
+      // 1. President
+      const presName = s.presidentName || "জনাব আব্দুল করিম";
+      if (el("rcptPresidentName")) el("rcptPresidentName").innerText = presName;
+      const presWrap = el("rcptWrapPresident");
+      if (presWrap) {
+        const pScale = s.presidentSignScale !== undefined ? s.presidentSignScale : 100;
+        const pY = s.presidentSignY !== undefined ? s.presidentSignY : 0;
+        const pX = s.presidentSignX !== undefined ? s.presidentSignX : 0;
+        presWrap.style.transform = `translate(${pX}px, ${pY}px) scale(${pScale / 100})`;
+      }
+      const presSignEl = el("rcptSignPresident");
+      if (presSignEl) {
+        if (s.presidentSignImg) {
+          presSignEl.innerHTML = `<img src="${s.presidentSignImg}" alt="Sign" style="max-height: 28px; max-width: 80px; object-fit: contain; display: inline-block;">`;
+        } else {
+          presSignEl.innerText = presName.replace("জনাব ", "").split(" ")[0] || "Karim";
+        }
+      }
+
+      // 2. Secretary
+      const secName = s.secretaryName || "জনাব রফিকুল ইসলাম";
+      if (el("rcptSecretaryName")) el("rcptSecretaryName").innerText = secName;
+      const secWrap = el("rcptWrapSecretary");
+      if (secWrap) {
+        const sScale = s.secretarySignScale !== undefined ? s.secretarySignScale : 100;
+        const sY = s.secretarySignY !== undefined ? s.secretarySignY : 0;
+        const sX = s.secretarySignX !== undefined ? s.secretarySignX : 0;
+        secWrap.style.transform = `translate(${sX}px, ${sY}px) scale(${sScale / 100})`;
+      }
+      const secSignEl = el("rcptSignSecretary");
+      if (secSignEl) {
+        if (s.secretarySignImg) {
+          secSignEl.innerHTML = `<img src="${s.secretarySignImg}" alt="Sign" style="max-height: 28px; max-width: 80px; object-fit: contain; display: inline-block;">`;
+        } else {
+          secSignEl.innerText = secName.replace("জনাব ", "").split(" ")[0] || "Rafiqul";
+        }
+      }
+
+      // 3. Cashier
+      const cashierName = s.cashierName || "সাজ্জাদ হোসেন";
+      if (el("rcptCashier")) el("rcptCashier").innerText = cashierName;
+      const cashWrap = el("rcptWrapCashier");
+      if (cashWrap) {
+        const cScale = s.cashierSignScale !== undefined ? s.cashierSignScale : 100;
+        const cY = s.cashierSignY !== undefined ? s.cashierSignY : 0;
+        const cX = s.cashierSignX !== undefined ? s.cashierSignX : 0;
+        cashWrap.style.transform = `translate(${cX}px, ${cY}px) scale(${cScale / 100})`;
+      }
+      const cashSignEl = el("rcptSignCashier");
+      if (cashSignEl) {
+        if (s.cashierSignImg) {
+          cashSignEl.innerHTML = `<img src="${s.cashierSignImg}" alt="Sign" style="max-height: 28px; max-width: 80px; object-fit: contain; display: inline-block;">`;
+        } else {
+          cashSignEl.innerText = cashierName.replace("জনাব ", "").split(" ")[0] || "Sajjad";
         }
       }
 
       // Secret verification code
       const secretCode = data.receiptNo || "RCT-001";
-      const codeEl = document.getElementById("rcptSecretCode");
+      const codeEl = el("rcptSecretCode");
       if (codeEl) codeEl.innerText = secretCode;
 
       // Generate Real Dynamic QR Code (Instant Scan)
@@ -3222,6 +3672,343 @@
     function verifyCurrentReceiptOnline() {
       if (!activeReceiptData || !activeReceiptData.receiptNo) return;
       openVerifyReceiptModal(activeReceiptData.receiptNo);
+    }
+
+    // ================= OFFICIAL NOTICE & CIRCULAR LOGIC =================
+    function openNoticePadModal() {
+      const s = currentSomiti || {};
+      const el = id => document.getElementById(id);
+
+      const memoNo = el("noticeMemoNo")?.value.trim() || "স্মারক-০১/২০২৬";
+      const dateStr = el("noticeDate")?.value.trim() || new Date().toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' });
+      const title = el("noticeTitle")?.value.trim() || "জরুরি বিজ্ঞপ্তি";
+      const body = el("noticeBody")?.value.trim() || "কোনো বিবরণ প্রদান করা হয়নি।";
+
+      // Pad Header on Notice
+      if (el("npSomitiName")) el("npSomitiName").innerText = s.name || "সমিতি";
+      if (el("npPadHeader")) el("npPadHeader").innerText = s.padHeader ? `"${s.padHeader}"` : "";
+      if (el("npAddress")) el("npAddress").innerText = "📍 " + (s.address || "ঢাকা");
+      if (el("npBkash")) el("npBkash").innerText = "📱 বিকাশ/নগদ: " + (s.bkashNumber || "নেই");
+      if (el("npBank")) el("npBank").innerText = "🏦 " + (s.bankAccount || "নেই");
+      if (el("npCodeBadge")) el("npCodeBadge").innerText = "কোড: " + (s.somitiCode || "SMT-7890");
+
+      const npLogo = el("npPadLogoBox");
+      if (npLogo) {
+        if (s.logoImg) {
+          npLogo.innerHTML = `<img src="${s.logoImg}" style="width:100%;height:100%;object-fit:contain;border-radius:6px;">`;
+        } else {
+          npLogo.innerHTML = s.logoEmoji || "🏛️";
+        }
+      }
+
+      const npBannerCont = el("npPadBannerImgContainer");
+      const npBannerImg = el("npPadBannerImg");
+      if (npBannerCont && npBannerImg) {
+        if (s.padHeaderImg) {
+          npBannerImg.src = s.padHeaderImg;
+          npBannerCont.style.display = "block";
+        } else {
+          npBannerCont.style.display = "none";
+        }
+      }
+
+      // Notice content
+      if (el("npMemoText")) el("npMemoText").innerText = memoNo;
+      if (el("npDateText")) el("npDateText").innerText = dateStr;
+      if (el("npSubjectText")) el("npSubjectText").innerText = title;
+      if (el("npBodyText")) el("npBodyText").innerText = body;
+
+      // Filter signatories based on checkboxes
+      const showPres = el("noticeSignPresident") ? el("noticeSignPresident").checked : true;
+      const showSec = el("noticeSignSecretary") ? el("noticeSignSecretary").checked : true;
+      const showCash = el("noticeSignCashier") ? el("noticeSignCashier").checked : true;
+
+      // President
+      const colPres = el("npColPresident");
+      if (colPres) {
+        colPres.style.display = showPres ? "block" : "none";
+        if (showPres) {
+          const presName = s.presidentName || "জনাব আব্দুল করিম";
+          if (el("npPresidentName")) el("npPresidentName").innerText = presName;
+          const presWrap = el("npWrapPresident");
+          if (presWrap) {
+            const pScale = s.presidentSignScale !== undefined ? s.presidentSignScale : 100;
+            const pY = s.presidentSignY !== undefined ? s.presidentSignY : 0;
+            const pX = s.presidentSignX !== undefined ? s.presidentSignX : 0;
+            presWrap.style.transform = `translate(${pX}px, ${pY}px) scale(${pScale / 100})`;
+          }
+          const presSign = el("npSignPresident");
+          if (presSign) {
+            if (s.presidentSignImg) {
+              presSign.innerHTML = `<img src="${s.presidentSignImg}" alt="Sign" style="max-height: 32px; max-width: 90px; object-fit: contain; display: inline-block;">`;
+            } else {
+              presSign.innerText = presName.replace("জনাব ", "").split(" ")[0] || "Karim";
+            }
+          }
+        }
+      }
+
+      // Secretary
+      const colSec = el("npColSecretary");
+      if (colSec) {
+        colSec.style.display = showSec ? "block" : "none";
+        if (showSec) {
+          const secName = s.secretaryName || "জনাব রফিকুল ইসলাম";
+          if (el("npSecretaryName")) el("npSecretaryName").innerText = secName;
+          const secWrap = el("npWrapSecretary");
+          if (secWrap) {
+            const sScale = s.secretarySignScale !== undefined ? s.secretarySignScale : 100;
+            const sY = s.secretarySignY !== undefined ? s.secretarySignY : 0;
+            const sX = s.secretarySignX !== undefined ? s.secretarySignX : 0;
+            secWrap.style.transform = `translate(${sX}px, ${sY}px) scale(${sScale / 100})`;
+          }
+          const secSign = el("npSignSecretary");
+          if (secSign) {
+            if (s.secretarySignImg) {
+              secSign.innerHTML = `<img src="${s.secretarySignImg}" alt="Sign" style="max-height: 32px; max-width: 90px; object-fit: contain; display: inline-block;">`;
+            } else {
+              secSign.innerText = secName.replace("জনাব ", "").split(" ")[0] || "Rafiqul";
+            }
+          }
+        }
+      }
+
+      // Cashier
+      const colCash = el("npColCashier");
+      if (colCash) {
+        colCash.style.display = showCash ? "block" : "none";
+        if (showCash) {
+          const cashName = s.cashierName || "সাজ্জাদ হোসেন";
+          if (el("npCashierName")) el("npCashierName").innerText = cashName;
+          const cashWrap = el("npWrapCashier");
+          if (cashWrap) {
+            const cScale = s.cashierSignScale !== undefined ? s.cashierSignScale : 100;
+            const cY = s.cashierSignY !== undefined ? s.cashierSignY : 0;
+            const cX = s.cashierSignX !== undefined ? s.cashierSignX : 0;
+            cashWrap.style.transform = `translate(${cX}px, ${cY}px) scale(${cScale / 100})`;
+          }
+          const cashSign = el("npSignCashier");
+          if (cashSign) {
+            if (s.cashierSignImg) {
+              cashSign.innerHTML = `<img src="${s.cashierSignImg}" alt="Sign" style="max-height: 32px; max-width: 90px; object-fit: contain; display: inline-block;">`;
+            } else {
+              cashSign.innerText = cashName.replace("জনাব ", "").split(" ")[0] || "Sajjad";
+            }
+          }
+        }
+      }
+
+      el("noticeModal").style.display = "flex";
+    }
+
+    function closeNoticeModal() {
+      const m = document.getElementById("noticeModal");
+      if (m) m.style.display = "none";
+    }
+
+    function printNoticePad() {
+      window.print();
+    }
+
+    function downloadNoticeImage() {
+      const area = document.getElementById("noticePrintArea");
+      if (!area) return;
+      if (typeof html2canvas === 'undefined') {
+        alert("ছবি প্রস্তুতকারক লোড হচ্ছে, অনুগ্রহ করে ২ সেকেন্ড পর চেষ্টা করুন।");
+        return;
+      }
+      const title = document.getElementById("noticeTitle")?.value.trim() || "notice";
+      html2canvas(area, {
+        scale: 2,
+        backgroundColor: '#FFFFFF',
+        useCORS: true
+      }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `Notice_${title.slice(0, 20)}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }).catch(err => {
+        alert("ছবি তৈরিতে ত্রুটি: " + err.message);
+      });
+    }
+
+    function shareNoticeWhatsApp() {
+      const s = currentSomiti || {};
+      const title = document.getElementById("noticeTitle")?.value.trim() || "অফিসিয়াল বিজ্ঞপ্তি";
+      const memo = document.getElementById("noticeMemoNo")?.value.trim() || "-";
+      const date = document.getElementById("noticeDate")?.value.trim() || "-";
+      const body = document.getElementById("noticeBody")?.value.trim() || "";
+
+      const text = encodeURIComponent(
+        `🏛️ *${s.name || "সমিতি"}*\n` +
+        `📢 *${title}*\n` +
+        `📝 স্মারক নং: ${memo} | তারিখ: ${date}\n\n` +
+        `${body}\n\n` +
+        `অনুরোধক্রমে:\n${s.presidentName || 'সভাপতি'} | ${s.secretaryName || 'সাধারণ সম্পাদক'} | ${s.cashierName || 'কোষাধ্যক্ষ'}`
+      );
+      window.open(`https://wa.me/?text=${text}`, '_blank');
+    }
+
+    async function saveCurrentNoticeData() {
+      const el = id => document.getElementById(id);
+      const noticeData = {
+        memoNo: el("noticeMemoNo")?.value.trim() || "",
+        date: el("noticeDate")?.value.trim() || "",
+        title: el("noticeTitle")?.value.trim() || "",
+        body: el("noticeBody")?.value.trim() || "",
+        signPresident: el("noticeSignPresident") ? el("noticeSignPresident").checked : true,
+        signSecretary: el("noticeSignSecretary") ? el("noticeSignSecretary").checked : true,
+        signCashier: el("noticeSignCashier") ? el("noticeSignCashier").checked : true,
+        savedAt: new Date().toISOString()
+      };
+
+      currentSomiti.savedNotice = noticeData;
+      localStorage.setItem("saved_somiti_settings", JSON.stringify(currentSomiti));
+      try {
+        await db.collection("somiti").doc("main").set({ savedNotice: noticeData }, { merge: true });
+        alert("✅ অফিসিয়াল নোটিশের খসড়া তথ্য সফলভাবে সংরক্ষণ করা হয়েছে!");
+      } catch(e) {
+        alert("✅ স্থানীয়ভাবে নোটিশ ড্রাফট সংরক্ষিত হয়েছে!");
+      }
+    }
+
+    // ================= MASTER OFFICIAL PAD PREVIEW & PRINT LOGIC =================
+    function openFullPadModal() {
+      const s = currentSomiti || {};
+      const el = id => document.getElementById(id);
+
+      if (el("fpSomitiName")) el("fpSomitiName").innerText = s.name || "সমিতি";
+      if (el("fpPadHeader")) el("fpPadHeader").innerText = s.padHeader ? `"${s.padHeader}"` : "";
+      if (el("fpAddress")) el("fpAddress").innerText = "📍 " + (s.address || "ঢাকা");
+      if (el("fpBkash")) el("fpBkash").innerText = "📱 বিকাশ/নগদ: " + (s.bkashNumber || "নেই");
+      if (el("fpBank")) el("fpBank").innerText = "🏦 " + (s.bankAccount || "নেই");
+      if (el("fpCodeBadge")) el("fpCodeBadge").innerText = "কোড: " + (s.somitiCode || "SMT-7890");
+
+      const fpLogo = el("fpPadLogoBox");
+      if (fpLogo) {
+        if (s.logoImg) {
+          fpLogo.innerHTML = `<img src="${s.logoImg}" style="width:100%;height:100%;object-fit:contain;border-radius:6px;">`;
+        } else {
+          fpLogo.innerHTML = s.logoEmoji || "🏛️";
+        }
+      }
+
+      const fpBannerCont = el("fpPadBannerImgContainer");
+      const fpBannerImg = el("fpPadBannerImg");
+      if (fpBannerCont && fpBannerImg) {
+        if (s.padHeaderImg) {
+          fpBannerImg.src = s.padHeaderImg;
+          fpBannerCont.style.display = "block";
+        } else {
+          fpBannerCont.style.display = "none";
+        }
+      }
+
+      // Notice box
+      const fpNBox = el("fpNoticeBox");
+      const fpNText = el("fpNoticeText");
+      if (fpNBox && fpNText) {
+        if (s.notice && s.notice.trim().length > 0) {
+          fpNText.innerText = s.notice;
+          fpNBox.style.display = "flex";
+        } else {
+          fpNBox.style.display = "none";
+        }
+      }
+
+      // Committee Signatories
+      // 1. President
+      const presName = s.presidentName || "জনাব আব্দুল করিম";
+      if (el("fpPresidentName")) el("fpPresidentName").innerText = presName;
+      const presWrap = el("fpWrapPresident");
+      if (presWrap) {
+        const pScale = s.presidentSignScale !== undefined ? s.presidentSignScale : 100;
+        const pY = s.presidentSignY !== undefined ? s.presidentSignY : 0;
+        const pX = s.presidentSignX !== undefined ? s.presidentSignX : 0;
+        presWrap.style.transform = `translate(${pX}px, ${pY}px) scale(${pScale / 100})`;
+      }
+      const presSign = el("fpSignPresident");
+      if (presSign) {
+        if (s.presidentSignImg) {
+          presSign.innerHTML = `<img src="${s.presidentSignImg}" alt="Sign" style="max-height: 32px; max-width: 90px; object-fit: contain; display: inline-block;">`;
+        } else {
+          presSign.innerText = presName.replace("জনাব ", "").split(" ")[0] || "Karim";
+        }
+      }
+
+      // 2. Secretary
+      const secName = s.secretaryName || "জনাব রফিকুল ইসলাম";
+      if (el("fpSecretaryName")) el("fpSecretaryName").innerText = secName;
+      const secWrap = el("fpWrapSecretary");
+      if (secWrap) {
+        const sScale = s.secretarySignScale !== undefined ? s.secretarySignScale : 100;
+        const sY = s.secretarySignY !== undefined ? s.secretarySignY : 0;
+        const sX = s.secretarySignX !== undefined ? s.secretarySignX : 0;
+        secWrap.style.transform = `translate(${sX}px, ${sY}px) scale(${sScale / 100})`;
+      }
+      const secSign = el("fpSignSecretary");
+      if (secSign) {
+        if (s.secretarySignImg) {
+          secSign.innerHTML = `<img src="${s.secretarySignImg}" alt="Sign" style="max-height: 32px; max-width: 90px; object-fit: contain; display: inline-block;">`;
+        } else {
+          secSign.innerText = secName.replace("জনাব ", "").split(" ")[0] || "Rafiqul";
+        }
+      }
+
+      // 3. Cashier
+      const cashName = s.cashierName || "সাজ্জাদ হোসেন";
+      if (el("fpCashierName")) el("fpCashierName").innerText = cashName;
+      const cashWrap = el("fpWrapCashier");
+      if (cashWrap) {
+        const cScale = s.cashierSignScale !== undefined ? s.cashierSignScale : 100;
+        const cY = s.cashierSignY !== undefined ? s.cashierSignY : 0;
+        const cX = s.cashierSignX !== undefined ? s.cashierSignX : 0;
+        cashWrap.style.transform = `translate(${cX}px, ${cY}px) scale(${cScale / 100})`;
+      }
+      const cashSign = el("fpSignCashier");
+      if (cashSign) {
+        if (s.cashierSignImg) {
+          cashSign.innerHTML = `<img src="${s.cashierSignImg}" alt="Sign" style="max-height: 32px; max-width: 90px; object-fit: contain; display: inline-block;">`;
+        } else {
+          cashSign.innerText = cashName.replace("জনাব ", "").split(" ")[0] || "Sajjad";
+        }
+      }
+
+      el("fullPadModal").style.display = "flex";
+    }
+
+    function closeFullPadModal() {
+      const m = document.getElementById("fullPadModal");
+      if (m) m.style.display = "none";
+    }
+
+    function printFullPad() {
+      openFullPadModal();
+      setTimeout(() => {
+        window.print();
+      }, 250);
+    }
+
+    function downloadFullPadImage() {
+      const area = document.getElementById("fullPadPrintArea");
+      if (!area) return;
+      if (typeof html2canvas === 'undefined') {
+        alert("ছবি প্রস্তুতকারক লোড হচ্ছে, অনুগ্রহ করে ২ সেকেন্ড পর চেষ্টা করুন।");
+        return;
+      }
+      const sName = currentSomiti?.name || "Somiti_Pad";
+      html2canvas(area, {
+        scale: 2,
+        backgroundColor: '#FFFFFF',
+        useCORS: true
+      }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `Official_Pad_${sName.slice(0, 15)}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }).catch(err => {
+        alert("ছবি তৈরিতে ত্রুটি: " + err.message);
+      });
     }
 
     // ================= MULTI-LAYER RECEIPT LOOKUP ENGINE =================
