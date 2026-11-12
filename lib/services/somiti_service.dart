@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/member_model.dart';
 import '../models/deposit_model.dart';
+import '../models/user_profile.dart';
 
 class SomitiService {
   static final SomitiService _instance = SomitiService._internal();
@@ -17,6 +19,48 @@ class SomitiService {
     return _firestore.collection('somiti').doc(userId).collection('deposits');
   }
 
+  DocumentReference<Map<String, dynamic>> _userProfileDoc(String userId) {
+    return _firestore.collection('somiti_users').doc(userId);
+  }
+
+  Stream<UserProfile> getUserProfileStream(String userId) {
+    return _userProfileDoc(userId).snapshots().map((snapshot) {
+      if (snapshot.exists && snapshot.data() != null) {
+        return UserProfile.fromMap(snapshot.data()!, userId);
+      }
+      return UserProfile(
+        uid: userId,
+        email: '',
+        displayName: 'ব্যবহারকারী',
+        role: 'admin',
+      );
+    });
+  }
+
+  Future<UserProfile> ensureUserProfile(User user) async {
+    final doc = await _userProfileDoc(user.uid).get();
+    if (doc.exists && doc.data() != null) {
+      return UserProfile.fromMap(doc.data()!, user.uid);
+    }
+
+    final newProfile = UserProfile(
+      uid: user.uid,
+      email: user.email ?? '',
+      displayName: user.displayName ?? 'ইউজার',
+      role: 'admin', // ডিফল্টভাবে প্রথম ব্যবহারকারী এডমিন
+    );
+
+    await _userProfileDoc(user.uid).set(newProfile.toMap());
+    return newProfile;
+  }
+
+  Future<void> switchRole(String userId, String newRole, {String? linkedMemberId}) async {
+    await _userProfileDoc(userId).update({
+      'role': newRole,
+      if (linkedMemberId != null) 'linkedMemberId': linkedMemberId,
+    });
+  }
+
   Stream<List<MemberModel>> getMembersStream(String userId) {
     return _membersCol(userId)
         .orderBy('memberNumber')
@@ -27,6 +71,15 @@ class SomitiService {
 
   Stream<List<DepositModel>> getDepositsStream(String userId) {
     return _depositsCol(userId)
+        .orderBy('date', descending: true)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => DepositModel.fromSnapshot(doc)).toList());
+  }
+
+  Stream<List<DepositModel>> getMemberDepositsStream(String userId, String memberId) {
+    return _depositsCol(userId)
+        .where('memberId', isEqualTo: memberId)
         .orderBy('date', descending: true)
         .snapshots()
         .map((snapshot) =>

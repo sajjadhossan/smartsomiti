@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import 'models/member_model.dart';
 import 'models/deposit_model.dart';
+import 'models/user_profile.dart';
 import 'services/auth_service.dart';
 import 'services/drive_service.dart';
 import 'services/somiti_service.dart';
@@ -54,6 +55,7 @@ class AuthGate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authService = AuthService();
+    final somitiService = SomitiService();
 
     return StreamBuilder<User?>(
       stream: authService.authStateChanges,
@@ -66,7 +68,32 @@ class AuthGate extends StatelessWidget {
 
         final user = snapshot.data;
         if (user != null) {
-          return SomitiDashboard(user: user);
+          somitiService.ensureUserProfile(user);
+
+          return StreamBuilder<UserProfile>(
+            stream: somitiService.getUserProfileStream(user.uid),
+            builder: (context, profileSnapshot) {
+              if (profileSnapshot.connectionState == ConnectionState.waiting) {
+                return const Scaffold(
+                  body: Center(child: CircularProgressIndicator()),
+                );
+              }
+
+              final profile = profileSnapshot.data ??
+                  UserProfile(
+                    uid: user.uid,
+                    email: user.email ?? '',
+                    displayName: user.displayName ?? '',
+                    role: 'admin',
+                  );
+
+              if (profile.role == 'member') {
+                return SomitiMemberDashboard(user: user, profile: profile);
+              }
+
+              return SomitiAdminDashboard(user: user, profile: profile);
+            },
+          );
         }
 
         return const LoginScreen();
@@ -97,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('লগইন ব্যর্থ হয়েছে: $e')),
+          SnackBar(content: Text('লগইন ত্রুটি: $e')),
         );
       }
     } finally {
@@ -141,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'ক্রস-ডিভাইস রিয়েলটাইম সিঙ্ক এবং গুগল ড্রাইভ ব্যাকআপ',
+                  'এডমিন ও সদস্য উভয় মোডসহ রিয়েলটাইম ক্লাউড সিঙ্ক এবং ড্রাইভ ব্যাকআপ',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
@@ -149,21 +176,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 36),
                 _FeatureRow(
-                  icon: Icons.group_outlined,
-                  title: 'সদস্য ও সঞ্চয় ব্যবস্থাপনা',
-                  subtitle: 'সদস্য তালিকা ও দৈনিক/সাপ্তাহিক/মাসিক জমা এন্ট্রি',
+                  icon: Icons.admin_panel_settings_outlined,
+                  title: 'এডমিন ও সদস্য প্যানেল',
+                  subtitle: 'ম্যানেজারদের জন্য পূর্ণ হিসাব এবং সদস্যদের জন্য নিজস্ব সঞ্চয় খাতা',
                 ),
                 const SizedBox(height: 16),
                 _FeatureRow(
                   icon: Icons.sync_rounded,
-                  title: 'রিয়েলটাইম ডিভাইস ও ওয়েব সিঙ্ক',
-                  subtitle: 'এক মোবাইলে হিসাব তুললে সাথে সাথে অন্য মোবাইল ও ওয়েবে আপডেট',
+                  title: 'রিয়েলটাইম ক্রস-ডিভাইস সিঙ্ক',
+                  subtitle: 'এক মোবাইলে হিসাব দিলে সাথে সাথে অন্য সব ডিভাইসে আপডেট',
                 ),
                 const SizedBox(height: 16),
                 _FeatureRow(
                   icon: Icons.add_to_drive_rounded,
-                  title: 'Google ড্রাইভে স্টেটমেন্ট ব্যাকআপ',
-                  subtitle: 'এক ক্লিকে পুরো হিসাবের রিপোর্ট সরাসরি ড্রাইভে সংরক্ষণ',
+                  title: 'Google ড্রাইভে পূর্ণাঙ্গ ব্যাকআপ',
+                  subtitle: 'সমিতির সকল স্টেটমেন্ট সরাসরি আপনার ড্রাইভে সেভ থাকবে',
                 ),
                 const SizedBox(height: 40),
                 if (_isLoading)
@@ -173,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: _handleGoogleSignIn,
                     icon: const Icon(Icons.login_rounded),
                     label: const Text(
-                      'Google একাউন্ট দিয়ে লগইন করুন',
+                      'Google দিয়ে সাইন-ইন করুন',
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     style: FilledButton.styleFrom(
@@ -243,15 +270,19 @@ class _FeatureRow extends StatelessWidget {
   }
 }
 
-class SomitiDashboard extends StatefulWidget {
+/// ============================================================
+/// ১. এডমিন ড্যাশবোর্ড (Somiti Admin Dashboard)
+/// ============================================================
+class SomitiAdminDashboard extends StatefulWidget {
   final User user;
-  const SomitiDashboard({super.key, required this.user});
+  final UserProfile profile;
+  const SomitiAdminDashboard({super.key, required this.user, required this.profile});
 
   @override
-  State<SomitiDashboard> createState() => _SomitiDashboardState();
+  State<SomitiAdminDashboard> createState() => _SomitiAdminDashboardState();
 }
 
-class _SomitiDashboardState extends State<SomitiDashboard> {
+class _SomitiAdminDashboardState extends State<SomitiAdminDashboard> {
   int _currentIndex = 0;
   final SomitiService _somitiService = SomitiService();
   final DriveService _driveService = DriveService();
@@ -528,7 +559,7 @@ class _SomitiDashboardState extends State<SomitiDashboard> {
       );
 
       if (mounted) {
-        Navigator.pop(context); // Close loading dialog
+        Navigator.pop(context);
         showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
@@ -577,12 +608,32 @@ class _SomitiDashboardState extends State<SomitiDashboard> {
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'সমিতি ম্যানেজার',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    Row(
+                      children: [
+                        const Text(
+                          'সমিতি ম্যানেজার',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primaryContainer,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            'এডমিন',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: theme.colorScheme.onPrimaryContainer,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     Text(
-                      user.email ?? user.displayName ?? '',
+                      user.email ?? '',
                       style: TextStyle(
                         fontSize: 12,
                         color: theme.colorScheme.onSurfaceVariant,
@@ -591,10 +642,37 @@ class _SomitiDashboardState extends State<SomitiDashboard> {
                   ],
                 ),
                 actions: [
-                  IconButton(
-                    tooltip: 'লগআউট',
-                    icon: const Icon(Icons.logout_rounded),
-                    onPressed: () async => await AuthService().signOut(),
+                  PopupMenuButton<String>(
+                    icon: const Icon(Icons.more_vert_rounded),
+                    onSelected: (val) async {
+                      if (val == 'switch_member') {
+                        await _somitiService.switchRole(user.uid, 'member');
+                      } else if (val == 'logout') {
+                        await AuthService().signOut();
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      const PopupMenuItem(
+                        value: 'switch_member',
+                        child: Row(
+                          children: [
+                            Icon(Icons.person_pin_rounded, size: 20),
+                            SizedBox(width: 8),
+                            Text('সদস্য মোড দেখুন'),
+                          ],
+                        ),
+                      ),
+                      const PopupMenuItem(
+                        value: 'logout',
+                        child: Row(
+                          children: [
+                            Icon(Icons.logout_rounded, size: 20),
+                            SizedBox(width: 8),
+                            Text('লগআউট'),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -609,7 +687,7 @@ class _SomitiDashboardState extends State<SomitiDashboard> {
                         Icon(Icons.sensors_rounded, color: Colors.green, size: 18),
                         SizedBox(width: 8),
                         Text(
-                          'লাইভ ক্লাউড সিঙ্ক সক্রিয় (ডিভাইস-টু-ডিভাইস ও ওয়েব)',
+                          'লাইভ ক্লাউড সিঙ্ক সক্রিয় (এডমিন মোড)',
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
@@ -623,11 +701,8 @@ class _SomitiDashboardState extends State<SomitiDashboard> {
                     child: IndexedStack(
                       index: _currentIndex,
                       children: [
-                        // Tab 0: Members
                         _buildMembersTab(members),
-                        // Tab 1: Deposits
                         _buildDepositsTab(deposits),
-                        // Tab 2: Summary & Google Drive
                         _buildSummaryTab(members, deposits, totalFund),
                       ],
                     ),
@@ -940,6 +1015,216 @@ class _SomitiDashboardState extends State<SomitiDashboard> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// ============================================================
+/// ২. সদস্য ড্যাশবোর্ড (Somiti Member Dashboard)
+/// ============================================================
+class SomitiMemberDashboard extends StatelessWidget {
+  final User user;
+  final UserProfile profile;
+  const SomitiMemberDashboard({super.key, required this.user, required this.profile});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final somitiService = SomitiService();
+    final currencyFormat = NumberFormat('#,##,###');
+    final dateFormat = DateFormat('dd MMM yyyy, hh:mm a');
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Text(
+                  'আমার সঞ্চয় খাতা',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: const Text(
+                    'সদস্য ভিউ',
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Text(
+              user.email ?? '',
+              style: TextStyle(
+                fontSize: 12,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert_rounded),
+            onSelected: (val) async {
+              if (val == 'switch_admin') {
+                await somitiService.switchRole(user.uid, 'admin');
+              } else if (val == 'logout') {
+                await AuthService().signOut();
+              }
+            },
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: 'switch_admin',
+                child: Row(
+                  children: [
+                    Icon(Icons.admin_panel_settings_rounded, size: 20),
+                    SizedBox(width: 8),
+                    Text('এডমিন প্যানেলে যান'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'logout',
+                child: Row(
+                  children: [
+                    Icon(Icons.logout_rounded, size: 20),
+                    SizedBox(width: 8),
+                    Text('লগআউট'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      body: StreamBuilder<List<DepositModel>>(
+        stream: somitiService.getDepositsStream(user.uid),
+        builder: (context, snapshot) {
+          final deposits = snapshot.data ?? [];
+          final double myTotal = deposits.fold(0.0, (sum, d) => sum + d.amount);
+
+          return Column(
+            children: [
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                color: Colors.blue.withOpacity(0.12),
+                child: const Row(
+                  children: [
+                    Icon(Icons.sensors_rounded, color: Colors.blue, size: 18),
+                    SizedBox(width: 8),
+                    Text(
+                      'লাইভ সিঙ্ক সক্রিয়: এডমিন জমা তুললে এখানে সাথে সাথে দেখতে পাবেন',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Card(
+                  elevation: 0,
+                  color: theme.colorScheme.primaryContainer,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        const Text(
+                          'আপনার মোট সঞ্চয় জমা',
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          '৳${currencyFormat.format(myTotal)}',
+                          style: TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: theme.colorScheme.onPrimaryContainer,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                child: Row(
+                  children: [
+                    const Icon(Icons.history_rounded, size: 20),
+                    const SizedBox(width: 8),
+                    Text(
+                      'জমার বিবরণী (${deposits.length} টি)',
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 8),
+              Expanded(
+                child: deposits.isEmpty
+                    ? const Center(
+                        child: Text(
+                          'এখনও কোনো জমা এন্ট্রি পাওয়া যায়নি।',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      )
+                    : ListView.separated(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        itemCount: deposits.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 8),
+                        itemBuilder: (context, index) {
+                          final d = deposits[index];
+                          return Card(
+                            elevation: 1,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            child: ListTile(
+                              leading: const CircleAvatar(
+                                backgroundColor: Color(0xFFE8F5E9),
+                                child: Icon(Icons.check_rounded, color: Colors.green),
+                              ),
+                              title: Text(
+                                '৳${currencyFormat.format(d.amount)}',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              subtitle: Text(
+                                '${d.type} জমা • ${dateFormat.format(d.date)}',
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                              trailing: d.note.isNotEmpty
+                                  ? Tooltip(
+                                      message: d.note,
+                                      child: const Icon(Icons.info_outline, size: 18),
+                                    )
+                                  : null,
+                            ),
+                          );
+                        },
+                      ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
