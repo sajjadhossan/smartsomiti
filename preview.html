@@ -4,20 +4,67 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>স্মার্ট সমিতি প্ল্যাটফর্ম - রসিদ, খরচ খাতা ও ড্রাইভ ব্যাকআপ</title>
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #0F9D58;
-      --primary-dark: #0B8043;
-      --primary-light: #E8F5E9;
-      --danger: #EF4444;
-      --danger-light: #FEE2E2;
-      --bg: #F8F9FA;
-      --card-bg: #FFFFFF;
-      --text: #202124;
-      --text-muted: #5F6368;
-      --border: #DADCE0;
+    :root, body.theme-emerald {
+      --primary: #0F9D58; --primary-dark: #0B8043; --primary-light: #E8F5E9;
+      --danger: #EF4444; --danger-light: #FEE2E2;
+      --bg: #F8F9FA; --card-bg: #FFFFFF; --text: #202124; --text-muted: #5F6368; --border: #DADCE0;
     }
+    body.theme-navy {
+      --primary: #1A73E8; --primary-dark: #1557B0; --primary-light: #E8F0FE;
+      --danger: #EF4444; --danger-light: #FEE2E2;
+      --bg: #F0F4F9; --card-bg: #FFFFFF; --text: #0F172A; --text-muted: #64748B; --border: #CBD5E1;
+    }
+    body.theme-purple {
+      --primary: #7C3AED; --primary-dark: #6D28D9; --primary-light: #F3E8FF;
+      --danger: #EF4444; --danger-light: #FEE2E2;
+      --bg: #FAF5FF; --card-bg: #FFFFFF; --text: #1E1B4B; --text-muted: #6B7280; --border: #E9D5FF;
+    }
+    body.theme-golden {
+      --primary: #D97706; --primary-dark: #B45309; --primary-light: #FEF3C7;
+      --danger: #EF4444; --danger-light: #FEE2E2;
+      --bg: #FFFDF5; --card-bg: #FFFFFF; --text: #451A03; --text-muted: #78350F; --border: #FDE68A;
+    }
+    body.theme-crimson {
+      --primary: #E11D48; --primary-dark: #BE123C; --primary-light: #FFE4E6;
+      --danger: #B91C1C; --danger-light: #FEE2E2;
+      --bg: #FFF1F2; --card-bg: #FFFFFF; --text: #4C0519; --text-muted: #881337; --border: #FECDD3;
+    }
+    body.theme-dark {
+      --primary: #10B981; --primary-dark: #059669; --primary-light: #064E3B;
+      --danger: #F87171; --danger-light: #7F1D1D;
+      --bg: #0F172A; --card-bg: #1E293B; --text: #F8FAFC; --text-muted: #94A3B8; --border: #334155;
+    }
+    body.theme-slate {
+      --primary: #475569; --primary-dark: #334155; --primary-light: #F1F5F9;
+      --danger: #EF4444; --danger-light: #FEE2E2;
+      --bg: #F8FAFC; --card-bg: #FFFFFF; --text: #0F172A; --text-muted: #64748B; --border: #CBD5E1;
+    }
+    body.theme-teal {
+      --primary: #0D9488; --primary-dark: #0F766E; --primary-light: #CCFBF1;
+      --danger: #EF4444; --danger-light: #FEE2E2;
+      --bg: #F0FDFA; --card-bg: #FFFFFF; --text: #134E4A; --text-muted: #115E59; --border: #99F6E4;
+    }
+    body.theme-orange {
+      --primary: #EA580C; --primary-dark: #C2410C; --primary-light: #FFEDD5;
+      --danger: #EF4444; --danger-light: #FEE2E2;
+      --bg: #FFF7ED; --card-bg: #FFFFFF; --text: #7C2D12; --text-muted: #9A3412; --border: #FED7AA;
+    }
+    body.theme-neon {
+      --primary: #06B6D4; --primary-dark: #0891B2; --primary-light: #164E63;
+      --danger: #F43F5E; --danger-light: #881337;
+      --bg: #090D16; --card-bg: #111827; --text: #F0FDF4; --text-muted: #9CA3AF; --border: #1F2937;
+    }
+
+    /* Seal alignment and ordering modifiers */
+    .pad-committee-row.align-between { justify-content: space-between; }
+    .pad-committee-row.align-center { justify-content: center; }
+    .pad-committee-row.align-left { justify-content: flex-start; }
+    .pad-committee-row.align-right { justify-content: flex-end; }
+    .committee-stamp-col.order-sign-seal { display: flex; flex-direction: column; }
+    .committee-stamp-col.order-seal-sign { display: flex; flex-direction: column-reverse; }
+
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Hind Siliguri', sans-serif; }
     body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 50px; }
 
@@ -80,20 +127,123 @@
     }
     input:focus, select:focus { border-color: var(--primary); }
 
-    /* Official Letterhead / Pad */
+    /* Official Letterhead / Pad Enhanced */
     .pad-banner {
-      background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
-      border: 2px solid #CBD5E1; border-radius: 14px; padding: 16px; margin-bottom: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
     }
-    .pad-header-row { display: flex; justify-content: space-between; align-items: flex-start; }
-    .pad-title { font-size: 18px; font-weight: 700; color: #0F172A; }
-    .pad-slogan { font-size: 12px; font-style: italic; color: #475569; margin: 2px 0 8px 0; }
-    .pad-tag { font-size: 10px; background: white; border: 1px solid #CBD5E1; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #475569; }
-    .pad-info-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11px; color: #334155;
-      padding-top: 8px; border-top: 1px dashed #CBD5E1; margin-top: 6px;
+    .pad-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1.5px solid var(--border);
     }
+    .pad-left-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .pad-logo-box {
+      width: 52px;
+      height: 52px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .pad-title { font-size: 19px; font-weight: 800; color: var(--text); }
+    .pad-slogan { font-size: 12px; font-style: italic; color: var(--text-muted); margin-top: 2px; }
+    .pad-right-info {
+      text-align: right;
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Notice Board on Pad */
+    .pad-notice-box {
+      background: #FEF3C7;
+      border: 1px solid #FCD34D;
+      color: #92400E;
+      border-radius: 10px;
+      padding: 9px 12px;
+      margin: 12px 0 6px 0;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Digital Seal & Signature Row */
+    .pad-committee-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border);
+    }
+    .committee-stamp-col {
+      flex: 1;
+      text-align: center;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 4px;
+      position: relative;
+    }
+    .digital-sign {
+      font-family: 'Dancing Script', 'Brush Script MT', cursive, sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #1E3A8A;
+      min-height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .official-seal-stamp {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border: 2px dashed #DC2626;
+      border-radius: 50%;
+      color: #DC2626;
+      font-size: 7px;
+      font-weight: 800;
+      text-align: center;
+      transform: rotate(-6deg);
+      margin: 3px auto;
+      background: rgba(254, 226, 226, 0.4);
+    }
+    .signatory-role {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      padding-top: 4px;
+      margin-top: 2px;
+    }
+    .signatory-name {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
 
     /* Financial Summary Card */
     .summary-card {
@@ -364,14 +514,34 @@
 
     <header>
       <div class="brand">
-        <div class="brand-icon">🏛️</div>
+        <div class="brand-icon" id="dashBrandIcon">🏛️</div>
         <div>
           <h2 id="dashSomitiName" style="font-size: 15px; font-weight: 700;">সমিতি</h2>
-          <span style="background:#E8F5E9; color:#1B5E20; font-size:11px; font-weight:700; padding:2px 6px; border-radius:4px;" id="dashSomitiCode">SMT-XXXX</span>
+          <span style="background:var(--primary-light); color:var(--primary); font-size:11px; font-weight:700; padding:2px 6px; border-radius:4px;" id="dashSomitiCode">SMT-XXXX</span>
         </div>
       </div>
-      <div style="display: flex; gap: 8px;">
-        <button onclick="handleSignOut()" style="background:none; border:1px solid #EF4444; color:#EF4444; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">লগআউট</button>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <!-- Multi-Theme Switcher -->
+        <select id="themeSelector" onchange="changeTheme(this.value)" style="padding: 4px 6px; font-size: 11px; font-weight: 700; border-radius: 6px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); cursor: pointer;">
+          <option value="emerald">🟢 এমারেল্ড গ্রিন</option>
+          <option value="navy">🔵 রয়্যাল নেভি</option>
+          <option value="purple">🟣 লাক্সারি পার্পল</option>
+          <option value="golden">🟠 গোল্ডেন সানসেট</option>
+          <option value="crimson">🔴 রুবি রেড</option>
+          <option value="dark">🌙 ডার্ক নাইট</option>
+          <option value="slate">⚪ মিনিমাল স্লেট</option>
+          <option value="teal">🌊 ওশান টিল</option>
+          <option value="orange">🍁 অ্যাম্বার অরেঞ্জ</option>
+          <option value="neon">⚡ সাইবার নিয়ন</option>
+        </select>
+
+        <button onclick="openEditSomitiModal()" style="background:var(--primary-light); color:var(--primary); border:1px solid var(--border); padding:5px 8px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">
+          ⚙️ প্যাড এডিট
+        </button>
+
+        <button onclick="handleSignOut()" style="background:none; border:1px solid #EF4444; color:#EF4444; padding:5px 8px; border-radius:6px; font-size:11px; cursor:pointer;">
+          লগআউট
+        </button>
       </div>
     </header>
 
@@ -383,22 +553,71 @@
         <button class="switch-btn" id="btnMemberView" onclick="switchDashboardView('member')">👤 সদস্যের লাইভ পাসবুক ভিউ</button>
       </div>
 
-      <!-- Official Pad Banner -->
-      <div class="pad-banner">
-        <div class="pad-header-row">
-          <div>
-            <div class="pad-title" id="padTitle">সমিতির নাম</div>
-            <div class="pad-slogan" id="padSlogan">স্লোগান</div>
+      <!-- Ultra Professional Official Pad Banner -->
+      <div class="pad-banner" id="mainPadBanner">
+        <!-- Top Pad Row -->
+        <div class="pad-top-row">
+          <div class="pad-left-box">
+            <div class="pad-logo-box" id="padLogoEmoji">🏛️</div>
+            <div>
+              <div class="pad-title" id="padTitle">সমিতির নাম</div>
+              <div class="pad-slogan" id="padSlogan">"সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি"</div>
+            </div>
           </div>
-          <span class="pad-tag">অফিসিয়াল প্যাড</span>
+          <div class="pad-right-info">
+            <div id="padAddress">📍 মিরপুর-১০, ঢাকা</div>
+            <div id="padBkash">📱 বিকাশ/নগদ: ০১৭১২-৩৪৫৬৭৮</div>
+            <div id="padBank">🏦 সোনালী ব্যাংক - ১২৩৪৫৬৭৮</div>
+            <div id="padCodeBadge" style="font-weight:700; color:var(--primary);">কোড: SMT-7890</div>
+          </div>
         </div>
-        <div class="pad-info-grid">
-          <span id="padAddress">📍 কার্যালয়: ঢাকা</span>
-          <span id="padBkash">📱 বিকাশ/নগদ: ০১৭১২-৩৪৫৬৭৮</span>
-          <span id="padBank">🏦 ব্যাংক: সোনালী ব্যাংক</span>
-          <span id="padCommittee">👥 কোষাধ্যক্ষ: সাজ্জাদ হোসেন</span>
+
+        <!-- Official Notice Box -->
+        <div class="pad-notice-box" id="padNoticeBox">
+          <span style="font-size:16px;">📢</span>
+          <div>
+            <strong style="margin-right: 4px;">অফিসিয়াল নোটিশ:</strong>
+            <span id="padNoticeText">সকল সদস্যকে নিয়মিত মাসিক সঞ্চয় কিস্তি যথাসময়ে জমা দেওয়ার জন্য অনুরোধ করা যাচ্ছে।</span>
+          </div>
+        </div>
+
+        <!-- Digital Signatures & Seals Row -->
+        <div class="pad-committee-row" id="padCommitteeRow">
+          <!-- President -->
+          <div class="committee-stamp-col">
+            <div class="digital-sign" id="padSignPresident">Karim</div>
+            <div class="official-seal-stamp">
+              <span>★ সিলমোহর ★</span>
+              <span>অনুমোদিত</span>
+            </div>
+            <div class="signatory-name" id="padPresidentName">জনাব আব্দুল করিম</div>
+            <div class="signatory-role">সভাপতি</div>
+          </div>
+
+          <!-- Secretary -->
+          <div class="committee-stamp-col">
+            <div class="digital-sign" id="padSignSecretary">Rafiqul</div>
+            <div class="official-seal-stamp">
+              <span>★ সিলমোহর ★</span>
+              <span>যাচাইকৃত</span>
+            </div>
+            <div class="signatory-name" id="padSecretaryName">জনাব রফিকুল ইসলাম</div>
+            <div class="signatory-role">সাধারণ সম্পাদক</div>
+          </div>
+
+          <!-- Cashier -->
+          <div class="committee-stamp-col">
+            <div class="digital-sign" id="padSignCashier">Sajjad</div>
+            <div class="official-seal-stamp">
+              <span>★ সিলমোহর ★</span>
+              <span>আদায়কারী</span>
+            </div>
+            <div class="signatory-name" id="padCashierName">সাজ্জাদ হোসেন</div>
+            <div class="signatory-role">কোষাধ্যক্ষ</div>
+          </div>
         </div>
       </div>
+
 
       <!-- Financial Summary Box with Cash in Hand -->
       <div class="summary-card">
@@ -685,7 +904,118 @@
     </div>
   </div>
 
+  <!-- ================= EDIT SOMITI & PAD MODAL ================= -->
+  <div id="editSomitiModal" class="modal-overlay" style="display: none;">
+    <div class="modal-box" style="max-width: 520px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+        <h3 style="font-size: 17px; font-weight: 800; color: var(--text);">⚙️ সমিতি, প্যাড ও সিল-সাইন এডিট</h3>
+        <button onclick="closeEditSomitiModal()" style="background:none; border:none; font-size:22px; cursor:pointer; color:#64748B;">✕</button>
+      </div>
+
+      <div class="form-group">
+        <label>সমিতির পূর্ণ নাম *</label>
+        <input type="text" id="editSomitiName" placeholder="যেমন: প্রগতি সঞ্চয় সমবায় সমিতি">
+      </div>
+
+      <div class="form-group">
+        <label>সমিতির লোগো / প্রতীক (ইমোজি বা আইকন)</label>
+        <select id="editSomitiLogo">
+          <option value="🏛️">🏛️ সরকারি / ব্যাংক স্মৃতিস্তম্ভ</option>
+          <option value="🏢">🏢 কর্পোরেট কার্যালয়</option>
+          <option value="🏦">🏦 বাণিজ্যিক ব্যাংক</option>
+          <option value="🤝">🤝 একতা ও সমবায় হাত</option>
+          <option value="🌾">🌾 সোনালী ফসল ও সমৃদ্ধি</option>
+          <option value="💎">💎 ডায়মন্ড সঞ্চয়</option>
+          <option value="🌟">🌟 স্টার কো-অপারেটিভ</option>
+          <option value="💰">💰 আর্থিক ক্যাশ ফান্ড</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>প্যাডের অফিসিয়াল স্লোগান / হেডার</label>
+        <input type="text" id="editSomitiPad" placeholder="যেমন: সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি">
+      </div>
+
+      <div class="form-group">
+        <label>কার্যালয়ের পূর্ণ ঠিকানা</label>
+        <input type="text" id="editSomitiAddress" placeholder="যেমন: মিরপুর-১০, ঢাকা">
+      </div>
+
+      <div class="form-group">
+        <label>ব্যাংক হিসাব নম্বর ও ব্যাংকের নাম</label>
+        <input type="text" id="editSomitiBank" placeholder="সোনালী ব্যাংক - ১২৩৪৫৬৭৮">
+      </div>
+
+      <div class="form-group">
+        <label>বিকাশ / নগদ নম্বর (অফিসিয়াল)</label>
+        <input type="text" id="editSomitiBkash" placeholder="০১৭১২-৩৪৫৬৭৮ (পার্সোনাল/মার্চেন্ট)">
+      </div>
+
+      <div style="font-weight: 700; margin: 16px 0 8px 0; font-size: 14px; color: var(--primary);">
+        ✍️ দায়িত্বশীলদের সিল ও ডিজিটাল সাইন তথ্য:
+      </div>
+
+      <div class="form-group">
+        <label>সভাপতির নাম</label>
+        <input type="text" id="editSomitiPresident" placeholder="জনাব আব্দুল করিম">
+      </div>
+
+      <div class="form-group">
+        <label>সাধারণ সম্পাদকের নাম</label>
+        <input type="text" id="editSomitiSecretary" placeholder="জনাব রফিকুল ইসলাম">
+      </div>
+
+      <div class="form-group">
+        <label>কোষাধ্যক্ষের নাম</label>
+        <input type="text" id="editSomitiCashier" placeholder="সাজ্জাদ হোসেন">
+      </div>
+
+      <div class="form-group">
+        <label>প্যাডে নোটিশ বোর্ড বার্তা (ঐচ্ছিক)</label>
+        <input type="text" id="editSomitiNotice" placeholder="যেমন: আগামী ১৫ তারিখের মধ্যে কিস্তি পরিশোধ করুন।">
+      </div>
+
+      <div style="font-weight: 700; margin: 16px 0 8px 0; font-size: 14px; color: var(--primary);">
+        🧭 সিল ও সাইনের পজিশন ও মুভমেন্ট কন্ট্রোল:
+      </div>
+
+      <div class="form-group">
+        <label>১. উল্লম্ব অবস্থান (Vertical Position - উপরে/নিচে)</label>
+        <select id="editSomitiSealPos">
+          <option value="bottom">প্যাডের নিচে রাখুন (Standard)</option>
+          <option value="top">প্যাডের উপরে রাখুন (Top)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>২. সাইডে অবস্থান (Horizontal Alignment - ডানে/বামে/মাঝে)</label>
+        <select id="editSomitiSealAlign">
+          <option value="between">সমান দূরত্বে ছড়ানো (Space Between)</option>
+          <option value="center">মাঝখানে কেন্দ্রীভূত (Center)</option>
+          <option value="left">বাম পাশে সারিবদ্ধ (Left)</option>
+          <option value="right">ডান পাশে সারিবদ্ধ (Right)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>৩. সিল ও সাইনের লেয়ার অর্ডার (Sign & Seal Order)</label>
+        <select id="editSomitiSealOrder">
+          <option value="sign-seal">আগে হস্তাক্ষর সাইন ➔ নিচে অফিসিয়াল সিলমোহর</option>
+          <option value="seal-sign">আগে অফিসিয়াল সিলমোহর ➔ নিচে হস্তাক্ষর সাইন</option>
+        </select>
+      </div>
+
+      <button class="btn" onclick="saveSomitiSettings()" style="margin-top: 12px;">
+        <span>💾 সকল পরিবর্তন সংরক্ষণ ও সিঙ্ক করুন</span>
+      </button>
+      <button class="btn btn-outline" onclick="closeEditSomitiModal()" style="margin-top: 8px;">
+        <span>বাতিল</span>
+      </button>
+    </div>
+  </div>
+
   <!-- Firebase Scripts -->
+
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -876,8 +1206,21 @@
         });
     }
 
-    // Restore Remembered Email on load
+    // Theme Switcher & Storage
+    function changeTheme(themeName) {
+      const themes = ['emerald', 'navy', 'purple', 'golden', 'crimson', 'dark', 'slate', 'teal', 'orange', 'neon'];
+      themes.forEach(t => document.body.classList.remove('theme-' + t));
+      document.body.classList.add('theme-' + themeName);
+      localStorage.setItem('somiti_theme', themeName);
+      const sel = document.getElementById('themeSelector');
+      if (sel) sel.value = themeName;
+    }
+
+    // Restore Theme & Remembered Email on load
     window.addEventListener("DOMContentLoaded", () => {
+      const savedTheme = localStorage.getItem("somiti_theme") || "emerald";
+      changeTheme(savedTheme);
+
       const savedEmail = localStorage.getItem("somiti_remember_email");
       if (savedEmail) {
         const el = document.getElementById("authEmail");
@@ -900,15 +1243,163 @@
       loadUserSomitis(true);
     }
 
-
     function handleSignOut() {
       currentUser = null;
       currentSomiti = null;
       auth.signOut().finally(() => showScreen('login'));
     }
 
+    function renderPad(s) {
+      if (!s) s = currentSomiti;
+      if (!s) return;
+
+      // Header Brand
+      const bIcon = document.getElementById("dashBrandIcon");
+      if (bIcon) bIcon.innerText = s.logoEmoji || "🏛️";
+      const dashName = document.getElementById("dashSomitiName");
+      if (dashName) dashName.innerText = s.name || "সমিতি";
+      const dashCode = document.getElementById("dashSomitiCode");
+      if (dashCode) dashCode.innerText = s.somitiCode || "SMT-7890";
+
+      // Pad Left Info
+      const pLogo = document.getElementById("padLogoEmoji");
+      if (pLogo) pLogo.innerText = s.logoEmoji || "🏛️";
+      const pTitle = document.getElementById("padTitle");
+      if (pTitle) pTitle.innerText = s.name || "সমিতি";
+      const pSlogan = document.getElementById("padSlogan");
+      if (pSlogan) pSlogan.innerText = s.padHeader ? `"${s.padHeader}"` : "";
+
+      // Pad Right Info
+      const pAddr = document.getElementById("padAddress");
+      if (pAddr) pAddr.innerText = "📍 " + (s.address || "মিরপুর-১০, ঢাকা");
+      const pBkash = document.getElementById("padBkash");
+      if (pBkash) pBkash.innerText = "📱 বিকাশ/নগদ: " + (s.bkashNumber || "নেই");
+      const pBank = document.getElementById("padBank");
+      if (pBank) pBank.innerText = "🏦 " + (s.bankAccount || "নেই");
+      const pCode = document.getElementById("padCodeBadge");
+      if (pCode) pCode.innerText = "কোড: " + (s.somitiCode || "SMT-7890");
+
+      // Notice Box
+      const pNoticeBox = document.getElementById("padNoticeBox");
+      const pNoticeText = document.getElementById("padNoticeText");
+      if (pNoticeBox && pNoticeText) {
+        if (s.notice && s.notice.trim().length > 0) {
+          pNoticeText.innerText = s.notice.trim();
+          pNoticeBox.style.display = "flex";
+        } else {
+          pNoticeBox.style.display = "none";
+        }
+      }
+
+      // Committee Names & Signatures
+      const pPresName = document.getElementById("padPresidentName");
+      if (pPresName) pPresName.innerText = s.presidentName || "জনাব আব্দুল করিম";
+      const pSignPres = document.getElementById("padSignPresident");
+      if (pSignPres) pSignPres.innerText = (s.presidentName || "President").replace("জনাব ", "").split(" ")[0];
+
+      const pSecName = document.getElementById("padSecretaryName");
+      if (pSecName) pSecName.innerText = s.secretaryName || "জনাব রফিকুল ইসলাম";
+      const pSignSec = document.getElementById("padSignSecretary");
+      if (pSignSec) pSignSec.innerText = (s.secretaryName || "Secretary").replace("জনাব ", "").split(" ")[0];
+
+      const pCashName = document.getElementById("padCashierName");
+      if (pCashName) pCashName.innerText = s.cashierName || "সাজ্জাদ হোসেন";
+      const pSignCash = document.getElementById("padSignCashier");
+      if (pSignCash) pSignCash.innerText = (s.cashierName || "Cashier").replace("জনাব ", "").split(" ")[0];
+
+      // Vertical Position on Pad (Top vs Bottom)
+      const padBanner = document.getElementById("mainPadBanner");
+      const padRow = document.getElementById("padCommitteeRow");
+      if (padBanner && padRow) {
+        if (s.sealPos === "top") {
+          const topRow = padBanner.querySelector(".pad-top-row");
+          if (topRow && topRow.nextSibling) {
+            padBanner.insertBefore(padRow, topRow.nextSibling);
+          }
+        } else {
+          padBanner.appendChild(padRow);
+        }
+      }
+
+      // Horizontal Alignment (between / center / left / right)
+      if (padRow) {
+        padRow.className = "pad-committee-row align-" + (s.sealAlign || "between");
+      }
+
+      // Seal / Sign Order inside columns
+      const cols = document.querySelectorAll(".committee-stamp-col");
+      cols.forEach(col => {
+        col.className = "committee-stamp-col order-" + (s.sealOrder || "sign-seal");
+      });
+    }
+
+    function openEditSomitiModal() {
+      const s = currentSomiti || {};
+      document.getElementById("editSomitiName").value = s.name || "";
+      document.getElementById("editSomitiLogo").value = s.logoEmoji || "🏛️";
+      document.getElementById("editSomitiPad").value = s.padHeader || "";
+      document.getElementById("editSomitiAddress").value = s.address || "";
+      document.getElementById("editSomitiBank").value = s.bankAccount || "";
+      document.getElementById("editSomitiBkash").value = s.bkashNumber || "";
+      document.getElementById("editSomitiPresident").value = s.presidentName || "";
+      document.getElementById("editSomitiSecretary").value = s.secretaryName || "";
+      document.getElementById("editSomitiCashier").value = s.cashierName || "";
+      document.getElementById("editSomitiNotice").value = s.notice || "";
+      document.getElementById("editSomitiSealPos").value = s.sealPos || "bottom";
+      if (document.getElementById("editSomitiSealAlign")) {
+        document.getElementById("editSomitiSealAlign").value = s.sealAlign || "between";
+      }
+      if (document.getElementById("editSomitiSealOrder")) {
+        document.getElementById("editSomitiSealOrder").value = s.sealOrder || "sign-seal";
+      }
+      document.getElementById("editSomitiModal").style.display = "flex";
+    }
+
+    function closeEditSomitiModal() {
+      document.getElementById("editSomitiModal").style.display = "none";
+    }
+
+    async function saveSomitiSettings() {
+      const name = document.getElementById("editSomitiName").value.trim();
+      if (!name) {
+        alert("সমিতির নাম অবশ্যই প্রদান করতে হবে!");
+        return;
+      }
+
+      const updated = {
+        ...currentSomiti,
+        name: name,
+        logoEmoji: document.getElementById("editSomitiLogo").value,
+        padHeader: document.getElementById("editSomitiPad").value.trim(),
+        address: document.getElementById("editSomitiAddress").value.trim(),
+        bankAccount: document.getElementById("editSomitiBank").value.trim(),
+        bkashNumber: document.getElementById("editSomitiBkash").value.trim(),
+        presidentName: document.getElementById("editSomitiPresident").value.trim(),
+        secretaryName: document.getElementById("editSomitiSecretary").value.trim(),
+        cashierName: document.getElementById("editSomitiCashier").value.trim(),
+        notice: document.getElementById("editSomitiNotice").value.trim(),
+        sealPos: document.getElementById("editSomitiSealPos").value,
+        sealAlign: document.getElementById("editSomitiSealAlign") ? document.getElementById("editSomitiSealAlign").value : "between",
+        sealOrder: document.getElementById("editSomitiSealOrder") ? document.getElementById("editSomitiSealOrder").value : "sign-seal"
+      };
+
+      currentSomiti = updated;
+      localStorage.setItem("saved_somiti_settings", JSON.stringify(updated));
+      renderPad(updated);
+
+      try {
+        await db.collection("somiti").doc("main").set(updated, { merge: true });
+        alert("🎉 সমিতির সকল তথ্য, সিল-সাইন ও নোটিশ সফলভাবে ক্লাউডে সংরক্ষিত হয়েছে!");
+      } catch (err) {
+        console.warn("Firestore save note:", err);
+        alert("✅ স্থানীয়ভাবে সংরক্ষিত হয়েছে!");
+      }
+
+      closeEditSomitiModal();
+    }
+
     function loadUserSomitis(isAdmin = false) {
-      const defaultSomiti = {
+      let defaultSomiti = {
         id: "main",
         name: "প্রগতি ক্ষুদ্র সঞ্চয় সমবায় সমিতি",
         padHeader: "সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি",
@@ -917,23 +1408,40 @@
         bkashNumber: "০১৭১২-৩৪৫৬৭৮ (পার্সোনাল)",
         presidentName: "জনাব আব্দুল করিম",
         secretaryName: "জনাব রফিকুল ইসলাম",
-        cashierName: "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)",
-        somitiCode: "SMT-7890"
+        cashierName: "সাজ্জাদ হোসেন",
+        somitiCode: "SMT-7890",
+        notice: "সকল সদস্যকে নিয়মিত মাসিক সঞ্চয় কিস্তি যথাসময়ে জমা দেওয়ার জন্য অনুরোধ করা যাচ্ছে।",
+        logoEmoji: "🏛️",
+        sealPos: "bottom",
+        sealAlign: "between",
+        sealOrder: "sign-seal"
       };
+
+      const cached = localStorage.getItem("saved_somiti_settings");
+      if (cached) {
+        try { defaultSomiti = { ...defaultSomiti, ...JSON.parse(cached) }; } catch(e){}
+      }
+
       currentSomiti = defaultSomiti;
       openSomitiDashboard(defaultSomiti, isAdmin);
+
+      // Listen for updates from Firestore
+      try {
+        db.collection("somiti").doc("main").onSnapshot((doc) => {
+          if (doc.exists) {
+            currentSomiti = { ...currentSomiti, ...doc.data() };
+            localStorage.setItem("saved_somiti_settings", JSON.stringify(currentSomiti));
+            renderPad(currentSomiti);
+          }
+        });
+      } catch (err) {
+        console.warn("Firestore somiti fetch error:", err);
+      }
     }
 
     function openSomitiDashboard(s, isAdmin = true) {
-      document.getElementById("dashSomitiName").innerText = s.name;
-      document.getElementById("dashSomitiCode").innerText = s.somitiCode;
-      document.getElementById("padTitle").innerText = s.name;
-      document.getElementById("padSlogan").innerText = `"${s.padHeader || ''}"`;
-      document.getElementById("padAddress").innerText = "📍 কার্যালয়: " + (s.address || "ঢাকা");
-      document.getElementById("padBkash").innerText = "📱 বিকাশ/নগদ: " + (s.bkashNumber || "নেই");
-      document.getElementById("padBank").innerText = "🏦 ব্যাংক: " + (s.bankAccount || "নেই");
-      document.getElementById("padCommittee").innerText = "👥 কোষাধ্যক্ষ: " + (s.cashierName || "সাজ্জাদ হোসেন");
-
+      currentSomiti = s;
+      renderPad(s);
       showScreen('dashboard');
       switchDashboardView(isAdmin ? 'admin' : 'member');
       initRealtimeListeners();

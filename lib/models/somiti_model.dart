@@ -10,6 +10,11 @@ class SomitiModel {
   final String presidentName;
   final String secretaryName;
   final String cashierName;
+  final String logoEmoji;
+  final String notice;
+  final String sealPos;
+  final String sealAlign;
+  final String sealOrder;
   final String creatorId;
   final String creatorEmail;
   final String somitiCode;
@@ -26,6 +31,11 @@ class SomitiModel {
     required this.presidentName,
     required this.secretaryName,
     required this.cashierName,
+    this.logoEmoji = '🏛️',
+    this.notice = '',
+    this.sealPos = 'bottom',
+    this.sealAlign = 'between',
+    this.sealOrder = 'sign-seal',
     required this.creatorId,
     required this.creatorEmail,
     required this.somitiCode,
@@ -43,6 +53,11 @@ class SomitiModel {
       'presidentName': presidentName,
       'secretaryName': secretaryName,
       'cashierName': cashierName,
+      'logoEmoji': logoEmoji,
+      'notice': notice,
+      'sealPos': sealPos,
+      'sealAlign': sealAlign,
+      'sealOrder': sealOrder,
       'creatorId': creatorId,
       'creatorEmail': creatorEmail,
       'somitiCode': somitiCode,
@@ -77,6 +92,11 @@ class SomitiModel {
       presidentName: data['presidentName'] ?? '',
       secretaryName: data['secretaryName'] ?? '',
       cashierName: data['cashierName'] ?? '',
+      logoEmoji: data['logoEmoji'] ?? '🏛️',
+      notice: data['notice'] ?? '',
+      sealPos: data['sealPos'] ?? 'bottom',
+      sealAlign: data['sealAlign'] ?? 'between',
+      sealOrder: data['sealOrder'] ?? 'sign-seal',
       creatorId: data['creatorId'] ?? '',
       creatorEmail: data['creatorEmail'] ?? '',
       somitiCode: data['somitiCode'] ?? '',

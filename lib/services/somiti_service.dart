@@ -298,4 +298,11 @@ class SomitiService {
   Future<void> deleteExpense(String somitiId, String expenseId) async {
     await _expensesCol(somitiId).doc(expenseId).delete();
   }
+
+  Future<void> updateSomiti({
+    required String somitiId,
+    required Map<String, dynamic> data,
+  }) async {
+    await _somitisCol().doc(somitiId).update(data);
+  }
 }
