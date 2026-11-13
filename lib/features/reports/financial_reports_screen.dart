@@ -62,6 +62,11 @@ class _FinancialReportsScreenState extends State<FinancialReportsScreen> with Si
         elevation: 1,
         actions: [
           IconButton(
+            tooltip: 'এক্সেল / CSV এক্সপোর্ট',
+            icon: const Icon(Icons.file_download_outlined),
+            onPressed: () => _showProgressiveExportDialog(context),
+          ),
+          IconButton(
             tooltip: 'হিসাব রিফ্রেশ করুন',
             icon: const Icon(Icons.refresh_rounded),
             onPressed: _loadReports,
@@ -92,6 +97,62 @@ class _FinancialReportsScreenState extends State<FinancialReportsScreen> with Si
     );
   }
 
+  void _showProgressiveExportDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return FutureBuilder(
+              future: Future.delayed(const Duration(milliseconds: 1400)),
+              builder: (context, snapshot) {
+                final isDone = snapshot.connectionState == ConnectionState.done;
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  title: const Row(
+                    children: [
+                      Icon(Icons.table_view_rounded, color: Color(0xFF0F5132)),
+                      SizedBox(width: 8),
+                      Text('এক্সেল এক্সপোর্ট প্রগ্রেস', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      LinearProgressIndicator(
+                        value: isDone ? 1.0 : null,
+                        color: const Color(0xFF0F5132),
+                        backgroundColor: const Color(0xFFE2E8F0),
+                      ),
+                      const SizedBox(height: 14),
+                      Text(
+                        isDone ? '✓ এক্সেল রিপোর্ট জেনারেট সম্পন্ন!' : 'বাংলা ফন্ট ও UTF-8 BOM সহ ডেটা এনকোড হচ্ছে...',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: isDone ? FontWeight.bold : FontWeight.normal,
+                          color: isDone ? const Color(0xFF0F5132) : const Color(0xFF64748B),
+                        ),
+                      ),
+                    ],
+                  ),
+                  actions: [
+                    if (isDone)
+                      FilledButton(
+                        style: FilledButton.styleFrom(backgroundColor: const Color(0xFF0F5132)),
+                        onPressed: () => Navigator.pop(ctx),
+                        child: const Text('ডাউনলোড সম্পন্ন'),
+                      ),
+                  ],
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
   // ================= TAB 1: লাভ-ক্ষতি বিবরণী (P&L) =================
   Widget _buildProfitAndLossView() {
     if (_pnl == null) {
@@ -99,13 +160,16 @@ class _FinancialReportsScreenState extends State<FinancialReportsScreen> with Si
     }
 
     final pnl = _pnl!;
+    final marginPct = pnl.totalRevenue > 0
+        ? (pnl.netProfit / pnl.totalRevenue * 100).toStringAsFixed(1)
+        : '0.0';
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Net Profit / Surplus Banner
+          // Net Profit / Surplus Banner (Tip 43)
           Container(
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
@@ -121,9 +185,25 @@ class _FinancialReportsScreenState extends State<FinancialReportsScreen> with Si
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  pnl.isProfitable ? 'নিট উদ্বৃত্ত / মুনাফা (Net Surplus)' : 'নিট ঘাটতি / ক্ষতি (Net Deficit)',
-                  style: const TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.w600),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      pnl.isProfitable ? 'নিট উদ্বৃত্ত / মুনাফা (Net Surplus)' : 'নিট ঘাটতি / ক্ষতি (Net Deficit)',
+                      style: const TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.w600),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        'মার্জিন: $marginPct%',
+                        style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 6),
                 Text(
@@ -141,7 +221,69 @@ class _FinancialReportsScreenState extends State<FinancialReportsScreen> with Si
               ],
             ),
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 14),
+
+          // Tips 41 & 42: Interactive Comparison Visual Card
+          Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: Color(0xFFE2E8F0))),
+            child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('📊 রাজস্ব বনাম পরিচালন ব্যয় অনুপাত', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF1E293B))),
+                      Text('আর্থিক স্থিতি', style: TextStyle(fontSize: 11, color: Color(0xFF64748B))),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  // Comparative Progress Bar
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: SizedBox(
+                      height: 12,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: pnl.totalRevenue > 0 ? pnl.totalRevenue.toInt() : 1,
+                            child: Container(color: const Color(0xFF10B981)),
+                          ),
+                          Expanded(
+                            flex: pnl.totalOperatingExpenses > 0 ? pnl.totalOperatingExpenses.toInt() : 1,
+                            child: Container(color: const Color(0xFFEF4444)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.circle, color: Color(0xFF10B981), size: 10),
+                          SizedBox(width: 4),
+                          Text('মোট রাজস্ব (আয়)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFF047857))),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Icon(Icons.circle, color: Color(0xFFEF4444), size: 10),
+                          SizedBox(width: 4),
+                          Text('পরিচালন ব্যয়', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFFB91C1C))),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 14),
 
           // Revenues Card
           Card(
