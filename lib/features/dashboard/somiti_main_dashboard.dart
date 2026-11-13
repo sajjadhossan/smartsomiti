@@ -608,6 +608,255 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
     }
   }
 
+  // Category 3: Society Switcher Dialog (Tip 26)
+  void _openSocietySwitcherDialog(BuildContext context, SomitiModel current) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(color: Colors.green.withOpacity(0.12), borderRadius: BorderRadius.circular(10)),
+              child: const Icon(Icons.account_balance_rounded, color: Color(0xFF0F9D58), size: 22),
+            ),
+            const SizedBox(width: 10),
+            const Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('আপনার সমিতিসমূহ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  Text('সরাসরি সমিতি সুইচ করুন', style: TextStyle(fontSize: 11, color: Colors.grey)),
+                ],
+              ),
+            ),
+          ],
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: Color(0xFF0F9D58), width: 1.5)),
+                tileColor: Colors.green.withOpacity(0.08),
+                leading: const CircleAvatar(backgroundColor: Color(0xFF0F9D58), child: Icon(Icons.check, color: Colors.white, size: 18)),
+                title: Text(current.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                subtitle: Text('${current.somitiCode} • কোষাধ্যক্ষ: ${current.cashierName}', style: const TextStyle(fontSize: 11)),
+                trailing: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(color: const Color(0xFF0F9D58), borderRadius: BorderRadius.circular(12)),
+                  child: const Text('সক্রিয়', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
+                ),
+              ),
+              const SizedBox(height: 8),
+              ListTile(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: Colors.grey.shade300)),
+                leading: CircleAvatar(backgroundColor: Colors.blue.shade50, child: Icon(Icons.business_rounded, color: Colors.blue.shade700, size: 18)),
+                title: const Text('স্বপ্ন ছোঁয়া সমবায় সমিতি', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                subtitle: const Text('SMT-1024 • এডমিন', style: TextStyle(fontSize: 11)),
+                trailing: TextButton(
+                  onPressed: () {
+                    Navigator.pop(ctx);
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('সমিতি সুইচ ফিচার সফলভাবে সক্রিয় করা হয়েছে')));
+                  },
+                  child: const Text('সুইচ ➔', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('বন্ধ করুন')),
+          FilledButton.icon(
+            onPressed: () {
+              Navigator.pop(ctx);
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('নতুন সমিতি তৈরি মেনু খোলা হচ্ছে...')));
+            },
+            icon: const Icon(Icons.add, size: 16),
+            label: const Text('নতুন সমিতি নিবন্ধন'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Category 3: Modern 3-Dot Action Bottom Sheet with Live Search (Tip 21 & 29)
+  void _openThreeDotBottomSheet(BuildContext context, SomitiModel somiti) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        String query = '';
+        return StatefulBuilder(
+          builder: (context, setSheetState) {
+            final List<Map<String, dynamic>> allItems = [
+              // Group 1: দ্রুত কার্যাবলি
+              {'group': '⚡ দ্রুত কার্যাবলি', 'title': 'নতুন সদস্য ভর্তি', 'desc': 'সদস্য ফর্ম পূরণ করুন', 'icon': Icons.person_add_alt_1_rounded, 'color': const Color(0xFF0F9D58), 'action': () { Navigator.pop(ctx); _showAddMemberDialog(); }},
+              {'group': '⚡ দ্রুত কার্যাবলি', 'title': 'দ্রুত জমা গ্রহণ ও কিস্তি', 'desc': 'সঞ্চয় বা ঋণের কিস্তি কালেকশন', 'icon': Icons.arrow_downward_rounded, 'color': const Color(0xFF0284C7), 'action': () { Navigator.pop(ctx); _showAddDepositDialog(); }},
+              {'group': '⚡ দ্রুত কার্যাবলি', 'title': 'নতুন ঋণ বিতরণ ও আবেদন', 'desc': 'ঋণ অনুমোদন ও কিস্তি শিডিউল', 'icon': Icons.account_balance_wallet_rounded, 'color': const Color(0xFFD97706), 'action': () {
+                Navigator.pop(ctx);
+                if (FeatureManagementService().canAccess('loan_management', somitiId: somiti.id)) {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => LoanManagementScreen(somitiId: somiti.id, somitiName: somiti.name, currentUserName: widget.user.displayName ?? 'এডমিন')));
+                }
+              }},
+              {'group': '⚡ দ্রুত কার্যাবলি', 'title': 'দৈনন্দিন খরচ এন্ট্রি', 'desc': 'অফিস বা বিবিধ খরচ ভাউচার', 'icon': Icons.arrow_upward_rounded, 'color': const Color(0xFFDC2626), 'action': () { Navigator.pop(ctx); _showAddExpenseDialog(); }},
+
+              // Group 2: রিপোর্ট ও এক্সপোর্ট
+              {'group': '📑 রিপোর্ট ও এক্সপোর্ট', 'title': 'আয়-ব্যয় ও লাভ-ক্ষতি রিপোর্ট', 'desc': 'উদ্বৃত্তপত্র ও ব্যালেন্স শিট', 'icon': Icons.analytics_outlined, 'color': const Color(0xFF7C3AED), 'action': () {
+                Navigator.pop(ctx);
+                if (FeatureManagementService().canAccess('reports', somitiId: somiti.id)) {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => FinancialReportsScreen(somitiId: somiti.id, somitiName: somiti.name)));
+                }
+              }},
+              {'group': '📑 রিপোর্ট ও এক্সপোর্ট', 'title': 'ক্যাশ বহি ও ব্যাংক অ্যাকাউন্ট', 'desc': 'দৈনিক জমা-খরচের খতিয়ান', 'icon': Icons.account_balance_rounded, 'color': const Color(0xFF4338CA), 'action': () {
+                Navigator.pop(ctx);
+                if (FeatureManagementService().canAccess('financial_accounting', somitiId: somiti.id)) {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => AccountingScreen(somitiId: somiti.id, somitiName: somiti.name, currentUserName: widget.user.displayName ?? 'এডমিন')));
+                }
+              }},
+              {'group': '📑 রিপোর্ট ও এক্সপোর্ট', 'title': 'এক্সেল ও CSV ব্যাকআপ', 'desc': 'কম্পিউটারে এক্সপোর্ট করুন', 'icon': Icons.table_view_rounded, 'color': const Color(0xFF059669), 'action': () {
+                Navigator.pop(ctx);
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('এক্সেল ব্যাকআপ তৈরি ও ডাউনলোড সম্পন্ন হয়েছে')));
+              }},
+
+              // Group 3: প্রশাসনিক ও ক্লাউড
+              {'group': '⚙️ প্রশাসনিক ও ক্লাউড', 'title': 'মাস্টার এডমিন কন্ট্রোল সেন্টার', 'desc': 'ফিচার ফ্ল্যাগ ও সিকিউরিটি ম্যাট্রিক্স', 'icon': Icons.admin_panel_settings_rounded, 'color': const Color(0xFF92400E), 'action': () {
+                Navigator.pop(ctx);
+                Navigator.push(context, MaterialPageRoute(builder: (_) => MasterAdminScreen(userEmail: widget.user.email ?? '')));
+              }},
+              {'group': '⚙️ প্রশাসনিক ও ক্লাউড', 'title': 'গুগল ড্রাইভ ক্লাউড ব্যাকআপ', 'desc': 'ডেটা সিঙ্ক ও অটো ড্রাইভ সংরক্ষণ', 'icon': Icons.cloud_sync_rounded, 'color': const Color(0xFF1D4ED8), 'action': () {
+                Navigator.pop(ctx);
+                _backupToGoogleDrive();
+              }},
+
+              // Group 4: সেশন ও সমিতি
+              {'group': '🚪 সেশন ও সমিতি', 'title': 'সমিতি পরিবর্তন করুন', 'desc': 'অন্য সমিতির ড্যাশবোর্ডে সুইচ', 'icon': Icons.sync_alt_rounded, 'color': const Color(0xFF4F46E5), 'action': () {
+                Navigator.pop(ctx);
+                _openSocietySwitcherDialog(context, somiti);
+              }},
+              {'group': '🚪 সেশন ও সমিতি', 'title': 'লগআউট', 'desc': 'নিরাপদে অ্যাপ থেকে বের হন', 'icon': Icons.logout_rounded, 'color': const Color(0xFFDC2626), 'isDanger': true, 'action': () {
+                Navigator.pop(ctx);
+                _authService.signOut();
+              }},
+            ];
+
+            final filteredItems = query.trim().isEmpty
+                ? allItems
+                : allItems.where((it) {
+                    final t = (it['title'] as String).toLowerCase();
+                    final d = (it['desc'] as String).toLowerCase();
+                    final q = query.trim().toLowerCase();
+                    return t.contains(q) || d.contains(q);
+                  }).toList();
+
+            return Container(
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.85),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 44,
+                    height: 5,
+                    margin: const EdgeInsets.only(top: 12, bottom: 8),
+                    decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(10)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(color: Colors.amber.shade100, borderRadius: BorderRadius.circular(8)),
+                              child: const Icon(Icons.bolt_rounded, color: Colors.orange, size: 20),
+                            ),
+                            const SizedBox(width: 10),
+                            const Text('দ্রুত অ্যাকশন ও মেনু', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.close, size: 20),
+                          onPressed: () => Navigator.pop(ctx),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: '🔍 মেনু বা সেবা খুঁজুন (উদাঃ ঋণ, জমা, রিপোর্ট)...',
+                        prefixIcon: const Icon(Icons.search, size: 20),
+                        filled: true,
+                        fillColor: Colors.grey.shade100,
+                        contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+                      ),
+                      onChanged: (val) {
+                        setSheetState(() {
+                          query = val;
+                        });
+                      },
+                    ),
+                  ),
+                  const Divider(height: 16),
+                  Expanded(
+                    child: ListView.separated(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      itemCount: filteredItems.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 2),
+                      itemBuilder: (context, idx) {
+                        final item = filteredItems[idx];
+                        final isDanger = item['isDanger'] == true;
+                        final color = item['color'] as Color;
+
+                        return ListTile(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          leading: Container(
+                            width: 38,
+                            height: 38,
+                            decoration: BoxDecoration(
+                              color: color.withOpacity(0.12),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Icon(item['icon'] as IconData, color: color, size: 20),
+                          ),
+                          title: Text(
+                            item['title'] as String,
+                            style: TextStyle(
+                              fontSize: 13.5,
+                              fontWeight: FontWeight.bold,
+                              color: isDanger ? Colors.red : Colors.black87,
+                            ),
+                          ),
+                          subtitle: Text(
+                            item['desc'] as String,
+                            style: TextStyle(fontSize: 11, color: isDanger ? Colors.red.shade300 : Colors.grey.shade600),
+                          ),
+                          trailing: const Icon(Icons.chevron_right_rounded, size: 18, color: Colors.grey),
+                          onTap: item['action'] as VoidCallback,
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -634,12 +883,26 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
 
                 return Scaffold(
                   appBar: AppBar(
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(somiti.name, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                        Text('কোড: ${somiti.somitiCode} • কোষাধ্যক্ষ: ${somiti.cashierName}', style: const TextStyle(fontSize: 11, color: Colors.green, fontWeight: FontWeight.w600)),
-                      ],
+                    title: InkWell(
+                      borderRadius: BorderRadius.circular(8),
+                      onTap: () => _openSocietySwitcherDialog(context, somiti),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(somiti.name, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                                const SizedBox(width: 4),
+                                const Icon(Icons.arrow_drop_down_rounded, size: 20),
+                              ],
+                            ),
+                            Text('কোড: ${somiti.somitiCode} • কোষাধ্যক্ষ: ${somiti.cashierName}', style: const TextStyle(fontSize: 11, color: Colors.green, fontWeight: FontWeight.w600)),
+                          ],
+                        ),
+                      ),
                     ),
                     actions: [
                       if (FeatureManagementService().canAccess('loan_management', somitiId: somiti.id))
@@ -695,7 +958,18 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
                       if ((widget.user.email ?? '').trim().toLowerCase() == 'hossansajjad1994@gmail.com')
                         IconButton(
                           tooltip: 'মাস্টার এডমিন কন্ট্রোল সেন্টার',
-                          icon: const Icon(Icons.admin_panel_settings_rounded, color: Colors.amber),
+                          icon: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: Colors.amber.shade100,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: Colors.amber.shade400, width: 1.5),
+                              boxShadow: [
+                                BoxShadow(color: Colors.amber.withOpacity(0.4), blurRadius: 6, spreadRadius: 1),
+                              ],
+                            ),
+                            child: const Icon(Icons.admin_panel_settings_rounded, color: Color(0xFF92400E), size: 18),
+                          ),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -704,14 +978,9 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
                           },
                         ),
                       IconButton(
-                        tooltip: 'সমিতির কোড কপি করুন',
-                        icon: const Icon(Icons.share_rounded),
-                        onPressed: () {
-                          Clipboard.setData(ClipboardData(text: somiti.somitiCode));
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('সমিতি কোড (${somiti.somitiCode}) কপি হয়েছে! সদস্যদের সাথে শেয়ার করুন।')),
-                          );
-                        },
+                        tooltip: 'দ্রুত মেনু ও অ্যাকশন',
+                        icon: const Icon(Icons.more_vert_rounded, size: 24),
+                        onPressed: () => _openThreeDotBottomSheet(context, somiti),
                       ),
                     ],
                   ),

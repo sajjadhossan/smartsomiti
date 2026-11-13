@@ -254,6 +254,147 @@
     .or-divider::before, .or-divider::after { content: ""; flex: 1; border-bottom: 1px solid #E2E8F0; }
     .or-divider span { padding: 0 10px; }
 
+    /* ================= CATEGORY 3: BOTTOM SHEET, 3-DOT MENU & SOCIETY SWITCHER ================= */
+    .sheet-backdrop {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(4px);
+      z-index: 1200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .sheet-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modern-bottom-sheet {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      background: var(--card-bg);
+      border-radius: 26px 26px 0 0;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
+      border-top: 1px solid var(--border);
+      z-index: 1201;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      max-width: 580px;
+      margin: 0 auto;
+    }
+    .modern-bottom-sheet.open {
+      transform: translateY(0);
+    }
+    .sheet-drag-pill {
+      width: 44px; height: 5px; background: #CBD5E1; border-radius: 10px; margin: 12px auto 8px auto;
+    }
+    .sheet-header {
+      padding: 6px 20px 14px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .sheet-search-wrap {
+      padding: 12px 20px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .sheet-search-input {
+      width: 100%;
+      padding: 9px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      font-size: 13px;
+      background: var(--card-bg);
+      color: var(--text);
+      outline: none;
+    }
+    .sheet-search-input:focus {
+      border-color: var(--primary);
+    }
+    .sheet-body {
+      padding: 12px 18px 30px 18px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .sheet-group-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 14px 0 8px 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sheet-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 12px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      margin-bottom: 4px;
+      background: var(--card-bg);
+      color: var(--text);
+      width: 100%;
+      text-align: left;
+    }
+    .sheet-item:hover, .sheet-item:active {
+      background: var(--bg);
+      border-color: var(--border);
+      transform: translateX(3px);
+    }
+    .sheet-item.danger {
+      color: #DC2626;
+      background: #FEF2F2;
+      border-color: #FECACA;
+    }
+    .sheet-item.danger:hover {
+      background: #FEE2E2;
+    }
+    .sheet-icon-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .sheet-badge {
+      margin-left: auto;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .super-admin-golden-halo {
+      box-shadow: 0 0 0 2px #F59E0B, 0 0 10px rgba(245, 158, 11, 0.45) !important;
+    }
+    .society-switch-pill {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--primary-light);
+      padding: 2px 8px;
+      border-radius: 6px;
+      border: 1px solid #C8E6C9;
+      transition: all 0.2s;
+    }
+    .society-switch-pill:hover {
+      background: var(--primary);
+      color: white !important;
+    }
+    .society-switch-pill:hover span { color: white !important; }
+
     header {
       background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 10px 16px;
       display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;
@@ -1650,15 +1791,17 @@
     <!-- Top Sticky Header with Hamburger Menu -->
     <header>
       <div style="display: flex; align-items: center; gap: 10px;">
-        <button class="menu-toggle-btn" onclick="openSidebar()" title="মেনু খুলুন">
+        <button class="menu-toggle-btn" onclick="openSidebar()" title="সাইডবার মেনু">
           ☰
         </button>
         <div class="brand">
           <div class="brand-icon" id="dashBrandIcon">🏛️</div>
           <div>
-            <div style="display: flex; align-items: center; gap: 6px;">
-              <h2 id="dashSomitiName" style="font-size: 15px; font-weight: 700;">সমিতি</h2>
-              <span style="background:var(--primary-light); color:var(--primary); font-size:10px; font-weight:700; padding:1px 6px; border-radius:4px;" id="dashSomitiCode">SMT-XXXX</span>
+            <!-- Society Switcher Pill (Tip 26) -->
+            <div class="society-switch-pill" onclick="openSocietySwitcher()" title="সমিতি পরিবর্তন করতে ক্লিক করুন">
+              <span id="dashSomitiName" style="font-size: 14px; font-weight: 800; color: var(--text);">প্রগতি সমিতি</span>
+              <span id="dashSomitiCode" style="font-size: 10px; font-weight: 700; color: var(--primary);">SMT-7890</span>
+              <span style="font-size: 11px; opacity: 0.7;">▾</span>
             </div>
             <div id="headerActiveViewTitle" style="font-size: 11px; color: var(--primary); font-weight: 600;">📊 প্রধান ড্যাশবোর্ড</div>
           </div>
@@ -1666,8 +1809,8 @@
       </div>
 
       <div style="display: flex; align-items: center; gap: 6px;">
-        <!-- Master Admin Quick Top Button -->
-        <button id="headerMasterAdminBtn" onclick="navTo('masterAdmin')" title="মাস্টার এডমিন কন্ট্রোল সেন্টার" style="background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; padding: 4px 8px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+        <!-- Master Admin Golden Halo Button (Tip 30) -->
+        <button id="headerMasterAdminBtn" class="super-admin-golden-halo" onclick="navTo('masterAdmin')" title="মাস্টার এডমিন কন্ট্রোল সেন্টার" style="background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; padding: 5px 9px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: transform 0.2s;">
           <span>👑</span><span>এডমিন</span>
         </button>
 
@@ -1690,7 +1833,8 @@
           <option value="neon">⚡ নিয়ন</option>
         </select>
 
-        <button onclick="openSidebar()" style="background:none; border:none; font-size:22px; cursor:pointer; color:var(--text); padding: 0 4px;" title="সকল অপশন">
+        <!-- 3-Dot Button triggering Modern Bottom Sheet (Tip 21 & 29) -->
+        <button onclick="openThreeDotSheet()" style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px; font-size: 20px; font-weight: 900; cursor: pointer; color: var(--text); width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" title="সকল কুইক অ্যাকশন মেনু">
           ⋮
         </button>
       </div>
@@ -1836,6 +1980,183 @@
 
       <div style="padding: 10px; border-top: 1px solid var(--border); font-size: 11px; text-align: center; color: var(--text-muted); background: var(--bg);">
         স্মার্ট সমিতি প্ল্যাটফর্ম v2.0
+      </div>
+    </div>
+
+    <!-- ================= CATEGORY 3: MODERN 3-DOT ACTION BOTTOM SHEET ================= -->
+    <div id="threeDotBackdrop" class="sheet-backdrop" onclick="closeThreeDotSheet()"></div>
+    <div id="threeDotBottomSheet" class="modern-bottom-sheet">
+      <div class="sheet-drag-pill" onclick="closeThreeDotSheet()"></div>
+      <div class="sheet-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 18px;">⚡</span>
+          <div>
+            <h3 style="font-size: 15px; font-weight: 800; color: var(--text); margin: 0;">দ্রুত অ্যাকশন ও মেনু</h3>
+            <span style="font-size: 10.5px; color: var(--text-muted);">যেকোনো সেবা এক ক্লিকে খুঁজুন বা চালু করুন</span>
+          </div>
+        </div>
+        <button onclick="closeThreeDotSheet()" style="background: var(--bg); border: 1px solid var(--border); border-radius: 50%; width: 28px; height: 28px; font-size: 13px; font-weight: 800; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center;">✕</button>
+      </div>
+
+      <div class="sheet-search-wrap">
+        <input type="text" class="sheet-search-input" id="sheetSearchInput" placeholder="🔍 মেনু বা অ্যাকশন খুঁজুন (উদাঃ ঋণ, সদস্য, ব্যাকআপ)..." oninput="filterSheetItems(this.value)">
+      </div>
+
+      <div class="sheet-body" id="sheetBodyContainer">
+        <!-- Group 1: ⚡ দ্রুত কার্যাবলি -->
+        <div class="sheet-group-label">⚡ দ্রুত কার্যাবলি</div>
+        <button class="sheet-item" onclick="closeThreeDotSheet(); openMemberModal();">
+          <div class="sheet-icon-circle" style="background: #E8F5E9; color: #165B33;">👤</div>
+          <div>
+            <div style="font-weight: 700; font-size: 13px;">নতুন সদস্য ভর্তি</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">সদস্য নিবন্ধন ফর্ম পূরণ করুন</div>
+          </div>
+          <span class="sheet-badge" style="background: #E8F5E9; color: #165B33;">+নতুন</span>
+        </button>
+
+        <button class="sheet-item" onclick="closeThreeDotSheet(); navTo('deposits');">
+          <div class="sheet-icon-circle" style="background: #E0F2FE; color: #0284C7;">📥</div>
+          <div>
+            <div style="font-weight: 700; font-size: 13px;">দ্রুত জমা গ্রহণ ও কিস্তি</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">সঞ্চয় বা ঋণের কিস্তি কালেকশন</div>
+          </div>
+          <span class="sheet-badge" style="background: #E0F2FE; color: #0284C7;">কালেকশন</span>
+        </button>
+
+        <button class="sheet-item" onclick="closeThreeDotSheet(); navTo('loans');">
+          <div class="sheet-icon-circle" style="background: #FEF3C7; color: #D97706;">💳</div>
+          <div>
+            <div style="font-weight: 700; font-size: 13px;">ঋণ বিতরণ ও আবেদন</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">নতুন ঋণ অনুমোদন ও কিস্তি শিডিউল</div>
+          </div>
+        </button>
+
+        <button class="sheet-item" onclick="closeThreeDotSheet(); navTo('expenses');">
+          <div class="sheet-icon-circle" style="background: #FEE2E2; color: #DC2626;">💸</div>
+          <div>
+            <div style="font-weight: 700; font-size: 13px;">দৈনন্দিন খরচ ভাউচার এন্ট্রি</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">অফিস খরচ, আপ্যায়ন বা বিল প্রদান</div>
+          </div>
+        </button>
+
+        <!-- Group 2: 📑 রিপোর্ট ও এক্সপোর্ট -->
+        <div class="sheet-group-label">📑 রিপোর্ট ও এক্সপোর্ট</div>
+        <button class="sheet-item" onclick="closeThreeDotSheet(); navTo('audit');">
+          <div class="sheet-icon-circle" style="background: #F3E8FF; color: #7C3AED;">📊</div>
+          <div>
+            <div style="font-weight: 700; font-size: 13px;">লাভ-ক্ষতি ও ব্যালেন্স শিট</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">আর্থিক স্থিতি ও পূর্ণাঙ্গ হিসাব নিকাশ</div>
+          </div>
+        </button>
+
+        <button class="sheet-item" onclick="closeThreeDotSheet(); navTo('cashbook');">
+          <div class="sheet-icon-circle" style="background: #E0E7FF; color: #4338CA;">📒</div>
+          <div>
+            <div style="font-weight: 700; font-size: 13px;">দৈনিক ক্যাশ বুক বহি</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">দৈনিক মোট জমা ও খরচের খতিয়ান</div>
+          </div>
+        </button>
+
+        <button class="sheet-item" onclick="closeThreeDotSheet(); navTo('due');">
+          <div class="sheet-icon-circle" style="background: #FFF7ED; color: #EA580C;">⚠️</div>
+          <div>
+            <div style="font-weight: 700; font-size: 13px;">মাসিক বকেয়া কিস্তির খসড়া</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">খেলাপি ও বকেয়া সদস্য তালিকা</div>
+          </div>
+        </button>
+
+        <button class="sheet-item" onclick="closeThreeDotSheet(); exportCsv();">
+          <div class="sheet-icon-circle" style="background: #ECFDF5; color: #059669;">📈</div>
+          <div>
+            <div style="font-weight: 700; font-size: 13px;">এক্সেল / CSV ব্যাকআপ এক্সপোর্ট</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">কম্পিউটারে এক্সেল ফরম্যাটে সংরক্ষণ</div>
+          </div>
+          <span class="sheet-badge" style="background: #ECFDF5; color: #059669;">Excel</span>
+        </button>
+
+        <!-- Group 3: ⚙️ প্রশাসনিক ও ক্লাউড সেটিংস -->
+        <div class="sheet-group-label">⚙️ প্রশাসনিক ও ক্লাউড সেটিংস</div>
+        <button class="sheet-item" onclick="closeThreeDotSheet(); navTo('masterAdmin');">
+          <div class="sheet-icon-circle" style="background: #FEF3C7; color: #92400E;">👑</div>
+          <div>
+            <div style="font-weight: 800; font-size: 13px; color: #92400E;">মাস্টার এডমিন কন্ট্রোল সেন্টার</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">ফিচার ফ্ল্যাগ, নিরাপত্তা ও পারমিশন ম্যাট্রিক্স</div>
+          </div>
+          <span class="sheet-badge" style="background: #FDE68A; color: #78350F;">Master</span>
+        </button>
+
+        <button class="sheet-item" onclick="closeThreeDotSheet(); navTo('somiti');">
+          <div class="sheet-icon-circle" style="background: #F1F5F9; color: #334155;">🏛️</div>
+          <div>
+            <div style="font-weight: 700; font-size: 13px;">সমিতি প্রোফাইল ও সিল-সাইন প্যাড</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">কর্মকর্তা সিল, স্বাক্ষর ও হেডার সেটআপ</div>
+          </div>
+        </button>
+
+        <button class="sheet-item" onclick="closeThreeDotSheet(); navTo('backup');">
+          <div class="sheet-icon-circle" style="background: #EFF6FF; color: #1D4ED8;">☁️</div>
+          <div>
+            <div style="font-weight: 700; font-size: 13px;">গুগল ড্রাইভ ক্লাউড ব্যাকআপ</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">ডেটা ড্রাইভ ও ফায়ারবেস অটো-সিঙ্ক</div>
+          </div>
+        </button>
+
+        <button class="sheet-item" onclick="closeThreeDotSheet(); toggleRoleView();">
+          <div class="sheet-icon-circle" style="background: #F8FAFC; color: #475569;">🔄</div>
+          <div>
+            <div style="font-weight: 700; font-size: 13px;">সদস্য পাসবুক ভিউতে পরিবর্তন</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">সাধারণ সদস্য হিসেবে অ্যাপ দেখা</div>
+          </div>
+        </button>
+
+        <!-- Group 4: 🚪 বিপজ্জনক অপশন / সেশন -->
+        <div class="sheet-group-label">🚪 সেশন ও সমিতি সুইচ</div>
+        <button class="sheet-item" onclick="closeThreeDotSheet(); openSocietySwitcher();">
+          <div class="sheet-icon-circle" style="background: #EEF2FF; color: #4F46E5;">🏛️</div>
+          <div>
+            <div style="font-weight: 700; font-size: 13px;">অন্য সমিতিতে সুইচ করুন</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">মাল্টি-সোসাইটি ব্রাউজ ও ম্যানেজমেন্ট</div>
+          </div>
+          <span class="sheet-badge" style="background: #E0E7FF; color: #3730A3;">সুইচ</span>
+        </button>
+
+        <button class="sheet-item danger" onclick="closeThreeDotSheet(); handleSignOut();">
+          <div class="sheet-icon-circle" style="background: #FEE2E2; color: #DC2626;">🚪</div>
+          <div>
+            <div style="font-weight: 700; font-size: 13px;">লগআউট ও সেশন বন্ধ</div>
+            <div style="font-size: 10.5px; color: #991B1B;">বর্তমান ডিভাইস থেকে নিরাপদে বের হন</div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= CATEGORY 3: SOCIETY SWITCHER MODAL ================= -->
+    <div id="societySwitcherModal" class="modal-overlay" style="display: none; z-index: 2300;">
+      <div class="modal-box" style="max-width: 460px; padding: 22px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 20px;">🏛️</span>
+            <div>
+              <h3 style="font-size: 16px; font-weight: 800; color: var(--text); margin: 0;">আপনার সমিতিসমূহ</h3>
+              <span style="font-size: 11px; color: var(--text-muted);">সরাসরি অন্য সমিতির ড্যাশবোর্ডে সুইচ করুন</span>
+            </div>
+          </div>
+          <button onclick="closeSocietySwitcher()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-muted);">✕</button>
+        </div>
+
+        <div id="societySwitcherList" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; max-height: 50vh; overflow-y: auto;">
+          <!-- Dynamically populated or default societies -->
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <button onclick="closeSocietySwitcher(); navTo('somiti');" style="flex: 1; background: var(--primary); color: white; border: none; padding: 11px; border-radius: 10px; font-size: 12.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <span>➕</span>
+            <span>নতুন সমিতি তৈরি / কনফিগ</span>
+          </button>
+          <button onclick="closeSocietySwitcher()" style="background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); padding: 11px 16px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer;">
+            বাতিল
+          </button>
+        </div>
       </div>
     </div>
 
@@ -6071,6 +6392,125 @@
       const d = document.getElementById("sidebarDrawer");
       if (b) b.classList.remove("active");
       if (d) d.classList.remove("active");
+    }
+
+    // ================= CATEGORY 3: 3-DOT SHEET & SOCIETY SWITCHER =================
+    function openThreeDotSheet() {
+      const backdrop = document.getElementById("threeDotBackdrop");
+      const sheet = document.getElementById("threeDotBottomSheet");
+      const search = document.getElementById("sheetSearchInput");
+      if (backdrop) backdrop.classList.add("active");
+      if (sheet) sheet.classList.add("open");
+      if (search) {
+        search.value = "";
+        filterSheetItems("");
+        setTimeout(() => search.focus(), 150);
+      }
+    }
+
+    function closeThreeDotSheet() {
+      const backdrop = document.getElementById("threeDotBackdrop");
+      const sheet = document.getElementById("threeDotBottomSheet");
+      if (backdrop) backdrop.classList.remove("active");
+      if (sheet) sheet.classList.remove("open");
+    }
+
+    function filterSheetItems(q) {
+      const term = (q || "").trim().toLowerCase();
+      const items = document.querySelectorAll("#sheetBodyContainer .sheet-item");
+      const labels = document.querySelectorAll("#sheetBodyContainer .sheet-group-label");
+
+      if (!term) {
+        items.forEach(el => el.style.display = "flex");
+        labels.forEach(el => el.style.display = "flex");
+        return;
+      }
+
+      items.forEach(el => {
+        const text = (el.innerText || "").toLowerCase();
+        if (text.includes(term)) {
+          el.style.display = "flex";
+        } else {
+          el.style.display = "none";
+        }
+      });
+
+      // Manage group label visibility
+      labels.forEach(lbl => {
+        let sibling = lbl.nextElementSibling;
+        let hasVisible = false;
+        while (sibling && !sibling.classList.contains("sheet-group-label")) {
+          if (sibling.classList.contains("sheet-item") && sibling.style.display !== "none") {
+            hasVisible = true;
+            break;
+          }
+          sibling = sibling.nextElementSibling;
+        }
+        lbl.style.display = hasVisible ? "flex" : "none";
+      });
+    }
+
+    const USER_SOCIETIES_KEY = "somiti_multi_societies";
+    function getRegisteredSocieties() {
+      const stored = localStorage.getItem(USER_SOCIETIES_KEY);
+      if (stored) {
+        try { return JSON.parse(stored); } catch (e) {}
+      }
+      return [
+        { id: "main", name: (currentSomiti && currentSomiti.name) || "প্রগতি ক্ষুদ্র সঞ্চয় সমিতি", code: (currentSomiti && currentSomiti.somitiCode) || "SMT-7890", role: "👑 সুপার এডমিন", active: true },
+        { id: "somiti_2", name: "স্বপ্ন ছোঁয়া সমবায় সমিতি", code: "SMT-1024", role: "🛡️ সাধারণ এডমিন", active: false },
+        { id: "somiti_3", name: "আস্থা বহুমুখী সমবায় সমিতি", code: "SMT-3045", role: "💼 কোষাধ্যক্ষ", active: false }
+      ];
+    }
+
+    function openSocietySwitcher() {
+      const modal = document.getElementById("societySwitcherModal");
+      const listContainer = document.getElementById("societySwitcherList");
+      if (!modal || !listContainer) return;
+
+      const societies = getRegisteredSocieties();
+      listContainer.innerHTML = societies.map(s => `
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-radius: 12px; border: 1.5px solid ${s.active ? 'var(--primary)' : 'var(--border)'}; background: ${s.active ? 'var(--primary-light)' : 'var(--card-bg)'}; cursor: pointer; transition: all 0.2s;" onclick="switchActiveSomiti('${s.id}')">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 38px; height: 38px; border-radius: 10px; background: ${s.active ? 'var(--primary)' : 'var(--bg)'}; color: ${s.active ? 'white' : 'var(--text)'}; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700;">🏛️</div>
+            <div>
+              <div style="font-weight: 800; font-size: 13.5px; color: var(--text);">${s.name}</div>
+              <div style="display: flex; gap: 6px; align-items: center; margin-top: 2px;">
+                <span style="font-size: 10.5px; font-weight: 700; color: var(--primary);">${s.code}</span>
+                <span style="font-size: 10px; color: var(--text-muted);">• ${s.role}</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            ${s.active ? '<span style="font-size: 11px; font-weight: 800; background: var(--primary); color: white; padding: 4px 10px; border-radius: 20px;">✓ সক্রিয়</span>' : '<span style="font-size: 11px; font-weight: 700; color: var(--text-muted); background: var(--bg); padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border);">সুইচ ➔</span>'}
+          </div>
+        </div>
+      `).join("");
+
+      modal.style.display = "flex";
+    }
+
+    function closeSocietySwitcher() {
+      const modal = document.getElementById("societySwitcherModal");
+      if (modal) modal.style.display = "none";
+    }
+
+    function switchActiveSomiti(somitiId) {
+      let societies = getRegisteredSocieties();
+      societies = societies.map(s => ({ ...s, active: s.id === somitiId }));
+      localStorage.setItem(USER_SOCIETIES_KEY, JSON.stringify(societies));
+      const activeOne = societies.find(s => s.active) || societies[0];
+
+      if (currentSomiti) {
+        currentSomiti.name = activeOne.name;
+        currentSomiti.somitiCode = activeOne.code;
+      } else {
+        currentSomiti = { name: activeOne.name, somitiCode: activeOne.code };
+      }
+
+      renderPad(currentSomiti);
+      closeSocietySwitcher();
+      alert(`🎉 সফলভাবে "${activeOne.name}"-এ সুইচ করা হয়েছে!`);
     }
 
     function navTo(viewName) {
