@@ -1201,6 +1201,11 @@
       </div>
 
       <div style="display: flex; align-items: center; gap: 6px;">
+        <!-- Master Admin Quick Top Button -->
+        <button id="headerMasterAdminBtn" onclick="navTo('masterAdmin')" title="মাস্টার এডমিন কন্ট্রোল সেন্টার" style="background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; padding: 4px 8px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+          <span>👑</span><span>এডমিন</span>
+        </button>
+
         <!-- Quick Back Button if on other views -->
         <button id="headerBackBtn" onclick="navTo('dashboard')" style="display: none; background: var(--primary-light); color: var(--primary); border: 1px solid var(--border); padding: 5px 8px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer;">
           🏠 ড্যাশবোর্ড
@@ -1253,6 +1258,22 @@
         <button class="nav-item active" id="navItem-dashboard" onclick="navTo('dashboard')">
           <span class="nav-icon">📊</span>
           <span>প্রধান ড্যাশবোর্ড</span>
+        </button>
+
+        <!-- New Enterprise Modules -->
+        <button class="nav-item" id="navItem-masterAdmin" onclick="navTo('masterAdmin')" style="background: #FFFBEB; color: #92400E; font-weight: 800; border-left: 3px solid #D97706;">
+          <span class="nav-icon">👑</span>
+          <span>মাস্টার এডমিন কন্ট্রোল</span>
+        </button>
+
+        <button class="nav-item" id="navItem-loans" onclick="navTo('loans')">
+          <span class="nav-icon">💳</span>
+          <span>ঋণ ব্যবস্থাপনা ও কিস্তি</span>
+        </button>
+
+        <button class="nav-item" id="navItem-accounting" onclick="navTo('accounting')">
+          <span class="nav-icon">🏦</span>
+          <span>ব্যাংক ও মাল্টি-অ্যাকাউন্ট</span>
         </button>
 
         <button class="nav-item" id="navItem-somiti" onclick="navTo('somiti')">
@@ -1405,6 +1426,31 @@
         </div>
 
         <div class="quick-actions-grid">
+          <!-- Enterprise Module Highlights -->
+          <div class="quick-action-btn" onclick="navTo('masterAdmin')" style="border-left: 4px solid #D97706; background: #FFFBEB;">
+            <div class="qa-icon-circle" style="background: #FEF3C7; color: #B45309;">👑</div>
+            <div>
+              <div class="qa-title" style="color: #92400E;">মাস্টার এডমিন</div>
+              <div class="qa-sub">২৪টি মডিউল সুইচ ও পারমিশন</div>
+            </div>
+          </div>
+
+          <div class="quick-action-btn" onclick="navTo('loans')" style="border-left: 4px solid #0F5132; background: #F0FDF4;">
+            <div class="qa-icon-circle" style="background: #DCFCE7; color: #0F5132;">💳</div>
+            <div>
+              <div class="qa-title" style="color: #0F5132;">ঋণ ব্যবস্থাপনা</div>
+              <div class="qa-sub">বিতরণ, আদায় ও EMI সূচি</div>
+            </div>
+          </div>
+
+          <div class="quick-action-btn" onclick="navTo('accounting')" style="border-left: 4px solid #1E293B; background: #F8FAFC;">
+            <div class="qa-icon-circle" style="background: #E2E8F0; color: #1E293B;">🏦</div>
+            <div>
+              <div class="qa-title" style="color: #1E293B;">ব্যাংক ও ক্যাশবহি</div>
+              <div class="qa-sub">মাল্টি-অ্যাকাউন্ট ও স্থানান্তর</div>
+            </div>
+          </div>
+
           <div class="quick-action-btn" onclick="navTo('deposits')">
             <div class="qa-icon-circle">📥</div>
             <div>
@@ -2839,6 +2885,287 @@
         </div>
       </div>
 
+      <!-- ================= 8. MASTER ADMIN GLOBAL CONTROL CENTER VIEW ================= -->
+      <div id="view-masterAdmin" style="display: none;">
+        <div class="view-header-bar">
+          <button class="back-btn" onclick="navTo('dashboard')">← ড্যাশবোর্ডে ফিরুন</button>
+          <span style="font-weight: 700; font-size: 14px; color: #D97706;">👑 মাস্টার এডমিন কন্ট্রোল সেন্টার</span>
+        </div>
+
+        <!-- Super Admin Status Banner -->
+        <div class="card" style="border-left: 4px solid #D97706; background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 15px; font-weight: 800; color: #78350F;">প্ল্যাটফর্ম সুপার এডমিন কন্ট্রোল</div>
+              <div style="font-size: 11px; color: #92400E;">অ্যাকাউন্ট: <strong>hossansajjad1994@gmail.com</strong> (সর্বোচ্চ ক্ষমতা)</div>
+            </div>
+            <span style="background: #D97706; color: white; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800;">GLOBAL ACTIVE</span>
+          </div>
+          <p style="font-size: 12px; color: #92400E; margin-top: 6px;">
+            এখানে যেকোনো ফিচার বন্ধ করলে তা সাথে সাথে পুরো সিস্টেমে বা নির্দিষ্ট সমিতিতে নিষ্ক্রিয় হয়ে যাবে।
+          </p>
+        </div>
+
+        <!-- Master Admin Tabs -->
+        <div class="tabs" style="margin-bottom: 14px;">
+          <button class="tab-btn active" id="btnAdminTab-modules" onclick="switchAdminTab('modules')">গ্লোবাল মডিউল (২৪টি)</button>
+          <button class="tab-btn" id="btnAdminTab-overrides" onclick="switchAdminTab('overrides')">সমিতিভিত্তিক ওভাররাইড</button>
+          <button class="tab-btn" id="btnAdminTab-audit" onclick="switchAdminTab('audit')">অডিট লগ</button>
+        </div>
+
+        <!-- Admin Tab 1: 24 Modules -->
+        <div id="adminTab-modules">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-weight: 700; font-size: 13px;">মডিউল ও ফিচার সুইচবোর্ড:</span>
+            <input type="text" id="adminModuleSearch" placeholder="🔍 ফিচার খুঁজুন..." oninput="filterAdminModules()" style="padding: 5px 8px; border-radius: 6px; border: 1px solid var(--border); font-size: 11px; width: 140px;">
+          </div>
+          <div id="adminModulesList" style="display: flex; flex-direction: column; gap: 8px;">
+            <!-- Dynamically populated 24 modules with toggle switches -->
+          </div>
+        </div>
+
+        <!-- Admin Tab 2: Society Overrides -->
+        <div id="adminTab-overrides" style="display: none;">
+          <div class="card">
+            <div class="card-title">সমিতিভিত্তিক ফিচার ওভাররাইড ও রেস্ট্রিকশন</div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+              যেকোনো নির্দিষ্ট সমিতির জন্য কোনো ফিচার (যেমন: ঋণ বা মোবাইল ব্যাংকিং) আলাদাভাবে বন্ধ বা চালু করতে পারেন।
+            </p>
+            <div class="form-group">
+              <label>সমিতি নির্বাচন করুন:</label>
+              <select id="adminOverrideSomitiSelect" onchange="renderSocietyOverrides()">
+                <option value="main">প্রধান সমিতি (বর্তমান)</option>
+              </select>
+            </div>
+            <div id="adminSocietyOverrideList" style="display: flex; flex-direction: column; gap: 8px;"></div>
+          </div>
+        </div>
+
+        <!-- Admin Tab 3: Audit Trail -->
+        <div id="adminTab-audit" style="display: none;">
+          <div class="card">
+            <div class="card-title">সিস্টেম পরিবর্তন ও অডিট লগ হিস্ট্রি</div>
+            <div id="adminAuditLogsList" style="max-height: 400px; overflow-y: auto; font-size: 12px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 9. LOAN MANAGEMENT VIEW ================= -->
+      <div id="view-loans" style="display: none;">
+        <div class="view-header-bar">
+          <button class="back-btn" onclick="navTo('dashboard')">← ড্যাশবোর্ডে ফিরুন</button>
+          <span style="font-weight: 700; font-size: 14px; color: #0F5132;">💳 ঋণ ব্যবস্থাপনা ও কিস্তি সূচি</span>
+        </div>
+
+        <!-- Loan KPI Summary Card -->
+        <div class="summary-card" style="background: linear-gradient(135deg, #0F5132, #1E293B);">
+          <div class="cash-highlight-card">
+            <div style="text-align: left;">
+              <div style="font-size: 12px; font-weight: 600; opacity: 0.9;">মোট বকেয়া ঋণ (Outstanding Balance)</div>
+              <div class="cash-in-hand-amt" id="loanTotalOutstanding" style="color: #FECACA;">৳০</div>
+            </div>
+            <div style="font-size: 26px;">💳</div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-box">
+              <h4 id="loanTotalDisbursed" style="color: #FEF08A;">৳০</h4>
+              <p>মোট বিতরণকৃত ঋণ</p>
+            </div>
+            <div class="stat-box">
+              <h4 id="loanTotalCollected" style="color: #BBF7D0;">৳০</h4>
+              <p>মোট আদায়কৃত টাকা</p>
+            </div>
+            <div class="stat-box">
+              <h4 id="loanActiveCount">০ টি</h4>
+              <p>চলমান ঋণ সংখ্যা</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loans Navigation Tabs -->
+        <div class="tabs" style="margin-bottom: 14px;">
+          <button class="tab-btn active" id="btnLoanTab-active" onclick="switchLoanTab('active')">চলমান ঋণ</button>
+          <button class="tab-btn" id="btnLoanTab-applications" onclick="switchLoanTab('applications')">ঋণের আবেদন (<span id="loanAppBadge">০</span>)</button>
+          <button class="tab-btn" id="btnLoanTab-new" onclick="switchLoanTab('new')">নতুন আবেদন ও EMI</button>
+        </div>
+
+        <!-- Loan Tab 1: Active Loans -->
+        <div id="loanTab-active">
+          <div id="activeLoansList">
+            <div style="text-align: center; padding: 30px; color: var(--text-muted);">কোনো সক্রিয় ঋণ রেকর্ড নেই।</div>
+          </div>
+        </div>
+
+        <!-- Loan Tab 2: Applications -->
+        <div id="loanTab-applications" style="display: none;">
+          <div id="loanApplicationsList">
+            <div style="text-align: center; padding: 30px; color: var(--text-muted);">কোনো অপেক্ষমাণ আবেদন নেই।</div>
+          </div>
+        </div>
+
+        <!-- Loan Tab 3: New Loan Form & Realtime Calculator -->
+        <div id="loanTab-new" style="display: none;">
+          <div class="card">
+            <div class="card-title">নতুন ঋণের আবেদন ও সুদের হিসাব</div>
+            
+            <div class="form-group">
+              <label>ঋণগ্রহীতা সদস্য *</label>
+              <select id="loanFormMember" onchange="updateLoanCalculatorPreview()">
+                <option value="">সদস্য নির্বাচন করুন</option>
+              </select>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div class="form-group">
+                <label>ঋণের পরিমাণ (টাকা) *</label>
+                <input type="number" id="loanFormAmount" placeholder="যেমন: ৫০০০০" value="50000" oninput="updateLoanCalculatorPreview()">
+              </div>
+              <div class="form-group">
+                <label>মেয়াদ (মাস) *</label>
+                <input type="number" id="loanFormDuration" placeholder="১২" value="12" oninput="updateLoanCalculatorPreview()">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div class="form-group">
+                <label>সুদের হার (%) *</label>
+                <input type="number" id="loanFormRate" placeholder="১০" value="10" step="0.5" oninput="updateLoanCalculatorPreview()">
+              </div>
+              <div class="form-group">
+                <label>সুদের পদ্ধতি *</label>
+                <select id="loanFormType" onchange="updateLoanCalculatorPreview()">
+                  <option value="flat">সরল সুদ (Flat Rate)</option>
+                  <option value="reducing">হ্রাসমান ব্যালেন্স (EMI)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Realtime Live Calculation Preview Box -->
+            <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 10px; padding: 12px; margin-bottom: 12px; display: grid; grid-template-columns: 1fr 1fr 1fr; text-align: center; gap: 6px;">
+              <div>
+                <div style="font-size: 10px; color: #166534;">মোট প্রদেয় সুদ</div>
+                <div id="calcInterestAmount" style="font-size: 14px; font-weight: 800; color: #0F5132;">৳৫,০০০</div>
+              </div>
+              <div>
+                <div style="font-size: 10px; color: #166534;">মোট পরিশোধযোগ্য</div>
+                <div id="calcTotalPayable" style="font-size: 14px; font-weight: 800; color: #1E293B;">৳৫৫,০০০</div>
+              </div>
+              <div>
+                <div style="font-size: 10px; color: #166534;">মাসিক কিস্তি</div>
+                <div id="calcMonthlyInstallment" style="font-size: 14px; font-weight: 800; color: #2563EB;">৳৪,৫৮৩</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>ঋণ গ্রহণের উদ্দেশ্য *</label>
+              <input type="text" id="loanFormPurpose" placeholder="যেমন: ব্যবসা সম্প্রসারণ বা দোকান সংস্কার">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div class="form-group">
+                <label>জামিনদারের নাম</label>
+                <input type="text" id="loanFormGuarantorName" placeholder="নাম">
+              </div>
+              <div class="form-group">
+                <label>জামিনদারের মোবাইল</label>
+                <input type="tel" id="loanFormGuarantorPhone" placeholder="মোবাইল">
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="submitLoanApplication()" style="width: 100%; padding: 12px; font-size: 14px; font-weight: 700; background: #0F5132;">
+              ✅ ঋণের আবেদন দাখিল করুন
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 10. MULTI-ACCOUNT ACCOUNTING & CASHBOOK VIEW ================= -->
+      <div id="view-accounting" style="display: none;">
+        <div class="view-header-bar">
+          <button class="back-btn" onclick="navTo('dashboard')">← ড্যাশবোর্ডে ফিরুন</button>
+          <span style="font-weight: 700; font-size: 14px; color: #1E293B;">🏦 মাল্টি-অ্যাকাউন্ট ও ক্যাশ বহি</span>
+        </div>
+
+        <!-- Total Fund Hero Card -->
+        <div class="summary-card" style="background: linear-gradient(135deg, #1E293B, #0F5132);">
+          <div style="text-align: left; margin-bottom: 12px;">
+            <div style="font-size: 12px; font-weight: 600; opacity: 0.9;">সর্বমোট আর্থিক তহবিল (Cash & Bank Total)</div>
+            <div class="cash-in-hand-amt" id="accountingTotalBalance">৳০</div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button onclick="openTransferFundsModal()" style="flex: 1; background: #10B981; color: white; border: none; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+              <span>🔄 তহবিল স্থানান্তর</span>
+            </button>
+            <button onclick="openAddAccountModal()" style="flex: 1; background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;">
+              <span>➕ নতুন হিসাব</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Accounting Tabs -->
+        <div class="tabs" style="margin-bottom: 14px;">
+          <button class="tab-btn active" id="btnAccTab-accounts" onclick="switchAccountingTab('accounts')">তহবিল ও ব্যাংক</button>
+          <button class="tab-btn" id="btnAccTab-ledger" onclick="switchAccountingTab('ledger')">দৈনিক ক্যাশ বহি</button>
+          <button class="tab-btn" id="btnAccTab-voucher" onclick="switchAccountingTab('voucher')">আয় / ব্যয় ভাউচার</button>
+        </div>
+
+        <!-- Accounting Tab 1: Holding Accounts -->
+        <div id="accTab-accounts">
+          <div id="financialAccountsList" style="display: flex; flex-direction: column; gap: 8px;"></div>
+        </div>
+
+        <!-- Accounting Tab 2: Ledger Transactions -->
+        <div id="accTab-ledger" style="display: none;">
+          <div id="financialLedgerList" style="display: flex; flex-direction: column; gap: 8px;"></div>
+        </div>
+
+        <!-- Accounting Tab 3: Voucher Entry -->
+        <div id="accTab-voucher" style="display: none;">
+          <div class="card">
+            <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+              <button type="button" id="btnVoucherExpense" onclick="setVoucherType('expense')" class="switch-btn active" style="background: #DC2626; color: white; border-color: #DC2626;">
+                💸 খরচ ভাউচার (Expense)
+              </button>
+              <button type="button" id="btnVoucherIncome" onclick="setVoucherType('income')" class="switch-btn">
+                💰 আয় ভাউচার (Income)
+              </button>
+            </div>
+
+            <div class="form-group">
+              <label id="lblVoucherCategory">খরচের খাত (Category) *</label>
+              <select id="voucherCategorySelect">
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label id="lblVoucherAccount">যে একাউন্ট থেকে পরিশোধ হবে *</label>
+              <select id="voucherAccountSelect"></select>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div class="form-group">
+                <label>টাকার পরিমাণ *</label>
+                <input type="number" id="voucherAmount" placeholder="৳ ০">
+              </div>
+              <div class="form-group">
+                <label>মেমো / রেফারেন্স নম্বর</label>
+                <input type="text" id="voucherRefNo" placeholder="ঐচ্ছিক">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>বিবরণ / নোট *</label>
+              <input type="text" id="voucherDescription" placeholder="যেমন: মে মাসের অফিস বিদ্যুৎ বিল">
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="submitVoucherEntry()" style="width: 100%; padding: 12px; font-size: 14px; font-weight: 700;">
+              💾 ভাউচার সংরক্ষণ করুন
+            </button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -3730,6 +4057,129 @@
         <a id="lightboxDownloadBtn" href="#" download="deposit_slip.jpg" target="_blank" style="background: #0F9D58; color: white; padding: 7px 16px; border-radius: 6px; font-size: 12px; font-weight: 700; text-decoration: none;">📥 ছবি ডাউনলোড</a>
         <button type="button" onclick="closeImageLightbox()" style="background: white; color: #0F172A; border: none; padding: 7px 16px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer;">✖️ বন্ধ</button>
       </div>
+    </div>
+  </div>
+
+  <!-- ================= LOAN SCHEDULE MODAL ================= -->
+  <div id="loanScheduleModal" class="modal-overlay" style="display: none;">
+    <div class="modal-box" style="max-width: 500px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h3 id="scheduleModalTitle" style="font-size: 15px; font-weight: 800; color: #0F5132;">কিস্তি পরিশোধ সূচি</h3>
+        <button type="button" onclick="closeScheduleModal()" style="border: none; background: none; font-size: 20px; cursor: pointer;">✕</button>
+      </div>
+      <div id="scheduleSummaryBox" style="background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-size: 12px; margin-bottom: 12px;"></div>
+      <div id="scheduleInstallmentList" style="max-height: 340px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;"></div>
+      <button type="button" class="btn" onclick="closeScheduleModal()" style="margin-top: 14px; width: 100%;">বন্ধ করুন</button>
+    </div>
+  </div>
+
+  <!-- ================= LOAN REPAYMENT MODAL ================= -->
+  <div id="loanRepayModal" class="modal-overlay" style="display: none;">
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h3 style="font-size: 16px; font-weight: 800; color: #0F5132;">ঋণের কিস্তি জমা নিন</h3>
+        <button type="button" onclick="closeLoanRepayModal()" style="border: none; background: none; font-size: 20px; cursor: pointer;">✕</button>
+      </div>
+      <div id="repayMemberInfo" style="background: #F0FDF4; border-radius: 8px; padding: 10px; margin-bottom: 12px; font-size: 12px; color: #166534;"></div>
+      <div class="form-group">
+        <label>কিস্তির পরিমাণ (টাকা) *</label>
+        <input type="number" id="repayAmountInput" placeholder="৳ ০">
+      </div>
+      <div class="form-group">
+        <label>জমা নেওয়ার হিসাব (ক্যাশ ড্রয়ার / ব্যাংক) *</label>
+        <select id="repayAccountSelect"></select>
+      </div>
+      <div class="form-group">
+        <label>মন্তব্য / নোট</label>
+        <input type="text" id="repayNoteInput" placeholder="যেমন: ৩য় কিস্তি পরিশোধ">
+      </div>
+      <button type="button" class="btn btn-primary" onclick="confirmLoanRepayment()" style="width: 100%; padding: 12px; font-weight: 700; background: #0F5132;">
+        ✅ কিস্তি জমা নিশ্চিত করুন
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= LOAN DISBURSEMENT MODAL ================= -->
+  <div id="loanDisburseModal" class="modal-overlay" style="display: none;">
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h3 style="font-size: 16px; font-weight: 800; color: #2563EB;">ঋণ বিতরণ ও ক্যাশ আউট</h3>
+        <button type="button" onclick="closeLoanDisburseModal()" style="border: none; background: none; font-size: 20px; cursor: pointer;">✕</button>
+      </div>
+      <div id="disburseInfoBox" style="background: #EFF6FF; border-radius: 8px; padding: 10px; margin-bottom: 12px; font-size: 12px; color: #1E40AF;"></div>
+      <div class="form-group">
+        <label>যে একাউন্ট থেকে টাকা প্রদান করা হবে *</label>
+        <select id="disburseAccountSelect"></select>
+      </div>
+      <button type="button" class="btn btn-primary" onclick="confirmDisburseLoan()" style="width: 100%; padding: 12px; font-weight: 700; background: #2563EB;">
+        💸 বিতরণ সম্পন্ন করুন (ক্যাশ আউট)
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= FUND TRANSFER MODAL ================= -->
+  <div id="transferFundsModal" class="modal-overlay" style="display: none;">
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h3 style="font-size: 16px; font-weight: 800; color: #1E293B;">তহবিল স্থানান্তর (Fund Transfer)</h3>
+        <button type="button" onclick="closeTransferFundsModal()" style="border: none; background: none; font-size: 20px; cursor: pointer;">✕</button>
+      </div>
+      <div class="form-group">
+        <label>উৎস হিসাব (From) *</label>
+        <select id="transferFromSelect"></select>
+      </div>
+      <div class="form-group">
+        <label>গন্তব্য হিসাব (To) *</label>
+        <select id="transferToSelect"></select>
+      </div>
+      <div class="form-group">
+        <label>স্থানান্তরের পরিমাণ (টাকা) *</label>
+        <input type="number" id="transferAmountInput" placeholder="৳ ০">
+      </div>
+      <div class="form-group">
+        <label>নোট / বিবরণ</label>
+        <input type="text" id="transferNoteInput" placeholder="যেমন: ব্যাংক ডিপোজিট">
+      </div>
+      <button type="button" class="btn btn-primary" onclick="confirmFundTransfer()" style="width: 100%; padding: 12px; font-weight: 700; background: #10B981;">
+        🔄 স্থানান্তর সম্পন্ন করুন
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= ADD ACCOUNT MODAL ================= -->
+  <div id="addAccountModal" class="modal-overlay" style="display: none;">
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h3 style="font-size: 16px; font-weight: 800; color: #1E293B;">নতুন আর্থিক একাউন্ট যোগ করুন</h3>
+        <button type="button" onclick="closeAddAccountModal()" style="border: none; background: none; font-size: 20px; cursor: pointer;">✕</button>
+      </div>
+      <div class="form-group">
+        <label>একাউন্টের নাম *</label>
+        <input type="text" id="newAccountName" placeholder="যেমন: সোনালী ব্যাংক সাধারণ সঞ্চয়ী">
+      </div>
+      <div class="form-group">
+        <label>হিসাবের ধরন *</label>
+        <select id="newAccountType">
+          <option value="bankAccount">বাণিজ্যিক ব্যাংক হিসাব</option>
+          <option value="mfsWallet">মোবাইল ওয়ালেট (বিকাশ/নগদ)</option>
+          <option value="cashDrawer">শাখা ক্যাশ ড্রয়ার</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>ব্যাংক / প্রতিষ্ঠানের নাম</label>
+        <input type="text" id="newAccountBank" placeholder="যেমন: Sonali Bank PLC">
+      </div>
+      <div class="form-group">
+        <label>হিসাব নম্বর / মোবাইল নম্বর</label>
+        <input type="text" id="newAccountNumber" placeholder="হিসাব নম্বর">
+      </div>
+      <div class="form-group">
+        <label>প্রাথমিক উদ্বৃত্ত (টাকা)</label>
+        <input type="number" id="newAccountBalance" placeholder="৳ ০" value="0">
+      </div>
+      <button type="button" class="btn btn-primary" onclick="confirmAddAccount()" style="width: 100%; padding: 12px; font-weight: 700;">
+        💾 একাউন্ট সংরক্ষণ করুন
+      </button>
     </div>
   </div>
 
@@ -4905,7 +5355,7 @@
       closeSidebar();
       currentActiveView = viewName;
 
-      const views = ['dashboard', 'somiti', 'deposits', 'due', 'members', 'expenses', 'audit', 'cashbook', 'notice', 'backup', 'pending', 'verify', 'memberpassbook'];
+      const views = ['dashboard', 'somiti', 'deposits', 'due', 'members', 'expenses', 'audit', 'cashbook', 'notice', 'backup', 'pending', 'verify', 'memberpassbook', 'masterAdmin', 'loans', 'accounting'];
       views.forEach(v => {
         const el = document.getElementById('view-' + v);
         if (el) el.style.display = (v === viewName) ? 'block' : 'none';
@@ -4927,7 +5377,10 @@
         'backup': '☁️ গুগল ড্রাইভ ক্লাউড ব্যাকআপ',
         'pending': '⏳ অপেক্ষমাণ আবেদনকারী',
         'verify': '🔍 অফিসিয়াল রসিদ ও QR যাচাই',
-        'memberpassbook': '👤 সদস্যের লাইভ পাসবুক'
+        'memberpassbook': '👤 সদস্যের লাইভ পাসবুক',
+        'masterAdmin': '👑 মাস্টার এডমিন কন্ট্রোল সেন্টার',
+        'loans': '💳 ঋণ ব্যবস্থাপনা ও কিস্তি সূচি',
+        'accounting': '🏦 মাল্টি-অ্যাকাউন্ট ও ক্যাশ বহি'
       };
 
       const titleEl = document.getElementById("headerActiveViewTitle");
@@ -4948,6 +5401,12 @@
         initNoticeView();
       } else if (viewName === 'deposits') {
         renderDueInstallments();
+      } else if (viewName === 'masterAdmin') {
+        renderMasterAdminView();
+      } else if (viewName === 'loans') {
+        renderLoansView();
+      } else if (viewName === 'accounting') {
+        renderAccountingView();
       }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -8049,6 +8508,948 @@
       a.download = fileName;
       a.click();
     }
+
+    // =========================================================================
+    // ENTERPRISE MASTER ADMIN, LOAN MANAGEMENT & DOUBLE-ENTRY ACCOUNTING ENGINE
+    // =========================================================================
+
+    // 1. MASTER ADMIN 24-MODULE FEATURE REGISTRY
+    const MASTER_MODULES = [
+      { key: "society_management", name: "সমিতি ব্যবস্থাপনা ও প্রোফাইল", desc: "সমিতির নাম, কোড, প্যাড ও মূল সেটিংস", icon: "🏛️", cat: "কোর প্ল্যাটফর্ম", enabled: true },
+      { key: "authentication", name: "নিরাপদ প্রমাণীকরণ ও লগইন", desc: "ইমেইল, গুগল সাইন-ইন ও সিকিউরিটি", icon: "🔐", cat: "নিরাপত্তা", enabled: true },
+      { key: "user_management", name: "ব্যবহারকারী একাউন্ট ও অনুমোদন", desc: "নতুন রেজিস্ট্রেশন ও রোল কন্ট্রোল", icon: "👤", cat: "কোর প্ল্যাটফর্ম", enabled: true },
+      { key: "role_management", name: "রোল-বেসড পারমিশন ম্যাট্রিক্স (RBAC)", desc: "ম্যানেজার, ক্যাশিয়ার ও মাঠকর্মী ক্ষমতা", icon: "🛡️", cat: "নিরাপত্তা", enabled: true },
+      { key: "member_management", name: "সদস্য তালিকা ও পাসবুক খতিয়ান", desc: "সদস্য প্রোফাইল, ছবি ও তথ্য সংরক্ষণ", icon: "👥", cat: "সমিতি কার্যক্রম", enabled: true },
+      { key: "savings_management", name: "সঞ্চয় জমা ও কিস্তি ব্যবস্থাপনা", desc: "দৈনিক, সাপ্তাহিক ও মাসিক সঞ্চয় কিস্তি", icon: "📥", cat: "সমিতি কার্যক্রম", enabled: true },
+      { key: "loan_management", name: "ঋণ বিতরণ ও কিস্তি সূচি (EMI)", desc: "সরল ও হ্রাসমান সুদ হিসাব, কিস্তি আদায়", icon: "💳", cat: "ঋণ ও অর্থায়ন", enabled: true },
+      { key: "financial_accounting", name: "আর্থিক হিসাববিজ্ঞান ও ক্যাশবহি", desc: "ডাবল-এন্ট্রি হিসাব, ভাউচার ও খতিয়ান", icon: "📒", cat: "হিসাববিজ্ঞান", enabled: true },
+      { key: "cash_management", name: "হাতের নগদ ক্যাশ ড্রয়ার ট্র্যাকিং", desc: "শাখা বা প্রধান ক্যাশের লাইভ ব্যালেন্স", icon: "💵", cat: "হিসাববিজ্ঞান", enabled: true },
+      { key: "bank_management", name: "বাণিজ্যিক ব্যাংক হিসাব ও লেনদেন", desc: "ব্যাংক জমা, উত্তোলন ও চেক সমন্বয়", icon: "🏦", cat: "হিসাববিজ্ঞান", enabled: true },
+      { key: "payment_management", name: "ডিজিটাল মানি রিসিট ও ভাউচার", desc: "অফিসিয়াল ৩-সিলসহ জমা রসিদ প্রিন্ট", icon: "🧾", cat: "রসিদ ও প্রিন্টিং", enabled: true },
+      { key: "employee_management", name: "কর্মচারী ও বেতন-ভাতা মডিউল", desc: "অফিস কর্মী হাজিরা ও বেতন বিবরণী", icon: "👔", cat: "প্রশাসন", enabled: true },
+      { key: "collection_management", name: "মাঠপর্যায়ে কালেকশন ও রুট", desc: "মাঠকর্মী কালেকশন শিট ও এন্ট্রি", icon: "🚶", cat: "মাঠ কার্যক্রম", enabled: true },
+      { key: "reports", name: "আর্থিক নিরীক্ষা ও বিশ্লেষণ", desc: "মাসিক অডিট শিট ও সঞ্চয় রিক্যাপ", icon: "📊", cat: "রিপোর্টিং", enabled: true },
+      { key: "pdf_export", name: "অফিসিয়াল PDF রিপোর্ট ও স্টেটমেন্ট", desc: "সদস্য স্টেটমেন্ট ও নোটিশ PDF ডাউনলোড", icon: "📄", cat: "রিপোর্টিং", enabled: true },
+      { key: "excel_export", name: "এক্সেল ও CSV ডেটা এক্সপোর্ট", desc: "হিসাব নিকাশ এক্সেল ফাইলে সংরক্ষণ", icon: "📈", cat: "রিপোর্টিং", enabled: true },
+      { key: "notifications", name: "এসএমএস ও পুশ নোটিফিকেশন", desc: "কিস্তি জমা ও বকেয়া অ্যালার্ট এসএমএস", icon: "🔔", cat: "যোগাযোগ", enabled: true },
+      { key: "announcements", name: "অফিসিয়াল নোটিশ প্যাড ও রেজুলেশন", desc: "কার্যনির্বাহী সভার রেজুলেশন প্যাড", icon: "📜", cat: "প্রশাসন", enabled: true },
+      { key: "document_management", name: "ডকুমেন্ট ও এনআইডি ফাইল ক্লাউড", desc: "সদস্যের জাতীয় পরিচয়পত্র ও ছবি", icon: "📁", cat: "কোর প্ল্যাটফর্ম", enabled: true },
+      { key: "audit_logs", name: "অপরিবর্তনীয় অডিট লগ ও হিস্ট্রি", desc: "কে কখন কী পরিবর্তন করেছে তার রেকর্ড", icon: "🕵️", cat: "নিরাপত্তা", enabled: true },
+      { key: "dashboard_analytics", name: "ড্যাশবোর্ড অ্যানালিটিক্স ও কেপিআই", desc: "গ্রাফিকাল ট্রেন্ড ও প্রবৃদ্ধি বিশ্লেষণ", icon: "📉", cat: "রিপোর্টিং", enabled: true },
+      { key: "advanced_settings", name: "প্যাড, সিল ও সাইন ফাইন টিউনিং", desc: "সিল-স্বাক্ষরের অবস্থান ও স্কেলিং", icon: "⚙️", cat: "প্রশাসন", enabled: true },
+      { key: "payment_gateway", name: "মোবাইল ফিন্যান্স গেটওয়ে (MFS)", desc: "বিকাশ ও নগদ অটোমেটেড পেমেন্ট API", icon: "📱", cat: "পেমেন্ট গেটওয়ে", enabled: true },
+      { key: "future_modules", name: "ভবিষ্যত কাস্টম প্লাগইন ফ্রেমওয়ার্ক", desc: "নতুন মডিউল যুক্ত করার এক্সটেনশন", icon: "🧩", cat: "কোর প্ল্যাটফর্ম", enabled: true }
+    ];
+
+    let featureFlagsData = JSON.parse(localStorage.getItem("somiti_feature_flags") || "{}");
+    MASTER_MODULES.forEach(m => {
+      if (featureFlagsData[m.key] === undefined) {
+        featureFlagsData[m.key] = m.enabled;
+      }
+    });
+
+    let adminAuditLogs = JSON.parse(localStorage.getItem("somiti_audit_logs") || "[]");
+    if (adminAuditLogs.length === 0) {
+      adminAuditLogs.push({
+        id: "log-init",
+        action: "সিস্টেম সূচনা ও ফিচার ফ্ল্যাগ সক্রিয়করণ",
+        user: "hossansajjad1994@gmail.com",
+        time: new Date().toLocaleString('bn-BD')
+      });
+    }
+
+    function renderMasterAdminView() {
+      const listEl = document.getElementById("adminModulesList");
+      if (!listEl) return;
+
+      listEl.innerHTML = MASTER_MODULES.map(m => {
+        const isChecked = featureFlagsData[m.key] !== false;
+        return `
+          <div class="card" style="margin-bottom: 0; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid ${isChecked ? 'var(--primary)' : '#94A3B8'};">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 22px;">${m.icon}</span>
+              <div>
+                <div style="font-size: 13.5px; font-weight: 700; color: var(--text);">${m.name}</div>
+                <div style="font-size: 11px; color: var(--text-muted);">${m.desc} • <span style="color: var(--primary); font-weight: 600;">${m.cat}</span></div>
+              </div>
+            </div>
+            <label style="position: relative; display: inline-block; width: 44px; height: 24px; cursor: pointer; margin-left: 10px;">
+              <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleMasterFeature('${m.key}')" style="opacity: 0; width: 0; height: 0;">
+              <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: ${isChecked ? '#10B981' : '#CBD5E1'}; transition: .3s; border-radius: 24px;"></span>
+              <span style="position: absolute; content: ''; height: 18px; width: 18px; left: ${isChecked ? '22px' : '3px'}; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%;"></span>
+            </label>
+          </div>
+        `;
+      }).join("");
+
+      renderSocietyOverrides();
+      renderAdminAuditLogs();
+    }
+
+    function toggleMasterFeature(key) {
+      const current = featureFlagsData[key] !== false;
+      const next = !current;
+      featureFlagsData[key] = next;
+      localStorage.setItem("somiti_feature_flags", JSON.stringify(featureFlagsData));
+
+      const mod = MASTER_MODULES.find(x => x.key === key);
+      const actionText = `মডিউল "${mod ? mod.name : key}" ${next ? 'চালু (ENABLED)' : 'বন্ধ (DISABLED)'} করা হয়েছে`;
+
+      adminAuditLogs.unshift({
+        id: "log-" + Date.now(),
+        action: actionText,
+        user: (currentUser && currentUser.email) || "hossansajjad1994@gmail.com",
+        time: new Date().toLocaleString('bn-BD')
+      });
+      localStorage.setItem("somiti_audit_logs", JSON.stringify(adminAuditLogs.slice(0, 100)));
+
+      // Sync with cloud firestore
+      db.collection("feature_flags").doc("global").set({
+        [key]: next,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedBy: (currentUser && currentUser.email) || "hossansajjad1994@gmail.com"
+      }, { merge: true }).catch(() => {});
+
+      renderMasterAdminView();
+      alert(`⚙️ ${actionText}!`);
+    }
+
+    function switchAdminTab(tab) {
+      document.getElementById("adminTab-modules").style.display = tab === 'modules' ? 'block' : 'none';
+      document.getElementById("adminTab-overrides").style.display = tab === 'overrides' ? 'block' : 'none';
+      document.getElementById("adminTab-audit").style.display = tab === 'audit' ? 'block' : 'none';
+
+      document.getElementById("btnAdminTab-modules").classList.toggle("active", tab === 'modules');
+      document.getElementById("btnAdminTab-overrides").classList.toggle("active", tab === 'overrides');
+      document.getElementById("btnAdminTab-audit").classList.toggle("active", tab === 'audit');
+    }
+
+    function filterAdminModules() {
+      const q = (document.getElementById("adminModuleSearch").value || "").toLowerCase();
+      document.querySelectorAll("#adminModulesList .card").forEach(el => {
+        const text = el.innerText.toLowerCase();
+        el.style.display = text.includes(q) ? "flex" : "none";
+      });
+    }
+
+    function renderSocietyOverrides() {
+      const el = document.getElementById("adminSocietyOverrideList");
+      if (!el) return;
+      el.innerHTML = `
+        <div class="card" style="border: 1px dashed var(--border); padding: 12px; font-size: 12px;">
+          <div style="font-weight: 700; color: var(--primary);">✅ প্রধান সমিতি (সব ফিচার ডিফল্ট সক্রিয়)</div>
+          <p style="color: var(--text-muted); margin-top: 4px;">বর্তমান প্রধান সমিতিতে কোনো কাস্টম নিষেধাজ্ঞা নেই। Master Admin গ্লোবাল সেটিংস অনুসরণ করা হচ্ছে।</p>
+        </div>
+      `;
+    }
+
+    function renderAdminAuditLogs() {
+      const el = document.getElementById("adminAuditLogsList");
+      if (!el) return;
+      el.innerHTML = adminAuditLogs.map(l => `
+        <div style="padding: 8px 10px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 600; color: #1E293B;">${l.action}</div>
+            <div style="font-size: 11px; color: #64748B;">👤 ${l.user}</div>
+          </div>
+          <span style="font-size: 10px; color: #94A3B8; white-space: nowrap;">${l.time}</span>
+        </div>
+      `).join("");
+    }
+
+    // =========================================================================
+    // 2. LOAN MANAGEMENT ENGINE (FLAT & REDUCING EMI AMORTIZATION)
+    // =========================================================================
+
+    let loansData = JSON.parse(localStorage.getItem("somiti_loans_data") || "null");
+    if (!loansData) {
+      loansData = [
+        {
+          id: "LN-001",
+          memberId: "m1",
+          memberName: "জনাব মোঃ আব্দুল্লাহ",
+          memberNumber: "০১",
+          principalAmount: 50000,
+          interestRatePercent: 10,
+          interestType: "flat",
+          durationMonths: 12,
+          totalInterest: 5000,
+          totalPayable: 55000,
+          totalPaid: 18332,
+          outstandingBalance: 36668,
+          status: "active",
+          disbursementDate: "2026-02-10",
+          approvedBy: "সাজ্জাদ হোসেন (ম্যানেজার)",
+          guarantorName: "রফিকুল ইসলাম",
+          guarantorPhone: "01711223344",
+          schedule: []
+        }
+      ];
+      localStorage.setItem("somiti_loans_data", JSON.stringify(loansData));
+    }
+
+    let loanApplicationsData = JSON.parse(localStorage.getItem("somiti_loan_apps") || "null");
+    if (!loanApplicationsData) {
+      loanApplicationsData = [
+        {
+          id: "APP-101",
+          memberId: "m2",
+          memberName: "জনাব করিম উল্লাহ",
+          memberNumber: "০২",
+          memberPhone: "01812345678",
+          requestedAmount: 30000,
+          durationMonths: 6,
+          interestType: "reducing",
+          proposedInterestRate: 12,
+          purpose: "দোকানের মালামাল ক্রয়",
+          guarantorName: "আব্দুল কাদের",
+          guarantorPhone: "01988776655",
+          status: "pending",
+          appliedAt: new Date().toLocaleDateString('bn-BD')
+        }
+      ];
+      localStorage.setItem("somiti_loan_apps", JSON.stringify(loanApplicationsData));
+    }
+
+    function calcLoanSchedule(principal, annualRate, months, type) {
+      const schedule = [];
+      if (months <= 0 || principal <= 0) return { totalInterest: 0, totalPayable: 0, monthly: 0, schedule };
+
+      if (type === "flat") {
+        const totalInterest = principal * (annualRate / 100) * (months / 12);
+        const totalPayable = principal + totalInterest;
+        const monthly = totalPayable / months;
+        const monthlyPrincipal = principal / months;
+        const monthlyInterest = totalInterest / months;
+
+        for (let i = 1; i <= months; i++) {
+          const d = new Date();
+          d.setMonth(d.getMonth() + i);
+          schedule.push({
+            installmentNo: i,
+            dueDate: d.toLocaleDateString('bn-BD'),
+            principalPortion: Math.round(monthlyPrincipal),
+            interestPortion: Math.round(monthlyInterest),
+            totalInstallmentAmount: Math.round(monthly),
+            isPaid: false
+          });
+        }
+        return { totalInterest: Math.round(totalInterest), totalPayable: Math.round(totalPayable), monthly: Math.round(monthly), schedule };
+      } else {
+        // Reducing Balance (EMI)
+        const monthlyRate = (annualRate / 100) / 12;
+        let emi = 0;
+        if (monthlyRate === 0) {
+          emi = principal / months;
+        } else {
+          const factor = Math.pow(1 + monthlyRate, months);
+          emi = (principal * monthlyRate * factor) / (factor - 1);
+        }
+
+        let remaining = principal;
+        let totalInterest = 0;
+
+        for (let i = 1; i <= months; i++) {
+          const interestForMonth = remaining * monthlyRate;
+          let principalForMonth = emi - interestForMonth;
+          if (i === months) principalForMonth = remaining;
+
+          remaining -= principalForMonth;
+          if (remaining < 0) remaining = 0;
+          totalInterest += interestForMonth;
+
+          const d = new Date();
+          d.setMonth(d.getMonth() + i);
+          schedule.push({
+            installmentNo: i,
+            dueDate: d.toLocaleDateString('bn-BD'),
+            principalPortion: Math.round(principalForMonth),
+            interestPortion: Math.round(interestForMonth),
+            totalInstallmentAmount: Math.round(emi),
+            isPaid: false
+          });
+        }
+        return { totalInterest: Math.round(totalInterest), totalPayable: Math.round(principal + totalInterest), monthly: Math.round(emi), schedule };
+      }
+    }
+
+    function updateLoanCalculatorPreview() {
+      const amount = parseFloat(document.getElementById("loanFormAmount").value) || 0;
+      const months = parseInt(document.getElementById("loanFormDuration").value) || 12;
+      const rate = parseFloat(document.getElementById("loanFormRate").value) || 10;
+      const type = document.getElementById("loanFormType").value;
+
+      const calc = calcLoanSchedule(amount, rate, months, type);
+      document.getElementById("calcInterestAmount").innerText = "৳" + calc.totalInterest.toLocaleString('bn-BD');
+      document.getElementById("calcTotalPayable").innerText = "৳" + calc.totalPayable.toLocaleString('bn-BD');
+      document.getElementById("calcMonthlyInstallment").innerText = "৳" + calc.monthly.toLocaleString('bn-BD');
+    }
+
+    function renderLoansView() {
+      // 1. KPI Calculations
+      let totalDisb = 0, totalColl = 0, totalOut = 0;
+      loansData.forEach(l => {
+        totalDisb += l.principalAmount;
+        totalColl += l.totalPaid;
+        totalOut += l.outstandingBalance;
+      });
+
+      document.getElementById("loanTotalDisbursed").innerText = "৳" + Math.round(totalDisb).toLocaleString('bn-BD');
+      document.getElementById("loanTotalCollected").innerText = "৳" + Math.round(totalColl).toLocaleString('bn-BD');
+      document.getElementById("loanTotalOutstanding").innerText = "৳" + Math.round(totalOut).toLocaleString('bn-BD');
+      document.getElementById("loanActiveCount").innerText = loansData.length + " টি";
+      document.getElementById("loanAppBadge").innerText = loanApplicationsData.filter(a => a.status === 'pending').length;
+
+      // 2. Render Active Loans List
+      const activeList = document.getElementById("activeLoansList");
+      if (loansData.length === 0) {
+        activeList.innerHTML = '<div style="text-align: center; padding: 30px; color: var(--text-muted);">কোনো সক্রিয় ঋণ রেকর্ড নেই।</div>';
+      } else {
+        activeList.innerHTML = loansData.map(l => {
+          const prog = l.totalPayable > 0 ? Math.min(100, Math.round((l.totalPaid / l.totalPayable) * 100)) : 0;
+          const isSettled = l.outstandingBalance <= 0;
+          return `
+            <div class="card" style="margin-bottom: 12px; border-left: 4px solid ${isSettled ? '#10B981' : '#0F5132'};">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div>
+                  <span style="font-size: 15px; font-weight: 800; color: #1E293B;">${l.memberName}</span>
+                  <span style="font-size: 11px; color: var(--text-muted);"> (সদস্য নং ${l.memberNumber})</span>
+                </div>
+                <span style="background: ${isSettled ? '#DEF7EC' : '#FEF08A'}; color: ${isSettled ? '#03543F' : '#854D0E'}; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 800;">
+                  ${isSettled ? 'পরিশোধিত' : 'চলমান'}
+                </span>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; background: #F8FAFC; padding: 8px; border-radius: 8px; text-align: center; margin-bottom: 8px;">
+                <div><div style="font-size: 10px; color: #64748B;">মূল ঋণ</div><div style="font-weight: 700; font-size: 12px;">৳${Math.round(l.principalAmount).toLocaleString('bn-BD')}</div></div>
+                <div><div style="font-size: 10px; color: #64748B;">পরিশোধযোগ্য</div><div style="font-weight: 700; font-size: 12px;">৳${Math.round(l.totalPayable).toLocaleString('bn-BD')}</div></div>
+                <div><div style="font-size: 10px; color: #64748B;">মোট আদায়</div><div style="font-weight: 700; font-size: 12px; color: #16A34A;">৳${Math.round(l.totalPaid).toLocaleString('bn-BD')}</div></div>
+                <div><div style="font-size: 10px; color: #64748B;">অবশিষ্ট বাকি</div><div style="font-weight: 800; font-size: 12px; color: #DC2626;">৳${Math.round(l.outstandingBalance).toLocaleString('bn-BD')}</div></div>
+              </div>
+
+              <!-- Progress bar -->
+              <div style="margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 2px;">
+                  <span>আদায় অগ্রগতি:</span>
+                  <strong>${prog}%</strong>
+                </div>
+                <div style="width: 100%; height: 7px; background: #E2E8F0; border-radius: 4px; overflow: hidden;">
+                  <div style="width: ${prog}%; height: 100%; background: ${isSettled ? '#10B981' : '#0F5132'}; border-radius: 4px;"></div>
+                </div>
+              </div>
+
+              <!-- Action buttons -->
+              <div style="display: flex; gap: 8px;">
+                <button onclick="openScheduleModal('${l.id}')" style="flex: 1; background: #F1F5F9; color: #1E293B; border: 1px solid #CBD5E1; padding: 7px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;">
+                  📅 কিস্তি সূচি দেখুন
+                </button>
+                ${!isSettled ? `
+                  <button onclick="openRepayLoanModal('${l.id}')" style="flex: 1; background: #0F5132; color: white; border: none; padding: 7px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;">
+                    💵 কিস্তি আদায় করুন
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // 3. Render Loan Applications List
+      const appList = document.getElementById("loanApplicationsList");
+      if (loanApplicationsData.length === 0) {
+        appList.innerHTML = '<div style="text-align: center; padding: 30px; color: var(--text-muted);">কোনো আবেদন নেই।</div>';
+      } else {
+        appList.innerHTML = loanApplicationsData.map(a => `
+          <div class="card" style="margin-bottom: 12px; border-left: 4px solid ${a.status === 'approved' ? '#2563EB' : (a.status === 'disbursed' ? '#16A34A' : '#D97706')};">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 15px; font-weight: 800; color: #1E293B;">${a.memberName} (${a.memberNumber})</span>
+              <span style="background: #FEF3C7; color: #B45309; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 800;">
+                ${a.status === 'pending' ? 'অপেক্ষমাণ' : (a.status === 'approved' ? 'অনুমোদিত' : 'বিতরণকৃত')}
+              </span>
+            </div>
+            <div style="font-size: 12px; color: #475569; margin-bottom: 6px;">
+              আবেদনের পরিমাণ: <strong>৳${a.requestedAmount.toLocaleString('bn-BD')}</strong> • মেয়াদ: <strong>${a.durationMonths} মাস</strong>
+            </div>
+            <div style="font-size: 11px; color: #64748B; margin-bottom: 10px;">
+              উদ্দেশ্য: ${a.purpose} • জামিনদার: ${a.guarantorName || 'নেই'} (${a.guarantorPhone || ''})
+            </div>
+            <div style="display: flex; gap: 8px;">
+              ${a.status === 'pending' ? `
+                <button onclick="approveLoanApplication('${a.id}')" style="flex: 1; background: #0F5132; color: white; border: none; padding: 7px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;">
+                  ✅ অনুমোদন করুন
+                </button>
+                <button onclick="rejectLoanApplication('${a.id}')" style="flex: 1; background: #FEE2E2; color: #DC2626; border: none; padding: 7px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;">
+                  ❌ বাতিল
+                </button>
+              ` : (a.status === 'approved' ? `
+                <button onclick="openDisburseLoanModal('${a.id}')" style="width: 100%; background: #2563EB; color: white; border: none; padding: 8px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer;">
+                  💸 ঋণ বিতরণ করুন (ক্যাশ আউট)
+                </button>
+              ` : '<div style="font-size: 11px; color: #16A34A; font-weight: 700;">বিতরণ সম্পন্ন হয়েছে</div>')}
+            </div>
+          </div>
+        `).join("");
+      }
+
+      // 4. Populate Member selector in new loan form
+      const memSel = document.getElementById("loanFormMember");
+      if (memSel && membersData.length > 0) {
+        memSel.innerHTML = '<option value="">সদস্য নির্বাচন করুন</option>' + membersData.map(m => `
+          <option value="${m.id}" data-name="${m.name}" data-number="${m.memberNumber}">[${m.memberNumber}] ${m.name}</option>
+        `).join("");
+      }
+      updateLoanCalculatorPreview();
+    }
+
+    function switchLoanTab(tab) {
+      document.getElementById("loanTab-active").style.display = tab === 'active' ? 'block' : 'none';
+      document.getElementById("loanTab-applications").style.display = tab === 'applications' ? 'block' : 'none';
+      document.getElementById("loanTab-new").style.display = tab === 'new' ? 'block' : 'none';
+
+      document.getElementById("btnLoanTab-active").classList.toggle("active", tab === 'active');
+      document.getElementById("btnLoanTab-applications").classList.toggle("active", tab === 'applications');
+      document.getElementById("btnLoanTab-new").classList.toggle("active", tab === 'new');
+    }
+
+    function submitLoanApplication() {
+      const memSel = document.getElementById("loanFormMember");
+      const opt = memSel.options[memSel.selectedIndex];
+      if (!memSel.value) { alert("অনুগ্রহ করে সদস্য নির্বাচন করুন"); return; }
+
+      const amount = parseFloat(document.getElementById("loanFormAmount").value) || 0;
+      const months = parseInt(document.getElementById("loanFormDuration").value) || 12;
+      const rate = parseFloat(document.getElementById("loanFormRate").value) || 10;
+      const type = document.getElementById("loanFormType").value;
+      const purpose = document.getElementById("loanFormPurpose").value.trim() || "সাধারণ ঋণ";
+      const gName = document.getElementById("loanFormGuarantorName").value.trim();
+      const gPhone = document.getElementById("loanFormGuarantorPhone").value.trim();
+
+      if (amount <= 0) { alert("সঠিক ঋণের পরিমাণ লিখুন"); return; }
+
+      const newApp = {
+        id: "APP-" + Date.now().toString().slice(-6),
+        memberId: memSel.value,
+        memberName: opt.getAttribute("data-name"),
+        memberNumber: opt.getAttribute("data-number"),
+        requestedAmount: amount,
+        durationMonths: months,
+        proposedInterestRate: rate,
+        interestType: type,
+        purpose: purpose,
+        guarantorName: gName,
+        guarantorPhone: gPhone,
+        status: "pending",
+        appliedAt: new Date().toLocaleDateString('bn-BD')
+      };
+
+      loanApplicationsData.unshift(newApp);
+      localStorage.setItem("somiti_loan_apps", JSON.stringify(loanApplicationsData));
+      alert("✅ ঋণের আবেদন সফলভাবে দাখিল করা হয়েছে!");
+      switchLoanTab('applications');
+      renderLoansView();
+    }
+
+    function approveLoanApplication(id) {
+      const app = loanApplicationsData.find(x => x.id === id);
+      if (app) {
+        app.status = "approved";
+        localStorage.setItem("somiti_loan_apps", JSON.stringify(loanApplicationsData));
+        renderLoansView();
+      }
+    }
+
+    function rejectLoanApplication(id) {
+      const idx = loanApplicationsData.findIndex(x => x.id === id);
+      if (idx !== -1) {
+        loanApplicationsData.splice(idx, 1);
+        localStorage.setItem("somiti_loan_apps", JSON.stringify(loanApplicationsData));
+        renderLoansView();
+      }
+    }
+
+    let activeDisburseAppId = null;
+    function openDisburseLoanModal(appId) {
+      activeDisburseAppId = appId;
+      const app = loanApplicationsData.find(x => x.id === appId);
+      if (!app) return;
+
+      document.getElementById("disburseInfoBox").innerHTML = `
+        <strong>${app.memberName}</strong>-কে <strong>৳${app.requestedAmount.toLocaleString('bn-BD')}</strong> ঋণ বিতরণ করা হবে।
+      `;
+
+      const accSel = document.getElementById("disburseAccountSelect");
+      accSel.innerHTML = financialAccountsData.map(a => `
+        <option value="${a.id}">${a.name} (ব্যালেন্স: ৳${Math.round(a.currentBalance).toLocaleString('bn-BD')})</option>
+      `).join("");
+
+      document.getElementById("loanDisburseModal").style.display = "flex";
+    }
+
+    function closeLoanDisburseModal() {
+      document.getElementById("loanDisburseModal").style.display = "none";
+    }
+
+    function confirmDisburseLoan() {
+      const app = loanApplicationsData.find(x => x.id === activeDisburseAppId);
+      if (!app) return;
+
+      const accId = document.getElementById("disburseAccountSelect").value;
+      const acc = financialAccountsData.find(x => x.id === accId);
+      if (!acc) return;
+
+      if (acc.currentBalance < app.requestedAmount) {
+        alert("নির্বাচিত একাউন্টে পর্যাপ্ত ব্যালেন্স নেই!");
+        return;
+      }
+
+      // Deduct account balance
+      acc.currentBalance -= app.requestedAmount;
+      localStorage.setItem("somiti_fin_accounts", JSON.stringify(financialAccountsData));
+
+      // Calculate schedule
+      const calc = calcLoanSchedule(app.requestedAmount, app.proposedInterestRate, app.durationMonths, app.interestType);
+
+      // Create Active Loan
+      const newLoan = {
+        id: "LN-" + Date.now().toString().slice(-6),
+        memberId: app.memberId,
+        memberName: app.memberName,
+        memberNumber: app.memberNumber,
+        principalAmount: app.requestedAmount,
+        interestRatePercent: app.proposedInterestRate,
+        interestType: app.interestType,
+        durationMonths: app.durationMonths,
+        totalInterest: calc.totalInterest,
+        totalPayable: calc.totalPayable,
+        totalPaid: 0,
+        outstandingBalance: calc.totalPayable,
+        status: "active",
+        disbursementDate: new Date().toLocaleDateString('bn-BD'),
+        approvedBy: (currentUser && currentUser.displayName) || "সাজ্জাদ হোসেন (ম্যানেজার)",
+        guarantorName: app.guarantorName,
+        guarantorPhone: app.guarantorPhone,
+        schedule: calc.schedule
+      };
+
+      loansData.unshift(newLoan);
+      localStorage.setItem("somiti_loans_data", JSON.stringify(loansData));
+
+      // Update application
+      app.status = "disbursed";
+      localStorage.setItem("somiti_loan_apps", JSON.stringify(loanApplicationsData));
+
+      // Add to cashbook ledger
+      financialTransactionsData.unshift({
+        id: "TX-" + Date.now(),
+        voucherNo: "DISB-" + Date.now().toString().slice(-6),
+        type: "loanDisbursement",
+        amount: app.requestedAmount,
+        fromAccountName: acc.name,
+        category: "ঋণ বিতরণ",
+        description: `${app.memberName}-কে ঋণ প্রদান`,
+        date: new Date().toLocaleDateString('bn-BD'),
+        user: (currentUser && currentUser.displayName) || "এডমিন"
+      });
+      localStorage.setItem("somiti_fin_transactions", JSON.stringify(financialTransactionsData));
+
+      closeLoanDisburseModal();
+      alert("🎉 ঋণ সফলভাবে বিতরণ ও ক্যাশআউট সম্পন্ন হয়েছে!");
+      switchLoanTab('active');
+      renderLoansView();
+      renderAccountingView();
+    }
+
+    let activeRepayLoanId = null;
+    function openRepayLoanModal(loanId) {
+      activeRepayLoanId = loanId;
+      const loan = loansData.find(x => x.id === loanId);
+      if (!loan) return;
+
+      document.getElementById("repayMemberInfo").innerHTML = `
+        <strong>${loan.memberName}</strong> (সদস্য নং ${loan.memberNumber})<br>
+        বকেয়া ঋণ: <strong>৳${Math.round(loan.outstandingBalance).toLocaleString('bn-BD')}</strong>
+      `;
+
+      const monthlyEst = Math.round(loan.totalPayable / loan.durationMonths);
+      document.getElementById("repayAmountInput").value = monthlyEst;
+
+      const accSel = document.getElementById("repayAccountSelect");
+      accSel.innerHTML = financialAccountsData.map(a => `
+        <option value="${a.id}">${a.name} (৳${Math.round(a.currentBalance).toLocaleString('bn-BD')})</option>
+      `).join("");
+
+      document.getElementById("loanRepayModal").style.display = "flex";
+    }
+
+    function closeLoanRepayModal() {
+      document.getElementById("loanRepayModal").style.display = "none";
+    }
+
+    function confirmLoanRepayment() {
+      const loan = loansData.find(x => x.id === activeRepayLoanId);
+      if (!loan) return;
+
+      const amount = parseFloat(document.getElementById("repayAmountInput").value) || 0;
+      if (amount <= 0) { alert("সঠিক কিস্তির পরিমাণ দিন"); return; }
+
+      const accId = document.getElementById("repayAccountSelect").value;
+      const acc = financialAccountsData.find(x => x.id === accId);
+      if (!acc) return;
+
+      // Credit cash account
+      acc.currentBalance += amount;
+      localStorage.setItem("somiti_fin_accounts", JSON.stringify(financialAccountsData));
+
+      // Update loan balance
+      loan.totalPaid += amount;
+      loan.outstandingBalance = Math.max(0, loan.totalPayable - loan.totalPaid);
+
+      // Mark installments paid
+      let rem = amount;
+      if (loan.schedule) {
+        loan.schedule.forEach(inst => {
+          if (!inst.isPaid && rem >= inst.totalInstallmentAmount) {
+            inst.isPaid = true;
+            rem -= inst.totalInstallmentAmount;
+          }
+        });
+      }
+      localStorage.setItem("somiti_loans_data", JSON.stringify(loansData));
+
+      // Ledger entry
+      financialTransactionsData.unshift({
+        id: "TX-" + Date.now(),
+        voucherNo: "REPAY-" + Date.now().toString().slice(-6),
+        type: "loanRepayment",
+        amount: amount,
+        fromAccountName: acc.name,
+        category: "ঋণ কিস্তি আদায়",
+        description: `${loan.memberName}-এর ঋণের কিস্তি আদায়`,
+        date: new Date().toLocaleDateString('bn-BD'),
+        user: (currentUser && currentUser.displayName) || "এডমিন"
+      });
+      localStorage.setItem("somiti_fin_transactions", JSON.stringify(financialTransactionsData));
+
+      closeLoanRepayModal();
+      alert("✅ কিস্তি আদায় ও ক্যাশবুকে রেকর্ড সফল হয়েছে!");
+      renderLoansView();
+      renderAccountingView();
+    }
+
+    function openScheduleModal(loanId) {
+      const loan = loansData.find(x => x.id === loanId);
+      if (!loan) return;
+
+      document.getElementById("scheduleModalTitle").innerText = `${loan.memberName} — কিস্তি পরিশোধ সূচি`;
+      document.getElementById("scheduleSummaryBox").innerHTML = `
+        মূল ঋণ: <strong>৳${Math.round(loan.principalAmount).toLocaleString('bn-BD')}</strong> • 
+        সুদ: <strong>৳${Math.round(loan.totalInterest).toLocaleString('bn-BD')}</strong> (${loan.interestType === 'flat' ? 'সরল সুদ' : 'হ্রাসমান EMI'}) • 
+        মেয়াদ: <strong>${loan.durationMonths} মাস</strong>
+      `;
+
+      let schedule = loan.schedule;
+      if (!schedule || schedule.length === 0) {
+        schedule = calcLoanSchedule(loan.principalAmount, loan.interestRatePercent, loan.durationMonths, loan.interestType).schedule;
+      }
+
+      document.getElementById("scheduleInstallmentList").innerHTML = schedule.map(inst => `
+        <div style="background: white; border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; font-size: 12px;">
+          <div>
+            <div style="font-weight: 700;">কিস্তি #${inst.installmentNo} (৳${inst.totalInstallmentAmount.toLocaleString('bn-BD')})</div>
+            <div style="font-size: 10.5px; color: #64748B;">আসল: ৳${inst.principalPortion.toLocaleString('bn-BD')} + সুদ: ৳${inst.interestPortion.toLocaleString('bn-BD')} • তারিখ: ${inst.dueDate}</div>
+          </div>
+          <span style="background: ${inst.isPaid ? '#DEF7EC' : '#FEE2E2'}; color: ${inst.isPaid ? '#03543F' : '#DC2626'}; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 800;">
+            ${inst.isPaid ? 'পরিশোধিত' : 'বকেয়া'}
+          </span>
+        </div>
+      `).join("");
+
+      document.getElementById("loanScheduleModal").style.display = "flex";
+    }
+
+    function closeScheduleModal() {
+      document.getElementById("loanScheduleModal").style.display = "none";
+    }
+
+    // =========================================================================
+    // 3. MULTI-ACCOUNT ACCOUNTING & DOUBLE-ENTRY CASHBOOK ENGINE
+    // =========================================================================
+
+    let financialAccountsData = JSON.parse(localStorage.getItem("somiti_fin_accounts") || "null");
+    if (!financialAccountsData) {
+      financialAccountsData = [
+        { id: "acc-cash", name: "প্রধান ক্যাশ ড্রয়ার (হাতের নগদ)", type: "cashDrawer", currentBalance: 35450, bankName: "", accountNumber: "CASH-MAIN" },
+        { id: "acc-bank", name: "সোনালী ব্যাংক সাধারণ সঞ্চয়ী হিসাব", type: "bankAccount", currentBalance: 185000, bankName: "Sonali Bank PLC", accountNumber: "0102030405" },
+        { id: "acc-mfs", name: "বিকাশ মার্চেন্ট ওয়ালেট", type: "mfsWallet", currentBalance: 25600, bankName: "bKash", accountNumber: "01712-345678" }
+      ];
+      localStorage.setItem("somiti_fin_accounts", JSON.stringify(financialAccountsData));
+    }
+
+    let financialTransactionsData = JSON.parse(localStorage.getItem("somiti_fin_transactions") || "null");
+    if (!financialTransactionsData) {
+      financialTransactionsData = [
+        { id: "tx-1", voucherNo: "DEP-2026-001", type: "depositIn", amount: 15000, fromAccountName: "প্রধান ক্যাশ ড্রয়ার (হাতের নগদ)", category: "সদস্য সঞ্চয় কিস্তি", description: "মাসিক সঞ্চয় কিস্তি জমা", date: new Date().toLocaleDateString('bn-BD'), user: "সাজ্জাদ হোসেন" },
+        { id: "tx-2", voucherNo: "EXP-2026-001", type: "expenseOut", amount: 2500, fromAccountName: "প্রধান ক্যাশ ড্রয়ার (হাতের নগদ)", category: "অফিস ভাড়া ও বিল", description: "বিদ্যুৎ ও ইন্টারনেট বিল পরিশোধ", date: new Date().toLocaleDateString('bn-BD'), user: "সাজ্জাদ হোসেন" }
+      ];
+      localStorage.setItem("somiti_fin_transactions", JSON.stringify(financialTransactionsData));
+    }
+
+    function renderAccountingView() {
+      // 1. Total Balance
+      let total = 0;
+      financialAccountsData.forEach(a => total += a.currentBalance);
+      document.getElementById("accountingTotalBalance").innerText = "৳" + Math.round(total).toLocaleString('bn-BD');
+
+      // 2. Render Accounts List
+      const accList = document.getElementById("financialAccountsList");
+      accList.innerHTML = financialAccountsData.map(a => {
+        let icon = "💵";
+        if (a.type === "bankAccount") icon = "🏦";
+        if (a.type === "mfsWallet") icon = "📱";
+
+        return `
+          <div class="card" style="margin-bottom: 8px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 24px;">${icon}</span>
+              <div>
+                <div style="font-weight: 700; color: #1E293B;">${a.name}</div>
+                <div style="font-size: 11px; color: #64748B;">${a.bankName ? a.bankName + ' • ' : ''}হি/নং: ${a.accountNumber || 'শাখা ক্যাশ'}</div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-weight: 800; font-size: 15px; color: ${a.currentBalance >= 0 ? '#0F5132' : '#DC2626'};">
+                ৳${Math.round(a.currentBalance).toLocaleString('bn-BD')}
+              </div>
+              <div style="font-size: 10px; color: #94A3B8;">বর্তমান স্থিতি</div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      // 3. Render Ledger List
+      const ledList = document.getElementById("financialLedgerList");
+      if (financialTransactionsData.length === 0) {
+        ledList.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--text-muted);">কোনো লেনদেন রেকর্ড নেই।</div>';
+      } else {
+        ledList.innerHTML = financialTransactionsData.map(t => {
+          const isCredit = t.type === 'depositIn' || t.type === 'loanRepayment';
+          return `
+            <div class="card" style="margin-bottom: 6px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-weight: 700; font-size: 13px; color: #1E293B;">${t.category}</div>
+                <div style="font-size: 11px; color: #475569;">${t.description}</div>
+                <div style="font-size: 10px; color: #94A3B8;">ভাউচার: ${t.voucherNo} • ${t.fromAccountName} • ${t.date}</div>
+              </div>
+              <div style="font-weight: 800; font-size: 14px; color: ${isCredit ? '#16A34A' : '#DC2626'}; white-space: nowrap;">
+                ${isCredit ? '+' : '-'}৳${Math.round(t.amount).toLocaleString('bn-BD')}
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // 4. Voucher Category options
+      populateVoucherCategories();
+    }
+
+    function switchAccountingTab(tab) {
+      document.getElementById("accTab-accounts").style.display = tab === 'accounts' ? 'block' : 'none';
+      document.getElementById("accTab-ledger").style.display = tab === 'ledger' ? 'block' : 'none';
+      document.getElementById("accTab-voucher").style.display = tab === 'voucher' ? 'block' : 'none';
+
+      document.getElementById("btnAccTab-accounts").classList.toggle("active", tab === 'accounts');
+      document.getElementById("btnAccTab-ledger").classList.toggle("active", tab === 'ledger');
+      document.getElementById("btnAccTab-voucher").classList.toggle("active", tab === 'voucher');
+    }
+
+    let activeVoucherType = 'expense';
+    function setVoucherType(type) {
+      activeVoucherType = type;
+      const btnExp = document.getElementById("btnVoucherExpense");
+      const btnInc = document.getElementById("btnVoucherIncome");
+
+      if (type === 'expense') {
+        btnExp.style.background = "#DC2626";
+        btnExp.style.color = "white";
+        btnInc.style.background = "white";
+        btnInc.style.color = "var(--text)";
+        document.getElementById("lblVoucherCategory").innerText = "খরচের খাত (Category) *";
+        document.getElementById("lblVoucherAccount").innerText = "যে একাউন্ট থেকে পরিশোধ হবে *";
+      } else {
+        btnInc.style.background = "#16A34A";
+        btnInc.style.color = "white";
+        btnExp.style.background = "white";
+        btnExp.style.color = "var(--text)";
+        document.getElementById("lblVoucherCategory").innerText = "আয়ের খাত (Category) *";
+        document.getElementById("lblVoucherAccount").innerText = "যে একাউন্টে জমা হবে *";
+      }
+      populateVoucherCategories();
+    }
+
+    function populateVoucherCategories() {
+      const catSel = document.getElementById("voucherCategorySelect");
+      if (!catSel) return;
+
+      const expenseCats = ["অফিস পরিচালনা ব্যয়", "অফিস ভাড়া", "বিদ্যুৎ ও ইন্টারনেট বিল", "কর্মচারী বেতন ও ভাতা", "স্টেশনারি ও প্রিন্টিং", "আপ্যায়ন ব্যয়", "ব্যাংক চার্জ", "বিবিধ"];
+      const incomeCats = ["সদস্য ভর্তি ফি", "ফরম ও পাসবুক বিক্রয়", "বিলম্ব জরিমানা ফি", "ব্যাংক মুনাফা", "দান ও অনুদান", "বিবিধ আয়"];
+
+      const cats = activeVoucherType === 'expense' ? expenseCats : incomeCats;
+      catSel.innerHTML = cats.map(c => `<option value="${c}">${c}</option>`).join("");
+
+      const accSel = document.getElementById("voucherAccountSelect");
+      if (accSel) {
+        accSel.innerHTML = financialAccountsData.map(a => `
+          <option value="${a.id}">${a.name} (৳${Math.round(a.currentBalance).toLocaleString('bn-BD')})</option>
+        `).join("");
+      }
+    }
+
+    function submitVoucherEntry() {
+      const amount = parseFloat(document.getElementById("voucherAmount").value) || 0;
+      const desc = document.getElementById("voucherDescription").value.trim();
+      const cat = document.getElementById("voucherCategorySelect").value;
+      const accId = document.getElementById("voucherAccountSelect").value;
+      const ref = document.getElementById("voucherRefNo").value.trim();
+
+      if (amount <= 0 || !desc) { alert("অনুগ্রহ করে পরিমাণ এবং বিবরণ পূরণ করুন"); return; }
+
+      const acc = financialAccountsData.find(x => x.id === accId);
+      if (!acc) return;
+
+      if (activeVoucherType === 'expense') {
+        if (acc.currentBalance < amount) {
+          alert("নির্বাচিত একাউন্টে পর্যাপ্ত ব্যালেন্স নেই!");
+          return;
+        }
+        acc.currentBalance -= amount;
+      } else {
+        acc.currentBalance += amount;
+      }
+      localStorage.setItem("somiti_fin_accounts", JSON.stringify(financialAccountsData));
+
+      financialTransactionsData.unshift({
+        id: "TX-" + Date.now(),
+        voucherNo: (activeVoucherType === 'expense' ? 'EXP-' : 'INC-') + Date.now().toString().slice(-6),
+        type: activeVoucherType === 'expense' ? 'expenseOut' : 'adjustment',
+        amount: amount,
+        fromAccountName: acc.name,
+        category: cat,
+        description: desc + (ref ? ` (রেফ: ${ref})` : ''),
+        date: new Date().toLocaleDateString('bn-BD'),
+        user: (currentUser && currentUser.displayName) || "এডমিন"
+      });
+      localStorage.setItem("somiti_fin_transactions", JSON.stringify(financialTransactionsData));
+
+      alert("✅ ভাউচার এন্ট্রি ও ব্যালেন্স সমন্বয় সফল হয়েছে!");
+      document.getElementById("voucherAmount").value = "";
+      document.getElementById("voucherDescription").value = "";
+      document.getElementById("voucherRefNo").value = "";
+      switchAccountingTab('ledger');
+      renderAccountingView();
+    }
+
+    function openTransferFundsModal() {
+      const fromSel = document.getElementById("transferFromSelect");
+      const toSel = document.getElementById("transferToSelect");
+
+      fromSel.innerHTML = financialAccountsData.map(a => `
+        <option value="${a.id}">${a.name} (৳${Math.round(a.currentBalance).toLocaleString('bn-BD')})</option>
+      `).join("");
+
+      toSel.innerHTML = financialAccountsData.map(a => `
+        <option value="${a.id}">${a.name} (৳${Math.round(a.currentBalance).toLocaleString('bn-BD')})</option>
+      `).join("");
+
+      if (financialAccountsData.length > 1) {
+        toSel.selectedIndex = 1;
+      }
+
+      document.getElementById("transferFundsModal").style.display = "flex";
+    }
+
+    function closeTransferFundsModal() {
+      document.getElementById("transferFundsModal").style.display = "none";
+    }
+
+    function confirmFundTransfer() {
+      const fromId = document.getElementById("transferFromSelect").value;
+      const toId = document.getElementById("transferToSelect").value;
+      const amount = parseFloat(document.getElementById("transferAmountInput").value) || 0;
+      const note = document.getElementById("transferNoteInput").value.trim();
+
+      if (fromId === toId) { alert("উৎস এবং গন্তব্য একই একাউন্ট হতে পারে না!"); return; }
+      if (amount <= 0) { alert("সঠিক স্থানান্তরের পরিমাণ লিখুন"); return; }
+
+      const fromAcc = financialAccountsData.find(x => x.id === fromId);
+      const toAcc = financialAccountsData.find(x => x.id === toId);
+
+      if (fromAcc.currentBalance < amount) {
+        alert("উৎস একাউন্টে পর্যাপ্ত ব্যালেন্স নেই!");
+        return;
+      }
+
+      fromAcc.currentBalance -= amount;
+      toAcc.currentBalance += amount;
+      localStorage.setItem("somiti_fin_accounts", JSON.stringify(financialAccountsData));
+
+      financialTransactionsData.unshift({
+        id: "TX-" + Date.now(),
+        voucherNo: "TRF-" + Date.now().toString().slice(-6),
+        type: "transfer",
+        amount: amount,
+        fromAccountName: `${fromAcc.name} ➔ ${toAcc.name}`,
+        category: "তহবিল স্থানান্তর",
+        description: note || `${fromAcc.name} থেকে ${toAcc.name}-এ তহবিল স্থানান্তর`,
+        date: new Date().toLocaleDateString('bn-BD'),
+        user: (currentUser && currentUser.displayName) || "এডমিন"
+      });
+      localStorage.setItem("somiti_fin_transactions", JSON.stringify(financialTransactionsData));
+
+      closeTransferFundsModal();
+      alert("✅ তহবিল স্থানান্তর সফল হয়েছে!");
+      renderAccountingView();
+    }
+
+    function openAddAccountModal() {
+      document.getElementById("newAccountName").value = "";
+      document.getElementById("newAccountBank").value = "";
+      document.getElementById("newAccountNumber").value = "";
+      document.getElementById("newAccountBalance").value = "0";
+      document.getElementById("addAccountModal").style.display = "flex";
+    }
+
+    function closeAddAccountModal() {
+      document.getElementById("addAccountModal").style.display = "none";
+    }
+
+    function confirmAddAccount() {
+      const name = document.getElementById("newAccountName").value.trim();
+      const type = document.getElementById("newAccountType").value;
+      const bank = document.getElementById("newAccountBank").value.trim();
+      const num = document.getElementById("newAccountNumber").value.trim();
+      const bal = parseFloat(document.getElementById("newAccountBalance").value) || 0;
+
+      if (!name) { alert("একাউন্টের নাম আবশ্যক"); return; }
+
+      financialAccountsData.push({
+        id: "acc-" + Date.now(),
+        name: name,
+        type: type,
+        bankName: bank,
+        accountNumber: num,
+        currentBalance: bal
+      });
+      localStorage.setItem("somiti_fin_accounts", JSON.stringify(financialAccountsData));
+
+      closeAddAccountModal();
+      alert("✅ নতুন একাউন্ট সফলভাবে যুক্ত হয়েছে!");
+      renderAccountingView();
+    }
+
+    // Auto-initialize view helpers on startup
+    window.addEventListener("DOMContentLoaded", () => {
+      updateLoanCalculatorPreview();
+    });
   </script>
 </body>
 </html>
