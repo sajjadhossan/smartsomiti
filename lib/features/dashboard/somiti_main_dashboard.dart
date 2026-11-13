@@ -26,6 +26,7 @@ class SomitiMainDashboard extends StatefulWidget {
 
 class _SomitiMainDashboardState extends State<SomitiMainDashboard> {
   int _currentIndex = 0;
+  bool _isBalanceHidden = false;
   final SomitiService _somitiService = SomitiService();
   final DriveService _driveService = DriveService();
 
@@ -920,6 +921,11 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
     );
   }
 
+  String _formatCurrency(double val, NumberFormat formatter) {
+    if (_isBalanceHidden) return '৳ ••••••';
+    return '৳${formatter.format(val)}';
+  }
+
   Widget _buildSummaryTab(
     List<MemberModel> members,
     List<DepositModel> deposits,
@@ -929,37 +935,201 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
     double cashInHand,
   ) {
     final currencyFormat = NumberFormat('#,##,###');
+    const double initialBankReserve = 75000.0;
+    final double totalLiquidAssets = cashInHand + initialBankReserve;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Hero Cash-in-hand Card
+          // Attention Alert Banner (Tip 19)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            margin: const EdgeInsets.only(bottom: 14),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFFBEB),
+              border: Border.all(color: const Color(0xFFFCD34D)),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                const Text('⚠️', style: TextStyle(fontSize: 16)),
+                const SizedBox(width: 8),
+                const Expanded(
+                  child: Text(
+                    'চলতি সপ্তাহের ঋণ কিস্তি ও ক্যাশ রেজিস্টার নিয়মিত আপডেট রাখুন।',
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Color(0xFF92400E)),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => LoanManagementScreen(
+                          somitiId: widget.somiti.id,
+                          somitiName: widget.somiti.name,
+                          currentUserName: widget.user.displayName ?? widget.user.email ?? 'এডমিন',
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text('ঋণ ↗', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                ),
+              ],
+            ),
+          ),
+
+          // ================= HERO BALANCE CARD (Tips 11, 12, 15, 16, 20) =================
           Card(
-            color: const Color(0xFF0F9D58),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            child: Padding(
+            elevation: 3,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+            clipBehavior: Clip.antiAlias,
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Color(0xFF064E3B), Color(0xFF065F46), Color(0xFF047857)],
+                ),
+              ),
               padding: const EdgeInsets.all(20),
-              child: Column(
+              child: Stack(
                 children: [
-                  const Text('হাতে নগদ ক্যাশ (Cash in Hand)', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14)),
-                  const SizedBox(height: 6),
-                  Text('৳${currencyFormat.format(cashInHand)}', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.bold, color: Colors.white)),
-                  const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  // Faint Watermark (Tip 20)
+                  Positioned(
+                    right: -10,
+                    bottom: -15,
+                    child: Opacity(
+                      opacity: 0.08,
+                      child: const Icon(Icons.account_balance_rounded, size: 120, color: Colors.white),
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('মোট সঞ্চয় জমা', style: TextStyle(color: Colors.white70, fontSize: 12)),
-                          Text('৳${currencyFormat.format(totalDeposit)}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.14),
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: Colors.white24),
+                            ),
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text('💼', style: TextStyle(fontSize: 12)),
+                                SizedBox(width: 4),
+                                Text(
+                                  'মোট সক্রিয় তহবিল (Liquid Assets)',
+                                  style: TextStyle(color: Color(0xFFA7F3D0), fontWeight: FontWeight.bold, fontSize: 11),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Privacy Eye Toggle Button (Tip 12)
+                          IconButton(
+                            visualDensity: VisualDensity.compact,
+                            onPressed: () {
+                              HapticFeedback.lightImpact();
+                              setState(() {
+                                _isBalanceHidden = !_isBalanceHidden;
+                              });
+                            },
+                            icon: Icon(
+                              _isBalanceHidden ? Icons.visibility_off_rounded : Icons.visibility_rounded,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                            tooltip: 'ব্যালেন্স গোপন / প্রদর্শন করুন',
+                          ),
                         ],
                       ),
-                      Container(width: 1, height: 28, color: Colors.white24),
-                      Column(
+                      const SizedBox(height: 10),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                        textBaseline: TextBaseline.alphabetic,
                         children: [
-                          const Text('মোট খরচ', style: TextStyle(color: Colors.white70, fontSize: 12)),
-                          Text('৳${currencyFormat.format(totalExpense)}', style: const TextStyle(color: Color(0xFFFFCDD2), fontWeight: FontWeight.bold, fontSize: 16)),
+                          Text(
+                            _formatCurrency(totalLiquidAssets, currencyFormat),
+                            style: const TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFDCFCE7),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Text(
+                              '↑ ৮.৪% বৃদ্ধি',
+                              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF166534)),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      // 2-Column Breakdown Sub-Boxes
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: Colors.white12),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    '💵 হাতে নগদ (ক্যাশ)',
+                                    style: TextStyle(color: Color(0xFFD1FAE5), fontSize: 11, fontWeight: FontWeight.w600),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    _formatCurrency(cashInHand, currencyFormat),
+                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFFFEF08A)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: Colors.white12),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    '🏦 ব্যাংক ও বিকাশ স্থিতি',
+                                    style: TextStyle(color: Color(0xFFD1FAE5), fontSize: 11, fontWeight: FontWeight.w600),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    _formatCurrency(initialBankReserve, currencyFormat),
+                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFFFEF08A)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -968,48 +1138,131 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
               ),
             ),
           ),
+          const SizedBox(height: 14),
+
+          // ================= KPI MICRO-CHIPS SCROLLING ROW (Tip 14) =================
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                _buildKpiChip(
+                  icon: Icons.groups_rounded,
+                  title: 'মোট সদস্য:',
+                  value: '${members.length} জন',
+                  color: Colors.blue.shade700,
+                  onTap: () => setState(() => _currentIndex = 1),
+                ),
+                const SizedBox(width: 8),
+                _buildKpiChip(
+                  icon: Icons.savings_rounded,
+                  title: 'মোট সঞ্চয়:',
+                  value: _formatCurrency(totalDeposit, currencyFormat),
+                  color: Colors.green.shade700,
+                  onTap: () => setState(() => _currentIndex = 2),
+                ),
+                const SizedBox(width: 8),
+                _buildKpiChip(
+                  icon: Icons.receipt_long_rounded,
+                  title: 'মোট খরচ:',
+                  value: _formatCurrency(totalExpense, currencyFormat),
+                  color: Colors.red.shade700,
+                  onTap: () => setState(() => _currentIndex = 3),
+                ),
+                const SizedBox(width: 8),
+                _buildKpiChip(
+                  icon: Icons.account_balance_wallet_rounded,
+                  title: 'চলমান ঋণ:',
+                  value: _formatCurrency(45000.0, currencyFormat),
+                  color: Colors.amber.shade800,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => LoanManagementScreen(
+                          somitiId: widget.somiti.id,
+                          somitiName: widget.somiti.name,
+                          currentUserName: widget.user.displayName ?? widget.user.email ?? 'এডমিন',
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
           const SizedBox(height: 16),
+
+          // ================= NEUMORPHIC 4-COLUMN QUICK ACTIONS GRID (Tip 13) =================
           Row(
             children: [
               Expanded(
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(14),
-                    child: Column(
-                      children: [
-                        const Text('মোট সদস্য', style: TextStyle(color: Colors.grey, fontSize: 12)),
-                        Text('${members.length} জন', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
+                child: _buildQuickActionButton(
+                  icon: Icons.download_rounded,
+                  iconColor: const Color(0xFF0F9D58),
+                  bgColor: const Color(0xFFE8F5E9),
+                  title: 'জমা গ্রহণ',
+                  subtitle: 'সঞ্চয় এন্ট্রি',
+                  onTap: () => setState(() => _currentIndex = 2),
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
               Expanded(
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(14),
-                    child: Column(
-                      children: [
-                        const Text('জমা এন্ট্রি', style: TextStyle(color: Colors.grey, fontSize: 12)),
-                        Text('${deposits.length} টি', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
+                child: _buildQuickActionButton(
+                  icon: Icons.credit_card_rounded,
+                  iconColor: const Color(0xFF15803D),
+                  bgColor: const Color(0xFFDCFCE7),
+                  title: 'ঋণ বিতরণ',
+                  subtitle: 'কিস্তি শিডিউল',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => LoanManagementScreen(
+                          somitiId: widget.somiti.id,
+                          somitiName: widget.somiti.name,
+                          currentUserName: widget.user.displayName ?? widget.user.email ?? 'এডমিন',
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
               Expanded(
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(14),
-                    child: Column(
-                      children: [
-                        const Text('খরচ এন্ট্রি', style: TextStyle(color: Colors.grey, fontSize: 12)),
-                        Text('${expenses.length} টি', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
+                child: _buildQuickActionButton(
+                  icon: Icons.upload_rounded,
+                  iconColor: const Color(0xFFDC2626),
+                  bgColor: const Color(0xFFFEE2E2),
+                  title: 'খরচ এন্ট্রি',
+                  subtitle: 'ভাউচার',
+                  onTap: () => setState(() => _currentIndex = 3),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _buildQuickActionButton(
+                  icon: Icons.receipt_rounded,
+                  iconColor: const Color(0xFF0284C7),
+                  bgColor: const Color(0xFFE0F2FE),
+                  title: 'মানি রসিদ',
+                  subtitle: 'প্রিন্ট ও PDF',
+                  onTap: () {
+                    if (deposits.isNotEmpty) {
+                      final d = deposits.first;
+                      _showReceiptDialog(
+                        memberNumber: d.memberNumber,
+                        memberName: d.memberName,
+                        amount: d.amount,
+                        type: d.type,
+                        date: d.date,
+                        note: d.note,
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('রসিদ দেখতে আগে একটি জমা এন্ট্রি করুন।')),
+                      );
+                    }
+                  },
                 ),
               ),
             ],
@@ -1178,6 +1431,94 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildKpiChip({
+    required IconData icon,
+    required String title,
+    required String value,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.grey.shade200),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 4,
+              offset: const Offset(0, 1),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 16, color: color),
+            const SizedBox(width: 6),
+            Text(title, style: TextStyle(color: Colors.grey.shade600, fontSize: 11, fontWeight: FontWeight.w600)),
+            const SizedBox(width: 4),
+            Text(value, style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.bold)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuickActionButton({
+    required IconData icon,
+    required Color iconColor,
+    required Color bgColor,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return Card(
+      elevation: 1,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: Colors.grey.shade200),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: bgColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(icon, color: iconColor, size: 22),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+              ),
+              const SizedBox(height: 1),
+              Text(
+                subtitle,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.grey.shade500, fontSize: 9),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

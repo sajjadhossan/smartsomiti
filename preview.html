@@ -612,22 +612,268 @@
     }
 
 
-    /* Financial Summary Card */
-    .summary-card {
-      background: linear-gradient(135deg, #0F9D58, #0B8043);
-      color: white; border-radius: 16px; padding: 18px;
-      box-shadow: 0 4px 12px rgba(15,157,88,0.25); margin-bottom: 16px;
+    /* ================= CATEGORY 2: HERO BALANCE CARD & DASHBOARD METRICS ================= */
+    .hero-balance-card {
+      background: linear-gradient(135deg, #064E3B 0%, #065F46 50%, #047857 100%);
+      color: white;
+      border-radius: 22px;
+      padding: 22px 20px;
+      box-shadow: 0 12px 28px -6px rgba(6, 78, 59, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
     }
-    .cash-highlight-card {
-      background: rgba(255,255,255,0.18); backdrop-filter: blur(8px);
-      border-radius: 12px; padding: 12px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.3);
-      display: flex; justify-content: space-between; align-items: center;
+    .hero-watermark {
+      position: absolute;
+      right: -15px;
+      bottom: -20px;
+      font-size: 110px;
+      opacity: 0.07;
+      pointer-events: none;
+      user-select: none;
     }
-    .cash-in-hand-amt { font-size: 26px; font-weight: 800; color: #FEF08A; }
-    .stat-row { display: flex; justify-content: space-between; gap: 8px; }
-    .stat-box { flex: 1; background: rgba(0,0,0,0.15); border-radius: 8px; padding: 8px; text-align: center; }
-    .stat-box h4 { font-size: 16px; font-weight: 700; }
-    .stat-box p { font-size: 11px; opacity: 0.85; }
+    .hero-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .hero-title-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #A7F3D0;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    .privacy-toggle-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #FFFFFF;
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      transition: all 0.2s;
+    }
+    .privacy-toggle-btn:hover { background: rgba(255, 255, 255, 0.28); }
+    .hero-balance-amt {
+      font-size: 32px;
+      font-weight: 900;
+      color: #FFFFFF;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .growth-trend-pill {
+      font-size: 11px;
+      font-weight: 800;
+      background: #DCFCE7;
+      color: #166534;
+      padding: 3px 8px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .hero-breakdown-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    .hero-sub-box {
+      background: rgba(0, 0, 0, 0.18);
+      border-radius: 12px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: left;
+    }
+    .hero-sub-label {
+      font-size: 11px;
+      color: #D1FAE5;
+      font-weight: 600;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .hero-sub-val {
+      font-size: 16px;
+      font-weight: 800;
+      color: #FEF08A;
+    }
+
+    /* KPI Micro-Chips Scrolling Bar (Tip 14) */
+    .kpi-chip-carousel {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+      scrollbar-width: none;
+    }
+    .kpi-chip-carousel::-webkit-scrollbar { display: none; }
+    .kpi-chip {
+      flex-shrink: 0;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 7px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      font-size: 12px;
+    }
+    .kpi-chip-icon {
+      font-size: 15px;
+    }
+    .kpi-chip-title {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .kpi-chip-val {
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    /* Neumorphic 4-Column Quick Actions Grid (Tip 13) */
+    .action-grid-4col {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .quick-act-card {
+      background: white;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 12px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+    }
+    .quick-act-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px -4px rgba(15, 157, 88, 0.15);
+      border-color: #A5D6A7;
+    }
+    .quick-act-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 8px;
+      transition: transform 0.2s ease;
+    }
+    .quick-act-card:hover .quick-act-icon { transform: scale(1.08); }
+    .quick-act-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .quick-act-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Attention Alert Banner (Tip 19) */
+    .attention-banner {
+      background: #FFFBEB;
+      border: 1px solid #FCD34D;
+      border-left: 4px solid #F59E0B;
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 4px rgba(245, 158, 11, 0.08);
+      font-size: 12px;
+      color: #92400E;
+    }
+
+    /* 7-Day Interactive Financial Trend Mini-Chart (Tip 18) */
+    .mini-chart-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    }
+    .mini-chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .mini-chart-bars {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      height: 65px;
+      padding-top: 8px;
+      border-bottom: 1px solid #E2E8F0;
+    }
+    .chart-bar-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      flex: 1;
+    }
+    .chart-bar-pillar {
+      width: 14px;
+      background: linear-gradient(180deg, #10B981 0%, #059669 100%);
+      border-radius: 4px 4px 0 0;
+      min-height: 8px;
+      transition: height 0.4s ease;
+    }
+    .chart-bar-pillar.expense {
+      background: linear-gradient(180deg, #F87171 0%, #EF4444 100%);
+    }
+    .chart-day-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    /* Shimmer Skeleton Placeholder (Tip 17) */
+    @keyframes shimmerAnim {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .shimmer-loading {
+      background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
+      background-size: 200% 100%;
+      animation: shimmerAnim 1.5s infinite;
+      border-radius: 6px;
+    }
 
     .tabs { display: flex; background: white; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 16px; }
     .tab-btn {
@@ -1612,28 +1858,156 @@
           </button>
         </div>
 
-        <!-- Financial Summary Box with Cash in Hand -->
-        <div class="summary-card">
-          <div class="cash-highlight-card">
-            <div style="text-align: left;">
-              <div style="font-size: 12px; font-weight: 600; opacity: 0.9;">হাতে নগদ ক্যাশ (Cash in Hand)</div>
-              <div class="cash-in-hand-amt" id="cashInHand">৳০</div>
+        <!-- Attention Alert Banner (Tip 19) -->
+        <div class="attention-banner" id="dashAttentionBanner">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 16px;">⚠️</span>
+            <span><strong>দৃষ্টি আকর্ষণ:</strong> সমিতির চলতি সপ্তাহের ঋণ কিস্তি ও ক্যাশ রেজিস্টার নিয়মিত আপডেট রাখুন।</span>
+          </div>
+          <button onclick="navTo('loans')" style="background: #F59E0B; color: white; border: none; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap;">
+            ঋণ দেখুন ↗
+          </button>
+        </div>
+
+        <!-- ================= HERO BALANCE CARD (Tips 11, 12, 15, 16, 20) ================= -->
+        <div class="hero-balance-card">
+          <div class="hero-watermark">🏛️</div>
+          <div class="hero-header-row">
+            <div class="hero-title-badge">
+              <span>💼 মোট সক্রিয় তহবিল (Liquid Assets)</span>
             </div>
-            <div style="font-size: 26px;">💵</div>
+            <button class="privacy-toggle-btn" id="btnPrivacyToggle" onclick="toggleBalancePrivacy()" title="ব্যালেন্স গোপন / প্রদর্শন করুন">
+              <span id="privacyIcon">👁️</span>
+            </button>
           </div>
 
-          <div class="stat-row">
-            <div class="stat-box">
-              <h4 id="totalDepositFund" style="color: #BBF7D0;">৳০</h4>
-              <p>মোট সঞ্চয়</p>
+          <div class="hero-balance-amt">
+            <span id="heroTotalBalance">৳০</span>
+            <span class="growth-trend-pill" id="heroGrowthTrend">
+              <span>↑ ৮.৪%</span>
+              <span style="font-size: 9px; opacity: 0.85;">বৃদ্ধি</span>
+            </span>
+          </div>
+
+          <div class="hero-breakdown-grid">
+            <div class="hero-sub-box">
+              <div class="hero-sub-label">
+                <span>💵</span>
+                <span>হাতে নগদ (ক্যাশ ড্রয়ার)</span>
+              </div>
+              <div class="hero-sub-val" id="cashInHand">৳০</div>
             </div>
-            <div class="stat-box">
-              <h4 id="totalExpenseFund" style="color: #FECACA;">৳০</h4>
-              <p>মোট খরচ</p>
+            <div class="hero-sub-box">
+              <div class="hero-sub-label">
+                <span>🏦</span>
+                <span>ব্যাংক ও বিকাশ স্থিতি</span>
+              </div>
+              <div class="hero-sub-val" id="heroBankMfsBalance">৳০</div>
             </div>
-            <div class="stat-box">
-              <h4 id="totalMembers">০ জন</h4>
-              <p>মোট সদস্য</p>
+          </div>
+        </div>
+
+        <!-- ================= KPI MICRO-CHIPS SCROLLING BAR (Tip 14) ================= -->
+        <div class="kpi-chip-carousel">
+          <div class="kpi-chip" onclick="navTo('app'); showTab('members')">
+            <span class="kpi-chip-icon">👥</span>
+            <div>
+              <span class="kpi-chip-title">মোট সদস্য:</span>
+              <span class="kpi-chip-val" id="totalMembers">০ জন</span>
+            </div>
+          </div>
+          <div class="kpi-chip" onclick="navTo('app'); showTab('deposits')">
+            <span class="kpi-chip-icon">📥</span>
+            <div>
+              <span class="kpi-chip-title">মোট সঞ্চয়:</span>
+              <span class="kpi-chip-val" id="totalDepositFund" style="color: #16A34A;">৳০</span>
+            </div>
+          </div>
+          <div class="kpi-chip" onclick="navTo('app'); showTab('expenses')">
+            <span class="kpi-chip-icon">📤</span>
+            <div>
+              <span class="kpi-chip-title">মোট খরচ:</span>
+              <span class="kpi-chip-val" id="totalExpenseFund" style="color: #DC2626;">৳০</span>
+            </div>
+          </div>
+          <div class="kpi-chip" onclick="navTo('loans')">
+            <span class="kpi-chip-icon">💳</span>
+            <div>
+              <span class="kpi-chip-title">চলমান ঋণ:</span>
+              <span class="kpi-chip-val" id="kpiActiveLoanAmt" style="color: #D97706;">৳০</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= NEUMORPHIC 4-COLUMN QUICK ACTIONS (Tip 13) ================= -->
+        <div class="action-grid-4col">
+          <div class="quick-act-card" onclick="navTo('app'); showTab('deposits');">
+            <div class="quick-act-icon" style="background: #E8F5E9; color: #0F9D58;">📥</div>
+            <div class="quick-act-label">জমা গ্রহণ</div>
+            <div class="quick-act-sub">সঞ্চয় এন্ট্রি</div>
+          </div>
+          <div class="quick-act-card" onclick="navTo('loans');">
+            <div class="quick-act-icon" style="background: #DCFCE7; color: #15803D;">💳</div>
+            <div class="quick-act-label">ঋণ বিতরণ</div>
+            <div class="quick-act-sub">কিস্তি শিডিউল</div>
+          </div>
+          <div class="quick-act-card" onclick="navTo('app'); showTab('expenses');">
+            <div class="quick-act-icon" style="background: #FEE2E2; color: #DC2626;">📤</div>
+            <div class="quick-act-label">খরচ এন্ট্রি</div>
+            <div class="quick-act-sub">দৈনিক ভাউচার</div>
+          </div>
+          <div class="quick-act-card" onclick="triggerQuickReceiptModal();">
+            <div class="quick-act-icon" style="background: #E0F2FE; color: #0284C7;">🧾</div>
+            <div class="quick-act-label">মানি রসিদ</div>
+            <div class="quick-act-sub">প্রিন্ট ও PDF</div>
+          </div>
+        </div>
+
+        <!-- ================= 7-DAY INTERACTIVE FINANCIAL TREND MINI-CHART (Tip 18) ================= -->
+        <div class="mini-chart-card">
+          <div class="mini-chart-header">
+            <div style="font-size: 13px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 6px;">
+              <span>📊</span>
+              <span>গত ৭ দিনের আর্থিক প্রবাহ (আদায় বনাম ব্যয়)</span>
+            </div>
+            <div style="display: flex; gap: 8px; font-size: 11px;">
+              <span style="display: flex; align-items: center; gap: 4px; color: #059669; font-weight: 700;">
+                <span style="width: 8px; height: 8px; background: #059669; border-radius: 2px;"></span> আদায়
+              </span>
+              <span style="display: flex; align-items: center; gap: 4px; color: #DC2626; font-weight: 700;">
+                <span style="width: 8px; height: 8px; background: #DC2626; border-radius: 2px;"></span> ব্যয়
+              </span>
+            </div>
+          </div>
+
+          <div class="mini-chart-bars" id="sevenDayChartBars">
+            <div class="chart-bar-col">
+              <div class="chart-bar-pillar" style="height: 38px;" title="আদায়: ৳৩,৮০০"></div>
+              <span class="chart-day-label">শনি</span>
+            </div>
+            <div class="chart-bar-col">
+              <div class="chart-bar-pillar" style="height: 52px;" title="আদায়: ৳৫,২০০"></div>
+              <span class="chart-day-label">রবি</span>
+            </div>
+            <div class="chart-bar-col">
+              <div class="chart-bar-pillar expense" style="height: 25px;" title="ব্যয়: ৳২,৫০০"></div>
+              <span class="chart-day-label">সোম</span>
+            </div>
+            <div class="chart-bar-col">
+              <div class="chart-bar-pillar" style="height: 60px;" title="আদায়: ৳৬,০০০"></div>
+              <span class="chart-day-label">মঙ্গল</span>
+            </div>
+            <div class="chart-bar-col">
+              <div class="chart-bar-pillar" style="height: 45px;" title="আদায়: ৳৪,৫০০"></div>
+              <span class="chart-day-label">বুধ</span>
+            </div>
+            <div class="chart-bar-col">
+              <div class="chart-bar-pillar expense" style="height: 30px;" title="ব্যয়: ৳৩,০০০"></div>
+              <span class="chart-day-label">বৃহঃ</span>
+            </div>
+            <div class="chart-bar-col">
+              <div class="chart-bar-pillar" style="height: 55px;" title="আদায়: ৳৫,৫০০"></div>
+              <span class="chart-day-label">শুক্র</span>
             </div>
           </div>
         </div>
@@ -6202,15 +6576,76 @@
       `).join("");
     }
 
+    // ================= CATEGORY 2: DASHBOARD METRICS & PRIVACY ENGINE =================
+    let isBalanceHidden = localStorage.getItem("somiti_balance_hidden") === "true";
+
+    function formatCurrencyBD(num) {
+      if (isBalanceHidden) return "৳ ••••••";
+      const n = Math.round(num || 0);
+      return "৳" + n.toLocaleString('en-IN');
+    }
+
+    function toggleBalancePrivacy() {
+      isBalanceHidden = !isBalanceHidden;
+      localStorage.setItem("somiti_balance_hidden", isBalanceHidden);
+      const icon = document.getElementById("privacyIcon");
+      if (icon) icon.innerText = isBalanceHidden ? "🙈" : "👁️";
+      updateSummary();
+    }
+
+    function triggerQuickReceiptModal() {
+      // Find latest deposit or open modal
+      if (depositsData.length > 0) {
+        showReceipt(depositsData[0]);
+      } else {
+        navTo('app');
+        showTab('deposits');
+        alert("রসিদ তৈরি করার জন্য অনুগ্রহ করে আগে একটি জমা নির্বাচন বা এন্ট্রি করুন।");
+      }
+    }
+
     function updateSummary() {
       const totalDeposits = membersData.reduce((sum, m) => sum + (m.totalDeposit || 0), 0);
       const totalExpenses = expensesData.reduce((sum, e) => sum + (e.amount || 0), 0);
       const cashInHand = totalDeposits - totalExpenses;
 
-      document.getElementById("totalDepositFund").innerText = "৳" + totalDeposits.toLocaleString();
-      document.getElementById("totalExpenseFund").innerText = "৳" + totalExpenses.toLocaleString();
-      document.getElementById("cashInHand").innerText = "৳" + cashInHand.toLocaleString();
-      document.getElementById("totalMembers").innerText = membersData.length + " জন";
+      // Calculate Bank & MFS accounts total
+      const bankMfsTotal = (accountsData && accountsData.length > 0)
+        ? accountsData.filter(a => a.type !== 'cash').reduce((sum, a) => sum + (a.balance || 0), 0)
+        : 75000; // default initial bank reserve
+
+      const totalLiquidAssets = cashInHand + bankMfsTotal;
+
+      // Calculate active loans
+      const activeLoanTotal = (loansData && loansData.length > 0)
+        ? loansData.filter(l => l.status === 'disbursed').reduce((sum, l) => sum + (l.outstandingBalance || 0), 0)
+        : 45000; // sample initial ongoing loan fund
+
+      // Update DOM
+      const heroTotalEl = document.getElementById("heroTotalBalance");
+      if (heroTotalEl) heroTotalEl.innerText = formatCurrencyBD(totalLiquidAssets);
+
+      const cashEl = document.getElementById("cashInHand");
+      if (cashEl) cashEl.innerText = formatCurrencyBD(cashInHand);
+
+      const bankMfsEl = document.getElementById("heroBankMfsBalance");
+      if (bankMfsEl) bankMfsEl.innerText = formatCurrencyBD(bankMfsTotal);
+
+      const depFundEl = document.getElementById("totalDepositFund");
+      if (depFundEl) depFundEl.innerText = formatCurrencyBD(totalDeposits);
+
+      const expFundEl = document.getElementById("totalExpenseFund");
+      if (expFundEl) expFundEl.innerText = formatCurrencyBD(totalExpenses);
+
+      const activeLoanEl = document.getElementById("kpiActiveLoanAmt");
+      if (activeLoanEl) activeLoanEl.innerText = formatCurrencyBD(activeLoanTotal);
+
+      const totalMembersEl = document.getElementById("totalMembers");
+      if (totalMembersEl) totalMembersEl.innerText = membersData.length + " জন";
+
+      // Set initial privacy icon
+      const pIcon = document.getElementById("privacyIcon");
+      if (pIcon) pIcon.innerText = isBalanceHidden ? "🙈" : "👁️";
     }
 
     function updateDropdown() {
