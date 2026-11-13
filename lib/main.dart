@@ -17,6 +17,7 @@ import 'services/feature_management_service.dart';
 import 'features/admin/master_admin_screen.dart';
 import 'features/loans/loan_management_screen.dart';
 import 'features/accounting/accounting_screen.dart';
+import 'features/reports/financial_reports_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -1876,6 +1877,22 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
                             );
                           },
                         ),
+                      if (FeatureManagementService().canAccess('reports', somitiId: somiti.id))
+                        IconButton(
+                          tooltip: 'আর্থিক নিরীক্ষা (লাভ-ক্ষতি ও ব্যালেন্স শিট)',
+                          icon: const Icon(Icons.analytics_outlined, color: Color(0xFF10B981)),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => FinancialReportsScreen(
+                                  somitiId: somiti.id,
+                                  somitiName: somiti.name,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       if ((widget.user.email ?? '').trim().toLowerCase() == 'hossansajjad1994@gmail.com')
                         IconButton(
                           tooltip: 'মাস্টার এডমিন কন্ট্রোল সেন্টার',
@@ -2281,7 +2298,55 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
+
+          // Financial Reports Card
+          Card(
+            elevation: 0,
+            color: const Color(0xFF10B981).withOpacity(0.08),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+              side: BorderSide(color: const Color(0xFF10B981).withOpacity(0.25)),
+            ),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(12),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => FinancialReportsScreen(
+                      somitiId: widget.somiti.id,
+                      somitiName: widget.somiti.name,
+                    ),
+                  ),
+                );
+              },
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Color(0xFF10B981),
+                      child: Icon(Icons.analytics_rounded, color: Colors.white, size: 22),
+                    ),
+                    SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('আর্থিক নিরীক্ষা ও স্টেটমেন্ট', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF0F5132))),
+                          Text('লাভ-ক্ষতি বিবরণী ও উদ্বৃত্তপত্র (ব্যালেন্স শিট)', style: TextStyle(fontSize: 11, color: Color(0xFF64748B))),
+                        ],
+                      ),
+                    ),
+                    Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Color(0xFF64748B)),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 14),
           Card(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             child: Padding(
