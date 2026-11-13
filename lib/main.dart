@@ -15,6 +15,8 @@ import 'services/drive_service.dart';
 import 'services/somiti_service.dart';
 import 'services/feature_management_service.dart';
 import 'features/admin/master_admin_screen.dart';
+import 'features/loans/loan_management_screen.dart';
+import 'features/accounting/accounting_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -385,8 +387,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             );
           }
-        }
-
       } else {
         // Sign In
         await AuthService().signInWithEmailPassword(
@@ -1842,6 +1842,40 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
                       ],
                     ),
                     actions: [
+                      if (FeatureManagementService().canAccess('loan_management', somitiId: somiti.id))
+                        IconButton(
+                          tooltip: 'ঋণ ব্যবস্থাপনা',
+                          icon: const Icon(Icons.account_balance_wallet_outlined, color: Color(0xFF0F5132)),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => LoanManagementScreen(
+                                  somitiId: somiti.id,
+                                  somitiName: somiti.name,
+                                  currentUserName: widget.user.displayName ?? widget.user.email ?? 'এডমিন',
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      if (FeatureManagementService().canAccess('financial_accounting', somitiId: somiti.id))
+                        IconButton(
+                          tooltip: 'হিসাব ও ক্যাশবহি',
+                          icon: const Icon(Icons.account_balance_rounded, color: Color(0xFF1E293B)),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => AccountingScreen(
+                                  somitiId: somiti.id,
+                                  somitiName: somiti.name,
+                                  currentUserName: widget.user.displayName ?? widget.user.email ?? 'এডমিন',
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       if ((widget.user.email ?? '').trim().toLowerCase() == 'hossansajjad1994@gmail.com')
                         IconButton(
                           tooltip: 'মাস্টার এডমিন কন্ট্রোল সেন্টার',
@@ -2165,7 +2199,89 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
+
+          // Advanced Enterprise Modules Section
+          Row(
+            children: [
+              Expanded(
+                child: Card(
+                  elevation: 0,
+                  color: const Color(0xFF0F5132).withOpacity(0.08),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(color: const Color(0xFF0F5132).withOpacity(0.2)),
+                  ),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => LoanManagementScreen(
+                            somitiId: widget.somiti.id,
+                            somitiName: widget.somiti.name,
+                            currentUserName: widget.user.displayName ?? widget.user.email ?? 'এডমিন',
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.all(14),
+                      child: Column(
+                        children: [
+                          Icon(Icons.account_balance_wallet_outlined, color: Color(0xFF0F5132), size: 28),
+                          SizedBox(height: 6),
+                          Text('ঋণ ব্যবস্থাপনা', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF0F5132))),
+                          SizedBox(height: 2),
+                          Text('বিতরণ ও কিস্তি আদায়', style: TextStyle(fontSize: 10, color: Color(0xFF64748B))),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Card(
+                  elevation: 0,
+                  color: const Color(0xFF1E293B).withOpacity(0.08),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(color: const Color(0xFF1E293B).withOpacity(0.2)),
+                  ),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => AccountingScreen(
+                            somitiId: widget.somiti.id,
+                            somitiName: widget.somiti.name,
+                            currentUserName: widget.user.displayName ?? widget.user.email ?? 'এডমিন',
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.all(14),
+                      child: Column(
+                        children: [
+                          Icon(Icons.account_balance_rounded, color: Color(0xFF1E293B), size: 28),
+                          SizedBox(height: 6),
+                          Text('হিসাব ও ক্যাশবহি', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF1E293B))),
+                          SizedBox(height: 2),
+                          Text('তহবিল ও সাধারণ খতিয়ান', style: TextStyle(fontSize: 10, color: Color(0xFF64748B))),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
           Card(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             child: Padding(

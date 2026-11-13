@@ -253,3 +253,107 @@ class LoanModel {
     return list;
   }
 }
+
+/// Loan Application Model submitted by members or field officers
+class LoanApplicationModel {
+  final String id;
+  final String memberId;
+  final String memberName;
+  final String memberNumber;
+  final String memberPhone;
+  final double requestedAmount;
+  final int durationMonths;
+  final LoanInterestType interestType;
+  final double proposedInterestRate;
+  final String purpose;
+  final String guarantorName;
+  final String guarantorPhone;
+  final String guarantorRelation;
+  final String status; // 'pending', 'approved', 'rejected'
+  final DateTime appliedAt;
+  final String appliedBy;
+  final String? reviewNote;
+  final String? reviewedBy;
+  final DateTime? reviewedAt;
+
+  LoanApplicationModel({
+    required this.id,
+    required this.memberId,
+    required this.memberName,
+    required this.memberNumber,
+    this.memberPhone = '',
+    required this.requestedAmount,
+    required this.durationMonths,
+    this.interestType = LoanInterestType.flat,
+    this.proposedInterestRate = 10.0,
+    required this.purpose,
+    this.guarantorName = '',
+    this.guarantorPhone = '',
+    this.guarantorRelation = '',
+    this.status = 'pending',
+    required this.appliedAt,
+    required this.appliedBy,
+    this.reviewNote,
+    this.reviewedBy,
+    this.reviewedAt,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'memberId': memberId,
+      'memberName': memberName,
+      'memberNumber': memberNumber,
+      'memberPhone': memberPhone,
+      'requestedAmount': requestedAmount,
+      'durationMonths': durationMonths,
+      'interestType': interestType.name,
+      'proposedInterestRate': proposedInterestRate,
+      'purpose': purpose,
+      'guarantorName': guarantorName,
+      'guarantorPhone': guarantorPhone,
+      'guarantorRelation': guarantorRelation,
+      'status': status,
+      'appliedAt': Timestamp.fromDate(appliedAt),
+      'appliedBy': appliedBy,
+      'reviewNote': reviewNote,
+      'reviewedBy': reviewedBy,
+      'reviewedAt': reviewedAt != null ? Timestamp.fromDate(reviewedAt!) : null,
+    };
+  }
+
+  factory LoanApplicationModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data() ?? {};
+    LoanInterestType it = LoanInterestType.flat;
+    if (data['interestType'] == 'reducing') it = LoanInterestType.reducing;
+
+    DateTime appAt = DateTime.now();
+    final tsApp = data['appliedAt'];
+    if (tsApp is Timestamp) appAt = tsApp.toDate();
+
+    DateTime? revAt;
+    final tsRev = data['reviewedAt'];
+    if (tsRev is Timestamp) revAt = tsRev.toDate();
+
+    return LoanApplicationModel(
+      id: doc.id,
+      memberId: data['memberId'] ?? '',
+      memberName: data['memberName'] ?? '',
+      memberNumber: data['memberNumber'] ?? '',
+      memberPhone: data['memberPhone'] ?? '',
+      requestedAmount: (data['requestedAmount'] as num?)?.toDouble() ?? 0.0,
+      durationMonths: (data['durationMonths'] as num?)?.toInt() ?? 12,
+      interestType: it,
+      proposedInterestRate: (data['proposedInterestRate'] as num?)?.toDouble() ?? 10.0,
+      purpose: data['purpose'] ?? '',
+      guarantorName: data['guarantorName'] ?? '',
+      guarantorPhone: data['guarantorPhone'] ?? '',
+      guarantorRelation: data['guarantorRelation'] ?? '',
+      status: data['status'] ?? 'pending',
+      appliedAt: appAt,
+      appliedBy: data['appliedBy'] ?? '',
+      reviewNote: data['reviewNote'],
+      reviewedBy: data['reviewedBy'],
+      reviewedAt: revAt,
+    );
+  }
+}
