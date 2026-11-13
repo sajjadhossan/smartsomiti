@@ -5936,22 +5936,14 @@
       const rawEst = s.estYear || "২০২৬ ইং";
       const somitiEst = rawEst.startsWith("স্থাপিত") ? rawEst : ("স্থাপিত: " + rawEst);
 
-      // Pad Header on Notice
-      if (el("npSomitiName")) el("npSomitiName").innerHTML = formatTwoToneTitle(somitiName);
-      if (el("npPadHeader")) el("npPadHeader").innerText = somitiSlogan;
-      if (el("npEstYear")) el("npEstYear").innerText = somitiEst;
-      if (el("npRightName")) el("npRightName").innerText = somitiName;
-      if (el("npRightAddress")) el("npRightAddress").innerText = somitiAddress;
-      if (el("npRightTagline")) el("npRightTagline").innerText = somitiTagline;
+      // Pad Header on Notice (custom banner image or 3-column text/logo layout)
+      renderPadHeader("np", s);
 
       // Legacy fallback headers
       if (el("npAddress")) el("npAddress").innerText = "📍 " + somitiAddress;
       if (el("npBkash")) el("npBkash").innerText = "📱 বিকাশ/নগদ: " + (s.bkashNumber || "নেই");
       if (el("npBank")) el("npBank").innerText = "🏦 " + (s.bankAccount || "নেই");
       if (el("npCodeBadge")) el("npCodeBadge").innerText = "কোড: " + (s.somitiCode || "সছঐস");
-
-      // Dynamic Logo
-      renderPadLogo("npPadLogoBox", s, "notice");
 
       const memoNo = el("noticeMemoNo")?.value.trim() || "স্মারক-০১/২০২৬";
       const dateStr = el("noticeDate")?.value.trim() || formatBengaliDate(new Date());
@@ -6102,21 +6094,14 @@
       const rawEst = s.estYear || "২০২৬ ইং";
       const somitiEst = rawEst.startsWith("স্থাপিত") ? rawEst : ("স্থাপিত: " + rawEst);
 
-      if (el("fpSomitiName")) el("fpSomitiName").innerHTML = formatTwoToneTitle(somitiName);
-      if (el("fpPadHeader")) el("fpPadHeader").innerText = somitiSlogan;
-      if (el("fpEstYear")) el("fpEstYear").innerText = somitiEst;
-      if (el("fpRightName")) el("fpRightName").innerText = somitiName;
-      if (el("fpRightAddress")) el("fpRightAddress").innerText = somitiAddress;
-      if (el("fpRightTagline")) el("fpRightTagline").innerText = somitiTagline;
+      // Pad Header on Full Pad (custom banner image or 3-column text/logo layout)
+      renderPadHeader("fp", s);
 
       // Legacy fallback headers
       if (el("fpAddress")) el("fpAddress").innerText = "📍 " + somitiAddress;
       if (el("fpBkash")) el("fpBkash").innerText = "📱 বিকাশ/নগদ: " + (s.bkashNumber || "নেই");
       if (el("fpBank")) el("fpBank").innerText = "🏦 " + (s.bankAccount || "নেই");
       if (el("fpCodeBadge")) el("fpCodeBadge").innerText = "কোড: " + (s.somitiCode || "সছঐস");
-
-      // Dynamic Logo
-      renderPadLogo("fpPadLogoBox", s, "fp");
 
       // Committee Signatures
       // 1. Cashier
