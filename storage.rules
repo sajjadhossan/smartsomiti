@@ -1,0 +1,40 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isPlatformMasterAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.email.lower() == 'hossansajjad1994@gmail.com' ||
+        (request.auth.token.keys().hasAny(['master_admin']) && request.auth.token.master_admin == true)
+      );
+    }
+
+    // Society documents, logos, banners, seals, and receipts
+    match /societies/{societyId}/{allPaths=**} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && (
+        request.resource.size < 10 * 1024 * 1024 && // max 10MB
+        request.resource.contentType.matches('image/.*|application/pdf')
+      );
+    }
+
+    // Member profile photos and KYC proofs
+    match /members/{memberId}/{allPaths=**} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && (
+        request.resource.size < 5 * 1024 * 1024 &&
+        request.resource.contentType.matches('image/.*')
+      );
+    }
+
+    // Master Admin global assets
+    match /master_admin/{allPaths=**} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+  }
+}

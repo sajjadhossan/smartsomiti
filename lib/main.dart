@@ -13,6 +13,8 @@ import 'firebase_options.dart';
 import 'services/auth_service.dart';
 import 'services/drive_service.dart';
 import 'services/somiti_service.dart';
+import 'services/feature_management_service.dart';
+import 'features/admin/master_admin_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +22,7 @@ Future<void> main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    FeatureManagementService().initialize();
   } catch (e) {
     debugPrint('Firebase initialization note: $e');
   }
@@ -134,6 +137,17 @@ class _PendingApprovalScreenState extends State<PendingApprovalScreen> {
       appBar: AppBar(
         title: const Text('অনুমোদন অপেক্ষমাণ', style: TextStyle(fontWeight: FontWeight.bold)),
         actions: [
+          if ((widget.user.email ?? '').trim().toLowerCase() == 'hossansajjad1994@gmail.com')
+            IconButton(
+              icon: const Icon(Icons.admin_panel_settings_rounded, color: Colors.amber),
+              tooltip: 'মাস্টার এডমিন কন্ট্রোল সেন্টার',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => MasterAdminScreen(userEmail: widget.user.email ?? '')),
+                );
+              },
+            ),
           IconButton(
             icon: const Icon(Icons.logout_rounded),
             tooltip: 'লগআউট',
@@ -1092,6 +1106,17 @@ class SomitiListScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('আমার সমিতিসমূহ', style: TextStyle(fontWeight: FontWeight.bold)),
         actions: [
+          if ((user.email ?? '').trim().toLowerCase() == 'hossansajjad1994@gmail.com')
+            IconButton(
+              tooltip: 'মাস্টার এডমিন কন্ট্রোল সেন্টার',
+              icon: const Icon(Icons.admin_panel_settings_rounded, color: Colors.amber),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => MasterAdminScreen(userEmail: user.email ?? '')),
+                );
+              },
+            ),
           IconButton(
             tooltip: 'লগআউট',
             icon: const Icon(Icons.logout_rounded),
@@ -1204,6 +1229,12 @@ class _SomitiMainDashboardState extends State<SomitiMainDashboard> {
   int _currentIndex = 0;
   final SomitiService _somitiService = SomitiService();
   final DriveService _driveService = DriveService();
+
+  @override
+  void initState() {
+    super.initState();
+    FeatureManagementService().watchSocietyFeatures(widget.somiti.id);
+  }
 
   // Dialog: ডিজিটাল জমা রসিদ (Digital Money Receipt)
   void _showReceiptDialog({
@@ -1811,6 +1842,17 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
                       ],
                     ),
                     actions: [
+                      if ((widget.user.email ?? '').trim().toLowerCase() == 'hossansajjad1994@gmail.com')
+                        IconButton(
+                          tooltip: 'মাস্টার এডমিন কন্ট্রোল সেন্টার',
+                          icon: const Icon(Icons.admin_panel_settings_rounded, color: Colors.amber),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => MasterAdminScreen(userEmail: widget.user.email ?? '')),
+                            );
+                          },
+                        ),
                       IconButton(
                         tooltip: 'সমিতির কোড কপি করুন',
                         icon: const Icon(Icons.share_rounded),
