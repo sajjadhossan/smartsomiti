@@ -199,20 +199,35 @@ class _LoanManagementScreenState extends State<LoanManagementScreen> with Single
                     ),
                   ],
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: isSettled ? const Color(0xFFDEF7EC) : const Color(0xFFFEF08A),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    isSettled ? 'পরিশোধিত' : 'চলমান',
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      color: isSettled ? const Color(0xFF03543F) : const Color(0xFF854D0E),
+                Row(
+                  children: [
+                    if (!isSettled && loan.schedule.any((s) => !s.isPaid && s.dueDate.isBefore(DateTime.now())))
+                      Container(
+                        margin: const EdgeInsets.only(right: 6),
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFEE2E2),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: const Color(0xFFFECACA)),
+                        ),
+                        child: const Text('⚠️ কিস্তি বকেয়া', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFFDC2626))),
+                      ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: isSettled ? const Color(0xFFDEF7EC) : const Color(0xFFFEF08A),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        isSettled ? 'পরিশোধিত' : 'চলমান',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                          color: isSettled ? const Color(0xFF03543F) : const Color(0xFF854D0E),
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),
@@ -234,23 +249,29 @@ class _LoanManagementScreenState extends State<LoanManagementScreen> with Single
               ),
             ),
             const SizedBox(height: 10),
-            // Progress Bar
+            // Progress Bar and Realtime Ratio (Tips 35 & 36)
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
-                    child: LinearProgressIndicator(
-                      value: progress,
-                      minHeight: 8,
-                      backgroundColor: const Color(0xFFE2E8F0),
-                      valueColor: AlwaysStoppedAnimation<Color>(isSettled ? const Color(0xFF10B981) : const Color(0xFF0F5132)),
-                    ),
-                  ),
+                Text(
+                  'আদায় অনুপাত: ৳${loan.totalPaid.toStringAsFixed(0)} / ৳${loan.totalPayable.toStringAsFixed(0)}',
+                  style: const TextStyle(fontSize: 11, color: Color(0xFF64748B)),
                 ),
-                const SizedBox(width: 8),
-                Text('${(progress * 100).toStringAsFixed(0)}%', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF64748B))),
+                Text(
+                  '${(progress * 100).toStringAsFixed(0)}% সম্পন্ন',
+                  style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF0F5132)),
+                ),
               ],
+            ),
+            const SizedBox(height: 4),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: LinearProgressIndicator(
+                value: progress,
+                minHeight: 8,
+                backgroundColor: const Color(0xFFE2E8F0),
+                valueColor: AlwaysStoppedAnimation<Color>(isSettled ? const Color(0xFF10B981) : const Color(0xFF0F5132)),
+              ),
             ),
             const SizedBox(height: 12),
             Row(

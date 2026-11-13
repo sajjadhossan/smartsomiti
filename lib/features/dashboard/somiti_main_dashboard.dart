@@ -109,19 +109,69 @@ class _SomitiMainDashboardState extends State<SomitiMainDashboard> {
                   Text('৳${currencyFormat.format(amount)}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.green)),
                 ],
               ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('স্বাক্ষর: ${widget.somiti.cashierName}', style: const TextStyle(fontSize: 11, fontStyle: FontStyle.italic)),
-                  const Text('● ডিজিটাল সিলমোহর', style: TextStyle(fontSize: 11, color: Colors.green, fontWeight: FontWeight.bold)),
-                ],
+              const SizedBox(height: 12),
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.green.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.green.withOpacity(0.25)),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.verified_rounded, size: 14, color: Color(0xFF0F9D58)),
+                      SizedBox(width: 4),
+                      Text('ভেরিফাইড ডিজিটাল ভাউচার • VERIFIED', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF0F9D58))),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 14),
+              // Committee Signatures: 3 Officers (Tip 38)
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
+                decoration: BoxDecoration(color: Colors.grey.shade50, borderRadius: BorderRadius.circular(8)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Column(
+                      children: [
+                        Text(widget.somiti.cashierName.isNotEmpty ? widget.somiti.cashierName : 'কোষাধ্যক্ষ', style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF0F5132))),
+                        const Text('কোষাধ্যক্ষ', style: TextStyle(fontSize: 8.5, color: Colors.grey)),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(widget.somiti.secretaryName.isNotEmpty ? widget.somiti.secretaryName : 'সম্পাদক', style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF1E3A8A))),
+                        const Text('সাধারণ সম্পাদক', style: TextStyle(fontSize: 8.5, color: Colors.grey)),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(widget.somiti.presidentName.isNotEmpty ? widget.somiti.presidentName : 'সভাপতি', style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF1E293B))),
+                        const Text('সভাপতি', style: TextStyle(fontSize: 8.5, color: Colors.grey)),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
         ),
         actions: [
           TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('বন্ধ করুন')),
+          OutlinedButton.icon(
+            onPressed: () {
+              final smsText = 'রসিদ: ${widget.somiti.name} • ভাউচার: $voucherNo • সদস্য: [$memberNumber] $memberName • জমা: ৳${currencyFormat.format(amount)} • তারিখ: ${dateFormat.format(date)}';
+              Clipboard.setData(ClipboardData(text: smsText));
+              Navigator.pop(ctx);
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('📱 SMS টেক্সট কপি হয়েছে!')));
+            },
+            icon: const Icon(Icons.sms_rounded, size: 16),
+            label: const Text('SMS টেক্সট'),
+          ),
           FilledButton.icon(
             onPressed: () {
               final receiptText = '''
@@ -136,6 +186,8 @@ ${widget.somiti.padHeader.isNotEmpty ? '"' + widget.somiti.padHeader + '"\n' : '
 ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পরিমাণ: ৳${currencyFormat.format(amount)}*
 --------------------------------
 কোষাধ্যক্ষ: ${widget.somiti.cashierName}
+সম্পাদক: ${widget.somiti.secretaryName}
+সভাপতি: ${widget.somiti.presidentName}
 ধন্যবাদ! আপনার সঞ্চয় সফলভাবে জমা হয়েছে।
 ''';
               Clipboard.setData(ClipboardData(text: receiptText));
@@ -145,7 +197,7 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
               );
             },
             icon: const Icon(Icons.share_rounded, size: 18),
-            label: const Text('রসিদ শেয়ার করুন'),
+            label: const Text('রসিদ শেয়ার'),
           ),
         ],
       ),
@@ -216,24 +268,63 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
                     return ListView.separated(
                       shrinkWrap: true,
                       itemCount: deposits.length,
-                      separatorBuilder: (_, __) => const Divider(height: 1),
+                      separatorBuilder: (_, __) => const SizedBox(height: 2),
                       itemBuilder: (context, index) {
                         final d = deposits[index];
-                        return ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          title: Text('৳${currencyFormat.format(d.amount)} (${d.type})', style: const TextStyle(fontWeight: FontWeight.bold)),
-                          subtitle: Text(dateFormat.format(d.date), style: const TextStyle(fontSize: 11)),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.receipt_rounded, size: 20, color: Colors.green),
-                            tooltip: 'রসিদ দেখুন',
-                            onPressed: () => _showReceiptDialog(
-                              memberNumber: d.memberNumber,
-                              memberName: d.memberName,
-                              amount: d.amount,
-                              type: d.type,
-                              date: d.date,
-                              note: d.note,
-                            ),
+                        return Container(
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.grey.shade200),
+                            boxShadow: [
+                              BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 4, offset: const Offset(0, 1)),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 28,
+                                height: 28,
+                                decoration: BoxDecoration(color: Colors.green.shade50, shape: BoxShape.circle, border: Border.all(color: Colors.green.shade400)),
+                                child: const Icon(Icons.check, size: 16, color: Colors.green),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('৳${currencyFormat.format(d.amount)}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color(0xFF0F5132))),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                          decoration: BoxDecoration(color: Colors.green.withOpacity(0.1), borderRadius: BorderRadius.circular(6)),
+                                          child: const Text('অনুমোদিত', style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: Colors.green)),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 2),
+                                    Text('${d.type} ${d.note.isNotEmpty ? '• ' + d.note : ''}', style: const TextStyle(fontSize: 11, color: Colors.grey)),
+                                    Text(dateFormat.format(d.date), style: TextStyle(fontSize: 10, color: Colors.grey.shade500)),
+                                  ],
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.receipt_rounded, size: 20, color: Colors.green),
+                                tooltip: 'রসিদ দেখুন',
+                                onPressed: () => _showReceiptDialog(
+                                  memberNumber: d.memberNumber,
+                                  memberName: d.memberName,
+                                  amount: d.amount,
+                                  type: d.type,
+                                  date: d.date,
+                                  note: d.note,
+                                ),
+                              ),
+                            ],
                           ),
                         );
                       },

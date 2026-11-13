@@ -395,6 +395,231 @@
     }
     .society-switch-pill:hover span { color: white !important; }
 
+    /* ================= CATEGORY 4: DIGITAL RECEIPT, PASSBOOK & LOAN TIMELINE ================= */
+    /* Layout Switcher */
+    .rcpt-layout-switcher {
+      display: flex;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+    .rcpt-layout-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 7px 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-radius: 7px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .rcpt-layout-btn.active {
+      background: var(--card-bg);
+      color: var(--primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* Thermal receipt formats */
+    .receipt-container-wrap {
+      position: relative;
+      transition: all 0.3s ease;
+      margin: 0 auto;
+    }
+    .receipt-container-wrap.thermal-80mm {
+      max-width: 330px !important;
+      background: #FFFFFF !important;
+      font-family: 'Courier New', Courier, monospace !important;
+      border: 1px dashed #475569 !important;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    }
+    .receipt-container-wrap.thermal-55mm {
+      max-width: 260px !important;
+      background: #FFFFFF !important;
+      font-family: 'Courier New', Courier, monospace !important;
+      font-size: 11px !important;
+      border: 1px dashed #475569 !important;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    }
+    .thermal-80mm .pad-top-header-grid,
+    .thermal-55mm .pad-top-header-grid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .thermal-80mm .pad-logo-holder,
+    .thermal-55mm .pad-logo-holder {
+      width: 48px; height: 48px; margin: 0 auto 6px auto;
+    }
+    .thermal-80mm .pad-signatures-row,
+    .thermal-55mm .pad-signatures-row {
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+    }
+
+    /* Diagonal Watermark */
+    .rcpt-watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-28deg);
+      font-size: 26px;
+      font-weight: 900;
+      color: rgba(15, 157, 88, 0.05);
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: 2px;
+      z-index: 1;
+      text-transform: uppercase;
+      border: 3px dashed rgba(15, 157, 88, 0.08);
+      padding: 10px 24px;
+      border-radius: 12px;
+    }
+
+    /* Pulsing Overdue Alert */
+    @keyframes pulse-overdue {
+      0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.5); }
+      70% { box-shadow: 0 0 0 9px rgba(220, 38, 38, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+    }
+    .pulse-overdue-chip {
+      animation: pulse-overdue 1.8s infinite;
+      background: #FEF2F2 !important;
+      color: #DC2626 !important;
+      border: 1px solid #FECACA !important;
+      font-weight: 800;
+      border-radius: 20px;
+      padding: 3px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Passbook Vertical Timeline */
+    .passbook-timeline {
+      position: relative;
+      padding-left: 28px;
+      margin: 16px 0;
+    }
+    .passbook-timeline::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: 11px;
+      width: 2px;
+      background: #E2E8F0;
+    }
+    .timeline-node-item {
+      position: relative;
+      margin-bottom: 18px;
+    }
+    .timeline-node-dot {
+      position: absolute;
+      left: -28px;
+      top: 8px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #E8F5E9;
+      border: 2px solid #0F9D58;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+      color: #0F9D58;
+      z-index: 2;
+    }
+    .timeline-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .timeline-card:hover {
+      border-color: var(--primary);
+      transform: translateX(3px);
+      box-shadow: 0 4px 12px rgba(15,157,88,0.08);
+    }
+
+    /* Loan Schedule Linear Progress */
+    .loan-repay-progress-wrap {
+      background: #E2E8F0;
+      height: 8px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+    .loan-repay-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #10B981 0%, #059669 100%);
+      border-radius: 10px;
+      transition: width 0.4s ease;
+    }
+
+    /* Transaction Filter Chips */
+    .filter-chips-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px 2px 10px 2px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .filter-chip {
+      white-space: nowrap;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-chip.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(15, 157, 88, 0.25);
+    }
+
+    /* Interactive Loan Slider */
+    .range-slider-wrap {
+      margin-bottom: 14px;
+    }
+    .range-slider-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .custom-range-input {
+      width: 100%;
+      accent-color: #0F5132;
+      height: 6px;
+      border-radius: 6px;
+      background: #CBD5E1;
+      cursor: pointer;
+    }
+
     header {
       background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 10px 16px;
       display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;
@@ -3021,6 +3246,16 @@
         </div>
 
         <div style="font-weight: 700; margin: 16px 0 8px 4px; font-size: 14px;">সাম্প্রতিক জমার খতিয়ান (ক্লিক করে রসিদ দেখুন):</div>
+        
+        <!-- Transaction Filter Chips (Tip 39) -->
+        <div class="filter-chips-scroll" id="depositFilterChips">
+          <button type="button" class="filter-chip active" onclick="filterDepositType('all', this)">সকল লেনদেন</button>
+          <button type="button" class="filter-chip" onclick="filterDepositType('নিয়মিত', this)">সঞ্চয় জমা</button>
+          <button type="button" class="filter-chip" onclick="filterDepositType('ডিপিএস', this)">ডিপিএস কিস্তি</button>
+          <button type="button" class="filter-chip" onclick="filterDepositType('ঋণ', this)">ঋণ কিস্তি আদায়</button>
+          <button type="button" class="filter-chip" onclick="filterDepositType('শেয়ার', this)">শেয়ার মূলধন</button>
+        </div>
+
         <div id="depositsList">
           <div style="text-align: center; padding: 20px; color: var(--text-muted);">লোড হচ্ছে...</div>
         </div>
@@ -3930,13 +4165,31 @@
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-              <div class="form-group">
+              <div class="form-group" style="margin-bottom: 6px;">
                 <label>ঋণের পরিমাণ (টাকা) *</label>
                 <input type="number" id="loanFormAmount" placeholder="যেমন: ৫০০০০" value="50000" oninput="updateLoanCalculatorPreview()">
               </div>
-              <div class="form-group">
+              <div class="form-group" style="margin-bottom: 6px;">
                 <label>মেয়াদ (মাস) *</label>
                 <input type="number" id="loanFormDuration" placeholder="১২" value="12" oninput="updateLoanCalculatorPreview()">
+              </div>
+            </div>
+
+            <!-- Interactive Sliders (Tip 37) -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; background: #F8FAFC; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border);">
+              <div class="range-slider-wrap" style="margin-bottom: 0;">
+                <div class="range-slider-label">
+                  <span style="font-size: 11px; color: var(--text-muted);">পরিমাণ স্লাইডার:</span>
+                  <span id="sliderAmountLabel" style="color: #0F5132; font-weight: 800; font-size: 11px;">৳৫০,০০০</span>
+                </div>
+                <input type="range" class="custom-range-input" id="loanRangeAmount" min="5000" max="300000" step="5000" value="50000" oninput="syncLoanSlider('amount', this.value)">
+              </div>
+              <div class="range-slider-wrap" style="margin-bottom: 0;">
+                <div class="range-slider-label">
+                  <span style="font-size: 11px; color: var(--text-muted);">মেয়াদ স্লাইডার:</span>
+                  <span id="sliderDurationLabel" style="color: #2563EB; font-weight: 800; font-size: 11px;">১২ মাস</span>
+                </div>
+                <input type="range" class="custom-range-input" id="loanRangeDuration" min="1" max="36" step="1" value="12" oninput="syncLoanSlider('duration', this.value)">
               </div>
             </div>
 
@@ -4083,15 +4336,26 @@
     </div>
   </div>
 
-  <!-- ================= DIGITAL MONEY RECEIPT MODAL ================= -->
+  <!-- ================= DIGITAL MONEY RECEIPT MODAL (Tips 31, 32, 33, 38, 40) ================= -->
   <div id="receiptModal" class="modal-overlay" style="display: none;">
     <div class="modal-box">
-      <div class="official-sample-pad" id="receiptPrintArea">
-        <div class="official-sample-pad-inner">
-          <!-- Bismillah -->
-          <div class="pad-top-bismillah">বিসমিল্লাহির রাহমানির রাহিম</div>
+      <!-- Layout Switcher: A4 Pad, 80mm POS, 55mm Slip (Tip 31) -->
+      <div class="rcpt-layout-switcher">
+        <button type="button" class="rcpt-layout-btn active" id="rcptLayoutBtn-a4" onclick="switchReceiptLayout('a4')">📄 A4 মেমো</button>
+        <button type="button" class="rcpt-layout-btn" id="rcptLayoutBtn-80mm" onclick="switchReceiptLayout('80mm')">🧾 ৮০মিমি POS</button>
+        <button type="button" class="rcpt-layout-btn" id="rcptLayoutBtn-55mm" onclick="switchReceiptLayout('55mm')">🎟️ ৫৫মিমি স্লিপ</button>
+      </div>
 
-                      <!-- Top Header Banner (Uploaded Custom Image) -->
+      <div class="receipt-container-wrap" id="receiptContainerWrap">
+        <!-- Watermark (Tip 32) -->
+        <div class="rcpt-watermark" id="rcptWatermark">স্মার্ট সমিতি • অনুমোদিত ডিজিটাল ভাউচার • VERIFIED</div>
+
+        <div class="official-sample-pad" id="receiptPrintArea">
+          <div class="official-sample-pad-inner">
+            <!-- Bismillah -->
+            <div class="pad-top-bismillah">বিসমিল্লাহির রাহমানির রাহিম</div>
+
+            <!-- Top Header Banner (Uploaded Custom Image) -->
             <div id="rcptBannerContainer" style="display: none; width: 100%; text-align: center; margin-bottom: 6px;">
               <img id="rcptBannerImg" src="" alt="প্যাড হেডার ব্যানার" style="width: 100%; max-height: 110px; object-fit: contain; border-radius: 4px; display: block; margin: 0 auto;">
             </div>
@@ -4230,41 +4494,56 @@
             </div>
           </div>
 
-          <!-- Committee Seal & Signatures Row (Sample Layout) -->
-          <div class="pad-signatures-row">
-            <!-- Left: Cashier -->
+          <!-- Committee Seal & Signatures Row: 3 Officers (Tip 38) -->
+          <div class="pad-signatures-row" style="display: grid; grid-template-columns: 1fr 1fr 0.8fr 1fr; gap: 8px; align-items: flex-end;">
+            <!-- 1. Cashier -->
             <div class="pad-sig-col">
               <div class="stamp-transform-wrapper" id="rcptWrapCashier" style="min-height: 28px;">
-                <div class="digital-sign" id="rcptSignCashier" style="font-size: 14px; color: #0D5C3A;">Sajjad</div>
-                <div class="official-seal-stamp" style="width: 34px; height: 34px; font-size: 5px; margin: 1px auto;">
+                <div class="digital-sign" id="rcptSignCashier" style="font-size: 13px; color: #0D5C3A;">Sajjad</div>
+                <div class="official-seal-stamp" style="width: 32px; height: 32px; font-size: 5px; margin: 1px auto;">
                   <span>★ সিলমোহর ★</span>
                   <span>আদায়কৃত</span>
                 </div>
               </div>
               <div style="border-top: 1px solid #475569; padding-top: 3px; margin-top: 2px;">
-                <div id="rcptCashier" style="font-weight: 800; font-size: 12.5px; color: #0D5C3A;">সাজ্জাদ হোসেন</div>
-                <div style="font-size: 10.5px; color: #475569;">প্রস্তুতকারী / কোষাধ্যক্ষ</div>
+                <div id="rcptCashier" style="font-weight: 800; font-size: 11.5px; color: #0D5C3A;">সাজ্জাদ হোসেন</div>
+                <div style="font-size: 9.5px; color: #475569;">কোষাধ্যক্ষ</div>
               </div>
             </div>
 
-            <!-- Center: Real dynamic QR Code for security scan -->
+            <!-- 2. General Secretary -->
+            <div class="pad-sig-col">
+              <div class="stamp-transform-wrapper" id="rcptWrapSecretary" style="min-height: 28px;">
+                <div class="digital-sign" id="rcptSignSecretary" style="font-size: 13px; color: #4338CA;">Rafiq</div>
+                <div class="official-seal-stamp" style="width: 32px; height: 32px; font-size: 5px; margin: 1px auto;">
+                  <span>★ সিলমোহর ★</span>
+                  <span>যাচাইকৃত</span>
+                </div>
+              </div>
+              <div style="border-top: 1px solid #475569; padding-top: 3px; margin-top: 2px;">
+                <div id="rcptSecretaryName" style="font-weight: 800; font-size: 11.5px; color: #4338CA;">রফিকুল ইসলাম</div>
+                <div style="font-size: 9.5px; color: #475569;">সাধারণ সম্পাদক</div>
+              </div>
+            </div>
+
+            <!-- 3. Real dynamic QR Code for security scan -->
             <div class="pad-sig-center">
-              <div id="receiptQrCodeBox" style="width: 54px; height: 54px; margin: 0 auto; background: white; padding: 2px; border: 1px solid #CBD5E1; border-radius: 4px; display: flex; align-items: center; justify-content: center;"></div>
+              <div id="receiptQrCodeBox" style="width: 50px; height: 50px; margin: 0 auto; background: white; padding: 2px; border: 1px solid #CBD5E1; border-radius: 4px; display: flex; align-items: center; justify-content: center;"></div>
               <div style="font-size: 7.5px; color: #64748B; font-weight: 700; margin-top: 2px;">অনলাইন ভেরিফাইড</div>
             </div>
 
-            <!-- Right: President / Secretary -->
+            <!-- 4. President -->
             <div class="pad-sig-col">
               <div class="stamp-transform-wrapper" id="rcptWrapPresident" style="min-height: 28px;">
-                <div class="digital-sign" id="rcptSignPresident" style="font-size: 14px; color: #1E3A8A;">Karim</div>
-                <div class="official-seal-stamp" style="width: 34px; height: 34px; font-size: 5px; margin: 1px auto;">
+                <div class="digital-sign" id="rcptSignPresident" style="font-size: 13px; color: #1E3A8A;">Karim</div>
+                <div class="official-seal-stamp" style="width: 32px; height: 32px; font-size: 5px; margin: 1px auto;">
                   <span>★ সিলমোহর ★</span>
                   <span>অনুমোদিত</span>
                 </div>
               </div>
               <div style="border-top: 1px solid #475569; padding-top: 3px; margin-top: 2px;">
-                <div id="rcptPresidentName" style="font-weight: 800; font-size: 12.5px; color: #1E293B;">সভাপতি / সাধারণ সম্পাদক</div>
-                <div style="font-size: 10.5px; color: #475569;">স্বাক্ষর ও সিল</div>
+                <div id="rcptPresidentName" style="font-weight: 800; font-size: 11.5px; color: #1E293B;">জনাব করিম</div>
+                <div style="font-size: 9.5px; color: #475569;">সভাপতি</div>
               </div>
             </div>
           </div>
@@ -4275,6 +4554,7 @@
           </div>
         </div>
       </div>
+    </div>
 
       <!-- Google Drive Cloud Upload & Link Banner -->
       <div id="rcptDriveActionBox" style="margin-top: 10px; background: #F0FDF4; border: 1.5px solid #86EFAC; border-radius: 8px; padding: 10px;">
@@ -4307,33 +4587,70 @@
         </div>
       </div>
 
-      <!-- Action Buttons Grid -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
+      <!-- Action Buttons Grid (Tips 33 & 40) -->
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 10px;">
         <button class="wa-btn" onclick="shareReceiptWhatsApp()">
           <span>📲 WhatsApp</span>
         </button>
-        <button class="copy-btn" onclick="copyReceiptText()" style="padding: 10px; text-align: center;">
+        <button type="button" onclick="shareReceiptSms()" style="background: #0284C7; color: white; border: none; padding: 9px; border-radius: 8px; font-size: 11.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+          <span>💬 SMS কপি</span>
+        </button>
+        <button class="copy-btn" onclick="copyReceiptText()" style="padding: 9px; text-align: center;">
           <span>📋 টেক্সট কপি</span>
-        </button>
-        <button onclick="printReceipt()" style="background: #1A73E8; color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
-          <span>🖨️ প্রিন্ট / PDF</span>
-        </button>
-        <button onclick="downloadReceiptImage()" style="background: #7C3AED; color: white; border: none; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
-          <span>🖼️ ছবি ডাউনলোড</span>
         </button>
       </div>
 
-      <div style="margin-top: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-        <button onclick="openA4Preview('receipt')" style="background: #0F9D58; color: white; border: none; padding: 9px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
-          <span>📄 A4 PDF শিট প্রিভিউ</span>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 6px;">
+        <button onclick="printReceipt()" style="background: #1A73E8; color: white; border: none; padding: 9px; border-radius: 8px; font-size: 11.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+          <span>🖨️ প্রিন্ট / PDF</span>
         </button>
-        <button onclick="verifyCurrentReceiptOnline()" style="background: #1E3A8A; color: white; border: none; padding: 9px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <button onclick="downloadReceiptImage()" style="background: #7C3AED; color: white; border: none; padding: 9px; border-radius: 8px; font-size: 11.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+          <span>🖼️ ছবি ডাউনলোড</span>
+        </button>
+        <button onclick="openA4Preview('receipt')" style="background: #0F9D58; color: white; border: none; padding: 9px; border-radius: 8px; font-size: 11.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+          <span>📄 A4 শিট</span>
+        </button>
+      </div>
+
+      <div style="margin-top: 6px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+        <button onclick="verifyCurrentReceiptOnline()" style="background: #1E3A8A; color: white; border: none; padding: 8px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
           <span>🔍 রসিদের সত্যতা যাচাই</span>
+        </button>
+        <button type="button" onclick="openVoidReceiptModal()" style="background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; padding: 8px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
+          <span>🚫 রসিদ বাতিল (Void)</span>
         </button>
       </div>
       <button class="btn btn-outline" style="margin-top: 8px; padding: 9px;" onclick="closeReceiptModal()">
         ✖️ বন্ধ
       </button>
+    </div>
+  </div>
+
+  <!-- ================= VOID RECEIPT CONFIRMATION MODAL (Tip 40) ================= -->
+  <div id="voidReceiptModal" class="modal-overlay" style="display: none; z-index: 2500;">
+    <div class="modal-box" style="max-width: 440px; padding: 22px;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; color: #DC2626;">
+        <span style="font-size: 26px;">⚠️</span>
+        <div>
+          <h3 style="font-size: 16px; font-weight: 800; margin: 0;">রসিদ বাতিলকরণ ও সংশোধন</h3>
+          <span style="font-size: 11px; color: var(--text-muted);">অপরিবর্তনযোগ্য নিরাপত্তা প্রক্রিয়া</span>
+        </div>
+      </div>
+      <p style="font-size: 12px; color: var(--text); line-height: 1.5; margin-bottom: 12px;">
+        আপনি কি নিশ্চিতভাবে এই রসিদটি বাতিল (Void) করতে চান? বাতিলকৃত রসিদের ওপর লাল "বাতিলকৃত (VOID)" সিল বসবে এবং অডিটে কারণ সংরক্ষিত থাকবে।
+      </p>
+      <div class="form-group" style="margin-bottom: 14px;">
+        <label style="font-weight: 700; font-size: 11.5px;">বাতিলের সুনির্দিষ্ট কারণ লিখুন *</label>
+        <input type="text" id="voidReceiptReason" placeholder="যেমন: ভুল পরিমাণ বা ডুপ্লিকেট এন্ট্রি" style="width: 100%; padding: 9px; border-radius: 8px; border: 1px solid var(--border);">
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <button type="button" onclick="confirmVoidReceipt()" style="flex: 1; background: #DC2626; color: white; border: none; padding: 11px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">
+          🚫 নিশ্চিত, রসিদ বাতিল করুন
+        </button>
+        <button type="button" onclick="closeVoidReceiptModal()" style="background: var(--bg); color: var(--text); border: 1px solid var(--border); padding: 11px 16px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;">
+          ফিরে যান
+        </button>
+      </div>
     </div>
   </div>
 
@@ -6945,6 +7262,16 @@
       `).join("");
     }
 
+    let activeDepositFilter = 'all';
+
+    function filterDepositType(type, btn) {
+      activeDepositFilter = type;
+      const chips = document.querySelectorAll("#depositFilterChips .filter-chip");
+      chips.forEach(c => c.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+      renderDeposits();
+    }
+
     function renderDeposits() {
       const list = document.getElementById("depositsList");
       const passbookList = document.getElementById("memberPassbookList");
@@ -6954,39 +7281,87 @@
         return;
       }
 
-      const html = depositsData.map(d => {
-        const isRep = d.depositorType === 'representative' || (d.depositorName && d.depositorName !== d.memberName);
-        const depositorBadge = isRep 
-          ? `<span style="font-size:11px; color:#B91C1C; background:#FEF2F2; padding:1px 6px; border-radius:4px; border:1px solid #FECACA;">👤 জমাকারী: ${d.depositorName} (প্রতিনিধি)</span>`
-          : `<span style="font-size:11px; color:#15803D; background:#F0FDF4; padding:1px 6px; border-radius:4px;">👤 জমাকারী: সদস্য নিজে</span>`;
-        const slipBadge = d.slipImg ? `<span style="font-size:10.5px; color:#166534; background:#DCFCE7; padding:1px 5px; border-radius:4px; font-weight:700;">📎 স্লিপ কপি</span>` : '';
-        const bankSlipBadge = d.bankSlipNo ? `<span style="font-size:10.5px; color:#1E3A8A; background:#EFF6FF; padding:1px 5px; border-radius:4px; font-weight:700; border:1px solid #BFDBFE;">📄 নং: ${d.bankSlipNo}</span>` : '';
-        const driveBadge = d.driveUrl ? `<a href="${d.driveUrl}" target="_blank" onclick="event.stopPropagation()" style="font-size:10.5px; color:#1E40AF; background:#DBEAFE; padding:1px 6px; border-radius:4px; text-decoration:none; font-weight:700; border:1px solid #BFDBFE;">☁️ ড্রাইভ কপি ↗</a>` : '';
+      // Filtered data for deposits list (Tip 39)
+      const filteredDeposits = activeDepositFilter === 'all'
+        ? depositsData
+        : depositsData.filter(d => (d.type || '').includes(activeDepositFilter));
 
-        return `
-        <div class="item-card" onclick="viewDepositReceipt('${d.id}')" style="cursor: pointer;">
-          <div style="display:flex; align-items:center; gap:10px;">
-            <div class="num-circle">৳</div>
-            <div>
-              <div style="font-weight:700;">[${d.memberNumber || ''}] ${d.memberName}</div>
-              <div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">${d.type} ${d.note ? '• ' + d.note : ''}</div>
-              <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
-                ${depositorBadge}
-                ${bankSlipBadge}
-                ${slipBadge}
-                ${driveBadge}
+      if (filteredDeposits.length === 0) {
+        list.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted);">'${activeDepositFilter}' ধরণের কোনো জমা পাওয়া যায়নি।</div>`;
+      } else {
+        list.innerHTML = filteredDeposits.map(d => {
+          const isRep = d.depositorType === 'representative' || (d.depositorName && d.depositorName !== d.memberName);
+          const depositorBadge = isRep 
+            ? `<span style="font-size:11px; color:#B91C1C; background:#FEF2F2; padding:1px 6px; border-radius:4px; border:1px solid #FECACA;">👤 জমাকারী: ${d.depositorName} (প্রতিনিধি)</span>`
+            : `<span style="font-size:11px; color:#15803D; background:#F0FDF4; padding:1px 6px; border-radius:4px;">👤 জমাকারী: সদস্য নিজে</span>`;
+          const slipBadge = d.slipImg ? `<span style="font-size:10.5px; color:#166534; background:#DCFCE7; padding:1px 5px; border-radius:4px; font-weight:700;">📎 স্লিপ কপি</span>` : '';
+          const bankSlipBadge = d.bankSlipNo ? `<span style="font-size:10.5px; color:#1E3A8A; background:#EFF6FF; padding:1px 5px; border-radius:4px; font-weight:700; border:1px solid #BFDBFE;">📄 নং: ${d.bankSlipNo}</span>` : '';
+          const driveBadge = d.driveUrl ? `<a href="${d.driveUrl}" target="_blank" onclick="event.stopPropagation()" style="font-size:10.5px; color:#1E40AF; background:#DBEAFE; padding:1px 6px; border-radius:4px; text-decoration:none; font-weight:700; border:1px solid #BFDBFE;">☁️ ড্রাইভ কপি ↗</a>` : '';
+          const isVoid = d.isVoid ? `<span style="font-size:10px; color:#DC2626; background:#FEE2E2; border:1px solid #FECACA; padding:1px 6px; border-radius:4px; font-weight:800;">🚫 বাতিলকৃত</span>` : '';
+
+          return `
+          <div class="item-card" onclick="viewDepositReceipt('${d.id}')" style="cursor: pointer; ${d.isVoid ? 'opacity: 0.7; background: #FFF5F5;' : ''}">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div class="num-circle" style="${d.isVoid ? 'background: #FEE2E2; color: #DC2626;' : ''}">৳</div>
+              <div>
+                <div style="font-weight:700;">[${d.memberNumber || ''}] ${d.memberName} ${isVoid}</div>
+                <div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">${d.type} ${d.note ? '• ' + d.note : ''}</div>
+                <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
+                  ${depositorBadge}
+                  ${bankSlipBadge}
+                  ${slipBadge}
+                  ${driveBadge}
+                </div>
               </div>
             </div>
+            <div style="text-align:right;">
+              <div style="font-weight:700; color:${d.isVoid ? '#DC2626; text-decoration: line-through;' : 'var(--primary);'} font-size:16px;">৳${(d.amount || 0).toLocaleString()}</div>
+              <div style="font-size:10px; color:#16A34A; margin-top:3px;">রসিদ দেখুন ↗</div>
+            </div>
           </div>
-          <div style="text-align:right;">
-            <div style="font-weight:700; color:var(--primary); font-size:16px;">৳${(d.amount || 0).toLocaleString()}</div>
-            <div style="font-size:10px; color:#16A34A; margin-top:3px;">রসিদ দেখুন ↗</div>
-          </div>
-        </div>
-      `}).join("");
+        `}).join("");
+      }
 
-      list.innerHTML = html;
-      passbookList.innerHTML = html;
+      // Render Vertical Timeline for Member Passbook (Tip 34)
+      if (passbookList) {
+        passbookList.innerHTML = `<div class="passbook-timeline">` + depositsData.map(d => {
+          let dt = new Date();
+          if (d.date?.toDate) dt = d.date.toDate();
+          else if (d.dateStr) dt = new Date(d.dateStr);
+
+          const dateStr = dt.toLocaleDateString('bn-BD', { day: 'numeric', month: 'short', year: 'numeric' });
+          const timeStr = dt.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+          const isVoid = d.isVoid;
+
+          return `
+            <div class="timeline-node-item">
+              <div class="timeline-node-dot" style="${isVoid ? 'border-color: #DC2626; color: #DC2626; background: #FEE2E2;' : ''}">
+                ${isVoid ? '✕' : '✓'}
+              </div>
+              <div class="timeline-card" onclick="viewDepositReceipt('${d.id}')" style="${isVoid ? 'opacity: 0.75; border-color: #FECACA;' : ''}">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-size: 11px; font-weight: 700; color: #166534; background: #DCFCE7; padding: 2px 7px; border-radius: 4px;">📅 ${dateStr}</span>
+                    <span style="font-size: 10px; color: var(--text-muted);">${timeStr}</span>
+                  </div>
+                  <span style="font-size: 10px; font-weight: 800; color: ${isVoid ? '#DC2626; background: #FEE2E2;' : '#16A34A; background: #F0FDF4;'}; border: 1px solid ${isVoid ? '#FECACA' : '#BBF7D0'}; padding: 1px 6px; border-radius: 10px;">
+                    ${isVoid ? 'বাতিলকৃত' : 'অনুমোদিত'}
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <div style="font-weight: 800; font-size: 13.5px; color: var(--text);">[${d.memberNumber || ''}] ${d.memberName}</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">${d.type} ${d.note ? '• ' + d.note : ''}</div>
+                  </div>
+                  <div style="font-size: 16px; font-weight: 900; color: ${isVoid ? '#DC2626; text-decoration: line-through;' : '#0F9D58'};">
+                    +৳${(d.amount || 0).toLocaleString()}
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join("") + `</div>`;
+      }
     }
 
     function renderExpenses() {
@@ -7248,7 +7623,7 @@
         }
       }
 
-      // Committee Signatures
+      // Committee Signatures (Tip 38: 3 Officers)
       // 1. Cashier
       const cashierName = s.cashierName || "সাজ্জাদ হোসেন";
       if (el("rcptCashier")) el("rcptCashier").innerText = cashierName;
@@ -7268,7 +7643,26 @@
         }
       }
 
-      // 2. President
+      // 2. Secretary (Tip 38)
+      const secName = s.secretaryName || "জনাব রফিকুল ইসলাম";
+      if (el("rcptSecretaryName")) el("rcptSecretaryName").innerText = secName;
+      const secWrap = el("rcptWrapSecretary");
+      if (secWrap) {
+        const sScale = s.secretarySignScale !== undefined ? s.secretarySignScale : 100;
+        const sY = s.secretarySignY !== undefined ? s.secretarySignY : 0;
+        const sX = s.secretarySignX !== undefined ? s.secretarySignX : 0;
+        secWrap.style.transform = `translate(${sX}px, ${sY}px) scale(${sScale / 100})`;
+      }
+      const secSignEl = el("rcptSignSecretary");
+      if (secSignEl) {
+        if (s.secretarySignImg) {
+          secSignEl.innerHTML = `<img src="${s.secretarySignImg}" alt="Sign" style="max-height: 28px; max-width: 80px; object-fit: contain; display: inline-block;">`;
+        } else {
+          secSignEl.innerText = secName.replace("জনাব ", "").split(" ")[0] || "Rafiq";
+        }
+      }
+
+      // 3. President
       const presName = s.presidentName || "জনাব আব্দুল করিম";
       if (el("rcptPresidentName")) el("rcptPresidentName").innerText = presName;
       const presWrap = el("rcptWrapPresident");
@@ -7287,6 +7681,20 @@
         }
       }
 
+      // Watermark Text (Tip 32)
+      const wm = el("rcptWatermark");
+      if (wm) {
+        if (data.isVoid) {
+          wm.innerText = "বাতিলকৃত রসিদ • VOID COPY • বাতিল";
+          wm.style.color = "rgba(220, 38, 38, 0.15)";
+          wm.style.borderColor = "rgba(220, 38, 38, 0.2)";
+        } else {
+          wm.innerText = `${somitiName} • ভেরিফাইড ডিজিটাল রসিদ • VERIFIED`;
+          wm.style.color = "rgba(15, 157, 88, 0.05)";
+          wm.style.borderColor = "rgba(15, 157, 88, 0.08)";
+        }
+      }
+
       // Footer
       if (el("rcptFootName")) el("rcptFootName").innerText = somitiName;
       if (el("rcptFootAddress")) el("rcptFootAddress").innerText = "ঠিকানা: " + somitiAddress;
@@ -7298,6 +7706,9 @@
       if (codeEl) codeEl.innerText = secretCode;
 
       generateReceiptQr(secretCode, data.driveUrl);
+
+      // Default layout to A4
+      switchReceiptLayout('a4');
 
       document.getElementById("receiptModal").style.display = "flex";
     }
@@ -8146,6 +8557,91 @@
       navigator.clipboard.writeText(getReceiptPlainText()).then(() => {
         alert("✅ রসিদের লেখা ও ভেরিফিকেশন লিংক কপি করা হয়েছে!");
       });
+    }
+
+    // ================= CATEGORY 4: RECEIPT LAYOUT, SMS & VOID LOGIC =================
+    // Tip 31: Thermal POS / Slip layout switcher
+    function switchReceiptLayout(mode) {
+      const wrap = document.getElementById("receiptContainerWrap");
+      const btnA4 = document.getElementById("rcptLayoutBtn-a4");
+      const btn80 = document.getElementById("rcptLayoutBtn-80mm");
+      const btn55 = document.getElementById("rcptLayoutBtn-55mm");
+      if (!wrap) return;
+
+      wrap.classList.remove("thermal-80mm", "thermal-55mm");
+      [btnA4, btn80, btn55].forEach(b => b && b.classList.remove("active"));
+
+      if (mode === '80mm') {
+        wrap.classList.add("thermal-80mm");
+        if (btn80) btn80.classList.add("active");
+      } else if (mode === '55mm') {
+        wrap.classList.add("thermal-55mm");
+        if (btn55) btn55.classList.add("active");
+      } else {
+        if (btnA4) btnA4.classList.add("active");
+      }
+    }
+
+    // Tip 33: SMS formatted share
+    function shareReceiptSms() {
+      const text = getReceiptPlainText();
+      const encoded = encodeURIComponent(text);
+      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        window.location.href = `sms:?body=${encoded}`;
+      } else {
+        navigator.clipboard.writeText(text).then(() => {
+          alert("📱 SMS উপযোগী রসিদ টেক্সট কপি হয়েছে! যেকোনো মেসেজ বা এসএমএস গেটওয়েতে পেস্ট করুন।");
+        });
+      }
+    }
+
+    // Tip 40: Void / Cancel Receipt confirmation modal
+    function openVoidReceiptModal() {
+      const modal = document.getElementById("voidReceiptModal");
+      const reasonInput = document.getElementById("voidReceiptReason");
+      if (reasonInput) reasonInput.value = "";
+      if (modal) modal.style.display = "flex";
+    }
+
+    function closeVoidReceiptModal() {
+      const modal = document.getElementById("voidReceiptModal");
+      if (modal) modal.style.display = "none";
+    }
+
+    async function confirmVoidReceipt() {
+      if (!activeReceiptData || !activeReceiptData.id) {
+        alert("কোনো রসিদ সক্রিয় নেই");
+        return;
+      }
+      const reason = (document.getElementById("voidReceiptReason")?.value || "").trim();
+      if (!reason) {
+        alert("অনুগ্রহ করে বাতিলের সুনির্দিষ্ট কারণ লিখুন!");
+        return;
+      }
+
+      try {
+        await db.collection("somiti").doc("main").collection("deposits").doc(activeReceiptData.id).update({
+          isVoid: true,
+          voidReason: reason,
+          voidedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          voidedBy: currentUser?.displayName || currentUser?.email || "এডমিন"
+        });
+
+        // Also update local data
+        const found = depositsData.find(d => d.id === activeReceiptData.id);
+        if (found) {
+          found.isVoid = true;
+          found.voidReason = reason;
+        }
+
+        activeReceiptData.isVoid = true;
+        closeVoidReceiptModal();
+        closeReceiptModal();
+        renderDeposits();
+        alert("🚫 রসিদটি সফলভাবে বাতিল (VOID) হিসেবে চিহ্নিত করা হয়েছে!");
+      } catch (e) {
+        alert("রসিদ বাতিল ত্রুটি: " + e.message);
+      }
     }
 
     // ================= MEMBER PASSBOOK MODAL LOGIC =================
@@ -9996,6 +10492,21 @@
       }
     }
 
+    function syncLoanSlider(type, val) {
+      if (type === 'amount') {
+        const input = document.getElementById("loanFormAmount");
+        const lbl = document.getElementById("sliderAmountLabel");
+        if (input) input.value = val;
+        if (lbl) lbl.innerText = "৳" + Math.round(val).toLocaleString('bn-BD');
+      } else if (type === 'duration') {
+        const input = document.getElementById("loanFormDuration");
+        const lbl = document.getElementById("sliderDurationLabel");
+        if (input) input.value = val;
+        if (lbl) lbl.innerText = val + " মাস";
+      }
+      updateLoanCalculatorPreview();
+    }
+
     function updateLoanCalculatorPreview() {
       const amount = parseFloat(document.getElementById("loanFormAmount").value) || 0;
       const months = parseInt(document.getElementById("loanFormDuration").value) || 12;
@@ -10006,6 +10517,16 @@
       document.getElementById("calcInterestAmount").innerText = "৳" + calc.totalInterest.toLocaleString('bn-BD');
       document.getElementById("calcTotalPayable").innerText = "৳" + calc.totalPayable.toLocaleString('bn-BD');
       document.getElementById("calcMonthlyInstallment").innerText = "৳" + calc.monthly.toLocaleString('bn-BD');
+
+      // Sync sliders (Tip 37)
+      const sliderAmt = document.getElementById("loanRangeAmount");
+      const sliderDur = document.getElementById("loanRangeDuration");
+      const lblAmt = document.getElementById("sliderAmountLabel");
+      const lblDur = document.getElementById("sliderDurationLabel");
+      if (sliderAmt && sliderAmt.value != amount) sliderAmt.value = amount;
+      if (sliderDur && sliderDur.value != months) sliderDur.value = months;
+      if (lblAmt) lblAmt.innerText = "৳" + Math.round(amount).toLocaleString('bn-BD');
+      if (lblDur) lblDur.innerText = months + " মাস";
     }
 
     function renderLoansView() {
@@ -10031,16 +10552,21 @@
         activeList.innerHTML = loansData.map(l => {
           const prog = l.totalPayable > 0 ? Math.min(100, Math.round((l.totalPaid / l.totalPayable) * 100)) : 0;
           const isSettled = l.outstandingBalance <= 0;
+          const isOverdue = !isSettled && (l.isOverdue || (l.schedule && l.schedule.some(s => !s.paid && new Date(s.dueDate) < new Date())));
+
           return `
-            <div class="card" style="margin-bottom: 12px; border-left: 4px solid ${isSettled ? '#10B981' : '#0F5132'};">
+            <div class="card" style="margin-bottom: 12px; border-left: 4px solid ${isSettled ? '#10B981' : (isOverdue ? '#DC2626' : '#0F5132')};">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <div>
                   <span style="font-size: 15px; font-weight: 800; color: #1E293B;">${l.memberName}</span>
                   <span style="font-size: 11px; color: var(--text-muted);"> (সদস্য নং ${l.memberNumber})</span>
                 </div>
-                <span style="background: ${isSettled ? '#DEF7EC' : '#FEF08A'}; color: ${isSettled ? '#03543F' : '#854D0E'}; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 800;">
-                  ${isSettled ? 'পরিশোধিত' : 'চলমান'}
-                </span>
+                <div style="display: flex; gap: 6px; align-items: center;">
+                  ${isOverdue ? '<span class="pulse-overdue-chip">⚠️ কিস্তি বকেয়া</span>' : ''}
+                  <span style="background: ${isSettled ? '#DEF7EC' : '#FEF08A'}; color: ${isSettled ? '#03543F' : '#854D0E'}; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 800;">
+                    ${isSettled ? 'পরিশোধিত' : 'চলমান'}
+                  </span>
+                </div>
               </div>
 
               <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; background: #F8FAFC; padding: 8px; border-radius: 8px; text-align: center; margin-bottom: 8px;">
@@ -10050,14 +10576,14 @@
                 <div><div style="font-size: 10px; color: #64748B;">অবশিষ্ট বাকি</div><div style="font-weight: 800; font-size: 12px; color: #DC2626;">৳${Math.round(l.outstandingBalance).toLocaleString('bn-BD')}</div></div>
               </div>
 
-              <!-- Progress bar -->
+              <!-- Progress bar and Realtime Ratio (Tip 35) -->
               <div style="margin-bottom: 10px;">
-                <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 2px;">
-                  <span>আদায় অগ্রগতি:</span>
-                  <strong>${prog}%</strong>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px;">
+                  <span style="color: var(--text-muted);">আদায় অনুপাত: <strong>৳${Math.round(l.totalPaid).toLocaleString('bn-BD')} / ৳${Math.round(l.totalPayable).toLocaleString('bn-BD')}</strong></span>
+                  <strong style="color: #0F5132;">${prog}% সম্পন্ন</strong>
                 </div>
-                <div style="width: 100%; height: 7px; background: #E2E8F0; border-radius: 4px; overflow: hidden;">
-                  <div style="width: ${prog}%; height: 100%; background: ${isSettled ? '#10B981' : '#0F5132'}; border-radius: 4px;"></div>
+                <div class="loan-repay-progress-wrap">
+                  <div class="loan-repay-progress-bar" style="width: ${prog}%; background: ${isSettled ? '#10B981' : (isOverdue ? '#DC2626' : 'linear-gradient(90deg, #10B981, #059669)')};"></div>
                 </div>
               </div>
 
