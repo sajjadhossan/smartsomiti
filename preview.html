@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>স্মার্ট সমিতি প্ল্যাটফর্ম - রসিদ, খরচ খাতা ও ড্রাইভ ব্যাকআপ</title>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -1599,16 +1602,17 @@
 
           <!-- Pad Header Banner Upload -->
           <div class="form-group">
-            <label>২. প্যাডের টপ হেডার ব্যানার (ঐচ্ছিক ইমেজ আপলোড)</label>
+            <label style="font-weight: 700; color: #1E293B;">২. প্যাডের টপ হেডার ব্যানার (আপনার কাস্টম ব্যানার ছবি)</label>
             <div style="display: flex; gap: 8px; align-items: center;">
-              <label style="background: var(--card-bg); border: 1.5px dashed var(--border); border-radius: 8px; padding: 10px; width: 100%; text-align: center; cursor: pointer; font-size: 12px; color: var(--text-muted);">
-                📷 প্যাড হেডার ব্যানার ছবি আপলোড করুন
-                <input type="file" id="profBannerFileInput" accept="image/*" style="display: none;" onchange="handleProfBannerUpload(this)">
-              </label>
-              <button type="button" onclick="clearProfBanner()" style="background: #FEE2E2; color: #DC2626; border: none; padding: 10px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer;">মুছুন</button>
+              <input type="file" id="profBannerFileInput" accept="image/*" style="position: absolute; left: -9999px; opacity: 0; width: 1px; height: 1px;" onchange="handleProfBannerUpload(this)">
+              <button type="button" onclick="document.getElementById('profBannerFileInput').click()" style="flex: 1; background: #0F9D58; color: white; border: none; padding: 11px; border-radius: 8px; font-size: 12.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                <span>📷 নতুন ব্যানার ছবি আপলোড করুন</span>
+              </button>
+              <button type="button" onclick="clearProfBanner()" style="background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; padding: 11px 14px; border-radius: 8px; font-size: 11.5px; font-weight: 700; cursor: pointer;">মুছুন</button>
             </div>
-            <div id="profBannerPreviewContainer" style="display: none; margin-top: 6px;">
-              <img id="profBannerPreviewImg" src="" style="width: 100%; max-height: 90px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border);">
+            <div id="profBannerPreviewContainer" style="display: none; margin-top: 8px; background: #F8FAFC; border: 1.5px dashed #0F9D58; border-radius: 8px; padding: 6px; text-align: center;">
+              <div style="font-size: 11px; color: #0F9D58; font-weight: 700; margin-bottom: 4px;">✅ ব্যানার আপলোড সম্পন্ন ও কার্যকর হয়েছে:</div>
+              <img id="profBannerPreviewImg" src="" style="width: 100%; max-height: 110px; object-fit: contain; border-radius: 6px;">
             </div>
           </div>
 
@@ -4634,33 +4638,73 @@
       reader.readAsDataURL(input.files[0]);
     }
 
-    function handleProfBannerUpload(input) {
+    async function handleProfBannerUpload(input) {
       if (!input.files || !input.files[0]) return;
+      const file = input.files[0];
+
+      // Show immediate loading indicator
+      const prev = document.getElementById("profBannerPreviewImg");
+      const cont = document.getElementById("profBannerPreviewContainer");
+      if (cont) cont.style.display = "block";
+
       const reader = new FileReader();
+      reader.onerror = function() {
+        alert("❌ ছবি পড়তে সমস্যা হয়েছে। অনুগ্রহ করে অন্য একটি ছবি বেছে নিন।");
+      };
       reader.onload = function(e) {
         const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const maxW = 900;
-          const scale = Math.min(1, maxW / img.width);
-          canvas.width = img.width * scale;
-          canvas.height = img.height * scale;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+        img.onerror = function() {
+          alert("❌ ছবির ফরম্যাট সমর্থন করছে না। অনুগ্রহ করে JPG অথবা PNG ছবি দিন।");
+        };
+        img.onload = async function() {
+          try {
+            const canvas = document.createElement('canvas');
+            const maxW = 1000;
+            const maxH = 260;
+            let w = img.width;
+            let h = img.height;
+            const ratio = Math.min(maxW / w, maxH / h, 1);
+            canvas.width = Math.round(w * ratio);
+            canvas.height = Math.round(h * ratio);
 
-          currentSomiti.padHeaderImg = dataUrl;
-          const prev = document.getElementById("profBannerPreviewImg");
-          const cont = document.getElementById("profBannerPreviewContainer");
-          if (prev && cont) {
-            prev.src = dataUrl;
-            cont.style.display = "block";
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+
+            // 1. Immediately set in memory
+            currentSomiti.padHeaderImg = dataUrl;
+
+            // 2. Immediately update previews in DOM
+            if (prev) prev.src = dataUrl;
+            if (cont) cont.style.display = "block";
+
+            // 3. Immediately render on all pads
+            renderPad(currentSomiti);
+            updateLivePadPreview();
+
+            // 4. Immediately save to localStorage so refresh cannot lose it
+            localStorage.setItem("saved_somiti_settings", JSON.stringify(currentSomiti));
+
+            // 5. Save to Firestore in background
+            try {
+              if (typeof db !== "undefined" && db) {
+                await db.collection("somiti").doc("main").set({ padHeaderImg: dataUrl }, { merge: true });
+              }
+            } catch (fsErr) {
+              console.warn("Firestore banner save warning:", fsErr);
+            }
+
+            // 6. Reset input value so re-selecting same file works
+            input.value = "";
+
+            alert("🎉 আপনার ব্যানারটি সফলভাবে যুক্ত ও সেভ হয়েছে! এটি এখন লাইভ প্যাডে দৃশ্যমান।");
+          } catch (procErr) {
+            alert("❌ ব্যানার প্রসেস করতে সমস্যা: " + procErr.message);
           }
-          updateLivePadPreview();
         };
         img.src = e.target.result;
       };
-      reader.readAsDataURL(input.files[0]);
+      reader.readAsDataURL(file);
     }
 
     function clearProfLogo() {
@@ -4672,11 +4716,27 @@
       updateLivePadPreview();
     }
 
-    function clearProfBanner() {
-      delete currentSomiti.padHeaderImg;
+    async function clearProfBanner() {
+      if (currentSomiti) delete currentSomiti.padHeaderImg;
+      const prev = document.getElementById("profBannerPreviewImg");
       const cont = document.getElementById("profBannerPreviewContainer");
+      if (prev) prev.src = "";
       if (cont) cont.style.display = "none";
+      const fileInput = document.getElementById("profBannerFileInput");
+      if (fileInput) fileInput.value = "";
+
+      renderPad(currentSomiti);
       updateLivePadPreview();
+      localStorage.setItem("saved_somiti_settings", JSON.stringify(currentSomiti));
+
+      try {
+        if (typeof db !== "undefined" && db) {
+          await db.collection("somiti").doc("main").update({ padHeaderImg: firebase.firestore.FieldValue.delete() });
+        }
+      } catch (err) {
+        console.warn("Firestore clear banner warning:", err);
+      }
+      alert("🗑️ ব্যানার সরানো হয়েছে। এখন আবার ডিফল্ট ৩-কলাম হেডার প্রদর্শিত হবে।");
     }
 
     async function saveSomitiProfileView() {
@@ -4796,7 +4856,15 @@
       try {
         db.collection("somiti").doc("main").onSnapshot((doc) => {
           if (doc.exists) {
-            currentSomiti = { ...currentSomiti, ...doc.data() };
+            const cloudData = doc.data() || {};
+            // Protect local custom banner and logo from being overwritten by null in cloud
+            if (!cloudData.padHeaderImg && currentSomiti && currentSomiti.padHeaderImg) {
+              cloudData.padHeaderImg = currentSomiti.padHeaderImg;
+            }
+            if (!cloudData.logoImg && currentSomiti && currentSomiti.logoImg) {
+              cloudData.logoImg = currentSomiti.logoImg;
+            }
+            currentSomiti = { ...currentSomiti, ...cloudData };
             localStorage.setItem("saved_somiti_settings", JSON.stringify(currentSomiti));
             renderPad(currentSomiti);
           }
