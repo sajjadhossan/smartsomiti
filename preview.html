@@ -1775,144 +1775,206 @@
       box-sizing: border-box !important;
     }
     .pad-top-bismillah {
+      font-size: clamp(11.5px, 2.5vw, 14px);
+      font-weight: 700;
+      color: #165B33;
       text-align: center;
-      font-size: clamp(10.5px, 2.5vw, 13px);
-      color: #14532D;
-      font-weight: 600;
       margin-bottom: 5px;
       letter-spacing: 0.5px;
     }
     .pad-top-header-grid {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 8px;
       width: 100%;
       box-sizing: border-box;
       margin-bottom: 6px;
     }
-    .pad-header-left-col,
-    .pad-header-brand-col {
+    /* 1. Left: Society Logo */
+    .pad-logo-holder {
+      width: 78px;
+      height: 78px;
+      min-width: 65px;
+      flex: 0 0 78px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
+    }
+    /* 2. Center: Grand Main Society Header */
+    .pad-header-center-col {
       flex: 1 1 auto;
       min-width: 0;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-      text-align: left;
-      gap: 3px;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 2.5px;
+      padding: 0 4px;
     }
     .pad-title-main {
-      font-size: clamp(16px, 4.2vw, 24px);
+      font-size: clamp(15px, 3.8vw, 24px);
       font-weight: 900;
       line-height: 1.2;
       letter-spacing: -0.2px;
       margin: 0;
-      text-align: left;
+      text-align: center;
+      white-space: nowrap;
     }
     .pad-title-green { color: #165B33; }
     .pad-title-red { color: #B91C1C; }
-    .pad-name-english {
-      font-size: clamp(8.5px, 2vw, 11px);
-      font-weight: 800;
-      color: #334155;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      line-height: 1.2;
-      font-family: 'Inter', -apple-system, sans-serif;
-      text-align: left;
-    }
     .pad-slogan-wrap {
       display: flex;
+      justify-content: center;
       margin-top: 1px;
     }
     .pad-slogan-ribbon {
       display: inline-block;
       background: #14532D;
       color: #FEF08A;
-      font-size: clamp(7.5px, 1.8vw, 9.5px);
+      font-size: clamp(7.5px, 1.8vw, 10px);
       font-weight: 700;
       padding: 2.5px 10px;
       border-radius: 12px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.12);
       letter-spacing: 0.2px;
-      text-align: left;
+      text-align: center;
+      white-space: nowrap;
     }
-    .pad-logo-holder {
-      width: 80px;
-      height: 80px;
-      min-width: 68px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
-      margin-top: 2px;
+    .pad-est-badge {
+      display: inline-block;
+      background: #0F172A;
+      color: #FFFFFF;
+      font-size: clamp(7px, 1.5vw, 8.5px);
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-top: 1px;
+      white-space: nowrap;
     }
-    /* Tier 2: Clean Full-width Information Strip */
-    .pad-info-strip {
-      background: #F8FAFC;
-      border: 1px solid #E2E8F0;
-      border-radius: 6px;
-      padding: 6px 10px;
-      margin: 6px 0 6px 0;
+    /* 3. Right: Society Bengali/English Names, Tagline, Address, Reg, Contact & Bank */
+    .pad-header-right-col {
+      flex: 0 0 auto;
+      max-width: 40%;
+      min-width: 125px;
+      text-align: right;
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      font-size: clamp(8px, 1.7vw, 10px);
-      color: #334155;
-      line-height: 1.35;
+      align-items: flex-end;
+      gap: 2px;
     }
-    .pad-info-strip-row {
+    .pad-right-name-bn {
+      font-size: clamp(9.5px, 2.2vw, 12px);
+      font-weight: 800;
+      color: #B91C1C;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    .pad-name-english {
+      font-size: clamp(7.5px, 1.6vw, 9px);
+      font-weight: 800;
+      color: #334155;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      line-height: 1.2;
+      font-family: 'Inter', -apple-system, sans-serif;
+      text-align: right;
+      white-space: nowrap;
+    }
+    .pad-right-tagline {
+      font-size: 8px;
+      font-weight: 600;
+      color: #059669;
+      font-style: italic;
+      text-align: right;
+      white-space: nowrap;
+    }
+    .pad-address-line {
+      font-size: clamp(7.5px, 1.6vw, 8.5px);
+      font-weight: 600;
+      color: #1E293B;
+      line-height: 1.2;
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    .pad-info-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      font-weight: 600;
+      justify-content: flex-end;
+      gap: 2px;
+      text-align: right;
       white-space: nowrap;
     }
     .pad-reg-pill {
       background: #FEF3C7;
       color: #92400E;
       border: 1px solid #FDE68A;
-      font-size: clamp(7.5px, 1.6vw, 9px);
+      font-size: clamp(7px, 1.5vw, 8.5px);
       font-weight: 700;
-      padding: 1.5px 6px;
-      border-radius: 4px;
+      padding: 1px 5px;
+      border-radius: 3px;
       display: inline-flex;
       align-items: center;
-      gap: 3px;
+      gap: 2px;
       white-space: nowrap;
     }
     .pad-account-chip {
-      background: #FFFFFF;
+      background: #F8FAFC;
       border: 1px solid #CBD5E1;
-      font-size: clamp(7.5px, 1.6vw, 9px);
+      font-size: clamp(7px, 1.5vw, 8.5px);
       color: #1E293B;
-      padding: 1.5px 6px;
-      border-radius: 4px;
+      padding: 1px 5px;
+      border-radius: 3px;
       display: inline-flex;
       align-items: center;
-      gap: 3px;
+      gap: 2px;
       white-space: nowrap;
+    }
+    /* Mobile responsive fine-tuning */
+    @media (max-width: 480px) {
+      .pad-top-header-grid {
+        gap: 4px;
+      }
+      .pad-logo-holder {
+        width: 58px;
+        height: 58px;
+        min-width: 48px;
+        flex: 0 0 58px;
+      }
+      .pad-header-right-col {
+        min-width: 105px;
+        max-width: 42%;
+        gap: 1.5px;
+      }
+      .pad-title-main {
+        font-size: 13.5px !important;
+      }
+      .pad-slogan-ribbon {
+        font-size: 7px !important;
+        padding: 1.5px 6px !important;
+      }
+      .pad-est-badge {
+        font-size: 7px !important;
+        padding: 0.5px 4px !important;
+      }
+      .pad-right-name-bn {
+        font-size: 9px !important;
+      }
+      .pad-name-english {
+        font-size: 6.5px !important;
+      }
+      .pad-address-line, .pad-reg-pill, .pad-account-chip {
+        font-size: 6.5px !important;
+        padding: 0.5px 3.5px !important;
+      }
     }
     /* Suppress duplicate Bismillah & legacy fallbacks */
     .pad-bismillah-sub { display: none !important; }
-    .pad-header-center-col,
-    .pad-header-right-col,
+    .pad-header-left-col,
+    .pad-header-brand-col,
     .pad-header-info-col,
     .pad-header-center { display: contents; }
     .pad-header-right { display: none; }
-    .pad-right-tagline { font-size: 8.5px; color: #64748B; font-style: italic; }
-    .pad-address-line { font-size: 9px; color: #1E293B; }
     .pad-reg-row { display: flex; align-items: center; gap: 4px; }
     .pad-contact-chips-row { display: flex; align-items: center; gap: 4px; }
-    .pad-est-badge { display: inline-block; background: #0F172A; color: #FFFFFF; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 6px; }
 
     .pad-double-divider {
       border-top: 2.5px solid #14532D;
@@ -3485,20 +3547,10 @@
               <img id="livePadBannerImg" src="" alt="প্যাড হেডার ব্যানার" style="width: 100%; max-height: 110px; object-fit: contain; border-radius: 4px; display: block; margin: 0 auto;">
             </div>
 
-            <!-- Header 2-Part Grid: Left = All Titles & Brand, Right = Official Emblem Logo -->
+            <!-- Header 3-Part Grid: Left = Logo, Center = Big Header, Right = Details & Contacts -->
             <div class="pad-top-header-grid" id="livePadHeaderGrid">
-              <!-- Left Side: Brand, English Name & Slogan -->
-              <div class="pad-header-left-col">
-                <div class="pad-title-main" id="livePadTitle">
-                  <span class="pad-title-green">স্বপ্ন ছোঁয়া</span> <span class="pad-title-red">ঐক্য সমিতি</span>
-                </div>
-                <div class="pad-name-english" id="livePadEnglishName">SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.</div>
-                <div class="pad-slogan-wrap">
-                  <span class="pad-slogan-ribbon" id="livePadSlogan">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</span>
-                </div>
-              </div>
 
-              <!-- Right Side: Official Circular Logo -->
+              <!-- Left: Official Logo -->
               <div class="pad-logo-holder" id="livePadLogoBox">
                 <svg viewBox="0 0 130 130" style="width: 100%; height: 100%; display: block;" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="65" cy="65" r="62" fill="#FFFFFF" stroke="#165B33" stroke-width="2.5"/>
@@ -3530,22 +3582,29 @@
                   <text x="65" y="106" font-size="12" fill="#165B33" text-anchor="middle" font-weight="bold" letter-spacing="3">★ ★ ★</text>
                 </svg>
               </div>
-            </div>
 
-            <!-- Tier 2: Clean Full-width Information & Banking Strip -->
-            <div class="pad-info-strip" id="livePadInfoStrip">
-              <div class="pad-info-strip-row">
-                <span class="pad-reg-pill" id="livePadRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬ • স্থাপিত: ২০২৬ ইং</span>
-                <span class="pad-info-badge">📍 কার্যালয়: <span id="livePadAddress">মিরপুর-১০, ঢাকা</span></span>
-                <span class="pad-info-badge">🏷️ কোড: <strong id="livePadCodeBadge">SMT-7890</strong></span>
+              <!-- Center: Grand Society Header -->
+              <div class="pad-header-center-col">
+                <div class="pad-title-main" id="livePadTitle">
+                  <span class="pad-title-green">স্বপ্ন ছোঁয়া</span> <span class="pad-title-red">ঐক্য সমিতি</span>
+                </div>
+                <div class="pad-slogan-wrap">
+                  <span class="pad-slogan-ribbon" id="livePadSlogan">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</span>
+                </div>
+                <div class="pad-est-badge" id="livePadEstBadge">স্থাপিত: ২০২৬ ইং</div>
               </div>
-              <div class="pad-info-strip-row">
+
+              <!-- Right: Society Bangla/English Names, Tagline, Address, Reg, Contact & Bank -->
+              <div class="pad-header-right-col">
+                <div class="pad-right-name-bn" id="livePadRightBnName">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
+                <div class="pad-name-english" id="livePadEnglishName">SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.</div>
+                <div class="pad-right-tagline" id="livePadRightTagline">স্বচ্ছতা ও ঐক্যের প্রতীক</div>
+                <div class="pad-address-line" id="livePadAddressLine">📍 কার্যালয়: <span id="livePadAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
+                <span class="pad-reg-pill" id="livePadRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬</span>
                 <span class="pad-account-chip">📱 বিকাশ/নগদ: <strong id="livePadBkash">০১৭১২-৩৪৫৬৭৮</strong></span>
-                <span class="pad-account-chip">🏦 ব্যাংক হিসাব: <strong id="livePadBank">সিটি ব্যাংক পিএলসি - ২৩১৫১৫৮০৪৫০০১</strong></span>
+                <span class="pad-account-chip">🏦 ব্যাংক হিসাব: <strong id="livePadBank">সিটি ব্যাংক পিএলসি</strong></span>
               </div>
             </div>
-            <span id="livePadRightTagline" style="display:none;"></span>
-            <span id="livePadAddressLine" style="display:none;"></span>
 
             <!-- Double Divider Line -->
             <div class="pad-double-divider"></div>
@@ -3990,20 +4049,10 @@
               <img id="apBannerImg" src="" alt="প্যাড হেডার ব্যানার" style="width: 100%; max-height: 110px; object-fit: contain; border-radius: 4px; display: block; margin: 0 auto;">
             </div>
 
-            <!-- Header 2-Part Grid: Left = All Titles & Brand, Right = Official Emblem Logo -->
+            <!-- Header 3-Part Grid: Left = Logo, Center = Big Header, Right = Details & Contacts -->
             <div class="pad-top-header-grid" id="apHeaderGrid">
-              <!-- Left Side: Brand, English Name & Slogan -->
-              <div class="pad-header-left-col">
-                <div class="pad-title-main" id="apSomitiName">
-                  <span class="pad-title-green">স্বপ্ন ছোঁয়া</span> <span class="pad-title-red">ঐক্য সমিতি</span>
-                </div>
-                <div class="pad-name-english" id="apEnglishName">SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.</div>
-                <div class="pad-slogan-wrap">
-                  <span class="pad-slogan-ribbon" id="apPadHeader">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</span>
-                </div>
-              </div>
 
-              <!-- Right Side: Official Circular Logo -->
+              <!-- Left: Official Logo -->
               <div class="pad-logo-holder" id="apPadLogoBox">
                 <svg viewBox="0 0 130 130" style="width: 100%; height: 100%; display: block;" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="65" cy="65" r="62" fill="#FFFFFF" stroke="#165B33" stroke-width="2.5"/>
@@ -4035,22 +4084,29 @@
                   <text x="65" y="106" font-size="12" fill="#165B33" text-anchor="middle" font-weight="bold" letter-spacing="3">★ ★ ★</text>
                 </svg>
               </div>
-            </div>
 
-            <!-- Tier 2: Clean Full-width Information & Banking Strip -->
-            <div class="pad-info-strip" id="apInfoStrip">
-              <div class="pad-info-strip-row">
-                <span class="pad-reg-pill" id="apRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬ • স্থাপিত: ২০২৬ ইং</span>
-                <span class="pad-info-badge">📍 কার্যালয়: <span id="apAddress">মিরপুর-১০, ঢাকা</span></span>
-                <span class="pad-info-badge">🏷️ কোড: <strong id="apCodeBadge">SMT-7890</strong></span>
+              <!-- Center: Grand Society Header -->
+              <div class="pad-header-center-col">
+                <div class="pad-title-main" id="apSomitiName">
+                  <span class="pad-title-green">স্বপ্ন ছোঁয়া</span> <span class="pad-title-red">ঐক্য সমিতি</span>
+                </div>
+                <div class="pad-slogan-wrap">
+                  <span class="pad-slogan-ribbon" id="apPadHeader">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</span>
+                </div>
+                <div class="pad-est-badge" id="apEstYearBadge">স্থাপিত: ২০২৬ ইং</div>
               </div>
-              <div class="pad-info-strip-row">
+
+              <!-- Right: Society Bangla/English Names, Tagline, Address, Reg, Contact & Bank -->
+              <div class="pad-header-right-col">
+                <div class="pad-right-name-bn" id="apRightBnName">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
+                <div class="pad-name-english" id="apEnglishName">SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.</div>
+                <div class="pad-right-tagline" id="apRightTagline">স্বচ্ছতা ও ঐক্যের প্রতীক</div>
+                <div class="pad-address-line" id="apAddressLine">📍 কার্যালয়: <span id="apAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
+                <span class="pad-reg-pill" id="apRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬</span>
                 <span class="pad-account-chip">📱 বিকাশ/নগদ: <strong id="apBkash">০১৭১২-৩৪৫৬৭৮</strong></span>
-                <span class="pad-account-chip">🏦 ব্যাংক হিসাব: <strong id="apBank">সিটি ব্যাংক পিএলসি - ২৩১৫১৫৮০৪৫০০১</strong></span>
+                <span class="pad-account-chip">🏦 ব্যাংক হিসাব: <strong id="apBank">সিটি ব্যাংক পিএলসি</strong></span>
               </div>
             </div>
-            <span id="apRightTagline" style="display:none;"></span>
-            <span id="apAddressLine" style="display:none;"></span>
 
             <!-- Double Divider Line -->
             <div class="pad-double-divider"></div>
@@ -4442,20 +4498,10 @@
               <img id="nvBannerImg" src="" alt="প্যাড হেডার ব্যানার" style="width: 100%; max-height: 110px; object-fit: contain; border-radius: 4px; display: block; margin: 0 auto;">
             </div>
 
-            <!-- Header 2-Part Grid: Left = All Titles & Brand, Right = Official Emblem Logo -->
+            <!-- Header 3-Part Grid: Left = Logo, Center = Big Header, Right = Details & Contacts -->
             <div class="pad-top-header-grid" id="nvHeaderGrid">
-              <!-- Left Side: Brand, English Name & Slogan -->
-              <div class="pad-header-left-col">
-                <div class="pad-title-main" id="nvSomitiName">
-                  <span class="pad-title-green">স্বপ্ন ছোঁয়া</span> <span class="pad-title-red">ঐক্য সমিতি</span>
-                </div>
-                <div class="pad-name-english" id="nvEnglishName">SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.</div>
-                <div class="pad-slogan-wrap">
-                  <span class="pad-slogan-ribbon" id="nvPadHeader">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</span>
-                </div>
-              </div>
 
-              <!-- Right Side: Official Circular Logo -->
+              <!-- Left: Official Logo -->
               <div class="pad-logo-holder" id="nvPadLogoBox">
                 <svg viewBox="0 0 130 130" style="width: 100%; height: 100%; display: block;" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="65" cy="65" r="62" fill="#FFFFFF" stroke="#165B33" stroke-width="2.5"/>
@@ -4463,22 +4509,29 @@
                   <text x="65" y="106" font-size="12" fill="#165B33" text-anchor="middle" font-weight="bold" letter-spacing="3">★ ★ ★</text>
                 </svg>
               </div>
-            </div>
 
-            <!-- Tier 2: Clean Full-width Information & Banking Strip -->
-            <div class="pad-info-strip" id="nvInfoStrip">
-              <div class="pad-info-strip-row">
-                <span class="pad-reg-pill" id="nvRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬ • স্থাপিত: ২০২৬ ইং</span>
-                <span class="pad-info-badge">📍 কার্যালয়: <span id="nvAddress">মিরপুর-১০, ঢাকা</span></span>
-                <span class="pad-info-badge">🏷️ কোড: <strong id="nvCodeBadge">SMT-7890</strong></span>
+              <!-- Center: Grand Society Header -->
+              <div class="pad-header-center-col">
+                <div class="pad-title-main" id="nvSomitiName">
+                  <span class="pad-title-green">স্বপ্ন ছোঁয়া</span> <span class="pad-title-red">ঐক্য সমিতি</span>
+                </div>
+                <div class="pad-slogan-wrap">
+                  <span class="pad-slogan-ribbon" id="nvPadHeader">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</span>
+                </div>
+                <div class="pad-est-badge" id="nvEstYearBadge">স্থাপিত: ২০২৬ ইং</div>
               </div>
-              <div class="pad-info-strip-row">
+
+              <!-- Right: Society Bangla/English Names, Tagline, Address, Reg, Contact & Bank -->
+              <div class="pad-header-right-col">
+                <div class="pad-right-name-bn" id="nvRightBnName">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
+                <div class="pad-name-english" id="nvEnglishName">SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.</div>
+                <div class="pad-right-tagline" id="nvRightTagline">স্বচ্ছতা ও ঐক্যের প্রতীক</div>
+                <div class="pad-address-line" id="nvAddressLine">📍 কার্যালয়: <span id="nvAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
+                <span class="pad-reg-pill" id="nvRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬</span>
                 <span class="pad-account-chip">📱 বিকাশ/নগদ: <strong id="nvBkash">০১৭১২-৩৪৫৬৭৮</strong></span>
-                <span class="pad-account-chip">🏦 ব্যাংক হিসাব: <strong id="nvBank">সিটি ব্যাংক পিএলসি - ২৩১৫১৫৮০৪৫০০১</strong></span>
+                <span class="pad-account-chip">🏦 ব্যাংক হিসাব: <strong id="nvBank">সিটি ব্যাংক পিএলসি</strong></span>
               </div>
             </div>
-            <span id="nvRightTagline" style="display:none;"></span>
-            <span id="nvAddressLine" style="display:none;"></span>
             <div class="pad-double-divider"></div>
             <div class="pad-meta-row">
               <div>স্মারক নং: <strong id="nvMemoText" style="color: #0F172A;">স্মারক-০১/২০২৬</strong></div>
@@ -4992,20 +5045,10 @@
               <img id="rcptBannerImg" src="" alt="প্যাড হেডার ব্যানার" style="width: 100%; max-height: 110px; object-fit: contain; border-radius: 4px; display: block; margin: 0 auto;">
             </div>
 
-            <!-- Header 2-Part Grid: Left = All Titles & Brand, Right = Official Emblem Logo -->
+            <!-- Header 3-Part Grid: Left = Logo, Center = Big Header, Right = Details & Contacts -->
             <div class="pad-top-header-grid" id="rcptHeaderGrid">
-              <!-- Left Side: Brand, English Name & Slogan -->
-              <div class="pad-header-left-col">
-                <div class="pad-title-main" id="rcptSomitiName">
-                  <span class="pad-title-green">স্বপ্ন ছোঁয়া</span> <span class="pad-title-red">ঐক্য সমিতি</span>
-                </div>
-                <div class="pad-name-english" id="rcptEnglishName">SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.</div>
-                <div class="pad-slogan-wrap">
-                  <span class="pad-slogan-ribbon" id="rcptPadHeader">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</span>
-                </div>
-              </div>
 
-              <!-- Right Side: Official Circular Logo -->
+              <!-- Left: Official Logo -->
               <div class="pad-logo-holder" id="rcptPadLogoBox">
                 <svg viewBox="0 0 130 130" style="width: 100%; height: 100%; display: block;" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="65" cy="65" r="62" fill="#FFFFFF" stroke="#165B33" stroke-width="2.5"/>
@@ -5037,22 +5080,29 @@
                   <text x="65" y="106" font-size="12" fill="#165B33" text-anchor="middle" font-weight="bold" letter-spacing="3">★ ★ ★</text>
                 </svg>
               </div>
-            </div>
 
-            <!-- Tier 2: Clean Full-width Information & Banking Strip -->
-            <div class="pad-info-strip" id="rcptInfoStrip">
-              <div class="pad-info-strip-row">
-                <span class="pad-reg-pill" id="rcptRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬ • স্থাপিত: ২০২৬ ইং</span>
-                <span class="pad-info-badge">📍 কার্যালয়: <span id="rcptAddress">মিরপুর-১০, ঢাকা</span></span>
-                <span class="pad-info-badge">🏷️ কোড: <strong id="rcptCodeBadge">SMT-7890</strong></span>
+              <!-- Center: Grand Society Header -->
+              <div class="pad-header-center-col">
+                <div class="pad-title-main" id="rcptSomitiName">
+                  <span class="pad-title-green">স্বপ্ন ছোঁয়া</span> <span class="pad-title-red">ঐক্য সমিতি</span>
+                </div>
+                <div class="pad-slogan-wrap">
+                  <span class="pad-slogan-ribbon" id="rcptPadHeader">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</span>
+                </div>
+                <div class="pad-est-badge" id="rcptEstYearBadge">স্থাপিত: ২০২৬ ইং</div>
               </div>
-              <div class="pad-info-strip-row">
+
+              <!-- Right: Society Bangla/English Names, Tagline, Address, Reg, Contact & Bank -->
+              <div class="pad-header-right-col">
+                <div class="pad-right-name-bn" id="rcptRightBnName">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
+                <div class="pad-name-english" id="rcptEnglishName">SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.</div>
+                <div class="pad-right-tagline" id="rcptRightTagline">স্বচ্ছতা ও ঐক্যের প্রতীক</div>
+                <div class="pad-address-line" id="rcptAddressLine">📍 কার্যালয়: <span id="rcptAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
+                <span class="pad-reg-pill" id="rcptRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬</span>
                 <span class="pad-account-chip">📱 বিকাশ/নগদ: <strong id="rcptBkash">০১৭১২-৩৪৫৬৭৮</strong></span>
-                <span class="pad-account-chip">🏦 ব্যাংক হিসাব: <strong id="rcptBank">সিটি ব্যাংক পিএলসি - ২৩১৫১৫৮০৪৫০০১</strong></span>
+                <span class="pad-account-chip">🏦 ব্যাংক হিসাব: <strong id="rcptBank">সিটি ব্যাংক পিএলসি</strong></span>
               </div>
             </div>
-            <span id="rcptRightTagline" style="display:none;"></span>
-            <span id="rcptAddressLine" style="display:none;"></span>
 
           <!-- Double Divider Line -->
           <div class="pad-double-divider"></div>
@@ -5385,20 +5435,10 @@
               <img id="npBannerImg" src="" alt="প্যাড হেডার ব্যানার" style="width: 100%; max-height: 110px; object-fit: contain; border-radius: 4px; display: block; margin: 0 auto;">
             </div>
 
-            <!-- Header 2-Part Grid: Left = All Titles & Brand, Right = Official Emblem Logo -->
+            <!-- Header 3-Part Grid: Left = Logo, Center = Big Header, Right = Details & Contacts -->
             <div class="pad-top-header-grid" id="npHeaderGrid">
-              <!-- Left Side: Brand, English Name & Slogan -->
-              <div class="pad-header-left-col">
-                <div class="pad-title-main" id="npSomitiName">
-                  <span class="pad-title-green">স্বপ্ন ছোঁয়া</span> <span class="pad-title-red">ঐক্য সমিতি</span>
-                </div>
-                <div class="pad-name-english" id="npEnglishName">SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.</div>
-                <div class="pad-slogan-wrap">
-                  <span class="pad-slogan-ribbon" id="npPadHeader">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</span>
-                </div>
-              </div>
 
-              <!-- Right Side: Official Circular Logo -->
+              <!-- Left: Official Logo -->
               <div class="pad-logo-holder" id="npPadLogoBox">
                 <svg viewBox="0 0 130 130" style="width: 100%; height: 100%; display: block;" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="65" cy="65" r="62" fill="#FFFFFF" stroke="#165B33" stroke-width="2.5"/>
@@ -5430,22 +5470,29 @@
                   <text x="65" y="106" font-size="12" fill="#165B33" text-anchor="middle" font-weight="bold" letter-spacing="3">★ ★ ★</text>
                 </svg>
               </div>
-            </div>
 
-            <!-- Tier 2: Clean Full-width Information & Banking Strip -->
-            <div class="pad-info-strip" id="npInfoStrip">
-              <div class="pad-info-strip-row">
-                <span class="pad-reg-pill" id="npRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬ • স্থাপিত: ২০২৬ ইং</span>
-                <span class="pad-info-badge">📍 কার্যালয়: <span id="npAddress">মিরপুর-১০, ঢাকা</span></span>
-                <span class="pad-info-badge">🏷️ কোড: <strong id="npCodeBadge">SMT-7890</strong></span>
+              <!-- Center: Grand Society Header -->
+              <div class="pad-header-center-col">
+                <div class="pad-title-main" id="npSomitiName">
+                  <span class="pad-title-green">স্বপ্ন ছোঁয়া</span> <span class="pad-title-red">ঐক্য সমিতি</span>
+                </div>
+                <div class="pad-slogan-wrap">
+                  <span class="pad-slogan-ribbon" id="npPadHeader">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</span>
+                </div>
+                <div class="pad-est-badge" id="npEstYearBadge">স্থাপিত: ২০২৬ ইং</div>
               </div>
-              <div class="pad-info-strip-row">
+
+              <!-- Right: Society Bangla/English Names, Tagline, Address, Reg, Contact & Bank -->
+              <div class="pad-header-right-col">
+                <div class="pad-right-name-bn" id="npRightBnName">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
+                <div class="pad-name-english" id="npEnglishName">SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.</div>
+                <div class="pad-right-tagline" id="npRightTagline">স্বচ্ছতা ও ঐক্যের প্রতীক</div>
+                <div class="pad-address-line" id="npAddressLine">📍 কার্যালয়: <span id="npAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
+                <span class="pad-reg-pill" id="npRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬</span>
                 <span class="pad-account-chip">📱 বিকাশ/নগদ: <strong id="npBkash">০১৭১২-৩৪৫৬৭৮</strong></span>
-                <span class="pad-account-chip">🏦 ব্যাংক হিসাব: <strong id="npBank">সিটি ব্যাংক পিএলসি - ২৩১৫১৫৮০৪৫০০১</strong></span>
+                <span class="pad-account-chip">🏦 ব্যাংক হিসাব: <strong id="npBank">সিটি ব্যাংক পিএলসি</strong></span>
               </div>
             </div>
-            <span id="npRightTagline" style="display:none;"></span>
-            <span id="npAddressLine" style="display:none;"></span>
 
           <!-- Double Divider Line -->
           <div class="pad-double-divider"></div>
@@ -5555,20 +5602,10 @@
               <img id="fpBannerImg" src="" alt="প্যাড হেডার ব্যানার" style="width: 100%; max-height: 110px; object-fit: contain; border-radius: 4px; display: block; margin: 0 auto;">
             </div>
 
-            <!-- Header 2-Part Grid: Left = All Titles & Brand, Right = Official Emblem Logo -->
+            <!-- Header 3-Part Grid: Left = Logo, Center = Big Header, Right = Details & Contacts -->
             <div class="pad-top-header-grid" id="fpHeaderGrid">
-              <!-- Left Side: Brand, English Name & Slogan -->
-              <div class="pad-header-left-col">
-                <div class="pad-title-main" id="fpSomitiName">
-                  <span class="pad-title-green">স্বপ্ন ছোঁয়া</span> <span class="pad-title-red">ঐক্য সমিতি</span>
-                </div>
-                <div class="pad-name-english" id="fpEnglishName">SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.</div>
-                <div class="pad-slogan-wrap">
-                  <span class="pad-slogan-ribbon" id="fpPadHeader">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</span>
-                </div>
-              </div>
 
-              <!-- Right Side: Official Circular Logo -->
+              <!-- Left: Official Logo -->
               <div class="pad-logo-holder" id="fpPadLogoBox">
                 <svg viewBox="0 0 130 130" style="width: 100%; height: 100%; display: block;" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="65" cy="65" r="62" fill="#FFFFFF" stroke="#165B33" stroke-width="2.5"/>
@@ -5600,22 +5637,29 @@
                   <text x="65" y="106" font-size="12" fill="#165B33" text-anchor="middle" font-weight="bold" letter-spacing="3">★ ★ ★</text>
                 </svg>
               </div>
-            </div>
 
-            <!-- Tier 2: Clean Full-width Information & Banking Strip -->
-            <div class="pad-info-strip" id="fpInfoStrip">
-              <div class="pad-info-strip-row">
-                <span class="pad-reg-pill" id="fpRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬ • স্থাপিত: ২০২৬ ইং</span>
-                <span class="pad-info-badge">📍 কার্যালয়: <span id="fpAddress">মিরপুর-১০, ঢাকা</span></span>
-                <span class="pad-info-badge">🏷️ কোড: <strong id="fpCodeBadge">SMT-7890</strong></span>
+              <!-- Center: Grand Society Header -->
+              <div class="pad-header-center-col">
+                <div class="pad-title-main" id="fpSomitiName">
+                  <span class="pad-title-green">স্বপ্ন ছোঁয়া</span> <span class="pad-title-red">ঐক্য সমিতি</span>
+                </div>
+                <div class="pad-slogan-wrap">
+                  <span class="pad-slogan-ribbon" id="fpPadHeader">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</span>
+                </div>
+                <div class="pad-est-badge" id="fpEstYearBadge">স্থাপিত: ২০২৬ ইং</div>
               </div>
-              <div class="pad-info-strip-row">
+
+              <!-- Right: Society Bangla/English Names, Tagline, Address, Reg, Contact & Bank -->
+              <div class="pad-header-right-col">
+                <div class="pad-right-name-bn" id="fpRightBnName">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
+                <div class="pad-name-english" id="fpEnglishName">SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.</div>
+                <div class="pad-right-tagline" id="fpRightTagline">স্বচ্ছতা ও ঐক্যের প্রতীক</div>
+                <div class="pad-address-line" id="fpAddressLine">📍 কার্যালয়: <span id="fpAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
+                <span class="pad-reg-pill" id="fpRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬</span>
                 <span class="pad-account-chip">📱 বিকাশ/নগদ: <strong id="fpBkash">০১৭১২-৩৪৫৬৭৮</strong></span>
-                <span class="pad-account-chip">🏦 ব্যাংক হিসাব: <strong id="fpBank">সিটি ব্যাংক পিএলসি - ২৩১৫১৫৮০৪৫০০১</strong></span>
+                <span class="pad-account-chip">🏦 ব্যাংক হিসাব: <strong id="fpBank">সিটি ব্যাংক পিএলসি</strong></span>
               </div>
             </div>
-            <span id="fpRightTagline" style="display:none;"></span>
-            <span id="fpAddressLine" style="display:none;"></span>
 
           <!-- Double Divider Line -->
           <div class="pad-double-divider"></div>
@@ -6698,17 +6742,20 @@
           }
           if (!bank) bank = "সিটি ব্যাংক পিএলসি - ২৩১৫১৫৮০৪৫০০১";
 
-          // Center Column: Main Bangla Title, Slogan Ribbon, Govt Reg Badge
+          // Center Column: Main Bangla Title, Slogan Ribbon, Est Year Badge
           const titleEl = document.getElementById(prefix === "livePad" ? "livePadTitle" : (prefix + "SomitiName"));
           if (titleEl) titleEl.innerHTML = formatTwoToneTitle(somitiName);
 
           const sloganEl = document.getElementById(prefix === "livePad" ? "livePadSlogan" : (prefix + "PadHeader"));
           if (sloganEl) sloganEl.innerText = slogan;
 
-          const regEl = document.getElementById(prefix === "livePad" ? "livePadRegBadge" : (prefix + "RegBadge"));
-          if (regEl) regEl.innerText = regBadgeText;
+          const estBadgeEl = document.getElementById(prefix === "livePad" ? "livePadEstBadge" : (prefix + "EstYearBadge"));
+          if (estBadgeEl) estBadgeEl.innerText = estYear;
 
-          // Right Column: English Name, Tagline, Address, Bkash, Bank & Somiti Code
+          // Right Column: Society Bangla/English Names, Tagline, Address, Reg, Contact & Bank
+          const rightBnEl = document.getElementById(prefix === "livePad" ? "livePadRightBnName" : (prefix + "RightBnName"));
+          if (rightBnEl) rightBnEl.innerText = somitiName;
+
           const enEl = document.getElementById(prefix === "livePad" ? "livePadEnglishName" : (prefix + "EnglishName"));
           if (enEl) enEl.innerText = englishName;
 
@@ -6717,6 +6764,9 @@
 
           const addrEl = document.getElementById(prefix === "livePad" ? "livePadAddress" : (prefix + "Address"));
           if (addrEl) addrEl.innerText = address;
+
+          const regEl = document.getElementById(prefix === "livePad" ? "livePadRegBadge" : (prefix + "RegBadge"));
+          if (regEl) regEl.innerText = `🏛️ ${rawRegNo.startsWith('সমবায়') ? rawRegNo : ('সমবায় রেজিঃ নং-' + rawRegNo)}`;
 
           const bkashEl = document.getElementById(prefix === "livePad" ? "livePadBkash" : (prefix + "Bkash"));
           if (bkashEl) bkashEl.innerText = bkash;
