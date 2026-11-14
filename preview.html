@@ -1857,42 +1857,55 @@
     /* 3. Right: Society Bengali/English Names, Tagline, Address, Reg, Contact & Bank */
     .pad-header-right-col {
       flex: 0 0 auto;
-      max-width: 40%;
-      min-width: 125px;
+      max-width: 38%;
+      min-width: 95px;
       text-align: right;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 2px;
+      gap: 1.5px;
+      overflow: hidden;
     }
     .pad-right-name-bn {
-      font-size: clamp(9.5px, 2.2vw, 12px);
+      font-size: clamp(8.5px, 2vw, 11px);
       font-weight: 800;
       color: #B91C1C;
       line-height: 1.2;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
     }
     .pad-name-english {
-      font-size: clamp(7.5px, 1.6vw, 9px);
+      font-size: clamp(6.2px, 1.35vw, 7.8px);
       font-weight: 800;
       color: #334155;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.1px;
       text-transform: uppercase;
-      line-height: 1.2;
+      line-height: 1.15;
       font-family: 'Inter', -apple-system, sans-serif;
       text-align: right;
-      white-space: nowrap;
+      max-width: 100%;
+      white-space: normal;
+      word-break: break-word;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
     .pad-right-tagline {
-      font-size: 8px;
+      font-size: clamp(6.2px, 1.2vw, 7.5px);
       font-weight: 600;
       color: #059669;
       font-style: italic;
       text-align: right;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
     }
     .pad-address-line {
-      font-size: clamp(7.5px, 1.6vw, 8.5px);
+      font-size: clamp(6.5px, 1.35vw, 7.8px);
       font-weight: 600;
       color: #1E293B;
       line-height: 1.2;
@@ -1901,69 +1914,85 @@
       justify-content: flex-end;
       gap: 2px;
       text-align: right;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
     }
     .pad-reg-pill {
       background: #FEF3C7;
       color: #92400E;
       border: 1px solid #FDE68A;
-      font-size: clamp(7px, 1.5vw, 8.5px);
+      font-size: clamp(6.2px, 1.25vw, 7.5px);
       font-weight: 700;
-      padding: 1px 5px;
+      padding: 1px 4px;
       border-radius: 3px;
       display: inline-flex;
       align-items: center;
       gap: 2px;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
     }
     .pad-account-chip {
       background: #F8FAFC;
       border: 1px solid #CBD5E1;
-      font-size: clamp(7px, 1.5vw, 8.5px);
+      font-size: clamp(6.2px, 1.25vw, 7.5px);
       color: #1E293B;
-      padding: 1px 5px;
+      padding: 1px 4px;
       border-radius: 3px;
       display: inline-flex;
       align-items: center;
       gap: 2px;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
     }
     /* Mobile responsive fine-tuning */
     @media (max-width: 480px) {
       .pad-top-header-grid {
-        gap: 4px;
+        gap: 3px;
       }
       .pad-logo-holder {
-        width: 58px;
-        height: 58px;
-        min-width: 48px;
-        flex: 0 0 58px;
+        width: 50px;
+        height: 50px;
+        min-width: 42px;
+        flex: 0 0 50px;
       }
-      .pad-header-right-col {
-        min-width: 105px;
-        max-width: 42%;
-        gap: 1.5px;
+      .pad-header-center-col {
+        padding: 0 2px;
       }
       .pad-title-main {
-        font-size: 13.5px !important;
+        font-size: 12px !important;
       }
       .pad-slogan-ribbon {
-        font-size: 7px !important;
-        padding: 1.5px 6px !important;
+        font-size: 6.5px !important;
+        padding: 1px 5px !important;
       }
       .pad-est-badge {
-        font-size: 7px !important;
-        padding: 0.5px 4px !important;
+        font-size: 6.2px !important;
+        padding: 0.5px 3px !important;
+      }
+      .pad-header-right-col {
+        min-width: 80px;
+        max-width: 38%;
+        gap: 1px;
       }
       .pad-right-name-bn {
-        font-size: 9px !important;
+        font-size: 8px !important;
       }
       .pad-name-english {
-        font-size: 6.5px !important;
+        font-size: 5.5px !important;
+        line-height: 1.1 !important;
+      }
+      .pad-right-tagline {
+        font-size: 5.5px !important;
       }
       .pad-address-line, .pad-reg-pill, .pad-account-chip {
-        font-size: 6.5px !important;
-        padding: 0.5px 3.5px !important;
+        font-size: 5.5px !important;
+        padding: 0.5px 2px !important;
       }
     }
     /* Suppress duplicate Bismillah & legacy fallbacks */
@@ -2135,118 +2164,107 @@
     /* ================= A4 PAPER PRINT ENGINE (210mm x 297mm) ================= */
     @page {
       size: A4 portrait;
-      margin: 8mm 10mm 8mm 10mm;
+      margin: 0;
+    }
+    #a4IsolatedPrintEngine {
+      display: none;
     }
     @media print {
       html, body {
         background: #FFFFFF !important;
         margin: 0 !important;
         padding: 0 !important;
-        width: 100% !important;
+        width: 210mm !important;
+        min-width: 210mm !important;
         height: auto !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
+        overflow: visible !important;
       }
-      body * {
+      /* Zero blank pages: HIDE EVERYTHING in body EXCEPT #a4IsolatedPrintEngine when printing */
+      body.a4-print-active > *:not(#a4IsolatedPrintEngine) {
+        display: none !important;
         visibility: hidden !important;
-      }
-      .modal-overlay {
-        position: static !important;
-        background: none !important;
+        height: 0 !important;
+        margin: 0 !important;
         padding: 0 !important;
+        overflow: hidden !important;
+      }
+      body.a4-print-active #a4IsolatedPrintEngine {
         display: block !important;
-        width: 100% !important;
-      }
-      .modal-box {
-        box-shadow: none !important;
-        border: none !important;
-        max-width: 100% !important;
+        visibility: visible !important;
+        width: 210mm !important;
+        margin: 0 auto !important;
         padding: 0 !important;
-        background: none !important;
-        width: 100% !important;
+        background: #FFFFFF !important;
       }
-      /* Only the marked target is visible and positioned for authentic A4 letterhead printing */
-      .print-current-target, .print-current-target * {
+      body.a4-print-active #a4IsolatedPrintEngine * {
         visibility: visible !important;
       }
-      .print-current-target {
-        position: absolute !important;
-        left: 0 !important;
-        right: 0 !important;
-        top: 0 !important;
+
+      /* Authentic Physical A4 Page Layout */
+      .a4-sheet-page {
+        width: 210mm !important;
+        height: 296mm !important;
+        max-height: 296mm !important;
+        min-height: 296mm !important;
+        padding: 10mm 12mm 10mm 12mm !important;
         margin: 0 auto !important;
-        width: 100% !important;
-        max-width: 190mm !important;
-        min-height: 260mm !important;
-        border: 2.5px solid #14532D !important;
+        box-sizing: border-box !important;
         background: #FFFFFF !important;
-        color: #000000 !important;
-        box-shadow: none !important;
-        padding: 4px !important;
-        box-sizing: border-box !important;
-        display: flex !important;
-        flex-direction: column !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-      }
-      .print-current-target .official-sample-pad-inner {
-        border: 1px solid #14532D !important;
-        padding: 20px 22px !important;
-        min-height: calc(260mm - 10px) !important;
-        box-sizing: border-box !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        position: relative !important;
+        overflow: hidden !important;
       }
-      .print-current-target .pad-title-main {
-        font-size: 26px !important;
+      .a4-sheet-page:last-child {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+      .a4-sheet-page-inner {
+        border: 2.5px solid #14532D !important;
+        padding: 14px 18px !important;
+        flex: 1 1 auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        box-sizing: border-box !important;
+        border-radius: 4px !important;
+      }
+      .a4-sheet-page .pad-title-main {
+        font-size: 22px !important;
+        white-space: nowrap !important;
+      }
+      .a4-sheet-page .pad-logo-holder {
+        width: 72px !important;
+        height: 72px !important;
+      }
+      .a4-sheet-page .pad-slogan-ribbon {
+        font-size: 9.5px !important;
+        padding: 2.5px 14px !important;
+      }
+      .a4-sheet-page .pad-name-english {
+        font-size: 7.5px !important;
         white-space: normal !important;
       }
-      .print-current-target .pad-logo-holder {
-        width: 80px !important;
-        height: 80px !important;
-      }
-      .print-current-target .pad-header-right {
-        max-width: 160px !important;
-        font-size: 11.5px !important;
-      }
-      .print-current-target .pad-slogan-ribbon {
-        font-size: 11.5px !important;
-        padding: 3px 18px !important;
-      }
-      .print-current-target .pad-table-label {
+      .a4-sheet-page .pad-table-label {
         width: 170px !important;
         font-size: 12.5px !important;
       }
-      .print-current-target.id-card-print-target,
-      #memberIdCardPrintArea.print-current-target {
-        max-width: 86mm !important;
-        min-height: auto !important;
-        border: 1.5px solid #000 !important;
-        margin: 15mm auto !important;
-        display: block !important;
+
+      /* Fallback for classic target print */
+      body.is-printing-doc:not(.a4-print-active) body * {
+        visibility: hidden !important;
       }
-      #a4SheetContainer.print-current-target {
-        border: none !important;
-        padding: 0 !important;
-        min-height: auto !important;
-        max-width: 190mm !important;
-        transform: none !important;
-      }
-      /* Fallback when printing directly without JS trigger */
-      body:not(.is-printing-doc) #receiptModal:not([style*="display: none"]) #receiptPrintArea,
-      body:not(.is-printing-doc) #receiptModal:not([style*="display: none"]) #receiptPrintArea *,
-      body:not(.is-printing-doc) #noticeModal:not([style*="display: none"]) #noticePrintArea,
-      body:not(.is-printing-doc) #noticeModal:not([style*="display: none"]) #noticePrintArea *,
-      body:not(.is-printing-doc) #fullPadModal:not([style*="display: none"]) #fullPadPrintArea,
-      body:not(.is-printing-doc) #fullPadModal:not([style*="display: none"]) #fullPadPrintArea *,
-      body:not(.is-printing-doc) #auditModal:not([style*="display: none"]) #auditPadPrintArea,
-      body:not(.is-printing-doc) #auditModal:not([style*="display: none"]) #auditPadPrintArea *,
-      body:not(.is-printing-doc) #a4PdfPreviewModal:not([style*="display: none"]) #a4SheetContainer,
-      body:not(.is-printing-doc) #a4PdfPreviewModal:not([style*="display: none"]) #a4SheetContainer * {
+      body.is-printing-doc:not(.a4-print-active) .print-current-target,
+      body.is-printing-doc:not(.a4-print-active) .print-current-target * {
         visibility: visible !important;
       }
-      /* Hide all interactive UI buttons during print */
+
+      /* Hide all interactive UI elements */
       button, .action-btn-row, .receipt-actions-grid, .btn-outline, .no-print, .btn, .modal-close-btn, input, select, textarea, .nav-bar, .app-header {
         display: none !important;
       }
@@ -2276,6 +2294,9 @@
   </style>
 </head>
 <body>
+
+  <!-- ================= DEDICATED ISOLATED A4 PRINT ENGINE ================= -->
+  <div id="a4IsolatedPrintEngine"></div>
 
   <!-- ================= 1. LOGIN & SIGN-UP SCREEN ================= -->
   <div id="loginScreen">
@@ -6700,6 +6721,32 @@
     }
 
 
+    // Robust Data Cleanup Helper: Strips duplicate prefix icons and labels from database input
+    function cleanPadValue(val, type) {
+      if (!val) return "";
+      let str = String(val).trim();
+      if (type === 'bkash') {
+        // Strip 📱, 💳, ☎, 📞, বিকাশ/নগদ, বিকাশ, নগদ, etc.
+        str = str.replace(/^([📱💳☎📞\s]*(বিকাশ[\/|\s]*নগদ|বিকাশ|নগদ)[:\s-]*)+/gi, "").trim();
+      } else if (type === 'bank') {
+        // Strip 🏦, 🏛️, ব্যাংক হিসাব, ব্যাংক, etc.
+        str = str.replace(/^([🏦🏛️\s]*(ব্যাংক[\s]*হিসাব|ব্যাংক)[:\s-]*)+/gi, "").trim();
+      } else if (type === 'address') {
+        // Strip 📍, 🏢, 🏠, কার্যালয়, ঠিকানা
+        str = str.replace(/^([📍🏢🏠\s]*(কার্যালয়|ঠিকানা)[:\s-]*)+/gi, "").trim();
+      } else if (type === 'code') {
+        // Strip 🏷️, 🔖, কোড, সমিতি কোড
+        str = str.replace(/^([🏷️🔖\s]*(কোড|সমিতি কোড)[:\s-]*)+/gi, "").trim();
+      } else if (type === 'reg') {
+        // Strip 🏛️, সমবায় রেজিঃ নং, সমবায় রেজি, রেজি নং, রেজিঃ নং
+        str = str.replace(/^([🏛️\s]*(সমবায়[\s]*রেজি[ঃ|:]*[\s]*(নং[-:]*)?|রেজি[ঃ|:]*[\s]*(নং[-:]*)?))+/gi, "").trim();
+      } else if (type === 'est') {
+        // Strip 📅, স্থাপিত
+        str = str.replace(/^([📅\s]*(স্থাপিত[:\s-]*))+/gi, "").trim();
+      }
+      return str;
+    }
+
     // Universal Dynamic Pad Header Renderer (3-Part Balanced Modern Executive Layout)
     function renderPadHeader(prefix, s = currentSomiti || {}) {
       const bannerBox = document.getElementById(prefix + "BannerContainer");
@@ -6726,21 +6773,33 @@
           const somitiName = (s && s.name) ? s.name : "স্বপ্ন ছোঁয়া ঐক্য সমিতি";
           const englishName = (s && s.englishName) ? s.englishName : "SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.";
           const slogan = (s && s.padHeader) ? s.padHeader : "ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।";
-          const rawEst = (s && s.estYear) ? s.estYear : "২০২৬ ইং";
-          const estYear = rawEst.startsWith("স্থাপিত") ? rawEst : ("স্থাপিত: " + rawEst);
-          const rawRegNo = (s && s.regNo) ? s.regNo : "সমবায় রেজিঃ নং-৭৮৯০/২০২৬";
-          const regBadgeText = `🏛️ ${rawRegNo.startsWith('সমবায়') ? rawRegNo : ('সমবায় রেজিঃ নং-' + rawRegNo)} • ${estYear}`;
+          
+          let rawEst = cleanPadValue(s && s.estYear, 'est');
+          if (!rawEst) rawEst = "২০২৬ ইং";
+          const estYear = "স্থাপিত: " + rawEst;
+
+          let rawRegNo = cleanPadValue(s && s.regNo, 'reg');
+          if (!rawRegNo) rawRegNo = "৭৮৯০/২০২৬";
+          const cleanRegBadge = `🏛️ সমবায় রেজিঃ নং-${rawRegNo}`;
+
           const tagline = (s && s.tagline) ? s.tagline : "স্বচ্ছতা ও ঐক্যের প্রতীক";
-          let address = (s && s.address) ? s.address : "মিরপুর-১০, ঢাকা";
-          address = address.replace(/^[📍\s]+/, "");
-          let somitiCode = (s && s.somitiCode) ? s.somitiCode : "SMT-7890";
-          somitiCode = somitiCode.replace(/^(কোড[:\s]*)+/g, "");
-          const bkash = (s && s.bkashNumber) ? s.bkashNumber : "০১৭১২-৩৪৫৬৭৮";
-          let bank = (s && s.bankAccount) ? s.bankAccount : "";
-          if (!bank && s && s.bankName) {
-            bank = `${s.bankName}${s.bankAcc ? ' - ' + s.bankAcc : ''}`;
+
+          let address = cleanPadValue(s && s.address, 'address');
+          if (!address) address = "শ্রীনগর, মুন্সীগঞ্জ";
+
+          let somitiCode = cleanPadValue(s && s.somitiCode, 'code');
+          if (!somitiCode) somitiCode = "SMT-7890";
+
+          let bkash = cleanPadValue(s && s.bkashNumber, 'bkash');
+          if (!bkash) bkash = "০১৭১২-৩৪৫৬৭৮";
+
+          let rawBank = (s && s.bankAccount) ? s.bankAccount : "";
+          if (!rawBank && s && s.bankName) {
+            rawBank = `${s.bankName}${s.bankAcc ? ' - ' + s.bankAcc : ''}`;
           }
-          if (!bank) bank = "সিটি ব্যাংক পিএলসি - ২৩১৫১৫৮০৪৫০০১";
+          if (!rawBank) rawBank = "সিটি ব্যাংক পিএলসি - ২৩১৫১৫৮০৪৫০০১";
+          let bank = cleanPadValue(rawBank, 'bank');
+          if (!bank) bank = "সিটি ব্যাংক পিএলসি";
 
           // Center Column: Main Bangla Title, Slogan Ribbon, Est Year Badge
           const titleEl = document.getElementById(prefix === "livePad" ? "livePadTitle" : (prefix + "SomitiName"));
@@ -6766,7 +6825,7 @@
           if (addrEl) addrEl.innerText = address;
 
           const regEl = document.getElementById(prefix === "livePad" ? "livePadRegBadge" : (prefix + "RegBadge"));
-          if (regEl) regEl.innerText = `🏛️ ${rawRegNo.startsWith('সমবায়') ? rawRegNo : ('সমবায় রেজিঃ নং-' + rawRegNo)}`;
+          if (regEl) regEl.innerText = cleanRegBadge;
 
           const bkashEl = document.getElementById(prefix === "livePad" ? "livePadBkash" : (prefix + "Bkash"));
           if (bkashEl) bkashEl.innerText = bkash;
@@ -7171,11 +7230,11 @@
       if (el("livePadFootAddress")) el("livePadFootAddress").innerText = "ঠিকানা: " + address;
       if (el("livePadFootEst")) el("livePadFootEst").innerText = estYear;
 
-      // Legacy fallbacks
-      if (el("livePadAddress")) el("livePadAddress").innerText = address;
-      if (el("livePadBkash")) el("livePadBkash").innerText = bkash;
-      if (el("livePadBank")) el("livePadBank").innerText = bankStr;
-      if (el("livePadCodeBadge")) el("livePadCodeBadge").innerText = code;
+      // Cleaned fallbacks
+      if (el("livePadAddress")) el("livePadAddress").innerText = cleanPadValue(address, 'address');
+      if (el("livePadBkash")) el("livePadBkash").innerText = cleanPadValue(bkash, 'bkash');
+      if (el("livePadBank")) el("livePadBank").innerText = cleanPadValue(bankStr, 'bank');
+      if (el("livePadCodeBadge")) el("livePadCodeBadge").innerText = cleanPadValue(code, 'code');
 
       const lpNoticeBox = el("livePadNoticeBox");
       const lpNoticeText = el("livePadNoticeText");
@@ -8323,11 +8382,11 @@
       // Top Pad Header (custom banner image or 3-column text/logo layout)
       renderPadHeader("rcpt", s);
 
-      // Legacy fallback headers
-      if (el("rcptAddress")) el("rcptAddress").innerText = "📍 " + somitiAddress;
-      if (el("rcptBkash")) el("rcptBkash").innerText = "📱 বিকাশ/নগদ: " + (s.bkashNumber || "নেই");
-      if (el("rcptBank")) el("rcptBank").innerText = "🏦 " + bankAccount;
-      if (el("rcptCodeBadge")) el("rcptCodeBadge").innerText = "কোড: " + somitiCode;
+      // Cleaned fallback headers
+      if (el("rcptAddress")) el("rcptAddress").innerText = cleanPadValue(somitiAddress, 'address');
+      if (el("rcptBkash")) el("rcptBkash").innerText = cleanPadValue(s.bkashNumber, 'bkash') || "নেই";
+      if (el("rcptBank")) el("rcptBank").innerText = cleanPadValue(bankAccount, 'bank') || "নেই";
+      if (el("rcptCodeBadge")) el("rcptCodeBadge").innerText = cleanPadValue(somitiCode, 'code');
 
       // Receipt number formatting: ${somitiCode}/রিসিট/${currentYear}-${seqNum}
       let rawNo = data.receiptNo || "RCT-001";
@@ -8776,7 +8835,282 @@
       }
     }
 
-    // Universal Authentic A4 Print Engine
+    // HTML Escaper for safe rendering
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // Notice Smart Text Splitting for authentic multi-page Letterhead pagination
+    function splitNoticeText(text, targetRatio = 0.55) {
+      if (!text) return ["", ""];
+      const clean = text.trim();
+      // If short enough to comfortably fit on a single page alongside pad header, meta, and signatures
+      if (clean.length <= 600 && clean.split('\n').length <= 10) {
+        return [clean, ""];
+      }
+
+      const targetIndex = Math.floor(clean.length * targetRatio);
+      const windowStart = Math.max(100, Math.floor(clean.length * 0.35));
+      const windowEnd = Math.min(clean.length - 100, Math.floor(clean.length * 0.75));
+
+      let bestIdx = -1;
+      // 1. Paragraph break \n\n
+      const pBreak = clean.lastIndexOf('\n\n', windowEnd);
+      if (pBreak >= windowStart) {
+        bestIdx = pBreak;
+      } else {
+        // 2. Line break \n
+        const lBreak = clean.lastIndexOf('\n', windowEnd);
+        if (lBreak >= windowStart) {
+          bestIdx = lBreak;
+        } else {
+          // 3. Sentence end । or .
+          for (let i = windowEnd; i >= windowStart; i--) {
+            if (clean[i] === '।' || clean[i] === '.') {
+              bestIdx = i + 1;
+              break;
+            }
+          }
+          // 4. Space fallback
+          if (bestIdx === -1) {
+            const spaceIdx = clean.lastIndexOf(' ', windowEnd);
+            bestIdx = spaceIdx >= windowStart ? spaceIdx : targetIndex;
+          }
+        }
+      }
+
+      const part1 = clean.slice(0, bestIdx).trim();
+      const part2 = clean.slice(bestIdx).trim();
+      return [part1, part2];
+    }
+
+    // Pad Header Generator for A4 Letterhead Pages
+    function buildA4PadHeaderHtml(s = currentSomiti || {}, prefix = "np") {
+      const bannerImg = document.getElementById(prefix + "BannerImg");
+      const useCustomBanner = (s && s.padHeaderImg && s.useCustomBannerImg === true && bannerImg && bannerImg.src);
+
+      if (useCustomBanner) {
+        return `
+          <div style="width: 100%; text-align: center; margin-bottom: 6px;">
+            <img src="${bannerImg.src}" alt="প্যাড ব্যানার" style="width: 100%; max-height: 110px; object-fit: contain; border-radius: 4px; display: block; margin: 0 auto;">
+          </div>
+          <div class="pad-double-divider"></div>
+        `;
+      }
+
+      const somitiName = (s && s.name) ? s.name : "স্বপ্ন ছোঁয়া ঐক্য সমিতি";
+      const englishName = (s && s.englishName) ? s.englishName : "SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.";
+      const slogan = (s && s.padHeader) ? s.padHeader : "ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।";
+      const estYear = cleanPadValue(s && s.estYear, 'est') || "২০২৬ ইং";
+      const regNo = cleanPadValue(s && s.regNo, 'reg') || "৭৮৯০/২০২৬";
+      const tagline = (s && s.tagline) ? s.tagline : "স্বচ্ছতা ও ঐক্যের প্রতীক";
+      const address = cleanPadValue(s && s.address, 'address') || "শ্রীনগর, মুন্সীগঞ্জ";
+      const bkash = cleanPadValue(s && s.bkashNumber, 'bkash') || "০১৭১২-৩৪৫৬৭৮";
+      let rawBank = s.bankAccount || (s.bankName ? `${s.bankName}${s.bankAcc ? ' - ' + s.bankAcc : ''}` : "সিটি ব্যাংক পিএলসি");
+      const bank = cleanPadValue(rawBank, 'bank') || "সিটি ব্যাংক পিএলসি";
+
+      const logoBox = document.getElementById(prefix === "livePad" ? "livePadLogoBox" : (prefix + "PadLogoBox"));
+      const logoHtml = logoBox ? logoBox.innerHTML : `
+        <svg viewBox="0 0 130 130" style="width: 100%; height: 100%; display: block;" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="65" cy="65" r="62" fill="#FFFFFF" stroke="#165B33" stroke-width="2.5"/>
+          <circle cx="65" cy="65" r="56" fill="none" stroke="#165B33" stroke-width="1" stroke-dasharray="2,2"/>
+          <defs><path id="wArcA4" d="M 22 62 A 44 44 0 0 1 108 62"/></defs>
+          <text font-size="6.8" font-weight="bold" fill="#165B33" letter-spacing="0.3">
+            <textPath href="#wArcA4" startOffset="50%" text-anchor="middle">একতা আমাদের শক্তি, একতা আমাদের ভবিষ্যৎ</textPath>
+          </text>
+          <circle cx="65" cy="44" r="5.5" fill="#B91C1C"/>
+          <circle cx="52" cy="49" r="4.8" fill="#165B33"/>
+          <circle cx="78" cy="49" r="4.8" fill="#165B33"/>
+          <path d="M 44 65 C 48 54, 82 54, 86 65 C 76 60, 54 60, 44 65 Z" fill="#B91C1C"/>
+          <ellipse cx="65" cy="84" rx="16" ry="5" fill="#FACC15" stroke="#CA8A04" stroke-width="0.8"/>
+          <text x="65" y="106" font-size="12" fill="#165B33" text-anchor="middle" font-weight="bold" letter-spacing="3">★ ★ ★</text>
+        </svg>
+      `;
+
+      return `
+        <div class="pad-top-bismillah">বিসমিল্লাহির রাহমানির রাহিম</div>
+        <div class="pad-top-header-grid" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; box-sizing: border-box; margin-bottom: 6px;">
+          <!-- Left Logo -->
+          <div class="pad-logo-holder" style="flex: 0 0 72px; width: 72px; height: 72px; display: flex; align-items: center; justify-content: center;">
+            ${logoHtml}
+          </div>
+          <!-- Center Column -->
+          <div class="pad-header-center-col" style="flex: 1 1 auto; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;">
+            <div class="pad-title-main" style="font-size: 22px; font-weight: 900; line-height: 1.2; text-align: center; white-space: nowrap;">
+              <span class="pad-title-green" style="color: #165B33;">${formatTwoToneTitle(somitiName)}</span>
+            </div>
+            <div class="pad-slogan-wrap">
+              <span class="pad-slogan-ribbon" style="display: inline-block; background: #14532D; color: #FEF08A; font-size: 9.5px; font-weight: 700; padding: 2px 12px; border-radius: 12px;">${escapeHtml(slogan)}</span>
+            </div>
+            <div class="pad-est-badge" style="display: inline-block; background: #0F172A; color: #FFFFFF; font-size: 8px; font-weight: 700; padding: 1px 6px; border-radius: 4px;">স্থাপিত: ${escapeHtml(estYear)}</div>
+          </div>
+          <!-- Right Column -->
+          <div class="pad-header-right-col" style="flex: 0 0 auto; max-width: 38%; min-width: 120px; text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 1.5px; overflow: hidden;">
+            <div class="pad-right-name-bn" style="font-size: 11px; font-weight: 800; color: #B91C1C; line-height: 1.2; white-space: nowrap;">${escapeHtml(somitiName)}</div>
+            <div class="pad-name-english" style="font-size: 7.5px; font-weight: 800; color: #334155; text-transform: uppercase; line-height: 1.15; font-family: 'Inter', sans-serif; text-align: right; white-space: normal; word-break: break-word;">${escapeHtml(englishName)}</div>
+            <div class="pad-right-tagline" style="font-size: 7.5px; font-weight: 600; color: #059669; font-style: italic; text-align: right;">${escapeHtml(tagline)}</div>
+            <div class="pad-address-line" style="font-size: 7.5px; font-weight: 600; color: #1E293B; line-height: 1.2; text-align: right;">📍 কার্যালয়: ${escapeHtml(address)}</div>
+            <span class="pad-reg-pill" style="background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; font-size: 7.5px; font-weight: 700; padding: 1px 5px; border-radius: 3px; white-space: nowrap;">🏛️ সমবায় রেজিঃ নং-${escapeHtml(regNo)}</span>
+            <span class="pad-account-chip" style="background: #F8FAFC; border: 1px solid #CBD5E1; font-size: 7.5px; color: #1E293B; padding: 1px 5px; border-radius: 3px; white-space: nowrap;">📱 বিকাশ/নগদ: <strong>${escapeHtml(bkash)}</strong></span>
+            <span class="pad-account-chip" style="background: #F8FAFC; border: 1px solid #CBD5E1; font-size: 7.5px; color: #1E293B; padding: 1px 5px; border-radius: 3px; white-space: nowrap;">🏦 ব্যাংক: <strong>${escapeHtml(bank)}</strong></span>
+          </div>
+        </div>
+        <div class="pad-double-divider"></div>
+      `;
+    }
+
+    // Multi-page Notice Letterhead Renderer
+    function renderA4NoticeLetterheadPages(iso, target, elementId, s = currentSomiti || {}) {
+      const prefix = elementId === 'noticeViewPadPrintArea' ? 'nv' : (elementId === 'fullPadPrintArea' ? 'fp' : 'np');
+      const memoNo = document.getElementById(prefix + 'MemoText')?.innerText || document.getElementById('noticeMemoNo')?.value || "স্মারক-০১/২০২৬";
+      const dateStr = document.getElementById(prefix + 'DateText')?.innerText || document.getElementById('noticeDate')?.value || formatBengaliDate(new Date());
+      const subject = document.getElementById(prefix + 'SubjectText')?.innerText || document.getElementById('noticeTitle')?.value || "অফিসিয়াল বিজ্ঞপ্তি";
+      const fullBody = document.getElementById(prefix + 'BodyText')?.innerText || document.getElementById('noticeBody')?.value || "";
+
+      const somitiName = s.name || "স্বপ্ন ছোঁয়া ঐক্য সমিতি";
+      const address = cleanPadValue(s.address, 'address') || "শ্রীনগর, মুন্সীগঞ্জ";
+      const estYear = cleanPadValue(s.estYear, 'est') || "২০২৬ ইং";
+
+      const sigRow = target.querySelector('.pad-signatures-row, .pad-committee-row');
+      const sigHtml = sigRow ? sigRow.outerHTML : '';
+
+      const [part1, part2] = splitNoticeText(fullBody);
+      const isMultiPage = (part2.length > 0);
+
+      const headerHtml = buildA4PadHeaderHtml(s, prefix);
+
+      if (isMultiPage) {
+        // ========== PAGE 1 OF 2 ==========
+        const page1 = document.createElement('div');
+        page1.className = 'a4-sheet-page';
+        page1.innerHTML = `
+          <div class="a4-sheet-page-inner">
+            <div>
+              ${headerHtml}
+              <!-- Meta Row -->
+              <div class="pad-meta-row" style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-bottom: 8px;">
+                <div>স্মারক নং: <strong style="color: #0F172A;">${escapeHtml(memoNo)}</strong></div>
+                <div>তারিখ: <strong style="color: #0F172A;">${escapeHtml(dateStr)}</strong></div>
+              </div>
+              <!-- Doc Badge -->
+              <div class="pad-doc-badge-wrap" style="text-align: center; margin-bottom: 8px;">
+                <span class="pad-doc-badge" style="background: #E8F5E9; color: #165B33; border: 1px solid #A5D6A7; font-weight: 800; font-size: 11px; padding: 2.5px 12px; border-radius: 4px;">📢 অফিসিয়াল বিজ্ঞপ্তি / নোটিশ</span>
+              </div>
+              <!-- Subject -->
+              <div style="font-size: 13.5px; font-weight: 800; color: #0F172A; border-bottom: 1.5px solid #E2E8F0; padding-bottom: 6px; margin-bottom: 12px;">
+                <span>বিষয়: </span><span>${escapeHtml(subject)}</span>
+              </div>
+              <!-- Body Part 1 -->
+              <div style="font-size: 13px; line-height: 1.85; color: #1E293B; white-space: pre-wrap; text-align: justify;">
+                ${escapeHtml(part1)}
+              </div>
+              <!-- Continuation Indicator -->
+              <div style="text-align: right; font-size: 11px; font-weight: 800; color: #B91C1C; margin-top: 14px; padding: 5px 12px; background: #FEF2F2; border-radius: 6px; border: 1px dashed #FCA5A5; display: inline-block; float: right;">
+                (চলমান... অপর পৃষ্ঠায় দ্রষ্টব্য ➔)
+              </div>
+              <div style="clear: both;"></div>
+            </div>
+            <!-- Page 1 Footer Strip -->
+            <div class="pad-footer-strip" style="display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #14532D; padding-top: 5px; margin-top: 10px; font-size: 9.5px; color: #475569;">
+              <div>${escapeHtml(somitiName)} | ঠিকানা: ${escapeHtml(address)} | স্থাপিত: ${escapeHtml(estYear)}</div>
+              <div style="font-weight: 800; background: #14532D; color: #FFFFFF; padding: 2px 8px; border-radius: 4px;">পৃষ্ঠা ১ / ২</div>
+            </div>
+          </div>
+        `;
+        iso.appendChild(page1);
+
+        // ========== PAGE 2 OF 2 ==========
+        const page2 = document.createElement('div');
+        page2.className = 'a4-sheet-page';
+        page2.innerHTML = `
+          <div class="a4-sheet-page-inner">
+            <div>
+              ${headerHtml}
+              <!-- Continuity Subheader -->
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 700; color: #475569; border-bottom: 1.5px solid #E2E8F0; padding-bottom: 4px; margin-bottom: 12px;">
+                <span>স্মারক নং: <strong style="color: #0F172A;">${escapeHtml(memoNo)}</strong> (পৃষ্ঠা ২ - অবশিষ্টাংশ)</span>
+                <span>তারিখ: <strong style="color: #0F172A;">${escapeHtml(dateStr)}</strong></span>
+              </div>
+              <!-- Body Part 2 -->
+              <div style="font-size: 13px; line-height: 1.85; color: #1E293B; white-space: pre-wrap; text-align: justify; margin-bottom: 18px;">
+                ${escapeHtml(part2)}
+              </div>
+            </div>
+            <!-- Bottom: Committee Seals & Signatures and Footer -->
+            <div>
+              ${sigHtml}
+              <!-- Page 2 Footer Strip -->
+              <div class="pad-footer-strip" style="display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #14532D; padding-top: 5px; margin-top: 10px; font-size: 9.5px; color: #475569;">
+                <div>${escapeHtml(somitiName)} | ঠিকানা: ${escapeHtml(address)} | স্থাপিত: ${escapeHtml(estYear)}</div>
+                <div style="font-weight: 800; background: #14532D; color: #FFFFFF; padding: 2px 8px; border-radius: 4px;">পৃষ্ঠা ২ / ২</div>
+              </div>
+            </div>
+          </div>
+        `;
+        iso.appendChild(page2);
+      } else {
+        // ========== SINGLE PAGE (PAGE 1 OF 1) ==========
+        const page1 = document.createElement('div');
+        page1.className = 'a4-sheet-page';
+        page1.innerHTML = `
+          <div class="a4-sheet-page-inner">
+            <div>
+              ${headerHtml}
+              <!-- Meta Row -->
+              <div class="pad-meta-row" style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-bottom: 8px;">
+                <div>স্মারক নং: <strong style="color: #0F172A;">${escapeHtml(memoNo)}</strong></div>
+                <div>তারিখ: <strong style="color: #0F172A;">${escapeHtml(dateStr)}</strong></div>
+              </div>
+              <!-- Doc Badge -->
+              <div class="pad-doc-badge-wrap" style="text-align: center; margin-bottom: 8px;">
+                <span class="pad-doc-badge" style="background: #E8F5E9; color: #165B33; border: 1px solid #A5D6A7; font-weight: 800; font-size: 11px; padding: 2.5px 12px; border-radius: 4px;">📢 অফিসিয়াল বিজ্ঞপ্তি / নোটিশ</span>
+              </div>
+              <!-- Subject -->
+              <div style="font-size: 13.5px; font-weight: 800; color: #0F172A; border-bottom: 1.5px solid #E2E8F0; padding-bottom: 6px; margin-bottom: 12px;">
+                <span>বিষয়: </span><span>${escapeHtml(subject)}</span>
+              </div>
+              <!-- Full Body -->
+              <div style="font-size: 13px; line-height: 1.85; color: #1E293B; white-space: pre-wrap; text-align: justify; margin-bottom: 16px;">
+                ${escapeHtml(fullBody)}
+              </div>
+            </div>
+            <!-- Bottom: Committee Seals & Signatures and Footer -->
+            <div>
+              ${sigHtml}
+              <!-- Single Page Footer Strip -->
+              <div class="pad-footer-strip" style="display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #14532D; padding-top: 5px; margin-top: 10px; font-size: 9.5px; color: #475569;">
+                <div>${escapeHtml(somitiName)} | ঠিকানা: ${escapeHtml(address)} | স্থাপিত: ${escapeHtml(estYear)}</div>
+                <div style="font-weight: 800; background: #14532D; color: #FFFFFF; padding: 2px 8px; border-radius: 4px;">পৃষ্ঠা ১ / ১</div>
+              </div>
+            </div>
+          </div>
+        `;
+        iso.appendChild(page1);
+      }
+    }
+
+    // Single Document Page Renderer (Receipt, Member ID Card, Audit Pad)
+    function renderA4SingleDocumentPage(iso, target, elementId, s = currentSomiti || {}) {
+      const page = document.createElement('div');
+      page.className = 'a4-sheet-page';
+
+      const clone = target.cloneNode(true);
+      clone.style.width = '100%';
+      clone.style.maxWidth = '100%';
+      clone.style.boxShadow = 'none';
+      clone.style.margin = '0 auto';
+
+      page.appendChild(clone);
+      iso.appendChild(page);
+    }
+
+    // Universal Zero-Blank-Page Authentic A4 Print Engine
     function triggerA4Print(elementId) {
       document.querySelectorAll('.print-current-target').forEach(el => el.classList.remove('print-current-target'));
       const target = document.getElementById(elementId);
@@ -8784,12 +9118,32 @@
         window.print();
         return;
       }
+
+      // Ensure isolated print container exists directly in body
+      let iso = document.getElementById('a4IsolatedPrintEngine');
+      if (!iso) {
+        iso = document.createElement('div');
+        iso.id = 'a4IsolatedPrintEngine';
+        document.body.prepend(iso);
+      }
+      iso.innerHTML = '';
+
+      const s = currentSomiti || {};
+
+      // Check if target is a notice / pad document that needs multi-page splitting
+      if (elementId === 'noticePrintArea' || elementId === 'noticeViewPadPrintArea' || elementId === 'fullPadPrintArea') {
+        renderA4NoticeLetterheadPages(iso, target, elementId, s);
+      } else {
+        renderA4SingleDocumentPage(iso, target, elementId, s);
+      }
+
       target.classList.add('print-current-target');
-      document.body.classList.add('is-printing-doc');
+      document.body.classList.add('a4-print-active');
 
       const cleanup = () => {
         target.classList.remove('print-current-target');
-        document.body.classList.remove('is-printing-doc');
+        document.body.classList.remove('a4-print-active');
+        if (iso) iso.innerHTML = '';
         window.removeEventListener('afterprint', cleanup);
       };
       window.addEventListener('afterprint', cleanup);
@@ -8851,11 +9205,11 @@
       // Pad Header on Notice (custom banner image or 3-column text/logo layout)
       renderPadHeader("np", s);
 
-      // Legacy fallback headers
-      if (el("npAddress")) el("npAddress").innerText = "📍 " + somitiAddress;
-      if (el("npBkash")) el("npBkash").innerText = "📱 বিকাশ/নগদ: " + (s.bkashNumber || "নেই");
-      if (el("npBank")) el("npBank").innerText = "🏦 " + (s.bankAccount || "নেই");
-      if (el("npCodeBadge")) el("npCodeBadge").innerText = "কোড: " + (s.somitiCode || "সছঐস");
+      // Cleaned fallback headers
+      if (el("npAddress")) el("npAddress").innerText = cleanPadValue(somitiAddress, 'address');
+      if (el("npBkash")) el("npBkash").innerText = cleanPadValue(s.bkashNumber, 'bkash') || "নেই";
+      if (el("npBank")) el("npBank").innerText = cleanPadValue(s.bankAccount, 'bank') || "নেই";
+      if (el("npCodeBadge")) el("npCodeBadge").innerText = cleanPadValue(s.somitiCode, 'code') || "সছঐস";
 
       const memoNo = el("noticeMemoNo")?.value.trim() || "স্মারক-০১/২০২৬";
       const dateStr = el("noticeDate")?.value.trim() || formatBengaliDate(new Date());
@@ -9009,11 +9363,11 @@
       // Pad Header on Full Pad (custom banner image or 3-column text/logo layout)
       renderPadHeader("fp", s);
 
-      // Legacy fallback headers
-      if (el("fpAddress")) el("fpAddress").innerText = "📍 " + somitiAddress;
-      if (el("fpBkash")) el("fpBkash").innerText = "📱 বিকাশ/নগদ: " + (s.bkashNumber || "নেই");
-      if (el("fpBank")) el("fpBank").innerText = "🏦 " + (s.bankAccount || "নেই");
-      if (el("fpCodeBadge")) el("fpCodeBadge").innerText = "কোড: " + (s.somitiCode || "সছঐস");
+      // Cleaned fallback headers
+      if (el("fpAddress")) el("fpAddress").innerText = cleanPadValue(somitiAddress, 'address');
+      if (el("fpBkash")) el("fpBkash").innerText = cleanPadValue(s.bkashNumber, 'bkash') || "নেই";
+      if (el("fpBank")) el("fpBank").innerText = cleanPadValue(s.bankAccount, 'bank') || "নেই";
+      if (el("fpCodeBadge")) el("fpCodeBadge").innerText = cleanPadValue(s.somitiCode, 'code') || "সছঐস";
 
       // Committee Signatures
       // 1. Cashier
@@ -10754,11 +11108,11 @@
       // Top Pad Header (custom banner image or 3-column text/logo layout)
       renderPadHeader("ap", s);
 
-      // Legacy fallback headers
-      if (el("apAddress")) el("apAddress").innerText = "📍 " + somitiAddress;
-      if (el("apBkash")) el("apBkash").innerText = "📱 বিকাশ/নগদ: " + (s.bkashNumber || "নেই");
-      if (el("apBank")) el("apBank").innerText = "🏦 " + (s.bankAccount || "নেই");
-      if (el("apCodeBadge")) el("apCodeBadge").innerText = "কোড: " + (s.somitiCode || "সছঐস");
+      // Cleaned fallback headers
+      if (el("apAddress")) el("apAddress").innerText = cleanPadValue(somitiAddress, 'address');
+      if (el("apBkash")) el("apBkash").innerText = cleanPadValue(s.bkashNumber, 'bkash') || "নেই";
+      if (el("apBank")) el("apBank").innerText = cleanPadValue(s.bankAccount, 'bank') || "নেই";
+      if (el("apCodeBadge")) el("apCodeBadge").innerText = cleanPadValue(s.somitiCode, 'code') || "সছঐস";
 
       if (el("apPeriodText")) el("apPeriodText").innerText = filterName;
       if (el("apDateText")) el("apDateText").innerText = formatBengaliDate(now);
@@ -10901,10 +11255,17 @@
       const sheetContent = document.getElementById("a4SheetContent");
       if (!srcArea || !sheetContent) return;
 
-      if (srcArea.classList.contains("official-sample-pad")) {
-        sheetContent.innerHTML = `<div class="official-sample-pad" style="max-width: 100%; border: 2.5px solid #14532D; box-shadow: none;">${srcArea.innerHTML}</div>`;
+      const s = currentSomiti || {};
+      if (docType === 'notice' || docType === 'pad') {
+        const tempContainer = document.createElement('div');
+        renderA4NoticeLetterheadPages(tempContainer, srcArea, srcAreaId, s);
+        sheetContent.innerHTML = tempContainer.innerHTML;
       } else {
-        sheetContent.innerHTML = srcArea.outerHTML || srcArea.innerHTML;
+        if (srcArea.classList.contains("official-sample-pad")) {
+          sheetContent.innerHTML = `<div class="official-sample-pad" style="max-width: 100%; border: 2.5px solid #14532D; box-shadow: none;">${srcArea.innerHTML}</div>`;
+        } else {
+          sheetContent.innerHTML = srcArea.outerHTML || srcArea.innerHTML;
+        }
       }
       zoomA4Sheet(0, true);
       document.getElementById("a4PdfPreviewModal").style.display = "flex";
@@ -10928,18 +11289,13 @@
     }
 
     function printA4Direct() {
-      const origScale = currentA4Scale;
-      zoomA4Sheet(0, true);
-      setTimeout(() => {
-        triggerA4Print('a4SheetContainer');
-        setTimeout(() => {
-          currentA4Scale = origScale;
-          const sheet = document.getElementById("a4SheetContainer");
-          const label = document.getElementById("a4ZoomLabel");
-          if (sheet) sheet.style.transform = `scale(${currentA4Scale})`;
-          if (label) label.innerText = `${Math.round(currentA4Scale * 100)}%`;
-        }, 400);
-      }, 100);
+      let srcAreaId = "fullPadPrintArea";
+      if (currentA4Source === 'receipt') srcAreaId = "receiptPrintArea";
+      else if (currentA4Source === 'notice') srcAreaId = "noticePrintArea";
+      else if (currentA4Source === 'audit') srcAreaId = "auditPadPrintArea";
+      else if (currentA4Source === 'idcard') srcAreaId = "memberIdCardPrintArea";
+
+      triggerA4Print(srcAreaId);
     }
 
     function downloadA4Image() {
