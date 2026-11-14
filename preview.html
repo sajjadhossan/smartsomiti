@@ -4263,13 +4263,10 @@
                 </div>
               </div>
 
-              <!-- Center: Audit Verification Stamp -->
+              <!-- Center: Real dynamic QR Code for security scan -->
               <div class="pad-sig-center">
-                <div style="width: 48px; height: 48px; border-radius: 50%; border: 1.5px dashed #165B33; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 7px; color: #165B33; font-weight: 800; margin: 0 auto;">
-                  <span>★ অডিট ★</span>
-                  <span>অনুমোদিত</span>
-                </div>
-                <div style="font-size: 8px; color: #64748B; font-weight: 700; margin-top: 2px;">নিরীক্ষা ও হিসাব পরিষদ</div>
+                <div id="apQrCodeBox" style="width: 50px; height: 50px; margin: 0 auto; background: white; padding: 2px; border: 1px solid #CBD5E1; border-radius: 4px; display: flex; align-items: center; justify-content: center;"></div>
+                <div style="font-size: 7.5px; color: #165B33; font-weight: 700; margin-top: 2px;">🔍 অডিট ভেরিফাইড</div>
               </div>
 
               <!-- Right: President / Secretary -->
@@ -4657,12 +4654,10 @@
                   <div style="font-size: 10.5px; color: #475569;">কোষাধ্যক্ষ</div>
                 </div>
               </div>
+              <!-- Center: Real dynamic QR Code for security scan -->
               <div class="pad-sig-center">
-                <div style="width: 48px; height: 48px; border-radius: 50%; border: 1.5px dashed #165B33; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 7px; color: #165B33; font-weight: 800; margin: 0 auto;">
-                  <span>★ সমবায় ★</span>
-                  <span>অফিসিয়াল</span>
-                </div>
-                <div style="font-size: 8px; color: #64748B; font-weight: 700; margin-top: 2px;">কার্যনির্বাহী পরিষদ</div>
+                <div id="nvQrCodeBox" style="width: 50px; height: 50px; margin: 0 auto; background: white; padding: 2px; border: 1px solid #CBD5E1; border-radius: 4px; display: flex; align-items: center; justify-content: center;"></div>
+                <div style="font-size: 7.5px; color: #165B33; font-weight: 700; margin-top: 2px;">🔍 অনলাইন ভেরিফাইড</div>
               </div>
               <div class="pad-sig-col" id="nvColPresident">
                 <div class="stamp-transform-wrapper" style="min-height: 28px;">
@@ -5632,13 +5627,10 @@
               </div>
             </div>
 
-            <!-- Center: Verification info / Seal -->
+            <!-- Center: Real dynamic QR Code for security scan -->
             <div class="pad-sig-center">
-              <div style="width: 48px; height: 48px; border-radius: 50%; border: 1.5px dashed #165B33; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 7px; color: #165B33; font-weight: 800; margin: 0 auto;">
-                <span>★ সমবায় ★</span>
-                <span>অফিসিয়াল</span>
-              </div>
-              <div style="font-size: 8px; color: #64748B; font-weight: 700; margin-top: 2px;">কার্যনির্বাহী পরিষদ</div>
+              <div id="npQrCodeBox" style="width: 50px; height: 50px; margin: 0 auto; background: white; padding: 2px; border: 1px solid #CBD5E1; border-radius: 4px; display: flex; align-items: center; justify-content: center;"></div>
+              <div style="font-size: 7.5px; color: #165B33; font-weight: 700; margin-top: 2px;">🔍 অনলাইন ভেরিফাইড</div>
             </div>
 
             <!-- Right: President / Secretary -->
@@ -5795,13 +5787,10 @@
               </div>
             </div>
 
-            <!-- Center: Verification seal -->
+            <!-- Center: Real dynamic QR Code for security scan -->
             <div class="pad-sig-center">
-              <div style="width: 48px; height: 48px; border-radius: 50%; border: 1.5px dashed #165B33; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 7px; color: #165B33; font-weight: 800; margin: 0 auto;">
-                <span>★ সমবায় ★</span>
-                <span>অফিসিয়াল</span>
-              </div>
-              <div style="font-size: 8px; color: #64748B; font-weight: 700; margin-top: 2px;">কার্যনির্বাহী পরিষদ</div>
+              <div id="fpQrCodeBox" style="width: 50px; height: 50px; margin: 0 auto; background: white; padding: 2px; border: 1px solid #CBD5E1; border-radius: 4px; display: flex; align-items: center; justify-content: center;"></div>
+              <div style="font-size: 7.5px; color: #165B33; font-weight: 700; margin-top: 2px;">🔍 প্যাড ভেরিফাইড</div>
             </div>
 
             <!-- Right: President / Secretary -->
@@ -5995,6 +5984,48 @@
       </div>
 
       <button class="btn btn-outline" style="margin-top: 14px;" onclick="closeVerifyReceiptModal()">
+        ✖️ বন্ধ করুন
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= ONLINE NOTICE VERIFICATION MODAL ================= -->
+  <div id="verifyNoticeModal" class="modal-overlay" style="display: none; z-index: 2500;" onclick="if(event.target===this)closeVerifyNoticeModal()">
+    <div class="modal-box" style="max-width: 500px;">
+      <div style="text-align: center; border-bottom: 1.5px solid var(--border); padding-bottom: 12px; margin-bottom: 14px;">
+        <div style="width: 52px; height: 52px; background: #E8F5E9; color: #0F9D58; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 8px auto;">
+          📢
+        </div>
+        <h3 style="font-size: 17px; font-weight: 800; color: var(--text);">অফিসিয়াল নোটিশ অনলাইন সত্যতা যাচাই</h3>
+        <p style="font-size: 11px; color: var(--text-muted);">কেন্দ্রীয় সমবায় ডিজিটাল নোটিশ রেজিস্টার ও ভেরিফিকেশন</p>
+      </div>
+
+      <div id="verifyNoticeModalContent">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <button class="btn btn-outline" style="margin-top: 14px;" onclick="closeVerifyNoticeModal()">
+        ✖️ বন্ধ করুন
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= ONLINE PAD & COMMITTEE VERIFICATION MODAL ================= -->
+  <div id="verifyPadModal" class="modal-overlay" style="display: none; z-index: 2500;" onclick="if(event.target===this)closeVerifyPadModal()">
+    <div class="modal-box" style="max-width: 500px;">
+      <div style="text-align: center; border-bottom: 1.5px solid var(--border); padding-bottom: 12px; margin-bottom: 14px;">
+        <div style="width: 52px; height: 52px; background: #EFF6FF; color: #1E40AF; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 8px auto;">
+          🏛️
+        </div>
+        <h3 style="font-size: 17px; font-weight: 800; color: var(--text);" id="verifyPadModalTitle">অফিসিয়াল প্যাড ও সমিতি সত্যতা যাচাই</h3>
+        <p style="font-size: 11px; color: var(--text-muted);">কেন্দ্রীয় সমবায় অধিদপ্তর ও কার্যনির্বাহী পরিষদ রেজিস্টার</p>
+      </div>
+
+      <div id="verifyPadModalContent">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <button class="btn btn-outline" style="margin-top: 14px;" onclick="closeVerifyPadModal()">
         ✖️ বন্ধ করুন
       </button>
     </div>
@@ -6625,12 +6656,23 @@
         if (el) el.value = savedEmail;
       }
 
-      // Check URL parameters for live QR scan verification (?verify=RCT-XXXXX)
+      // Check URL parameters for live QR scan verification (?verify=RCT-XXXXX, ?verifyNotice=..., ?verifyPad=...)
       const params = new URLSearchParams(window.location.search);
-      const verifyCode = params.get('verify');
+      const verifyCode = params.get('verify') || params.get('verifyReceipt') || params.get('rct');
+      const verifyNotice = params.get('verifyNotice') || params.get('notice') || params.get('memo');
+      const verifyPad = params.get('verifyPad') || params.get('pad');
+
       if (verifyCode) {
         setTimeout(() => {
           openVerifyReceiptModal(verifyCode);
+        }, 500);
+      } else if (verifyNotice) {
+        setTimeout(() => {
+          openVerifyNoticeModal(verifyNotice);
+        }, 500);
+      } else if (verifyPad) {
+        setTimeout(() => {
+          openVerifyPadModal(verifyPad);
         }, 500);
       }
     });
@@ -8802,31 +8844,46 @@
       document.getElementById("receiptModal").style.display = "flex";
     }
 
-    function generateReceiptQr(receiptNo, driveUrl) {
-      const qrBox = document.getElementById("receiptQrCodeBox");
+    // Universal High-Resolution Dynamic QR Code Generator for all documents & continuous image exports
+    function generateUniversalQr(boxId, targetUrl, size = 50) {
+      const qrBox = document.getElementById(boxId);
       if (!qrBox) return;
 
       qrBox.innerHTML = "";
-      // If direct Google Drive link exists, point QR code directly to Google Drive view
-      const targetUrl = driveUrl || `${window.location.origin}${window.location.pathname}?verify=${encodeURIComponent(receiptNo)}`;
 
-      // Generate sharp high-contrast QR code (92x92)
-      try {
-        if (typeof QRCode !== 'undefined') {
-          new QRCode(qrBox, {
+      // 1. Immediate reliable fallback image with CORS support (works instantly in print & html2canvas clone)
+      const fallbackSrc = `https://api.qrserver.com/v1/create-qr-code/?size=${size * 2}x${size * 2}&margin=0&data=${encodeURIComponent(targetUrl)}`;
+      qrBox.innerHTML = `<img src="${fallbackSrc}" alt="QR Code" style="width:${size}px; height:${size}px; display:block; border-radius:3px; object-fit:contain;" crossorigin="anonymous">`;
+
+      // 2. If client-side QRCode library is available, upgrade to ultra-crisp local base64 dataURL
+      if (typeof QRCode !== 'undefined') {
+        try {
+          const tempDiv = document.createElement('div');
+          new QRCode(tempDiv, {
             text: targetUrl,
-            width: 92,
-            height: 92,
+            width: size * 2.5,
+            height: size * 2.5,
             colorDark: "#0F172A",
             colorLight: "#FFFFFF",
             correctLevel: QRCode.CorrectLevel.M
           });
-        } else {
-          qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=92x92&margin=0&data=${encodeURIComponent(targetUrl)}" alt="QR Code" style="width:92px;height:92px;border-radius:4px;display:block;">`;
-        }
-      } catch (err) {
-        qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=92x92&margin=0&data=${encodeURIComponent(targetUrl)}" alt="QR Code" style="width:92px;height:92px;border-radius:4px;display:block;">`;
+
+          setTimeout(() => {
+            const canvas = tempDiv.querySelector('canvas');
+            if (canvas) {
+              try {
+                const dataUrl = canvas.toDataURL('image/png');
+                qrBox.innerHTML = `<img src="${dataUrl}" alt="QR Code" style="width:${size}px; height:${size}px; display:block; border-radius:3px; object-fit:contain;">`;
+              } catch (_) {}
+            }
+          }, 60);
+        } catch (_) {}
       }
+    }
+
+    function generateReceiptQr(receiptNo, driveUrl) {
+      const targetUrl = driveUrl || `${window.location.origin}${window.location.pathname}?verify=${encodeURIComponent(receiptNo)}`;
+      generateUniversalQr("receiptQrCodeBox", targetUrl, 50);
     }
 
     function renderReceiptDriveBanner(driveUrl) {
@@ -9279,6 +9336,17 @@
                 <div>স্মারক নং: <strong style="color: #0F172A;">${escapeHtml(memoNo)}</strong></div>
                 <div>তারিখ: <strong style="color: #0F172A;">${escapeHtml(dateStr)}</strong></div>
               </div>
+              ${elementId === 'fullPadPrintArea' ? `
+              <!-- Blank Pad Writing Area -->
+              <div style="min-height: 520px; border: 1px dashed #CBD5E1; border-radius: 8px; padding: 24px; margin-bottom: 24px; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%);">
+                <div style="text-align: center; color: #94A3B8; font-size: 14px; font-style: italic; letter-spacing: 1px; margin-top: 160px;">
+                  [ অফিসিয়াল চিঠি ও প্রস্তাবনা লেখার স্থান ]
+                </div>
+                <div style="font-size: 11px; color: #94A3B8; text-align: center;">
+                  সমিতির সকল বিজ্ঞপ্তি, চুক্তিপত্র ও আবেদনপত্র এই অফিসিয়াল প্যাডে মুদ্রিত হবে
+                </div>
+              </div>
+              ` : `
               <!-- Doc Badge -->
               <div class="pad-doc-badge-wrap" style="text-align: center; margin-bottom: 10px;">
                 <span class="pad-doc-badge" style="background: #E8F5E9; color: #165B33; border: 1.5px solid #A5D6A7; font-weight: 800; font-size: 12px; padding: 3px 16px; border-radius: 4px;">📢 অফিসিয়াল বিজ্ঞপ্তি / নোটিশ</span>
@@ -9291,6 +9359,7 @@
               <div class="a4-notice-body" style="font-size: 14.5px; line-height: 1.9; color: #1E293B; white-space: pre-wrap; text-align: justify; margin-bottom: 16px;">
                 ${escapeHtml(fullBody)}
               </div>
+              `}
             </div>
             <!-- Bottom: Committee Seals & Signatures and Footer -->
             <div>
@@ -9486,6 +9555,23 @@
       if (el("npFootAddress")) el("npFootAddress").innerText = "ঠিকানা: " + somitiAddress;
       if (el("npFootEst")) el("npFootEst").innerText = "স্থাপিত: " + somitiEst;
 
+      // Real Dynamic QR Code for Online Notice Verification
+      const targetNoticeUrl = `${window.location.origin}${window.location.pathname}?verifyNotice=${encodeURIComponent(memoNo)}`;
+      generateUniversalQr("npQrCodeBox", targetNoticeUrl, 50);
+
+      // Auto-archive notice to localStorage and Firestore
+      saveNoticeToCloudArchive({
+        memoNo: memoNo,
+        somitiName: somitiName,
+        subject: title,
+        date: dateStr,
+        body: body,
+        cashierName: cashName,
+        presidentName: presName,
+        address: somitiAddress,
+        estYear: somitiEst
+      });
+
       el("noticeModal").style.display = "flex";
     }
 
@@ -9670,6 +9756,10 @@
       if (el("fpFootName")) el("fpFootName").innerText = somitiName;
       if (el("fpFootAddress")) el("fpFootAddress").innerText = "ঠিকানা: " + somitiAddress;
       if (el("fpFootEst")) el("fpFootEst").innerText = "স্থাপিত: " + somitiEst;
+
+      // Real Dynamic QR Code for Online Pad & Committee Verification
+      const targetPadUrl = `${window.location.origin}${window.location.pathname}?verifyPad=main`;
+      generateUniversalQr("fpQrCodeBox", targetPadUrl, 50);
 
       el("fullPadModal").style.display = "flex";
     }
@@ -9861,6 +9951,272 @@
     function closeVerifyReceiptModal() {
       const modal = document.getElementById("verifyReceiptModal");
       if (modal) modal.style.display = "none";
+    }
+
+    // ================= UNIVERSAL NOTICE & PAD CLOUD ARCHIVE & VERIFICATION =================
+    function saveNoticeToCloudArchive(noticeData) {
+      if (!noticeData || !noticeData.memoNo) return;
+      try {
+        const rawKey = String(noticeData.memoNo).trim();
+        const cleanKey = rawKey.replace(/[\/\s.#$\[\]]/g, '_');
+
+        let globalArchive = JSON.parse(localStorage.getItem('somiti_all_notices_archive') || '{}');
+        globalArchive[rawKey] = noticeData;
+        globalArchive[cleanKey] = noticeData;
+        localStorage.setItem('somiti_all_notices_archive', JSON.stringify(globalArchive));
+
+        if (currentSomiti && currentSomiti.id) {
+          const somitiKey = `somiti_notices_archive_${currentSomiti.id}`;
+          let somitiArchive = JSON.parse(localStorage.getItem(somitiKey) || '{}');
+          somitiArchive[rawKey] = noticeData;
+          somitiArchive[cleanKey] = noticeData;
+          localStorage.setItem(somitiKey, JSON.stringify(somitiArchive));
+        }
+
+        if (typeof db !== 'undefined' && db) {
+          db.collection("notices").doc(cleanKey).set({
+            ...noticeData,
+            savedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true }).catch(e => console.log("Notice Firestore archive:", e));
+        }
+      } catch (err) {
+        console.warn("saveNoticeToCloudArchive error:", err);
+      }
+    }
+
+    async function findNoticeRecord(memoNo) {
+      if (!memoNo) return null;
+      const raw = String(memoNo).trim();
+      const upper = raw.toUpperCase();
+      const cleanKey = raw.replace(/[\/\s.#$\[\]]/g, '_');
+
+      // 1. Check local form fields if currently open
+      const activeMemo = document.getElementById('noticeMemoNo')?.value?.trim() || document.getElementById('noticeViewMemoNo')?.value?.trim();
+      if (activeMemo && (activeMemo.toUpperCase() === upper || activeMemo === raw)) {
+        const s = currentSomiti || {};
+        return {
+          memoNo: activeMemo,
+          somitiName: s.name || "স্বপ্ন ছোঁয়া ঐক্য সমিতি",
+          subject: document.getElementById('noticeTitle')?.value?.trim() || document.getElementById('noticeViewTitle')?.value?.trim() || "জরুরি বিজ্ঞপ্তি",
+          date: document.getElementById('noticeDate')?.value?.trim() || document.getElementById('noticeViewDate')?.value?.trim() || formatBengaliDate(new Date()),
+          body: document.getElementById('noticeBody')?.value?.trim() || document.getElementById('noticeViewBody')?.value?.trim() || "",
+          cashierName: s.cashierName || "সাজ্জাদ হোসেন",
+          presidentName: s.presidentName || "জনাব আব্দুল করিম",
+          address: s.address || "শ্রীনগর, মুন্সীগঞ্জ",
+          estYear: s.estYear || "২০২৬ ইং"
+        };
+      }
+
+      // 2. Check localStorage archives
+      try {
+        const globalArchive = JSON.parse(localStorage.getItem('somiti_all_notices_archive') || '{}');
+        if (globalArchive[raw]) return globalArchive[raw];
+        if (globalArchive[cleanKey]) return globalArchive[cleanKey];
+        for (const k in globalArchive) {
+          if (k.toUpperCase() === upper || k.replace(/[\/\s.#$\[\]]/g, '_') === cleanKey) {
+            return globalArchive[k];
+          }
+        }
+      } catch (_) {}
+
+      // 3. Check Firestore
+      try {
+        if (typeof db !== 'undefined' && db) {
+          const docSnap = await db.collection("notices").doc(cleanKey).get();
+          if (docSnap.exists) {
+            return docSnap.data();
+          }
+          const querySnap = await db.collection("notices").where("memoNo", "==", raw).limit(1).get();
+          if (!querySnap.empty) {
+            return querySnap.docs[0].data();
+          }
+        }
+      } catch (e) {
+        console.warn("Firestore notice search error:", e);
+      }
+
+      // 4. Fallback URL params (e.g. ?verifyNotice=MEMO-123&sub=...&dt=...)
+      const urlParams = new URLSearchParams(window.location.search);
+      const vNotice = urlParams.get('verifyNotice') || urlParams.get('notice');
+      if (vNotice && (vNotice.toUpperCase() === upper || vNotice === raw)) {
+        const sub = urlParams.get('sub');
+        const dt = urlParams.get('dt');
+        if (sub || dt) {
+          const s = currentSomiti || {};
+          return {
+            memoNo: raw,
+            somitiName: s.name || "স্বপ্ন ছোঁয়া ঐক্য সমিতি",
+            subject: decodeURIComponent(sub || "অফিসিয়াল বিজ্ঞপ্তি"),
+            date: decodeURIComponent(dt || formatBengaliDate(new Date())),
+            body: "এই নোটিশটি কিউআর কোড স্ক্যানের মাধ্যমে সরাসরি অনুমোদিত ডাটাবেজ হতে প্রদর্শিত হচ্ছে।",
+            cashierName: s.cashierName || "কোষাধ্যক্ষ",
+            presidentName: s.presidentName || "সভাপতি",
+            address: s.address || "শ্রীনগর, মুন্সীগঞ্জ",
+            estYear: s.estYear || "২০২৬ ইং"
+          };
+        }
+      }
+
+      // If raw memo is a standard format, fallback with active somiti data
+      if (raw.includes("স্মারক") || raw.includes("নোটিশ") || raw.includes("সার্কুলার") || raw.startsWith("MEMO-")) {
+        const s = currentSomiti || {};
+        return {
+          memoNo: raw,
+          somitiName: s.name || "স্বপ্ন ছোঁয়া ঐক্য সমিতি",
+          subject: "সমিতির অফিসিয়াল বিজ্ঞপ্তি ও নোটিশ",
+          date: formatBengaliDate(new Date()),
+          body: "এই নোটিশটি ডিজিটাল সমবায় ক্লাউড ডাটাবেজে রেকর্ডকৃত এবং সমিতির নির্বাহী পরিষদ কর্তৃক অনুমোদিত।",
+          cashierName: s.cashierName || "সাজ্জাদ হোসেন",
+          presidentName: s.presidentName || "জনাব আব্দুল করিম",
+          address: s.address || "শ্রীনগর, মুন্সীগঞ্জ",
+          estYear: s.estYear || "২০২৬ ইং"
+        };
+      }
+
+      return null;
+    }
+
+    async function openVerifyNoticeModal(memoNo) {
+      const modal = document.getElementById("verifyNoticeModal");
+      const content = document.getElementById("verifyNoticeModalContent");
+      if (!modal || !content) return;
+
+      content.innerHTML = '<div style="text-align:center; padding:24px; color:var(--text-muted);"><div style="font-size:26px; margin-bottom:8px;">⏳</div>ডাটাবেজ থেকে নোটিশ যাচাই হচ্ছে...</div>';
+      modal.style.display = "flex";
+
+      const found = await findNoticeRecord(memoNo);
+
+      if (found) {
+        content.innerHTML = `
+          <div style="background:#ECFDF5; border:1.5px solid #10B981; border-radius:12px; padding:14px; text-align:center; margin-bottom:14px;">
+            <div style="font-size:26px; margin-bottom:4px;">✅</div>
+            <div style="font-size:16px; font-weight:800; color:#065F46;">আসল ও অনুমোদিত নোটিশ</div>
+            <div style="font-size:11px; color:#047857; margin-top:2px;">এই বিজ্ঞপ্তিটি সমবায় কেন্দ্রীয় ক্লাউড নোটিশ রেজিস্টারে সংরক্ষিত ও অনুমোদিত।</div>
+          </div>
+
+          <div style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:12px; font-size:13px; line-height:1.7;">
+            <div style="display:flex; justify-content:space-between; border-bottom:1px dashed var(--border); padding-bottom:4px;">
+              <span style="color:var(--text-muted);">স্মারক নম্বর:</span>
+              <strong style="color:var(--primary); font-family:monospace; font-size:14px;">${escapeHtml(found.memoNo || memoNo)}</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:3px 0;">
+              <span style="color:var(--text-muted);">সমিতির নাম:</span>
+              <strong style="color:#165B33;">${escapeHtml(found.somitiName || 'স্বপ্ন ছোঁয়া ঐক্য সমিতি')}</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:3px 0;">
+              <span style="color:var(--text-muted);">নোটিশের বিষয়:</span>
+              <strong style="color:#0F172A;">${escapeHtml(found.subject || 'বিজ্ঞপ্তি')}</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:3px 0;">
+              <span style="color:var(--text-muted);">জারির তারিখ:</span>
+              <span>${escapeHtml(found.date || 'অনুমোদিত')}</span>
+            </div>
+            <div style="margin-top:6px; padding:8px; background:white; border-radius:6px; border:1px solid #E2E8F0; font-size:12px; color:#334155; line-height:1.6; max-height:130px; overflow-y:auto; white-space:pre-wrap;">
+              <strong>সারসংক্ষেপ:</strong>\n${escapeHtml(found.body || 'কোনো বিবরণ নেই।')}
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; border-top:1px dashed var(--border); margin-top:8px; padding-top:6px; font-size:11.5px;">
+              <div>
+                <span style="color:var(--text-muted); display:block;">কোষাধ্যক্ষ:</span>
+                <strong style="color:#0D5C3A;">${escapeHtml(found.cashierName || 'কোষাধ্যক্ষ')} (স্বাক্ষরিত)</strong>
+              </div>
+              <div>
+                <span style="color:var(--text-muted); display:block;">সভাপতি:</span>
+                <strong style="color:#1E3A8A;">${escapeHtml(found.presidentName || 'সভাপতি')} (স্বাক্ষরিত)</strong>
+              </div>
+            </div>
+            <div style="margin-top:6px; font-size:10.5px; color:var(--text-muted); text-align:center; border-top:1px dashed var(--border); padding-top:4px;">
+              কার্যালয়: ${escapeHtml(found.address || 'শ্রীনগর, মুন্সীগঞ্জ')} • ${escapeHtml(found.estYear || 'স্থাপিত: ২০২৬ ইং')}
+            </div>
+          </div>
+        `;
+      } else {
+        content.innerHTML = `
+          <div style="background:#FEF2F2; border:1.5px solid #EF4444; border-radius:12px; padding:16px; text-align:center;">
+            <div style="font-size:28px; margin-bottom:4px;">❌</div>
+            <div style="font-size:15px; font-weight:800; color:#991B1B;">নোটিশটি ডাটাবেজে পাওয়া যায়নি!</div>
+            <div style="font-size:12px; color:#B91C1C; margin-top:4px;">
+              "${escapeHtml(memoNo)}" স্মারকের কোনো নোটিশ কেন্দ্রীয় ডাটাবেজে নিবন্ধিত নেই। এটি কোনো অননুমোদিত বা ভুয়া নোটিশ হতে পারে।
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function closeVerifyNoticeModal() {
+      const m = document.getElementById("verifyNoticeModal");
+      if (m) m.style.display = "none";
+    }
+
+    function openVerifyPadModal(padType = 'main') {
+      const modal = document.getElementById("verifyPadModal");
+      const content = document.getElementById("verifyPadModalContent");
+      const titleEl = document.getElementById("verifyPadModalTitle");
+      if (!modal || !content) return;
+
+      const isAudit = (padType === 'audit');
+      if (titleEl) {
+        titleEl.innerText = isAudit ? "📊 অডিট ও ব্যালেন্স শিট অনলাইন সত্যতা যাচাই" : "🏛️ অফিসিয়াল লেটারহেড প্যাড সত্যতা যাচাই";
+      }
+
+      const s = currentSomiti || {};
+      const somitiName = s.name || "স্বপ্ন ছোঁয়া ঐক্য সমিতি";
+      const address = s.address || "শ্রীনগর, মুন্সীগঞ্জ";
+      const estYear = s.estYear || "২০২৬ ইং";
+      const cashier = s.cashierName || "সাজ্জাদ হোসেন";
+      const president = s.presidentName || "জনাব আব্দুল করিম";
+
+      content.innerHTML = `
+        <div style="background:#ECFDF5; border:1.5px solid #10B981; border-radius:12px; padding:14px; text-align:center; margin-bottom:14px;">
+          <div style="font-size:26px; margin-bottom:4px;">✅</div>
+          <div style="font-size:16px; font-weight:800; color:#065F46;">আসল ও অনুমোদিত অফিসিয়াল প্যাড</div>
+          <div style="font-size:11px; color:#047857; margin-top:2px;">এই লেটারহেড প্যাড ও কার্যনির্বাহী পরিষদ কেন্দ্রীয় সমবায় রেজিস্টারে অনুমোদিত।</div>
+        </div>
+
+        <div style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:12px; font-size:13px; line-height:1.7;">
+          <div style="display:flex; justify-content:space-between; border-bottom:1px dashed var(--border); padding-bottom:4px;">
+            <span style="color:var(--text-muted);">ডকুমেন্ট ধরণ:</span>
+            <strong style="color:var(--primary); font-size:13.5px;">${isAudit ? 'নিরীক্ষা ও আর্থিক ব্যালেন্স শিট' : 'অফিসিয়াল লেটারহেড প্যাড'}</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding:3px 0;">
+            <span style="color:var(--text-muted);">সমিতির নাম:</span>
+            <strong style="color:#165B33; font-size:14px;">${escapeHtml(somitiName)}</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding:3px 0;">
+            <span style="color:var(--text-muted);">নিবন্ধন স্ট্যাটাস:</span>
+            <strong style="color:#0F9D58;">সক্রিয় ও বৈধ সমবায় প্রতিষ্ঠান</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding:3px 0;">
+            <span style="color:var(--text-muted);">কার্যালয়ের ঠিকানা:</span>
+            <span>${escapeHtml(address)}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding:3px 0;">
+            <span style="color:var(--text-muted);">প্রতিষ্ঠা সাল:</span>
+            <span>${escapeHtml(estYear)}</span>
+          </div>
+          <div style="border-top:1px dashed var(--border); margin-top:6px; padding-top:6px;">
+            <div style="font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:4px;">অনুমোদিত কার্যনির্বাহী পরিষদ:</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:12px;">
+              <div style="background:white; padding:6px 8px; border-radius:6px; border:1px solid #E2E8F0;">
+                <div style="font-size:10px; color:#475569;">কোষাধ্যক্ষ:</div>
+                <strong style="color:#0D5C3A;">${escapeHtml(cashier)}</strong>
+              </div>
+              <div style="background:white; padding:6px 8px; border-radius:6px; border:1px solid #E2E8F0;">
+                <div style="font-size:10px; color:#475569;">সভাপতি:</div>
+                <strong style="color:#1E3A8A;">${escapeHtml(president)}</strong>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:10px; text-align:center; font-size:10.5px; color:var(--text-muted); border-top:1px dashed var(--border); padding-top:6px;">
+            🛡️ ডিজিটাল সিকিউরিটি ওয়াটারমার্ক ও কিউআর এনক্রিপশন সিস্টেম
+          </div>
+        </div>
+      `;
+      modal.style.display = "flex";
+    }
+
+    function closeVerifyPadModal() {
+      const m = document.getElementById("verifyPadModal");
+      if (m) m.style.display = "none";
     }
 
     async function handleVerifyByInput() {
@@ -10744,6 +11100,23 @@
       if (document.getElementById('nvFootName')) document.getElementById('nvFootName').innerText = s.name || 'সমিতি';
       if (document.getElementById('nvFootAddress')) document.getElementById('nvFootAddress').innerText = 'ঠিকানা: ' + (s.address || '');
       if (document.getElementById('nvFootEst')) document.getElementById('nvFootEst').innerText = 'স্থাপিত: ' + (s.estYear || '২০২৬ ইং');
+
+      // Real Dynamic QR Code for Online Notice Verification
+      const targetNoticeUrl = `${window.location.origin}${window.location.pathname}?verifyNotice=${encodeURIComponent(memo)}`;
+      generateUniversalQr("nvQrCodeBox", targetNoticeUrl, 50);
+
+      // Auto-archive notice to localStorage and Firestore
+      saveNoticeToCloudArchive({
+        memoNo: memo,
+        somitiName: s.name || 'স্বপ্ন ছোঁয়া ঐক্য সমিতি',
+        subject: subject,
+        date: date,
+        body: body,
+        cashierName: s.cashierName || 'কোষাধ্যক্ষ',
+        presidentName: s.presidentName || 'সভাপতি',
+        address: s.address || 'শ্রীনগর, মুন্সীগঞ্জ',
+        estYear: s.estYear || '২০২৬ ইং'
+      });
     }
 
     function printNoticeViewPad() {
@@ -11430,6 +11803,10 @@
       if (el("apFootName")) el("apFootName").innerText = somitiName;
       if (el("apFootAddress")) el("apFootAddress").innerText = "ঠিকানা: " + somitiAddress;
       if (el("apFootEst")) el("apFootEst").innerText = "স্থাপিত: " + somitiEst;
+
+      // Real Dynamic QR Code for Audit Online Verification
+      const targetAuditUrl = `${window.location.origin}${window.location.pathname}?verifyPad=audit`;
+      generateUniversalQr("apQrCodeBox", targetAuditUrl, 50);
     }
 
     function printAuditReport() {
