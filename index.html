@@ -460,6 +460,17 @@
     .thermal-55mm .pad-logo-holder {
       width: 48px; height: 48px; margin: 0 auto 6px auto;
     }
+    .thermal-80mm .pad-header-info-col,
+    .thermal-55mm .pad-header-info-col {
+      text-align: center;
+      align-items: center;
+    }
+    .thermal-80mm .pad-reg-row,
+    .thermal-55mm .pad-reg-row,
+    .thermal-80mm .pad-contact-chips-row,
+    .thermal-55mm .pad-contact-chips-row {
+      justify-content: center;
+    }
     .thermal-80mm .pad-signatures-row,
     .thermal-55mm .pad-signatures-row {
       flex-direction: column;
@@ -1751,103 +1762,115 @@
     }
     .pad-top-header-grid {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 6px;
+      gap: 12px;
       width: 100%;
       box-sizing: border-box;
     }
     .pad-logo-holder {
-      width: 66px;
-      height: 66px;
-      min-width: 44px;
+      width: 82px;
+      height: 82px;
+      min-width: 68px;
       flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.06));
     }
-    .pad-header-center {
-      text-align: center;
+    .pad-header-info-col {
       flex: 1 1 auto;
       min-width: 0;
-      padding: 0 4px;
-      overflow: hidden;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
     }
     .pad-title-main {
-      font-size: clamp(14px, 3.8vw, 24px);
+      font-size: clamp(16px, 4vw, 25px);
       font-weight: 900;
       line-height: 1.15;
-      margin-bottom: 3px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      margin-bottom: 1px;
+      letter-spacing: -0.2px;
     }
     .pad-title-green { color: #165B33; }
     .pad-title-red { color: #B91C1C; }
+    .pad-name-english {
+      font-size: clamp(9.5px, 2.2vw, 12px);
+      font-weight: 700;
+      color: #475569;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      line-height: 1.2;
+      margin-bottom: 2px;
+      font-family: 'Inter', -apple-system, sans-serif;
+    }
+    .pad-reg-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin: 1px 0;
+    }
+    .pad-reg-pill {
+      background: #FEF3C7;
+      color: #92400E;
+      border: 1px solid #FDE68A;
+      font-size: clamp(8px, 1.8vw, 10px);
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
     .pad-slogan-ribbon {
       display: inline-block;
       background: #14532D;
       color: #FEF08A;
-      font-size: clamp(7.5px, 2vw, 10.5px);
+      font-size: clamp(7.5px, 1.8vw, 10px);
       font-weight: 700;
-      padding: 2px 10px;
-      border-radius: 20px;
-      margin-bottom: 3px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      padding: 2px 8px;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
       letter-spacing: 0.2px;
       white-space: nowrap;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      vertical-align: middle;
     }
-    .pad-est-badge {
-      background: #0F172A;
-      color: #FFFFFF;
-      font-size: clamp(7.5px, 1.8vw, 9.5px);
-      font-weight: 700;
-      padding: 1px 7px;
-      border-radius: 10px;
-      display: inline-block;
-      white-space: nowrap;
-    }
-    .pad-header-right {
-      text-align: right;
+    .pad-address-line {
+      font-size: clamp(9px, 2vw, 11px);
+      font-weight: 600;
+      color: #1E293B;
       line-height: 1.25;
-      flex-shrink: 0;
-      max-width: 120px;
-      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 3px;
     }
-    .pad-right-title {
-      font-size: clamp(9px, 2.2vw, 12px);
-      font-weight: 800;
-      color: #B91C1C;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .pad-contact-chips-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 2px;
     }
-    .pad-right-sub {
-      font-size: clamp(8px, 1.9vw, 10.5px);
+    .pad-account-chip {
+      background: #F1F5F9;
+      border: 1px solid #E2E8F0;
+      font-size: clamp(8px, 1.7vw, 10px);
       color: #334155;
-      font-weight: 600;
-      line-height: 1.2;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
     }
-    .pad-right-tag {
-      font-size: clamp(7.5px, 1.7vw, 9.5px);
-      color: #165B33;
-      font-style: italic;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    /* Legacy fallback classes preserved */
+    .pad-header-center { text-align: left; flex: 1 1 auto; min-width: 0; }
+    .pad-header-right { display: none; }
+    .pad-est-badge { display: inline-block; background: #0F172A; color: #FFFFFF; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 6px; }
+
     .pad-double-divider {
       border-top: 2.5px solid #14532D;
-      border-bottom: 1px solid #14532D;
-      height: 3px;
+      border-bottom: 1.5px solid #CA8A04;
+      height: 4px;
       margin: 8px 0 10px 0;
     }
     .pad-meta-row {
@@ -3062,14 +3085,19 @@
           </div>
 
           <div class="form-group">
-            <label>সমিতির পূর্ণ নাম *</label>
+            <label>সমিতির পূর্ণ নাম (বাংলা) *</label>
             <input type="text" id="profSomitiName" placeholder="যেমন: স্বপ্ন ছোঁয়া ঐক্য সমিতি" oninput="updateLivePadPreview()">
+          </div>
+
+          <div class="form-group">
+            <label>সমিতির অফিসিয়াল নাম (ইংরেজিতে)</label>
+            <input type="text" id="profSomitiNameEn" placeholder="যেমন: SWAPNA CHOWYA COOPERATIVE SOCIETY LTD." oninput="updateLivePadPreview()">
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <div class="form-group">
-              <label>অফিসিয়াল স্লোগান / মোটো</label>
-              <input type="text" id="profSomitiSlogan" placeholder="যেমন: ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।" oninput="updateLivePadPreview()">
+              <label>সরকারি সমবায় রেজিঃ নম্বর</label>
+              <input type="text" id="profSomitiRegNo" placeholder="যেমন: সমবায় রেজিঃ নং-৭৮৯০/২০২৬" oninput="updateLivePadPreview()">
             </div>
             <div class="form-group">
               <label>স্থাপিত সন / বছর</label>
@@ -3079,13 +3107,18 @@
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <div class="form-group">
-              <label>ট্যাগলাইন / উপ-শিরোনাম (প্যাডের ডানে)</label>
-              <input type="text" id="profSomitiTagline" placeholder="যেমন: স্বচ্ছতা ও ঐক্যের প্রতীক" oninput="updateLivePadPreview()">
+              <label>অফিসিয়াল স্লোগান / মোটো</label>
+              <input type="text" id="profSomitiSlogan" placeholder="যেমন: ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।" oninput="updateLivePadPreview()">
             </div>
             <div class="form-group">
-              <label>সরকারি কোড নম্বর</label>
-              <input type="text" id="profSomitiCode" placeholder="যেমন: সছঐস" oninput="updateLivePadPreview()">
+              <label>সমিতি কোড নম্বর</label>
+              <input type="text" id="profSomitiCode" placeholder="যেমন: SW-2026" oninput="updateLivePadPreview()">
             </div>
+          </div>
+
+          <div class="form-group">
+            <label>ট্যাগলাইন / উপ-শিরোনাম (ঐচ্ছিক)</label>
+            <input type="text" id="profSomitiTagline" placeholder="যেমন: স্বচ্ছতা ও ঐক্যের প্রতীক" oninput="updateLivePadPreview()">
           </div>
 
           <div class="form-group">
@@ -3094,7 +3127,7 @@
           </div>
 
           <div class="form-group">
-            <label>অফিসিয়াল বিকাশ / নগদ</label>
+            <label>অফিসিয়াল বিকাশ / নগদ একাউন্ট নম্বর</label>
             <input type="text" id="profSomitiBkash" placeholder="০১৭১২-৩৪৫৬৭৮" oninput="updateLivePadPreview()">
           </div>
         </div>
@@ -3441,24 +3474,22 @@
                 </svg>
               </div>
 
-              <!-- Center: Title, Ribbon, Est -->
-              <div class="pad-header-center">
+              <!-- Right: Executive Info Column -->
+              <div class="pad-header-info-col">
                 <div class="pad-title-main" id="livePadTitle">
                   <span class="pad-title-green">স্বপ্ন ছোঁয়া</span> <span class="pad-title-red">ঐক্য সমিতি</span>
                 </div>
-                <div class="pad-slogan-ribbon" id="livePadSlogan">
-                  ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।
+                <div class="pad-name-english" id="livePadEnglishName">SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.</div>
+                <div class="pad-reg-row">
+                  <span class="pad-reg-pill" id="livePadRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬ • স্থাপিত: ২০২৬ ইং</span>
+                  <span class="pad-slogan-ribbon" id="livePadSlogan">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</span>
                 </div>
-                <div>
-                  <span class="pad-est-badge" id="livePadEst">স্থাপিত: ২০২৬ ইং</span>
+                <div class="pad-address-line" id="livePadAddressLine">📍 কার্যালয়: <span id="livePadAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
+                <div class="pad-contact-chips-row">
+                  <span class="pad-account-chip">📱 বিকাশ/নগদ: <strong id="livePadBkash">০১৭১১-০০০০০০</strong></span>
+                  <span class="pad-account-chip">🏦 ব্যাংক হিসাব: <strong id="livePadBank">সোনালী ব্যাংক-১২৩৪৫৬৭৮৯</strong></span>
+                  <span class="pad-account-chip">🏷️ কোড: <strong id="livePadCodeBadge">SW-2026</strong></span>
                 </div>
-              </div>
-
-              <!-- Right: Somiti Name, Address, Tagline -->
-              <div class="pad-header-right">
-                <div class="pad-right-title" id="livePadRightName">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
-                <div class="pad-right-sub" id="livePadRightAddress">শ্রীনগর, মুন্সীগঞ্জ</div>
-                <div class="pad-right-tag" id="livePadRightTagline">স্বচ্ছতা ও ঐক্যের প্রতীক</div>
               </div>
             </div>
 
@@ -3941,24 +3972,22 @@
                 </svg>
               </div>
 
-              <!-- Center: Title, Ribbon, Est -->
-              <div class="pad-header-center">
+              <!-- Right: Executive Info Column -->
+              <div class="pad-header-info-col">
                 <div class="pad-title-main" id="apSomitiName">
                   <span class="pad-title-green">স্বপ্ন ছোঁয়া</span> <span class="pad-title-red">ঐক্য সমিতি</span>
                 </div>
-                <div class="pad-slogan-ribbon" id="apPadHeader">
-                  ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।
+                <div class="pad-name-english" id="apEnglishName">SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.</div>
+                <div class="pad-reg-row">
+                  <span class="pad-reg-pill" id="apRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬ • স্থাপিত: ২০২৬ ইং</span>
+                  <span class="pad-slogan-ribbon" id="apPadHeader">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</span>
                 </div>
-                <div>
-                  <span class="pad-est-badge" id="apEstYear">স্থাপিত: ২০২৬ ইং</span>
+                <div class="pad-address-line" id="apAddressLine">📍 কার্যালয়: <span id="apAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
+                <div class="pad-contact-chips-row">
+                  <span class="pad-account-chip">📱 বিকাশ/নগদ: <strong id="apBkash">০১৭১১-০০০০০০</strong></span>
+                  <span class="pad-account-chip">🏦 ব্যাংক হিসাব: <strong id="apBank">সোনালী ব্যাংক-১২৩৪৫৬৭৮৯</strong></span>
+                  <span class="pad-account-chip">🏷️ কোড: <strong id="apCodeBadge">SW-2026</strong></span>
                 </div>
-              </div>
-
-              <!-- Right: Somiti Name, Address, Tagline -->
-              <div class="pad-header-right">
-                <div class="pad-right-title" id="apRightName">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
-                <div class="pad-right-sub" id="apRightAddress">শ্রীনগর, মুন্সীগঞ্জ</div>
-                <div class="pad-right-tag" id="apRightTagline">স্বচ্ছতা ও ঐক্যের প্রতীক</div>
               </div>
             </div>
 
@@ -4362,17 +4391,22 @@
                   <text x="65" y="106" font-size="12" fill="#165B33" text-anchor="middle" font-weight="bold" letter-spacing="3">★ ★ ★</text>
                 </svg>
               </div>
-              <div class="pad-header-center">
+              <!-- Right: Executive Info Column -->
+              <div class="pad-header-info-col">
                 <div class="pad-title-main" id="nvSomitiName">
                   <span class="pad-title-green">স্বপ্ন ছোঁয়া</span> <span class="pad-title-red">ঐক্য সমিতি</span>
                 </div>
-                <div class="pad-slogan-ribbon" id="nvPadHeader">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</div>
-                <div><span class="pad-est-badge" id="nvEstYear">স্থাপিত: ২০২৬ ইং</span></div>
-              </div>
-              <div class="pad-header-right">
-                <div class="pad-right-title" id="nvRightName">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
-                <div class="pad-right-sub" id="nvRightAddress">শ্রীনগর, মুন্সীগঞ্জ</div>
-                <div class="pad-right-tag" id="nvRightTagline">স্বচ্ছতা ও ঐক্যের প্রতীক</div>
+                <div class="pad-name-english" id="nvEnglishName">SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.</div>
+                <div class="pad-reg-row">
+                  <span class="pad-reg-pill" id="nvRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬ • স্থাপিত: ২০২৬ ইং</span>
+                  <span class="pad-slogan-ribbon" id="nvPadHeader">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</span>
+                </div>
+                <div class="pad-address-line" id="nvAddressLine">📍 কার্যালয়: <span id="nvAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
+                <div class="pad-contact-chips-row">
+                  <span class="pad-account-chip">📱 বিকাশ/নগদ: <strong id="nvBkash">০১৭১১-০০০০০০</strong></span>
+                  <span class="pad-account-chip">🏦 ব্যাংক হিসাব: <strong id="nvBank">সোনালী ব্যাংক-১২৩৪৫৬৭৮৯</strong></span>
+                  <span class="pad-account-chip">🏷️ কোড: <strong id="nvCodeBadge">SW-2026</strong></span>
+                </div>
               </div>
             </div>
             <div class="pad-double-divider"></div>
@@ -4924,24 +4958,22 @@
               </svg>
             </div>
 
-            <!-- Center: Title, Ribbon, Est -->
-            <div class="pad-header-center">
+            <!-- Right: Executive Info Column -->
+            <div class="pad-header-info-col">
               <div class="pad-title-main" id="rcptSomitiName">
                 <span class="pad-title-green">স্বপ্ন ছোঁয়া</span> <span class="pad-title-red">ঐক্য সমিতি</span>
               </div>
-              <div class="pad-slogan-ribbon" id="rcptPadHeader">
-                ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।
+              <div class="pad-name-english" id="rcptEnglishName">SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.</div>
+              <div class="pad-reg-row">
+                <span class="pad-reg-pill" id="rcptRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬ • স্থাপিত: ২০২৬ ইং</span>
+                <span class="pad-slogan-ribbon" id="rcptPadHeader">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</span>
               </div>
-              <div>
-                <span class="pad-est-badge" id="rcptEstYear">স্থাপিত: ২০২৬ ইং</span>
+              <div class="pad-address-line" id="rcptAddressLine">📍 কার্যালয়: <span id="rcptAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
+              <div class="pad-contact-chips-row">
+                <span class="pad-account-chip">📱 বিকাশ/নগদ: <strong id="rcptBkash">০১৭১১-০০০০০০</strong></span>
+                <span class="pad-account-chip">🏦 ব্যাংক হিসাব: <strong id="rcptBank">সোনালী ব্যাংক-১২৩৪৫৬৭৮৯</strong></span>
+                <span class="pad-account-chip">🏷️ কোড: <strong id="rcptCodeBadge">SW-2026</strong></span>
               </div>
-            </div>
-
-            <!-- Right: Somiti Name, Address, Tagline -->
-            <div class="pad-header-right">
-              <div class="pad-right-title" id="rcptRightName">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
-              <div class="pad-right-sub" id="rcptRightAddress">শ্রীনগর, মুন্সীগঞ্জ</div>
-              <div class="pad-right-tag" id="rcptRightTagline">স্বচ্ছতা ও ঐক্যের প্রতীক</div>
             </div>
           </div>
 
@@ -5312,24 +5344,22 @@
               </svg>
             </div>
 
-            <!-- Center: Title, Ribbon, Est -->
-            <div class="pad-header-center">
+            <!-- Right: Executive Info Column -->
+            <div class="pad-header-info-col">
               <div class="pad-title-main" id="npSomitiName">
                 <span class="pad-title-green">স্বপ্ন ছোঁয়া</span> <span class="pad-title-red">ঐক্য সমিতি</span>
               </div>
-              <div class="pad-slogan-ribbon" id="npPadHeader">
-                ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।
+              <div class="pad-name-english" id="npEnglishName">SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.</div>
+              <div class="pad-reg-row">
+                <span class="pad-reg-pill" id="npRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬ • স্থাপিত: ২০২৬ ইং</span>
+                <span class="pad-slogan-ribbon" id="npPadHeader">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</span>
               </div>
-              <div>
-                <span class="pad-est-badge" id="npEstYear">স্থাপিত: ২০২৬ ইং</span>
+              <div class="pad-address-line" id="npAddressLine">📍 কার্যালয়: <span id="npAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
+              <div class="pad-contact-chips-row">
+                <span class="pad-account-chip">📱 বিকাশ/নগদ: <strong id="npBkash">০১৭১১-০০০০০০</strong></span>
+                <span class="pad-account-chip">🏦 ব্যাংক হিসাব: <strong id="npBank">সোনালী ব্যাংক-১২৩৪৫৬৭৮৯</strong></span>
+                <span class="pad-account-chip">🏷️ কোড: <strong id="npCodeBadge">SW-2026</strong></span>
               </div>
-            </div>
-
-            <!-- Right: Somiti Name, Address, Tagline -->
-            <div class="pad-header-right">
-              <div class="pad-right-title" id="npRightName">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
-              <div class="pad-right-sub" id="npRightAddress">শ্রীনগর, মুন্সীগঞ্জ</div>
-              <div class="pad-right-tag" id="npRightTagline">স্বচ্ছতা ও ঐক্যের প্রতীক</div>
             </div>
           </div>
 
@@ -5477,24 +5507,22 @@
               </svg>
             </div>
 
-            <!-- Center: Title, Ribbon, Est -->
-            <div class="pad-header-center">
+            <!-- Right: Executive Info Column -->
+            <div class="pad-header-info-col">
               <div class="pad-title-main" id="fpSomitiName">
                 <span class="pad-title-green">স্বপ্ন ছোঁয়া</span> <span class="pad-title-red">ঐক্য সমিতি</span>
               </div>
-              <div class="pad-slogan-ribbon" id="fpPadHeader">
-                ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।
+              <div class="pad-name-english" id="fpEnglishName">SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.</div>
+              <div class="pad-reg-row">
+                <span class="pad-reg-pill" id="fpRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬ • স্থাপিত: ২০২৬ ইং</span>
+                <span class="pad-slogan-ribbon" id="fpPadHeader">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।</span>
               </div>
-              <div>
-                <span class="pad-est-badge" id="fpEstYear">স্থাপিত: ২০২৬ ইং</span>
+              <div class="pad-address-line" id="fpAddressLine">📍 কার্যালয়: <span id="fpAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
+              <div class="pad-contact-chips-row">
+                <span class="pad-account-chip">📱 বিকাশ/নগদ: <strong id="fpBkash">০১৭১১-০০০০০০</strong></span>
+                <span class="pad-account-chip">🏦 ব্যাংক হিসাব: <strong id="fpBank">সোনালী ব্যাংক-১২৩৪৫৬৭৮৯</strong></span>
+                <span class="pad-account-chip">🏷️ কোড: <strong id="fpCodeBadge">SW-2026</strong></span>
               </div>
-            </div>
-
-            <!-- Right: Somiti Name, Address, Tagline -->
-            <div class="pad-header-right">
-              <div class="pad-right-title" id="fpRightName">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
-              <div class="pad-right-sub" id="fpRightAddress">শ্রীনগর, মুন্সীগঞ্জ</div>
-              <div class="pad-right-tag" id="fpRightTagline">স্বচ্ছতা ও ঐক্যের প্রতীক</div>
             </div>
           </div>
 
@@ -6537,7 +6565,7 @@
     }
 
 
-    // Universal Dynamic Pad Header Renderer (supports custom uploaded banner image or 3-column text/logo layout)
+    // Universal Dynamic Pad Header Renderer (Executive 2-Column Info Layout)
     function renderPadHeader(prefix, s = currentSomiti || {}) {
       const bannerBox = document.getElementById(prefix + "BannerContainer");
       const textGrid = document.getElementById(prefix + "HeaderGrid");
@@ -6560,27 +6588,61 @@
           renderPadLogo(logoId, s, prefix);
 
           const somitiName = (s && s.name) ? s.name : "স্বপ্ন ছোঁয়া ঐক্য সমিতি";
+          const englishName = (s && s.englishName) ? s.englishName : "SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.";
           const slogan = (s && s.padHeader) ? s.padHeader : "ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।";
           const rawEst = (s && s.estYear) ? s.estYear : "২০২৬ ইং";
           const estYear = rawEst.startsWith("স্থাপিত") ? rawEst : ("স্থাপিত: " + rawEst);
+          const rawRegNo = (s && s.regNo) ? s.regNo : "সমবায় রেজিঃ নং-৭৮৯০/২০২৬";
+          const regBadgeText = `🏛️ ${rawRegNo.startsWith('সমবায়') ? rawRegNo : ('সমবায় রেজিঃ নং-' + rawRegNo)} • ${estYear}`;
           const tagline = (s && s.tagline) ? s.tagline : "স্বচ্ছতা ও ঐক্যের প্রতীক";
           const address = (s && s.address) ? s.address : "শ্রীনগর, মুন্সীগঞ্জ";
+          const somitiCode = (s && s.somitiCode) ? s.somitiCode : "SW-2026";
+          const bkash = (s && s.bkashNumber) ? s.bkashNumber : "০১৭১২-৩৪৫৬৭৮";
+          let bank = (s && s.bankAccount) ? s.bankAccount : "";
+          if (!bank && s && s.bankName) {
+            bank = `${s.bankName}${s.bankAcc ? ' - ' + s.bankAcc : ''}`;
+          }
+          if (!bank) bank = "সোনালী ব্যাংক-১২৩৪৫৬৭৮৯";
 
+          // Title (Bangla)
           const titleEl = document.getElementById(prefix === "livePad" ? "livePadTitle" : (prefix + "SomitiName"));
           if (titleEl) titleEl.innerHTML = formatTwoToneTitle(somitiName);
 
+          // English Name
+          const enEl = document.getElementById(prefix === "livePad" ? "livePadEnglishName" : (prefix + "EnglishName"));
+          if (enEl) enEl.innerText = englishName;
+
+          // Reg Badge
+          const regEl = document.getElementById(prefix === "livePad" ? "livePadRegBadge" : (prefix + "RegBadge"));
+          if (regEl) regEl.innerText = regBadgeText;
+
+          // Slogan Ribbon
           const sloganEl = document.getElementById(prefix === "livePad" ? "livePadSlogan" : (prefix + "PadHeader"));
           if (sloganEl) sloganEl.innerText = slogan;
 
+          // Address Line
+          const addrEl = document.getElementById(prefix === "livePad" ? "livePadAddress" : (prefix + "Address"));
+          if (addrEl) addrEl.innerText = address;
+
+          // Bkash Chip
+          const bkashEl = document.getElementById(prefix === "livePad" ? "livePadBkash" : (prefix + "Bkash"));
+          if (bkashEl) bkashEl.innerText = bkash;
+
+          // Bank Chip
+          const bankEl = document.getElementById(prefix === "livePad" ? "livePadBank" : (prefix + "Bank"));
+          if (bankEl) bankEl.innerText = bank;
+
+          // Somiti Code Chip
+          const codeEl = document.getElementById(prefix === "livePad" ? "livePadCodeBadge" : (prefix + "CodeBadge"));
+          if (codeEl) codeEl.innerText = somitiCode;
+
+          // Legacy Fallbacks
           const estEl = document.getElementById(prefix === "livePad" ? "livePadEst" : (prefix + "EstYear"));
           if (estEl) estEl.innerText = estYear;
-
           const rName = document.getElementById(prefix === "livePad" ? "livePadRightName" : (prefix + "RightName"));
           if (rName) rName.innerText = somitiName;
-
           const rAddr = document.getElementById(prefix === "livePad" ? "livePadRightAddress" : (prefix + "RightAddress"));
           if (rAddr) rAddr.innerText = address;
-
           const rTag = document.getElementById(prefix === "livePad" ? "livePadRightTagline" : (prefix + "RightTagline"));
           if (rTag) rTag.innerText = tagline;
         }
@@ -6697,11 +6759,13 @@
       const el = id => document.getElementById(id);
 
       if (el("profSomitiName")) el("profSomitiName").value = s.name || "";
+      if (el("profSomitiNameEn")) el("profSomitiNameEn").value = s.englishName || "SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.";
+      if (el("profSomitiRegNo")) el("profSomitiRegNo").value = s.regNo || "সমবায় রেজিঃ নং-৭৮৯০/২০২৬";
       if (el("profSomitiSlogan")) el("profSomitiSlogan").value = s.padHeader || "";
       if (el("profSomitiEstYear")) el("profSomitiEstYear").value = s.estYear || "";
       if (el("profSomitiTagline")) el("profSomitiTagline").value = s.tagline || "";
       if (el("profSomitiAddress")) el("profSomitiAddress").value = s.address || "";
-      if (el("profSomitiCode")) el("profSomitiCode").value = s.somitiCode || "SMT-7890";
+      if (el("profSomitiCode")) el("profSomitiCode").value = s.somitiCode || "SW-2026";
       if (el("profSomitiBkash")) el("profSomitiBkash").value = s.bkashNumber || "";
 
       if (el("profSomitiBankName")) el("profSomitiBankName").value = s.bankName || (s.bankAccount ? s.bankAccount.split('-')[0].trim() : "");
@@ -6923,13 +6987,15 @@
       const el = id => document.getElementById(id);
 
       const name = el("profSomitiName")?.value.trim() || s.name || "সমিতি";
+      const englishName = el("profSomitiNameEn")?.value.trim() || s.englishName || "SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.";
+      const regNo = el("profSomitiRegNo")?.value.trim() || s.regNo || "সমবায় রেজিঃ নং-৭৮৯০/২০২৬";
       const slogan = el("profSomitiSlogan")?.value.trim() || s.padHeader || "";
       const rawEst = el("profSomitiEstYear")?.value.trim() || s.estYear || "২০২৬ ইং";
       const estYear = rawEst.startsWith("স্থাপিত") ? rawEst : ("স্থাপিত: " + rawEst);
       const tagline = el("profSomitiTagline")?.value.trim() || s.tagline || "স্বচ্ছতা ও ঐক্যের প্রতীক";
-      const address = el("profSomitiAddress")?.value.trim() || s.address || "ঢাকা";
-      const code = el("profSomitiCode")?.value.trim() || s.somitiCode || "SMT-7890";
-      const bkash = el("profSomitiBkash")?.value.trim() || s.bkashNumber || "";
+      const address = el("profSomitiAddress")?.value.trim() || s.address || "শ্রীনগর, মুন্সীগঞ্জ";
+      const code = el("profSomitiCode")?.value.trim() || s.somitiCode || "SW-2026";
+      const bkash = el("profSomitiBkash")?.value.trim() || s.bkashNumber || "০১৭১২-৩৪৫৬৭৮";
 
       const bankName = el("profSomitiBankName")?.value.trim() || s.bankName || "";
       const bankAcc = el("profSomitiBankAcc")?.value.trim() || s.bankAcc || "";
@@ -6941,13 +7007,15 @@
       let subParts = [];
       if (bankBranch) subParts.push(bankBranch);
       if (bankRouting) subParts.push('রাউটিং: ' + bankRouting);
-      const bankStr = bankParts.length ? `${bankParts.join(' - ')}${subParts.length ? ' (' + subParts.join(', ') + ')' : ''}` : (s.bankAccount || "নেই");
+      const bankStr = bankParts.length ? `${bankParts.join(' - ')}${subParts.length ? ' (' + subParts.join(', ') + ')' : ''}` : (s.bankAccount || "সোনালী ব্যাংক-১২৩৪৫৬৭৮৯");
 
       const notice = el("profSomitiNotice")?.value.trim() || "";
 
       const tempS = {
         ...s,
         name: name,
+        englishName: englishName,
+        regNo: regNo,
         padHeader: slogan,
         estYear: estYear,
         tagline: tagline,
@@ -6965,10 +7033,10 @@
       if (el("livePadFootEst")) el("livePadFootEst").innerText = estYear;
 
       // Legacy fallbacks
-      if (el("livePadAddress")) el("livePadAddress").innerText = "📍 " + address;
-      if (el("livePadBkash")) el("livePadBkash").innerText = "📱 বিকাশ/নগদ: " + (bkash || "নেই");
-      if (el("livePadBank")) el("livePadBank").innerText = "🏦 " + bankStr;
-      if (el("livePadCodeBadge")) el("livePadCodeBadge").innerText = "কোড: " + code;
+      if (el("livePadAddress")) el("livePadAddress").innerText = address;
+      if (el("livePadBkash")) el("livePadBkash").innerText = bkash;
+      if (el("livePadBank")) el("livePadBank").innerText = bankStr;
+      if (el("livePadCodeBadge")) el("livePadCodeBadge").innerText = code;
 
       const lpNoticeBox = el("livePadNoticeBox");
       const lpNoticeText = el("livePadNoticeText");
@@ -7179,11 +7247,13 @@
       const updated = {
         ...currentSomiti,
         name: name,
+        englishName: document.getElementById("profSomitiNameEn")?.value.trim() || currentSomiti.englishName || "SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.",
+        regNo: document.getElementById("profSomitiRegNo")?.value.trim() || currentSomiti.regNo || "সমবায় রেজিঃ নং-৭৮৯০/২০২৬",
         padHeader: document.getElementById("profSomitiSlogan").value.trim(),
         estYear: document.getElementById("profSomitiEstYear")?.value.trim() || currentSomiti.estYear || "২০২৬ ইং",
         tagline: document.getElementById("profSomitiTagline")?.value.trim() || currentSomiti.tagline || "স্বচ্ছতা ও ঐক্যের প্রতীক",
         address: document.getElementById("profSomitiAddress").value.trim(),
-        somitiCode: document.getElementById("profSomitiCode").value.trim() || "SMT-7890",
+        somitiCode: document.getElementById("profSomitiCode").value.trim() || "SW-2026",
         bkashNumber: document.getElementById("profSomitiBkash").value.trim(),
         bankName: bankName,
         bankAcc: bankAcc,
@@ -7227,6 +7297,8 @@
       let defaultSomiti = {
         id: "main",
         name: "স্বপ্ন ছোঁয়া ঐক্য সমিতি",
+        englishName: "SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.",
+        regNo: "সমবায় রেজিঃ নং-৭৮৯০/২০২৬",
         padHeader: "ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।",
         tagline: "স্বচ্ছতা ও ঐক্যের প্রতীক",
         address: "শ্রীনগর, মুন্সীগঞ্জ",
@@ -7239,7 +7311,7 @@
         presidentName: "জনাব আব্দুল করিম",
         secretaryName: "জনাব রফিকুল ইসলাম",
         cashierName: "সাজ্জাদ হোসেন",
-        somitiCode: "সছঐস",
+        somitiCode: "SW-2026",
         notice: "সকল সদস্যকে নিয়মিত মাসিক সঞ্চয় কিস্তি যথাসময়ে জমা দেওয়ার জন্য অনুরোধ করা যাচ্ছে।",
         logoEmoji: "🏛️",
         sealPos: "bottom",

@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class SomitiModel {
   final String id;
   final String name;
+  final String englishName;
+  final String regNo;
   final String padHeader;
   final String address;
   final String bankAccount;
@@ -24,6 +26,8 @@ class SomitiModel {
   SomitiModel({
     required this.id,
     required this.name,
+    this.englishName = 'SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.',
+    this.regNo = 'সমবায় রেজিঃ নং-৭৮৯০/২০২৬',
     required this.padHeader,
     required this.address,
     required this.bankAccount,
@@ -46,6 +50,8 @@ class SomitiModel {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
+      'englishName': englishName,
+      'regNo': regNo,
       'padHeader': padHeader,
       'address': address,
       'bankAccount': bankAccount,
@@ -85,6 +91,8 @@ class SomitiModel {
     return SomitiModel(
       id: doc.id,
       name: data['name'] ?? '',
+      englishName: data['englishName'] ?? 'SWAPNA CHOWYA COOPERATIVE SOCIETY LTD.',
+      regNo: data['regNo'] ?? 'সমবায় রেজিঃ নং-৭৮৯০/২০২৬',
       padHeader: data['padHeader'] ?? '',
       address: data['address'] ?? '',
       bankAccount: data['bankAccount'] ?? '',

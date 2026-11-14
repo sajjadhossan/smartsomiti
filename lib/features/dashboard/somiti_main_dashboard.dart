@@ -69,15 +69,37 @@ class _SomitiMainDashboardState extends State<SomitiMainDashboard> {
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Color(0xFF0F9D58)),
                     ),
-                    if (widget.somiti.padHeader.isNotEmpty)
+                    if (widget.somiti.englishName.isNotEmpty)
                       Text(
-                        '"${widget.somiti.padHeader}"',
+                        widget.somiti.englishName,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 11, fontStyle: FontStyle.italic, color: Colors.grey),
+                        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 10.5, color: Color(0xFF475569), letterSpacing: 0.3),
+                      ),
+                    const SizedBox(height: 3),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFEF3C7),
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(color: const Color(0xFFFDE68A)),
+                      ),
+                      child: Text(
+                        '🏛️ ${widget.somiti.regNo}',
+                        style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF92400E)),
+                      ),
+                    ),
+                    if (widget.somiti.padHeader.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 3),
+                        child: Text(
+                          '"${widget.somiti.padHeader}"',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontSize: 11, fontStyle: FontStyle.italic, color: Colors.grey),
+                        ),
                       ),
                     const SizedBox(height: 2),
                     Text(
-                      widget.somiti.address,
+                      '📍 ${widget.somiti.address}',
                       style: const TextStyle(fontSize: 11, color: Colors.grey),
                     ),
                     const SizedBox(height: 8),
@@ -1212,7 +1234,16 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(somiti.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(somiti.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                                      if (somiti.englishName.isNotEmpty)
+                                        Text(somiti.englishName, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 10, color: Color(0xFF475569))),
+                                    ],
+                                  ),
+                                ),
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                   decoration: BoxDecoration(color: Colors.green.withOpacity(0.15), borderRadius: BorderRadius.circular(4)),
@@ -1220,11 +1251,25 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
                                 ),
                               ],
                             ),
-                            if (somiti.padHeader.isNotEmpty)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 2),
-                                child: Text('"${somiti.padHeader}"', style: const TextStyle(fontSize: 11, fontStyle: FontStyle.italic)),
-                              ),
+                            const SizedBox(height: 3),
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1.5),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFEF3C7),
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(color: const Color(0xFFFDE68A)),
+                                  ),
+                                  child: Text('🏛️ ${somiti.regNo}', style: const TextStyle(fontSize: 9.5, fontWeight: FontWeight.bold, color: Color(0xFF92400E))),
+                                ),
+                                const SizedBox(width: 6),
+                                if (somiti.padHeader.isNotEmpty)
+                                  Expanded(
+                                    child: Text('"${somiti.padHeader}"', style: const TextStyle(fontSize: 10.5, fontStyle: FontStyle.italic), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                  ),
+                              ],
+                            ),
                             const SizedBox(height: 4),
                             Row(
                               children: [
