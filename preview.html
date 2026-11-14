@@ -2235,24 +2235,61 @@
         border-radius: 4px !important;
       }
       .a4-sheet-page .pad-title-main {
-        font-size: 22px !important;
+        font-size: 26px !important;
+        font-weight: 900 !important;
         white-space: nowrap !important;
       }
       .a4-sheet-page .pad-logo-holder {
-        width: 72px !important;
-        height: 72px !important;
+        width: 82px !important;
+        height: 82px !important;
+        min-width: 82px !important;
+        flex: 0 0 82px !important;
       }
       .a4-sheet-page .pad-slogan-ribbon {
+        font-size: 11px !important;
+        padding: 3px 16px !important;
+        font-weight: 800 !important;
+      }
+      .a4-sheet-page .pad-est-badge {
         font-size: 9.5px !important;
-        padding: 2.5px 14px !important;
+        padding: 1.5px 8px !important;
+        font-weight: 700 !important;
+      }
+      .a4-sheet-page .pad-header-right-col {
+        min-width: 155px !important;
+        max-width: 42% !important;
+        gap: 2.5px !important;
+      }
+      .a4-sheet-page .pad-right-name-bn {
+        font-size: 12px !important;
+        font-weight: 800 !important;
       }
       .a4-sheet-page .pad-name-english {
-        font-size: 7.5px !important;
+        font-size: 8.5px !important;
+        line-height: 1.25 !important;
+        font-weight: 800 !important;
         white-space: normal !important;
       }
+      .a4-sheet-page .pad-right-tagline {
+        font-size: 8.5px !important;
+        font-weight: 700 !important;
+      }
+      .a4-sheet-page .pad-address-line {
+        font-size: 9px !important;
+        font-weight: 700 !important;
+      }
+      .a4-sheet-page .pad-reg-pill,
+      .a4-sheet-page .pad-account-chip {
+        font-size: 8.5px !important;
+        padding: 2px 6px !important;
+      }
       .a4-sheet-page .pad-table-label {
-        width: 170px !important;
-        font-size: 12.5px !important;
+        width: 180px !important;
+        font-size: 13.5px !important;
+      }
+      .a4-sheet-page .a4-notice-body {
+        font-size: 14.5px !important;
+        line-height: 1.9 !important;
       }
 
       /* Fallback for classic target print */
@@ -6753,8 +6790,10 @@
       const textGrid = document.getElementById(prefix + "HeaderGrid");
       const bannerImg = document.getElementById(prefix + "BannerImg");
 
-      // By default, the 3-Part Balanced Coded Header is the Master Layout across all pads
-      if (s && s.padHeaderImg && s.useCustomBannerImg === true) {
+      // Check if custom uploaded banner image exists
+      const hasBannerImg = !!(s && s.padHeaderImg && String(s.padHeaderImg).length > 20 && s.useCustomBannerImg !== false);
+
+      if (hasBannerImg) {
         if (bannerBox) {
           bannerBox.style.display = "block";
           if (bannerImg) bannerImg.src = s.padHeaderImg;
@@ -7281,14 +7320,17 @@
         if (sub) sub.innerText = pName.replace('জনাব ', '').split(' ')[0];
       });
 
-      const bannerCont = el("livePadBannerImgContainer");
+      const bannerCont = el("livePadBannerContainer");
       const bannerImg = el("livePadBannerImg");
+      const textGrid = el("livePadHeaderGrid");
       if (bannerCont && bannerImg) {
-        if (s.padHeaderImg) {
+        if (s.padHeaderImg && String(s.padHeaderImg).length > 20 && s.useCustomBannerImg !== false) {
           bannerImg.src = s.padHeaderImg;
           bannerCont.style.display = "block";
+          if (textGrid) textGrid.style.display = "none";
         } else {
           bannerCont.style.display = "none";
+          if (textGrid) textGrid.style.display = "flex";
         }
       }
     }
@@ -7357,6 +7399,7 @@
 
             // 1. Immediately set in memory
             currentSomiti.padHeaderImg = dataUrl;
+            currentSomiti.useCustomBannerImg = true;
 
             // 2. Immediately update previews in DOM
             if (prev) prev.src = dataUrl;
@@ -7372,7 +7415,7 @@
             // 5. Save to Firestore in background
             try {
               if (typeof db !== "undefined" && db) {
-                await db.collection("somiti").doc("main").set({ padHeaderImg: dataUrl }, { merge: true });
+                await db.collection("somiti").doc("main").set({ padHeaderImg: dataUrl, useCustomBannerImg: true }, { merge: true });
               }
             } catch (fsErr) {
               console.warn("Firestore banner save warning:", fsErr);
@@ -7401,7 +7444,10 @@
     }
 
     async function clearProfBanner() {
-      if (currentSomiti) delete currentSomiti.padHeaderImg;
+      if (currentSomiti) {
+        delete currentSomiti.padHeaderImg;
+        currentSomiti.useCustomBannerImg = false;
+      }
       const prev = document.getElementById("profBannerPreviewImg");
       const cont = document.getElementById("profBannerPreviewContainer");
       if (prev) prev.src = "";
@@ -7415,7 +7461,10 @@
 
       try {
         if (typeof db !== "undefined" && db) {
-          await db.collection("somiti").doc("main").update({ padHeaderImg: firebase.firestore.FieldValue.delete() });
+          await db.collection("somiti").doc("main").update({ 
+            padHeaderImg: firebase.firestore.FieldValue.delete(),
+            useCustomBannerImg: false
+          });
         }
       } catch (err) {
         console.warn("Firestore clear banner warning:", err);
@@ -8893,12 +8942,13 @@
     // Pad Header Generator for A4 Letterhead Pages
     function buildA4PadHeaderHtml(s = currentSomiti || {}, prefix = "np") {
       const bannerImg = document.getElementById(prefix + "BannerImg");
-      const useCustomBanner = (s && s.padHeaderImg && s.useCustomBannerImg === true && bannerImg && bannerImg.src);
+      const bannerSrc = (s && s.padHeaderImg) || (bannerImg && bannerImg.src);
+      const hasBanner = !!(bannerSrc && String(bannerSrc).length > 20 && s.useCustomBannerImg !== false);
 
-      if (useCustomBanner) {
+      if (hasBanner) {
         return `
-          <div style="width: 100%; text-align: center; margin-bottom: 6px;">
-            <img src="${bannerImg.src}" alt="প্যাড ব্যানার" style="width: 100%; max-height: 110px; object-fit: contain; border-radius: 4px; display: block; margin: 0 auto;">
+          <div style="width: 100%; text-align: center; margin-bottom: 8px;">
+            <img src="${bannerSrc}" alt="প্যাড ব্যানার" style="width: 100%; max-height: 140px; object-fit: contain; border-radius: 4px; display: block; margin: 0 auto;">
           </div>
           <div class="pad-double-divider"></div>
         `;
@@ -8934,34 +8984,34 @@
       `;
 
       return `
-        <div class="pad-top-bismillah">বিসমিল্লাহির রাহমানির রাহিম</div>
-        <div class="pad-top-header-grid" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; box-sizing: border-box; margin-bottom: 6px;">
+        <div class="pad-top-bismillah" style="font-size: 13px; font-weight: 700; color: #165B33; text-align: center; margin-bottom: 6px; letter-spacing: 0.5px;">বিসমিল্লাহির রাহমানির রাহিম</div>
+        <div class="pad-top-header-grid" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; box-sizing: border-box; margin-bottom: 8px;">
           <!-- Left Logo -->
-          <div class="pad-logo-holder" style="flex: 0 0 72px; width: 72px; height: 72px; display: flex; align-items: center; justify-content: center;">
+          <div class="pad-logo-holder" style="flex: 0 0 82px; width: 82px; height: 82px; min-width: 82px; display: flex; align-items: center; justify-content: center;">
             ${logoHtml}
           </div>
           <!-- Center Column -->
-          <div class="pad-header-center-col" style="flex: 1 1 auto; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;">
-            <div class="pad-title-main" style="font-size: 22px; font-weight: 900; line-height: 1.2; text-align: center; white-space: nowrap;">
+          <div class="pad-header-center-col" style="flex: 1 1 auto; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 0 6px;">
+            <div class="pad-title-main" style="font-size: 26px; font-weight: 900; line-height: 1.2; text-align: center; white-space: nowrap;">
               <span class="pad-title-green" style="color: #165B33;">${formatTwoToneTitle(somitiName)}</span>
             </div>
             <div class="pad-slogan-wrap">
-              <span class="pad-slogan-ribbon" style="display: inline-block; background: #14532D; color: #FEF08A; font-size: 9.5px; font-weight: 700; padding: 2px 12px; border-radius: 12px;">${escapeHtml(slogan)}</span>
+              <span class="pad-slogan-ribbon" style="display: inline-block; background: #14532D; color: #FEF08A; font-size: 11px; font-weight: 800; padding: 3px 16px; border-radius: 12px; letter-spacing: 0.2px;">${escapeHtml(slogan)}</span>
             </div>
-            <div class="pad-est-badge" style="display: inline-block; background: #0F172A; color: #FFFFFF; font-size: 8px; font-weight: 700; padding: 1px 6px; border-radius: 4px;">স্থাপিত: ${escapeHtml(estYear)}</div>
+            <div class="pad-est-badge" style="display: inline-block; background: #0F172A; color: #FFFFFF; font-size: 9.5px; font-weight: 700; padding: 1.5px 8px; border-radius: 4px;">স্থাপিত: ${escapeHtml(estYear)}</div>
           </div>
           <!-- Right Column -->
-          <div class="pad-header-right-col" style="flex: 0 0 auto; max-width: 38%; min-width: 120px; text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 1.5px; overflow: hidden;">
-            <div class="pad-right-name-bn" style="font-size: 11px; font-weight: 800; color: #B91C1C; line-height: 1.2; white-space: nowrap;">${escapeHtml(somitiName)}</div>
-            <div class="pad-name-english" style="font-size: 7.5px; font-weight: 800; color: #334155; text-transform: uppercase; line-height: 1.15; font-family: 'Inter', sans-serif; text-align: right; white-space: normal; word-break: break-word;">${escapeHtml(englishName)}</div>
-            <div class="pad-right-tagline" style="font-size: 7.5px; font-weight: 600; color: #059669; font-style: italic; text-align: right;">${escapeHtml(tagline)}</div>
-            <div class="pad-address-line" style="font-size: 7.5px; font-weight: 600; color: #1E293B; line-height: 1.2; text-align: right;">📍 কার্যালয়: ${escapeHtml(address)}</div>
-            <span class="pad-reg-pill" style="background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; font-size: 7.5px; font-weight: 700; padding: 1px 5px; border-radius: 3px; white-space: nowrap;">🏛️ সমবায় রেজিঃ নং-${escapeHtml(regNo)}</span>
-            <span class="pad-account-chip" style="background: #F8FAFC; border: 1px solid #CBD5E1; font-size: 7.5px; color: #1E293B; padding: 1px 5px; border-radius: 3px; white-space: nowrap;">📱 বিকাশ/নগদ: <strong>${escapeHtml(bkash)}</strong></span>
-            <span class="pad-account-chip" style="background: #F8FAFC; border: 1px solid #CBD5E1; font-size: 7.5px; color: #1E293B; padding: 1px 5px; border-radius: 3px; white-space: nowrap;">🏦 ব্যাংক: <strong>${escapeHtml(bank)}</strong></span>
+          <div class="pad-header-right-col" style="flex: 0 0 auto; max-width: 42%; min-width: 155px; text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 2.5px; overflow: hidden;">
+            <div class="pad-right-name-bn" style="font-size: 12.5px; font-weight: 800; color: #B91C1C; line-height: 1.2; white-space: nowrap;">${escapeHtml(somitiName)}</div>
+            <div class="pad-name-english" style="font-size: 8.5px; font-weight: 800; color: #334155; text-transform: uppercase; line-height: 1.25; font-family: 'Inter', sans-serif; text-align: right; white-space: normal; word-break: break-word;">${escapeHtml(englishName)}</div>
+            <div class="pad-right-tagline" style="font-size: 8.5px; font-weight: 700; color: #059669; font-style: italic; text-align: right;">${escapeHtml(tagline)}</div>
+            <div class="pad-address-line" style="font-size: 9px; font-weight: 700; color: #1E293B; line-height: 1.2; text-align: right;">📍 কার্যালয়: ${escapeHtml(address)}</div>
+            <span class="pad-reg-pill" style="background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; font-size: 8.5px; font-weight: 700; padding: 2px 6px; border-radius: 3px; white-space: nowrap;">🏛️ সমবায় রেজিঃ নং-${escapeHtml(regNo)}</span>
+            <span class="pad-account-chip" style="background: #F8FAFC; border: 1px solid #CBD5E1; font-size: 8.5px; color: #1E293B; padding: 2px 6px; border-radius: 3px; white-space: nowrap;">📱 বিকাশ/নগদ: <strong>${escapeHtml(bkash)}</strong></span>
+            <span class="pad-account-chip" style="background: #F8FAFC; border: 1px solid #CBD5E1; font-size: 8.5px; color: #1E293B; padding: 2px 6px; border-radius: 3px; white-space: nowrap;">🏦 ব্যাংক: <strong>${escapeHtml(bank)}</strong></span>
           </div>
         </div>
-        <div class="pad-double-divider"></div>
+        <div class="pad-double-divider" style="border-top: 3px solid #14532D; border-bottom: 1.5px solid #14532D; height: 3px; margin: 8px 0;"></div>
       `;
     }
 
@@ -8994,32 +9044,32 @@
             <div>
               ${headerHtml}
               <!-- Meta Row -->
-              <div class="pad-meta-row" style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-bottom: 8px;">
+              <div class="pad-meta-row" style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 8px;">
                 <div>স্মারক নং: <strong style="color: #0F172A;">${escapeHtml(memoNo)}</strong></div>
                 <div>তারিখ: <strong style="color: #0F172A;">${escapeHtml(dateStr)}</strong></div>
               </div>
               <!-- Doc Badge -->
-              <div class="pad-doc-badge-wrap" style="text-align: center; margin-bottom: 8px;">
-                <span class="pad-doc-badge" style="background: #E8F5E9; color: #165B33; border: 1px solid #A5D6A7; font-weight: 800; font-size: 11px; padding: 2.5px 12px; border-radius: 4px;">📢 অফিসিয়াল বিজ্ঞপ্তি / নোটিশ</span>
+              <div class="pad-doc-badge-wrap" style="text-align: center; margin-bottom: 10px;">
+                <span class="pad-doc-badge" style="background: #E8F5E9; color: #165B33; border: 1.5px solid #A5D6A7; font-weight: 800; font-size: 12px; padding: 3px 16px; border-radius: 4px;">📢 অফিসিয়াল বিজ্ঞপ্তি / নোটিশ</span>
               </div>
               <!-- Subject -->
-              <div style="font-size: 13.5px; font-weight: 800; color: #0F172A; border-bottom: 1.5px solid #E2E8F0; padding-bottom: 6px; margin-bottom: 12px;">
+              <div style="font-size: 15px; font-weight: 800; color: #0F172A; border-bottom: 2px solid #E2E8F0; padding-bottom: 6px; margin-bottom: 14px;">
                 <span>বিষয়: </span><span>${escapeHtml(subject)}</span>
               </div>
               <!-- Body Part 1 -->
-              <div style="font-size: 13px; line-height: 1.85; color: #1E293B; white-space: pre-wrap; text-align: justify;">
+              <div class="a4-notice-body" style="font-size: 14.5px; line-height: 1.9; color: #1E293B; white-space: pre-wrap; text-align: justify;">
                 ${escapeHtml(part1)}
               </div>
               <!-- Continuation Indicator -->
-              <div style="text-align: right; font-size: 11px; font-weight: 800; color: #B91C1C; margin-top: 14px; padding: 5px 12px; background: #FEF2F2; border-radius: 6px; border: 1px dashed #FCA5A5; display: inline-block; float: right;">
+              <div style="text-align: right; font-size: 12px; font-weight: 800; color: #B91C1C; margin-top: 14px; padding: 6px 14px; background: #FEF2F2; border-radius: 6px; border: 1.5px dashed #FCA5A5; display: inline-block; float: right;">
                 (চলমান... অপর পৃষ্ঠায় দ্রষ্টব্য ➔)
               </div>
               <div style="clear: both;"></div>
             </div>
             <!-- Page 1 Footer Strip -->
-            <div class="pad-footer-strip" style="display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #14532D; padding-top: 5px; margin-top: 10px; font-size: 9.5px; color: #475569;">
+            <div class="pad-footer-strip" style="display: flex; justify-content: space-between; align-items: center; border-top: 2px solid #14532D; padding-top: 6px; margin-top: 12px; font-size: 10px; color: #475569;">
               <div>${escapeHtml(somitiName)} | ঠিকানা: ${escapeHtml(address)} | স্থাপিত: ${escapeHtml(estYear)}</div>
-              <div style="font-weight: 800; background: #14532D; color: #FFFFFF; padding: 2px 8px; border-radius: 4px;">পৃষ্ঠা ১ / ২</div>
+              <div style="font-weight: 800; background: #14532D; color: #FFFFFF; padding: 2.5px 10px; border-radius: 4px; font-size: 10px;">পৃষ্ঠা ১ / ২</div>
             </div>
           </div>
         `;
@@ -9033,12 +9083,12 @@
             <div>
               ${headerHtml}
               <!-- Continuity Subheader -->
-              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 700; color: #475569; border-bottom: 1.5px solid #E2E8F0; padding-bottom: 4px; margin-bottom: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 700; color: #475569; border-bottom: 2px solid #E2E8F0; padding-bottom: 6px; margin-bottom: 14px;">
                 <span>স্মারক নং: <strong style="color: #0F172A;">${escapeHtml(memoNo)}</strong> (পৃষ্ঠা ২ - অবশিষ্টাংশ)</span>
                 <span>তারিখ: <strong style="color: #0F172A;">${escapeHtml(dateStr)}</strong></span>
               </div>
               <!-- Body Part 2 -->
-              <div style="font-size: 13px; line-height: 1.85; color: #1E293B; white-space: pre-wrap; text-align: justify; margin-bottom: 18px;">
+              <div class="a4-notice-body" style="font-size: 14.5px; line-height: 1.9; color: #1E293B; white-space: pre-wrap; text-align: justify; margin-bottom: 18px;">
                 ${escapeHtml(part2)}
               </div>
             </div>
@@ -9046,9 +9096,9 @@
             <div>
               ${sigHtml}
               <!-- Page 2 Footer Strip -->
-              <div class="pad-footer-strip" style="display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #14532D; padding-top: 5px; margin-top: 10px; font-size: 9.5px; color: #475569;">
+              <div class="pad-footer-strip" style="display: flex; justify-content: space-between; align-items: center; border-top: 2px solid #14532D; padding-top: 6px; margin-top: 12px; font-size: 10px; color: #475569;">
                 <div>${escapeHtml(somitiName)} | ঠিকানা: ${escapeHtml(address)} | স্থাপিত: ${escapeHtml(estYear)}</div>
-                <div style="font-weight: 800; background: #14532D; color: #FFFFFF; padding: 2px 8px; border-radius: 4px;">পৃষ্ঠা ২ / ২</div>
+                <div style="font-weight: 800; background: #14532D; color: #FFFFFF; padding: 2.5px 10px; border-radius: 4px; font-size: 10px;">পৃষ্ঠা ২ / ২</div>
               </div>
             </div>
           </div>
@@ -9063,20 +9113,20 @@
             <div>
               ${headerHtml}
               <!-- Meta Row -->
-              <div class="pad-meta-row" style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-bottom: 8px;">
+              <div class="pad-meta-row" style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 8px;">
                 <div>স্মারক নং: <strong style="color: #0F172A;">${escapeHtml(memoNo)}</strong></div>
                 <div>তারিখ: <strong style="color: #0F172A;">${escapeHtml(dateStr)}</strong></div>
               </div>
               <!-- Doc Badge -->
-              <div class="pad-doc-badge-wrap" style="text-align: center; margin-bottom: 8px;">
-                <span class="pad-doc-badge" style="background: #E8F5E9; color: #165B33; border: 1px solid #A5D6A7; font-weight: 800; font-size: 11px; padding: 2.5px 12px; border-radius: 4px;">📢 অফিসিয়াল বিজ্ঞপ্তি / নোটিশ</span>
+              <div class="pad-doc-badge-wrap" style="text-align: center; margin-bottom: 10px;">
+                <span class="pad-doc-badge" style="background: #E8F5E9; color: #165B33; border: 1.5px solid #A5D6A7; font-weight: 800; font-size: 12px; padding: 3px 16px; border-radius: 4px;">📢 অফিসিয়াল বিজ্ঞপ্তি / নোটিশ</span>
               </div>
               <!-- Subject -->
-              <div style="font-size: 13.5px; font-weight: 800; color: #0F172A; border-bottom: 1.5px solid #E2E8F0; padding-bottom: 6px; margin-bottom: 12px;">
+              <div style="font-size: 15px; font-weight: 800; color: #0F172A; border-bottom: 2px solid #E2E8F0; padding-bottom: 6px; margin-bottom: 14px;">
                 <span>বিষয়: </span><span>${escapeHtml(subject)}</span>
               </div>
               <!-- Full Body -->
-              <div style="font-size: 13px; line-height: 1.85; color: #1E293B; white-space: pre-wrap; text-align: justify; margin-bottom: 16px;">
+              <div class="a4-notice-body" style="font-size: 14.5px; line-height: 1.9; color: #1E293B; white-space: pre-wrap; text-align: justify; margin-bottom: 16px;">
                 ${escapeHtml(fullBody)}
               </div>
             </div>
@@ -9084,9 +9134,9 @@
             <div>
               ${sigHtml}
               <!-- Single Page Footer Strip -->
-              <div class="pad-footer-strip" style="display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #14532D; padding-top: 5px; margin-top: 10px; font-size: 9.5px; color: #475569;">
+              <div class="pad-footer-strip" style="display: flex; justify-content: space-between; align-items: center; border-top: 2px solid #14532D; padding-top: 6px; margin-top: 12px; font-size: 10px; color: #475569;">
                 <div>${escapeHtml(somitiName)} | ঠিকানা: ${escapeHtml(address)} | স্থাপিত: ${escapeHtml(estYear)}</div>
-                <div style="font-weight: 800; background: #14532D; color: #FFFFFF; padding: 2px 8px; border-radius: 4px;">পৃষ্ঠা ১ / ১</div>
+                <div style="font-weight: 800; background: #14532D; color: #FFFFFF; padding: 2.5px 10px; border-radius: 4px; font-size: 10px;">পৃষ্ঠা ১ / ১</div>
               </div>
             </div>
           </div>
@@ -9286,26 +9336,72 @@
       triggerA4Print('noticePrintArea');
     }
 
-    function downloadNoticeImage() {
-      const area = document.getElementById("noticePrintArea");
+    // Universal High-Resolution Continuous Full Image Exporter ("একটানা সম্পূর্ণ আলাম ছবি")
+    function exportAreaAsContinuousImage(elementId, defaultFileName) {
+      const area = document.getElementById(elementId);
       if (!area) return;
       if (typeof html2canvas === 'undefined') {
         alert("ছবি প্রস্তুতকারক লোড হচ্ছে, অনুগ্রহ করে ২ সেকেন্ড পর চেষ্টা করুন।");
         return;
       }
-      const title = document.getElementById("noticeTitle")?.value.trim() || "notice";
-      html2canvas(area, {
-        scale: 2,
+
+      // Create offscreen container ensuring 100% full height continuous capture
+      const offscreen = document.createElement("div");
+      offscreen.style.position = "fixed";
+      offscreen.style.left = "-9999px";
+      offscreen.style.top = "0";
+      offscreen.style.width = "720px";
+      offscreen.style.maxWidth = "720px";
+      offscreen.style.height = "auto";
+      offscreen.style.overflow = "visible";
+      offscreen.style.background = "#FFFFFF";
+      offscreen.style.padding = "10px";
+      offscreen.style.zIndex = "-1000";
+
+      const clone = area.cloneNode(true);
+      clone.style.width = "100%";
+      clone.style.maxWidth = "100%";
+      clone.style.height = "auto";
+      clone.style.minHeight = "auto";
+      clone.style.overflow = "visible";
+      clone.style.boxShadow = "none";
+      clone.style.transform = "none";
+
+      // Ensure all inner elements have auto height to prevent clipping
+      clone.querySelectorAll('.official-sample-pad-inner, .pad-content-box, #npBodyText, #nvBodyText, #fpBodyText').forEach(el => {
+        el.style.height = "auto";
+        el.style.minHeight = "auto";
+        el.style.overflow = "visible";
+      });
+
+      offscreen.appendChild(clone);
+      document.body.appendChild(offscreen);
+
+      html2canvas(offscreen, {
+        scale: 2.5,
         backgroundColor: '#FFFFFF',
-        useCORS: true
+        useCORS: true,
+        logging: false,
+        windowWidth: 740
       }).then(canvas => {
+        if (document.body.contains(offscreen)) {
+          document.body.removeChild(offscreen);
+        }
         const link = document.createElement('a');
-        link.download = `Notice_${title.slice(0, 20)}.png`;
+        link.download = defaultFileName;
         link.href = canvas.toDataURL('image/png');
         link.click();
       }).catch(err => {
+        if (document.body.contains(offscreen)) {
+          document.body.removeChild(offscreen);
+        }
         alert("ছবি তৈরিতে ত্রুটি: " + err.message);
       });
+    }
+
+    function downloadNoticeImage() {
+      const title = document.getElementById("noticeTitle")?.value.trim() || "notice";
+      exportAreaAsContinuousImage('noticePrintArea', `Notice_${title.slice(0, 20)}_Full.png`);
     }
 
     function shareNoticeWhatsApp() {
@@ -9429,25 +9525,8 @@
     }
 
     function downloadFullPadImage() {
-      const area = document.getElementById("fullPadPrintArea");
-      if (!area) return;
-      if (typeof html2canvas === 'undefined') {
-        alert("ছবি প্রস্তুতকারক লোড হচ্ছে, অনুগ্রহ করে ২ সেকেন্ড পর চেষ্টা করুন।");
-        return;
-      }
       const sName = currentSomiti?.name || "Somiti_Pad";
-      html2canvas(area, {
-        scale: 2,
-        backgroundColor: '#FFFFFF',
-        useCORS: true
-      }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = `Official_Pad_${sName.slice(0, 15)}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      }).catch(err => {
-        alert("ছবি তৈরিতে ত্রুটি: " + err.message);
-      });
+      exportAreaAsContinuousImage('fullPadPrintArea', `Official_Pad_${sName.slice(0, 15)}_Full.png`);
     }
 
     // ================= MULTI-LAYER RECEIPT LOOKUP ENGINE =================
@@ -10511,15 +10590,9 @@
       window.print();
     }
 
-    async function downloadNoticeViewImage() {
-      const area = document.getElementById('noticeViewPadPrintArea');
-      if (!area) return;
-      if (typeof html2canvas === 'undefined') { alert('html2canvas লোড হয়নি'); return; }
-      const canvas = await html2canvas(area, { scale: 2, backgroundColor: '#ffffff', useCORS: true });
-      const link = document.createElement('a');
-      link.download = `notice_${Date.now()}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
+    function downloadNoticeViewImage() {
+      const title = document.getElementById('noticeViewTitle')?.value || 'Notice';
+      exportAreaAsContinuousImage('noticeViewPadPrintArea', `Notice_${title.slice(0, 20)}_Full.png`);
     }
 
     function shareNoticeViewWhatsApp() {
@@ -11299,30 +11372,13 @@
     }
 
     function downloadA4Image() {
-      const sheet = document.getElementById("a4SheetContainer");
-      if (!sheet) return;
-      if (typeof html2canvas === 'undefined') {
-        alert("ছবি প্রস্তুতকারক লোড হচ্ছে, অনুগ্রহ করে ২ সেকেন্ড পর চেষ্টা করুন।");
-        return;
-      }
+      let srcAreaId = "fullPadPrintArea";
+      if (currentA4Source === 'receipt') srcAreaId = "receiptPrintArea";
+      else if (currentA4Source === 'notice') srcAreaId = "noticePrintArea";
+      else if (currentA4Source === 'audit') srcAreaId = "auditPadPrintArea";
+      else if (currentA4Source === 'idcard') srcAreaId = "memberIdCardPrintArea";
 
-      const prevTransform = sheet.style.transform;
-      sheet.style.transform = "none";
-
-      html2canvas(sheet, {
-        scale: 2,
-        backgroundColor: '#FFFFFF',
-        useCORS: true
-      }).then(canvas => {
-        sheet.style.transform = prevTransform;
-        const link = document.createElement('a');
-        link.download = `A4_Document_${currentA4Source}_${new Date().toISOString().split('T')[0]}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      }).catch(err => {
-        sheet.style.transform = prevTransform;
-        alert("ছবি তৈরিতে ত্রুটি: " + err.message);
-      });
+      exportAreaAsContinuousImage(srcAreaId, `Document_Full_${currentA4Source}_${new Date().toISOString().split('T')[0]}.png`);
     }
 
     // ================= GOOGLE DRIVE CSV EXPORT =================
