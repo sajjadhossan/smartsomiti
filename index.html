@@ -2706,7 +2706,10 @@
         <span>•</span>
         <span>☁️ ফায়ারবেস ক্লাউড সিকিউরড</span>
         <span>•</span>
-        <span>🇧🇩 সমবায় মানসম্মত</span>
+        <span>🇧🇩 রিলিজ v2.5.0</span>
+      </div>
+      <div style="text-align: center; margin-top: 8px; font-size: 11px; font-weight: 800; color: #0F9D58;">
+        স্মার্ট সমিতি প্ল্যাটফর্ম • সিস্টেম সংস্করণ v2.5.0
       </div>
     </div>
   </div>
@@ -2790,7 +2793,6 @@
   <div id="dashboardScreen" style="display: none;">
 
     <!-- Top Sticky Header with Hamburger Menu -->
-    <!-- Top Sticky Header with Hamburger Menu -->
     <header>
       <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
         <button class="menu-toggle-btn" onclick="openSidebar()" title="সাইডবার মেনু খুলুন">
@@ -2803,6 +2805,7 @@
             <div class="society-switch-pill" onclick="openSocietySwitcher()" title="সমিতি পরিবর্তন করতে ক্লিক করুন">
               <span id="dashSomitiName" style="font-size: 13.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 135px; display: inline-block; vertical-align: middle;">স্বপ্ন ছোঁয়া ঐক্য সমিতি</span>
               <span id="dashSomitiCode" style="font-size: 10px; font-weight: 700; color: var(--primary);">SMT-7890</span>
+              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.5.0</span>
               <span style="font-size: 10px; opacity: 0.7;">▾</span>
             </div>
             <div id="headerActiveViewTitle" class="header-active-view-badge" title="বর্তমান সক্রিয় মডিউল">📊 এডমিন ড্যাশবোর্ড</div>
@@ -2913,6 +2916,7 @@
           <div>
             <h3 id="sideSomitiName" style="font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.2;">স্বপ্ন ছোঁয়া ঐক্য সমিতি</h3>
             <span id="sideSomitiCode" style="font-size: 10px; background: var(--primary-light); color: var(--primary); font-weight: 700; padding: 1px 6px; border-radius: 4px;">SMT-7890</span>
+            <span style="font-size: 10px; background: #059669; color: white; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 3px;">v2.5.0</span>
           </div>
         </div>
         <button onclick="closeSidebar()" style="background: none; border: none; font-size: 22px; color: var(--text-muted); cursor: pointer; padding: 4px;">✕</button>
@@ -3042,7 +3046,7 @@
       </div>
 
       <div style="padding: 10px; border-top: 1px solid var(--border); font-size: 11px; text-align: center; color: var(--text-muted); background: var(--bg);">
-        স্মার্ট সমিতি প্ল্যাটফর্ম v2.0
+        স্বপ্ন ছোঁয়া ঐক্য সমিতি প্ল্যাটফর্ম • v2.5.0 (রিলিজ)
       </div>
     </div>
 
@@ -4095,6 +4099,7 @@
           <span>💾 সকল তথ্য, প্যাড ও সিল-সাইন স্থায়ীভাবে সংরক্ষণ করুন</span>
         </button>
       </div>
+    </div>
 
       <!-- ================= 2. DEPOSITS VIEW ================= -->
       <div id="view-deposits" style="display: none;">
@@ -5153,7 +5158,7 @@
               <div style="font-size: 15px; font-weight: 800; color: #78350F;">প্ল্যাটফর্ম সুপার এডমিন কন্ট্রোল</div>
               <div style="font-size: 11px; color: #92400E;">অ্যাকাউন্ট: <strong>hossansajjad1994@gmail.com</strong> (সর্বোচ্চ ক্ষমতা)</div>
             </div>
-            <span style="background: #D97706; color: white; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800;">GLOBAL ACTIVE</span>
+            <span style="background: #D97706; color: white; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800;">GLOBAL ACTIVE • v2.5.0</span>
           </div>
           <p style="font-size: 12px; color: #92400E; margin-top: 6px;">
             এখানে যেকোনো ফিচার বন্ধ করলে তা সাথে সাথে পুরো সিস্টেমে বা নির্দিষ্ট সমিতিতে নিষ্ক্রিয় হয়ে যাবে।
@@ -6669,6 +6674,16 @@
     let membersData = [];
     let depositsData = [];
     let expensesData = [];
+    let accountsData = [];
+    let financialAccountsData = [];
+    let loansData = [];
+    let featureFlagsData = {};
+    try {
+      accountsData = JSON.parse(localStorage.getItem("somiti_fin_accounts") || "[]") || [];
+      financialAccountsData = accountsData;
+      loansData = JSON.parse(localStorage.getItem("somiti_loans_data") || "[]") || [];
+      featureFlagsData = JSON.parse(localStorage.getItem("somiti_feature_flags") || "{}") || {};
+    } catch(e) {}
     let activeReceiptData = null;
     let activeMemberData = null;
 
@@ -12651,7 +12666,7 @@
       { key: "future_modules", name: "ভবিষ্যত কাস্টম প্লাগইন ফ্রেমওয়ার্ক", desc: "নতুন মডিউল যুক্ত করার এক্সটেনশন", icon: "🧩", cat: "কোর প্ল্যাটফর্ম", enabled: true }
     ];
 
-    let featureFlagsData = JSON.parse(localStorage.getItem("somiti_feature_flags") || "{}");
+    featureFlagsData = JSON.parse(localStorage.getItem("somiti_feature_flags") || "{}");
     MASTER_MODULES.forEach(m => {
       if (featureFlagsData[m.key] === undefined) {
         featureFlagsData[m.key] = m.enabled;
@@ -12771,7 +12786,7 @@
     // 2. LOAN MANAGEMENT ENGINE (FLAT & REDUCING EMI AMORTIZATION)
     // =========================================================================
 
-    let loansData = JSON.parse(localStorage.getItem("somiti_loans_data") || "null");
+    loansData = JSON.parse(localStorage.getItem("somiti_loans_data") || "null");
     if (!loansData) {
       loansData = [
         {
@@ -13315,7 +13330,8 @@
     // 3. MULTI-ACCOUNT ACCOUNTING & DOUBLE-ENTRY CASHBOOK ENGINE
     // =========================================================================
 
-    let financialAccountsData = JSON.parse(localStorage.getItem("somiti_fin_accounts") || "null");
+    financialAccountsData = JSON.parse(localStorage.getItem("somiti_fin_accounts") || "null");
+    accountsData = financialAccountsData;
     if (!financialAccountsData) {
       financialAccountsData = [
         { id: "acc-cash", name: "প্রধান ক্যাশ ড্রয়ার (হাতের নগদ)", type: "cashDrawer", currentBalance: 35450, bankName: "", accountNumber: "CASH-MAIN" },
