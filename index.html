@@ -3381,6 +3381,19 @@
             <div class="form-group" style="margin-bottom: 0;">
               <label style="font-size: 11px; font-weight: 700; color: #1E3A8A;">৩য় লাইন (স্লোগান / প্রতীক - নীল রঙ):</label>
               <input type="text" id="profPadRightTagline" placeholder="যেমন: স্বচ্ছতা ও ঐক্যের প্রতীক" style="font-weight: 700; color: #1E3A8A;" oninput="updateLivePadPreview()">
+          </div>
+
+          <!-- Custom Verification Website / Domain Input -->
+          <div style="background: #EFF6FF; border: 1.5px solid #93C5FD; border-radius: 10px; padding: 12px; margin-bottom: 14px;">
+            <div style="font-weight: 800; font-size: 13px; color: #1E40AF; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+              <span>🌐</span>
+              <span>সমিতির নিজস্ব ওয়েবসাইট / ভেরিফিকেশন ডোমেইন (ঐচ্ছিক)</span>
+            </div>
+            <p style="font-size: 11px; color: #1E3A8A; margin-bottom: 8px; line-height: 1.4;">
+              সমিতির নিজস্ব ওয়েবসাইট বা সাবডোমেইন থাকলে এখানে দিন। কিউআর কোড স্ক্যান করলে সরাসরি আপনার কাঙ্ক্ষিত ডোমেইনে যাচাই পেজ ওপেন হবে। ফাঁকা রাখলে স্বয়ংক্রিয়ভাবে ডিফল্ট ঠিকানায় কাজ করবে।
+            </p>
+            <div class="form-group" style="margin-bottom: 0;">
+              <input type="text" id="profCustomDomain" placeholder="যেমন: somiti.swapnochowa.com অথবা somiti-swapnochowa.vercel.app" style="font-weight: 700; color: #1E3A8A;">
             </div>
           </div>
 
@@ -7082,6 +7095,7 @@
       const el = id => document.getElementById(id);
 
       if (el("profSomitiName")) el("profSomitiName").value = s.name || "";
+      if (el("profCustomDomain")) el("profCustomDomain").value = s.customDomain || "";
       if (el("profPadRightName")) el("profPadRightName").value = s.padRightName || s.name || "স্বপ্ন ছোঁয়া ঐক্য সমিতি";
       if (el("profPadRightAddress")) el("profPadRightAddress").value = s.padRightAddress || s.address || "শ্রীনগর, মুন্সীগঞ্জ";
       if (el("profPadRightTagline")) el("profPadRightTagline").value = s.padRightTagline || s.tagline || "স্বচ্ছতা ও ঐক্যের প্রতীক";
@@ -7689,6 +7703,7 @@
       const updated = {
         ...currentSomiti,
         name: name,
+        customDomain: document.getElementById("profCustomDomain")?.value.trim() || "",
         padRightName: document.getElementById("profPadRightName")?.value.trim() || name,
         padRightAddress: document.getElementById("profPadRightAddress")?.value.trim() || document.getElementById("profSomitiAddress").value.trim() || "শ্রীনগর, মুন্সীগঞ্জ",
         padRightTagline: document.getElementById("profPadRightTagline")?.value.trim() || document.getElementById("profSomitiTagline")?.value.trim() || "স্বচ্ছতা ও ঐক্যের প্রতীক",
@@ -7742,6 +7757,7 @@
       let defaultSomiti = {
         id: "main",
         name: "স্বপ্ন ছোঁয়া ঐক্য সমিতি",
+        customDomain: "",
         padRightName: "স্বপ্ন ছোঁয়া ঐক্য সমিতি",
         padRightAddress: "শ্রীনগর, মুন্সীগঞ্জ",
         padRightTagline: "স্বচ্ছতা ও ঐক্যের প্রতীক",
@@ -8844,6 +8860,20 @@
       document.getElementById("receiptModal").style.display = "flex";
     }
 
+    // Helper to get active verification base URL (custom somiti domain or fallback origin)
+    function getVerificationBaseUrl() {
+      const s = currentSomiti || {};
+      let domain = (s.customDomain || "").trim();
+      if (domain) {
+        if (!domain.startsWith("http://") && !domain.startsWith("https://")) {
+          domain = "https://" + domain;
+        }
+        domain = domain.replace(/\/+$/, "");
+        return domain + "/";
+      }
+      return `${window.location.origin}${window.location.pathname}`;
+    }
+
     // Universal High-Resolution Dynamic QR Code Generator for all documents & continuous image exports
     function generateUniversalQr(boxId, targetUrl, size = 50) {
       const qrBox = document.getElementById(boxId);
@@ -8882,7 +8912,7 @@
     }
 
     function generateReceiptQr(receiptNo, driveUrl) {
-      const targetUrl = driveUrl || `${window.location.origin}${window.location.pathname}?verify=${encodeURIComponent(receiptNo)}`;
+      const targetUrl = driveUrl || `${getVerificationBaseUrl()}?verify=${encodeURIComponent(receiptNo)}`;
       generateUniversalQr("receiptQrCodeBox", targetUrl, 50);
     }
 
@@ -9556,7 +9586,7 @@
       if (el("npFootEst")) el("npFootEst").innerText = "স্থাপিত: " + somitiEst;
 
       // Real Dynamic QR Code for Online Notice Verification
-      const targetNoticeUrl = `${window.location.origin}${window.location.pathname}?verifyNotice=${encodeURIComponent(memoNo)}`;
+      const targetNoticeUrl = `${getVerificationBaseUrl()}?verifyNotice=${encodeURIComponent(memoNo)}`;
       generateUniversalQr("npQrCodeBox", targetNoticeUrl, 50);
 
       // Auto-archive notice to localStorage and Firestore
@@ -9758,7 +9788,7 @@
       if (el("fpFootEst")) el("fpFootEst").innerText = "স্থাপিত: " + somitiEst;
 
       // Real Dynamic QR Code for Online Pad & Committee Verification
-      const targetPadUrl = `${window.location.origin}${window.location.pathname}?verifyPad=main`;
+      const targetPadUrl = `${getVerificationBaseUrl()}?verifyPad=main`;
       generateUniversalQr("fpQrCodeBox", targetPadUrl, 50);
 
       el("fullPadModal").style.display = "flex";
@@ -11102,7 +11132,7 @@
       if (document.getElementById('nvFootEst')) document.getElementById('nvFootEst').innerText = 'স্থাপিত: ' + (s.estYear || '২০২৬ ইং');
 
       // Real Dynamic QR Code for Online Notice Verification
-      const targetNoticeUrl = `${window.location.origin}${window.location.pathname}?verifyNotice=${encodeURIComponent(memo)}`;
+      const targetNoticeUrl = `${getVerificationBaseUrl()}?verifyNotice=${encodeURIComponent(memo)}`;
       generateUniversalQr("nvQrCodeBox", targetNoticeUrl, 50);
 
       // Auto-archive notice to localStorage and Firestore
@@ -11805,7 +11835,7 @@
       if (el("apFootEst")) el("apFootEst").innerText = "স্থাপিত: " + somitiEst;
 
       // Real Dynamic QR Code for Audit Online Verification
-      const targetAuditUrl = `${window.location.origin}${window.location.pathname}?verifyPad=audit`;
+      const targetAuditUrl = `${getVerificationBaseUrl()}?verifyPad=audit`;
       generateUniversalQr("apQrCodeBox", targetAuditUrl, 50);
     }
 
