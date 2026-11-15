@@ -39,6 +39,13 @@ versionData.releaseDate = new Date().toISOString().split('T')[0];
 fs.writeFileSync(versionJsonPath, JSON.stringify(versionData, null, 2) + '\n');
 console.log(`✓ Updated version.json -> v${newVersion} (Build ${buildNum})`);
 
+// 1.1 Update public/version.json
+const publicVersionJsonPath = path.join(rootDir, 'public', 'version.json');
+if (fs.existsSync(path.dirname(publicVersionJsonPath))) {
+  fs.writeFileSync(publicVersionJsonPath, JSON.stringify(versionData, null, 2) + '\n');
+  console.log(`✓ Updated public/version.json -> v${newVersion} (Build ${buildNum})`);
+}
+
 // 2. Update package.json
 if (fs.existsSync(packageJsonPath)) {
   const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
@@ -55,19 +62,20 @@ if (fs.existsSync(pubspecPath)) {
   console.log(`✓ Updated pubspec.yaml -> ${newVersion}+${buildNum}`);
 }
 
-// 4. Update index.html & preview.html
+// 4. Update index.html, assets/index.html, preview.html & public/index.html
 function updateHtmlFile(filePath, fileName) {
   if (!fs.existsSync(filePath)) return;
   let html = fs.readFileSync(filePath, 'utf8');
-  // Replace any existing vX.Y.Z with newVersion
   html = html.replace(/v\d+\.\d+\.\d+/g, `v${newVersion}`);
   fs.writeFileSync(filePath, html);
   console.log(`✓ Updated ${fileName} version badges -> v${newVersion}`);
 }
 
 const assetsHtmlPath = path.join(rootDir, 'assets', 'index.html');
+const publicIndexHtmlPath = path.join(rootDir, 'public', 'index.html');
 updateHtmlFile(indexHtmlPath, 'index.html');
 updateHtmlFile(assetsHtmlPath, 'assets/index.html');
+updateHtmlFile(publicIndexHtmlPath, 'public/index.html');
 updateHtmlFile(previewHtmlPath, 'preview.html');
 
 console.log(`\n🎉 All files synchronized to version v${newVersion} (Build ${buildNum})!`);
