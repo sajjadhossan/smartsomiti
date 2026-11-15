@@ -47,13 +47,13 @@ jobs:
       - name: Prepare Named APK Artifacts
         run: |
           mkdir -p release_apks
-          cp build/app/outputs/flutter-apk/app-release.apk release_apks/smart-somiti-v${{ env.VERSION }}.apk
-          cp build/app/outputs/flutter-apk/app-release.apk release_apks/smart-somiti-latest.apk
+          cp build/app/outputs/flutter-apk/app-release.apk release_apks/smartsomiti-v${{ env.VERSION }}.apk
+          cp build/app/outputs/flutter-apk/app-release.apk release_apks/smartsomiti-latest.apk
 
       - name: Upload APK Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: smart-somiti-apk-v${{ env.VERSION }}
+          name: smartsomiti-apk-v${{ env.VERSION }}
           path: release_apks/*.apk
           if-no-files-found: error
 
@@ -67,11 +67,11 @@ jobs:
             ### 📱 স্মার্ট সমিতি - অ্যান্ড্রয়েড অ্যাপ রিলিজ
             - **সংস্করণ**: `v${{ env.VERSION }}` (Build: `${{ env.BUILD }}`)
             - **ইন-প্লেস আপডেট সমর্থিত**: হ্যাঁ (বিদ্যমান অ্যাপ আনইনস্টল করা লাগবে না, সরাসরি আপডেট হবে)
-            - **ফাইল**: `smart-somiti-v${{ env.VERSION }}.apk`
-            - **ওয়েব অ্যাপ**: https://smart-somiti.vercel.app
+            - **ফাইল**: `smartsomiti-v${{ env.VERSION }}.apk`
+            - **ওয়েব অ্যাপ**: https://smartsomiti.vercel.app
           files: |
-            release_apks/smart-somiti-v${{ env.VERSION }}.apk
-            release_apks/smart-somiti-latest.apk
+            release_apks/smartsomiti-v${{ env.VERSION }}.apk
+            release_apks/smartsomiti-latest.apk
           draft: false
           prerelease: false
         env:

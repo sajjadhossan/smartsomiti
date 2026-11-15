@@ -1,12 +1,12 @@
 {
   "appName": "স্মার্ট সমিতি",
-  "projectSlug": "smart-somiti",
+  "projectSlug": "smartsomiti",
   "version": "2.5.1",
   "buildNumber": 3,
   "releaseDate": "2026-11-15",
   "releaseName": "স্মার্ট সমিতি এন্টারপ্রাইজ প্ল্যাটফর্ম",
-  "vercelUrl": "https://smart-somiti.vercel.app",
+  "vercelUrl": "https://smartsomiti.vercel.app",
   "minSupportedVersion": "1.0.0",
-  "downloadUrl": "https://github.com/sajjadhossan/smart-somiti/releases/latest/download/smart-somiti-latest.apk",
+  "downloadUrl": "https://github.com/sajjadhossan/smartsomiti/releases/latest/download/smartsomiti-latest.apk",
   "changelogBn": "ক্লিন এন্টারপ্রাইজ ইউআই, নির্বিঘ্ন ইন-প্লেস এপিকে আপডেট সাপোর্ট ও দ্রুততম ভার্সেল ডেপ্লয়মেন্ট কনফিগারেশন।"
 }
