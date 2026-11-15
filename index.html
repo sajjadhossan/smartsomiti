@@ -2822,10 +2822,10 @@
         <span>•</span>
         <span>☁️ ফায়ারবেস ক্লাউড সিকিউরড</span>
         <span>•</span>
-        <span>🇧🇩 রিলিজ v2.6.3</span>
+        <span>🇧🇩 রিলিজ v2.6.4</span>
       </div>
       <div style="text-align: center; margin-top: 8px; font-size: 11px; font-weight: 800; color: #0F9D58;">
-        স্মার্ট সমিতি প্ল্যাটফর্ম • সিস্টেম সংস্করণ v2.6.3
+        স্মার্ট সমিতি প্ল্যাটফর্ম • সিস্টেম সংস্করণ v2.6.4
       </div>
 
       <!-- Public Secret Code & Document Verification Box -->
@@ -2937,7 +2937,7 @@
             <div class="society-switch-pill" onclick="openSocietySwitcher()" title="সমিতি পরিবর্তন করতে ক্লিক করুন">
               <span id="dashSomitiName" style="font-size: 13.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 135px; display: inline-block; vertical-align: middle;">স্মার্ট সমিতি</span>
               <span id="dashSomitiCode" style="font-size: 10px; font-weight: 700; color: var(--primary);">SMT-7890</span>
-              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.6.3</span>
+              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.6.4</span>
               <span style="font-size: 10px; opacity: 0.7;">▾</span>
             </div>
             <div id="headerActiveViewTitle" class="header-active-view-badge" title="বর্তমান সক্রিয় মডিউল">📊 এডমিন ড্যাশবোর্ড</div>
@@ -3053,7 +3053,7 @@
           <div>
             <h3 id="sideSomitiName" style="font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.2;">স্মার্ট সমিতি</h3>
             <span id="sideSomitiCode" style="font-size: 10px; background: var(--primary-light); color: var(--primary); font-weight: 700; padding: 1px 6px; border-radius: 4px;">SMT-7890</span>
-            <span style="font-size: 10px; background: #059669; color: white; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 3px;">v2.6.3</span>
+            <span style="font-size: 10px; background: #059669; color: white; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 3px;">v2.6.4</span>
           </div>
         </div>
         <button onclick="closeSidebar()" style="background: none; border: none; font-size: 22px; color: var(--text-muted); cursor: pointer; padding: 4px;">✕</button>
@@ -3295,7 +3295,7 @@
       </div>
 
       <div style="padding: 10px; border-top: 1px solid var(--border); font-size: 11px; text-align: center; color: var(--text-muted); background: var(--bg);">
-        স্মার্ট সমিতি প্ল্যাটফর্ম • v2.6.3 (রিলিজ)
+        স্মার্ট সমিতি প্ল্যাটফর্ম • v2.6.4 (রিলিজ)
       </div>
     </div>
 
@@ -3438,9 +3438,9 @@
           <div class="sheet-icon-circle" style="background: #DCFCE7; color: #166534;">📱</div>
           <div>
             <div style="font-weight: 700; font-size: 13px;">অ্যাপ সংস্করণ ও APK আপডেট</div>
-            <div style="font-size: 10.5px; color: var(--text-muted);">বর্তমান সংস্করণ v2.6.3 • ইন-প্লেস APK ডাউনলোড</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">বর্তমান সংস্করণ v2.6.4 • ইন-প্লেস APK ডাউনলোড</div>
           </div>
-          <span class="sheet-badge" style="background: #BBF7D0; color: #166534;">v2.6.3</span>
+          <span class="sheet-badge" style="background: #BBF7D0; color: #166534;">v2.6.4</span>
         </button>
 
         <!-- Group 4: 🚪 বিপজ্জনক অপশন / সেশন -->
@@ -5474,6 +5474,17 @@
               </button>
             </div>
             <small style="color: #64748B; font-size: 11px; margin-top: 5px; display: block;">রসিদে মুদ্রিত '🔐 সিক্রেট যাচাই কোড' লিখেও তাৎক্ষণিক যাচাই করতে পারেন।</small>
+            <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:10px;">
+              <span style="font-size:11px; color:#64748B; font-weight:700;">দ্রুত পরীক্ষা:</span>
+              <button type="button" onclick="document.getElementById('verifyInputReceiptNo').value='RCT-16'; handleVerifyByInput();" style="background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0; font-size:11px; font-weight:700; padding:3px 9px; border-radius:6px; cursor:pointer;">RCT-16 (শেখ মাসুদ)</button>
+              <button type="button" onclick="document.getElementById('verifyInputReceiptNo').value='RCT-14'; handleVerifyByInput();" style="background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0; font-size:11px; font-weight:700; padding:3px 9px; border-radius:6px; cursor:pointer;">RCT-14 (আওলাদ)</button>
+              <button type="button" onclick="document.getElementById('verifyInputReceiptNo').value='স্মারক-০১/২০২৬'; handleVerifyByInput();" style="background:#FFFBEB; color:#92400E; border:1px solid #FDE68A; font-size:11px; font-weight:700; padding:3px 9px; border-radius:6px; cursor:pointer;">স্মারক-০১/২০২৬ (পেইড)</button>
+              <button type="button" onclick="document.getElementById('verifyInputReceiptNo').value='স্মারক-০২/২০২৬'; handleVerifyByInput();" style="background:#FFFBEB; color:#92400E; border:1px solid #FDE68A; font-size:11px; font-weight:700; padding:3px 9px; border-radius:6px; cursor:pointer;">স্মারক-০২/২০২৬ (বকেয়া)</button>
+            </div>
+            <div style="margin-top:12px; padding-top:10px; border-top:1px dashed #E2E8F0; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:11px; color:#64748B;">🌐 ডেডিকেটেড ওয়েব ভেরিফিকেশন পোর্টাল:</span>
+              <a href="/verify.html" target="_blank" style="color:#0F9D58; font-size:12px; font-weight:700; text-decoration:none;">verify.html ওপেন করুন ↗</a>
+            </div>
           </div>
         </div>
 
@@ -5515,7 +5526,7 @@
               <div style="font-size: 15px; font-weight: 800; color: #78350F;">প্ল্যাটফর্ম সুপার এডমিন কন্ট্রোল</div>
               <div style="font-size: 11px; color: #92400E;">অ্যাকাউন্ট: <strong>hossansajjad1994@gmail.com</strong> (সর্বোচ্চ ক্ষমতা)</div>
             </div>
-            <span style="background: #D97706; color: white; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800;">GLOBAL ACTIVE • v2.6.3</span>
+            <span style="background: #D97706; color: white; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800;">GLOBAL ACTIVE • v2.6.4</span>
           </div>
           <p style="font-size: 12px; color: #92400E; margin-top: 6px;">
             এখানে যেকোনো ফিচার বন্ধ করলে তা সাথে সাথে পুরো সিস্টেমে বা নির্দিষ্ট সমিতিতে নিষ্ক্রিয় হয়ে যাবে।
@@ -7096,7 +7107,7 @@
           <span style="font-size: 11.5px; font-weight: 700; color: var(--text-muted);">প্রোডাকশন ডেপ্লয়মেন্ট রিলিজ</span>
           <span style="font-size: 18px;">🚀</span>
         </div>
-        <div style="font-size: 20px; font-weight: 900; color: #7C3AED;" id="devopsKpiRelease">v2.6.3-p10</div>
+        <div style="font-size: 20px; font-weight: 900; color: #7C3AED;" id="devopsKpiRelease">v2.6.4-p10</div>
         <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 4px;">অটো-রোলব্যাক স্ট্যান্ডবাই প্রস্তুত</div>
       </div>
     </div>
@@ -7801,7 +7812,7 @@
           <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.22); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 8px;">
             <span>🚀 প্রোডাকশন কন্ট্রোল সেন্টার</span>
             <span>•</span>
-            <span id="prodHeaderCertBadge">🟢 ১০০% প্রোডাকশন ভেরিফাইড (v2.6.3-PROD)</span>
+            <span id="prodHeaderCertBadge">🟢 ১০০% প্রোডাকশন ভেরিফাইড (v2.6.4-PROD)</span>
           </div>
           <h2 style="font-size: 20px; font-weight: 800; margin: 0 0 6px 0;">এন্টারপ্রাইজ প্রোডাকশন ডেপ্লয়মেন্ট ও সেন্ট্রালাইজড প্ল্যাটফর্ম কন্ট্রোল সেন্টার</h2>
           <p style="font-size: 12.5px; opacity: 0.95; margin: 0; max-width: 700px; line-height: 1.5;">
@@ -8039,7 +8050,7 @@
             এন্টারপ্রাইজ প্রোডাকশন গো-লাইভ সার্টিফাইড
           </h2>
           <div style="font-size: 13px; font-weight: 700; color: #047857; margin-bottom: 8px;">
-            ভার্সন: v2.6.3-ENTERPRISE-PROD | তারিখ: ১৪ নভেম্বর ২০২৬ ইং
+            ভার্সন: v2.6.4-ENTERPRISE-PROD | তারিখ: ১৪ নভেম্বর ২০২৬ ইং
           </div>
           <p style="font-size: 12.5px; color: #065F46; max-width: 600px; margin: 0 auto; line-height: 1.5;">
             "স্বপ্ন ছোঁয়া ঐক্য সমিতি" মাল্টি-টেন্যান্ট কো-অপারেটিভ SaaS প্ল্যাটফর্মের সকল কোর মডিউল, আর্থিক হিসাববিজ্ঞান, নিরাপত্তা বিধিমালা এবং ক্লাউড আর্কিটেকচার সফলভাবে অডিট ও অনুমোদিত হয়েছে।
@@ -8063,7 +8074,7 @@
         </div>
 
         <div style="text-align: center;">
-          <button onclick="alert('✓ প্রোডাকশন ডেপ্লয়মেন্ট সফলভাবে লাইভ এবং ভেরিফাইড (v2.6.3-PROD)!')" style="background: #059669; color: white; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);">
+          <button onclick="alert('✓ প্রোডাকশন ডেপ্লয়মেন্ট সফলভাবে লাইভ এবং ভেরিফাইড (v2.6.4-PROD)!')" style="background: #059669; color: white; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);">
             🚀 প্রোডাকশন লাইভ স্ট্যাটাস নিশ্চিত করুন
           </button>
         </div>
@@ -13161,7 +13172,7 @@
           alert(`📱 স্মার্ট সমিতি - অ্যাপ সংস্করণ তথ্য:\n\n• বর্তমান সংস্করণ: v${info.version} (Build ${info.buildNumber})\n• রিলিজ তারিখ: ${info.releaseDate}\n• নোট: ${info.changelogBn || 'সর্বশেষ আপডেট কার্যকর'}\n\n✓ এই এপিকে রিলিজটি পারসিস্টেন্ট কি-স্টোর দিয়ে সাইন করা।\nআগের অ্যাপ ডিলিট না করেই সরাসরি আপডেট করা যাবে।\n\nডাউনলোড লিংক: ${info.downloadUrl || 'somiti-latest.apk'}`);
         })
         .catch(() => {
-          alert("📱 স্মার্ট সমিতি\n\n• বর্তমান সংস্করণ: v2.6.3 (Build 14)\n• ইন-প্লেস আপডেট: সক্রিয়\n(আগের অ্যাপ আনইনস্টল না করেই নতুন ভার্সন আপডেট হবে)");
+          alert("📱 স্মার্ট সমিতি\n\n• বর্তমান সংস্করণ: v2.6.4 (Build 14)\n• ইন-প্লেস আপডেট: সক্রিয়\n(আগের অ্যাপ আনইনস্টল না করেই নতুন ভার্সন আপডেট হবে)");
         });
     }
 
@@ -15205,11 +15216,66 @@
     }
 
     // ================= MULTI-LAYER RECEIPT LOOKUP ENGINE =================
+    // Official Master Registry for Swapna Chhoa Aikya Samiti (16 Verified Receipts & 2 Memos)
+    const OFFICIAL_VERIFIED_REGISTRY = [
+      {"code": "RCT-01", "alt_code": "সছঐস/রিসিট/২০২৬-০১", "member": "কাওসার আহমেদ রিফাত", "serial": "০২", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "সিটি ব্যাংক (শ্রীনগর শাখা) — যৌথ ক্যাশ ডিপোজিট", "sender": "যৌথ ডিপোজিট (সাজ্জাদ, রিফাত ও রাকিব)", "slip_url": "https://drive.google.com/file/d/1VXTQa7sSZBvtds1mGXdINkc3LoyFW7Ix/view?usp=drivesdk", "pad_url": ""},
+      {"code": "RCT-02", "alt_code": "সছঐস/রিসিট/২০২৬-০২", "member": "মনিরুজ্জামান", "serial": "০৮", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা (১০,০৭৫.৮৯ ৳)", "method": "Al Mulla Exchange -> City Bank PLC (Txn: 2026/67179693)", "sender": "MANIRUZZAMAN MD MOTIUR RAHMAN (কুয়েত প্রবাসী)", "slip_url": "https://drive.google.com/file/d/1mCL4YxhBqHE4V_mYFBGmrPx7Y93tdpec/view?usp=drivesdk", "pad_url": ""},
+      {"code": "RCT-03", "alt_code": "সছঐস/রিসিট/২০২৬-০৩", "member": "সাজ্জাদ হোসেন", "serial": "১৫", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "সিটি ব্যাংক (শ্রীনগর শাখা) — যৌথ ক্যাশ ডিপোজিট", "sender": "সাজ্জাদ হোসেন (যৌথ স্লিপ: ৩০,০০০/-)", "slip_url": "https://drive.google.com/file/d/1VXTQa7sSZBvtds1mGXdINkc3LoyFW7Ix/view?usp=drivesdk", "pad_url": ""},
+      {"code": "RCT-04", "alt_code": "সছঐস/রিসিট/২০২৬-০৪", "member": "জনি শিকদার", "serial": "২৪", "date": "১১ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank Agent Banking (Txn: TR041429111126)", "sender": "শিরিন আক্তার (জনি শিকদারের পক্ষে)", "slip_url": "https://drive.google.com/file/d/1-3lIG7y9pK0752Vi7EUjxt2csVw5dcpm/view?usp=drivesdk", "pad_url": ""},
+      {"code": "RCT-05", "alt_code": "সছঐস/রিসিট/২০২৬-০৫", "member": "মোহাম্মদ রাকিব", "serial": "২৭", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "সিটি ব্যাংক (শ্রীনগর শাখা) — যৌথ ক্যাশ ডিপোজিট", "sender": "যৌথ ডিপোজিট (সাজ্জাদ, রিফাত ও রাকিব)", "slip_url": "https://drive.google.com/file/d/1VXTQa7sSZBvtds1mGXdINkc3LoyFW7Ix/view?usp=drivesdk", "pad_url": ""},
+      {"code": "RCT-06", "alt_code": "সছঐস/রিসিট/২০২৬-০৬", "member": "আবুল-কালাম", "serial": "১৬", "date": "১২ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash", "sender": "মোঃ রাসেল (আবুল কালামের পক্ষে)", "slip_url": "https://drive.google.com/file/d/1RCxWG5JsSnS16qU3CADBox0ON3KYm7dB/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/16vo3nmgB2oRk7X6qOhRvpWV4QFijSZOY/view?usp=drivesdk"},
+      {"code": "RCT-07", "alt_code": "সছঐস/রিসিট/২০২৬-০৭", "member": "রাসেল খান", "serial": "০৩", "date": "১২ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Other Bank Transfer (Ref: 1896516)", "sender": "LAMIA KHAN (A/C: 2216*****7208)", "slip_url": "https://drive.google.com/file/d/1G3sdjPKqjmzYyKGvDNKvukit3SjNMJQo/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1-1KUr3yLY7A_LNDVkAqM4jYDbWnUzwLX/view?usp=drivesdk"},
+      {"code": "RCT-08", "alt_code": "সছঐস/রিসিট/২০২৬-০৮", "member": "মোঃ সিহাব শরীফ", "serial": "০৪", "date": "১২ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা (প্রেরিত: ৯,৮৫২/- ৳)", "method": "Western Union Direct to Bank (MTCN: 596-636-1604)", "sender": "MD SIHAB SHARIF (ইতালি প্রবাসী)", "slip_url": "https://drive.google.com/file/d/1z1hsi6qsjX8J64_6iirEelcGRhZpU1om/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1-ykJt6tQ22ImeluB-DHSbqLYyUwUC7ni/view?usp=drivesdk"},
+      {"code": "RCT-09", "alt_code": "সছঐস/রিসিট/২০২৬-০৯", "member": "ফয়সাল শেখ", "serial": "১৮", "date": "১২ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা (72.46 EUR)", "method": "Taptap Send (Txn: 2389759779816870520)", "sender": "Sheikh Foysal (স্পেন প্রবাসী)", "slip_url": "https://drive.google.com/file/d/1WLQXgLi3vszMRTZPgeC4n3lvQH7_y7hM/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1nlzqwRswhvSM0ads6JmzQYjj4bZ7wO04/view?usp=drivesdk"},
+      {"code": "RCT-10", "alt_code": "সছঐস/রিসিট/২০২৬-১০", "member": "মোহাম্মদ সোহেল", "serial": "২৫", "date": "১৩ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Other Bank Transfer (Ref: 1925061)", "sender": "HOSNA ARA AKTER (A/C: 2164*****6976)", "slip_url": "https://drive.google.com/file/d/108-NTL2TNBry00lHiuxu-vf7XvReW-CS/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1vT9jpOcxZNVvpwr1ISY8eSR0QJqpiObO/view?usp=drivesdk"},
+      {"code": "RCT-11", "alt_code": "সছঐস/রিসিট/২০২৬-১১", "member": "আব্দুল বাতেন পাঠান", "serial": "২৬", "date": "১৩ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "UCB ONE Fund Transfer NPSB (Txn: IB94562885)", "sender": "আব্দুল বাতেন পাঠান (A/C: 0093********7417)", "slip_url": "https://drive.google.com/file/d/1xvdHcRQ71PJL6eD-THJG_nIFXEOl5Rti/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1KtWz4dUkAnTM859Cg2OQyiov3A-4nqI1/view?usp=drivesdk"},
+      {"code": "RCT-12", "alt_code": "সছঐস/রিসিট/২০২৬-১২", "member": "আবু-বক্কর সিদ্দিক", "serial": "২৩", "date": "১৩ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Rupali Bank PLC NPSB (Trx: 82611136197002400001)", "sender": "Abu Bakar Siddique Nayan (A/C: 6197010002768)", "slip_url": "https://drive.google.com/file/d/1xaCWmwd6Pa49lTrZPX7r0JMLLEklSq8Q/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1xTXbsvXWEEUErbE7COAoFj_auszgVbOG/view?usp=drivesdk"},
+      {"code": "RCT-13", "alt_code": "সছঐস/রিসিট/২০২৬-১৩", "member": "সজীব মোল্লা", "serial": "০৫", "date": "১৪ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা (প্রেরিত: ৯,৮০০/- ৳)", "method": "Western Union Direct to Bank (MTCN: 407-064-7975)", "sender": "SAJIB MOLLA (ইতালি প্রবাসী)", "slip_url": "https://drive.google.com/file/d/1nlzsotbJ3e_zHTNPg_Jxhz0hYAkFgJ7A/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1EmLhPE3HttJ3OQrMUPijG-cl02DF9Ce1/view?usp=drivesdk"},
+      {"code": "RCT-14", "alt_code": "সছঐস/রিসিট/২০২৬-১৪", "member": "মোঃ আওলাদ হোসেন", "serial": "০১", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — যৌথ ক্যাশ ২০,০০০/-", "sender": "মিনা মমতাজ (যৌথ স্লিপ: Awolad ও Yasin)", "slip_url": "https://drive.google.com/file/d/1IIxhnvcJHJ27aPqbwPxpAL8JUEwsh3lq/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1sJV5My4sl_N3UfYekGeDHZsRtKAJTv5o/view?usp=drivesdk"},
+      {"code": "RCT-15", "alt_code": "সছঐস/রিসিট/২০২৬-১৫", "member": "মোঃ ইয়াছিন দেওয়ান", "serial": "২২", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — যৌথ ক্যাশ ২০,০০০/-", "sender": "মিনা মমতাজ (যৌথ স্লিপ: Awolad ও Yasin)", "slip_url": "https://drive.google.com/file/d/1IIxhnvcJHJ27aPqbwPxpAL8JUEwsh3lq/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/15_ZlrKqEhESNaKgm98csOFQheVsT0E-Z/view?usp=drivesdk"},
+      {"code": "RCT-16", "alt_code": "সছঐস/রিসিট/২০২৬-১৬", "member": "শেখ মাসুদ", "serial": "১৭", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash", "sender": "MASUD Sheikh / রহিম (হাঁসাড়া, শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1ThTvBdxfA8zuKsFDrsIs5zYzNlObGczQ/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/11g8gQcn01vnQrVGNo7XnqhMPgnD_RvB6/view?usp=drivesdk"},
+      {"code": "স্মারক-০১/২০২৬", "alt_code": "সছঐস/পেমেন্ট/২০২৬-০১", "member": "মাসিক সঞ্চয় ও কিস্তি জমার বিবরণী তালিকা (১৬ জন)", "serial": "অফিসিয়াল তালিকা", "date": "১৫ নভেম্বর ২০২৬", "amount": "১,৬০,০০০/- টাকা (১৬ জন)", "method": "CITY BANK PLC (REKABI BAZAR) — A/C: 2305158045001", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1RPbSL6_NWhglNV37_dS2JTBrKJ6iIxI7/view?usp=drivesdk"},
+      {"code": "স্মারক-০২/২০২৬", "alt_code": "সছঐস/বকেয়া/২০২৬-০২", "member": "বকেয়া মাসিক কিস্তি জমার তালিকা (১১ জন)", "serial": "অফিসিয়াল বিজ্ঞপ্তি", "date": "১৫ নভেম্বর ২০২৬", "amount": "বকেয়া: ১,১০,০০০/- টাকা (১১ জন)", "method": "সিটি ব্যাংক (২৩০৫১৫৮০৪৫০০১) / বিকাশ: ০১৮৮১২১০৪৪৪", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1ScYKdibY7di1Xe-MPADBm54Vz_FrFLXR/view?usp=drivesdk"}
+    ];
+
     async function findReceiptRecord(queryCode) {
       if (!queryCode) return null;
       const raw = queryCode.trim();
       const upper = raw.toUpperCase();
       const stripped = upper.replace(/^RCT-/, "");
+
+      // 0. Search verified official registry (Shopno Chhoa Aikya Samiti 16 Receipts & Memos)
+      const officialMatch = OFFICIAL_VERIFIED_REGISTRY.find(r => {
+        const c = (r.code || "").toUpperCase();
+        const alt = (r.alt_code || "").toUpperCase();
+        const mem = (r.member || "").toLowerCase();
+        const qLow = raw.toLowerCase();
+        return c === upper || c === ("RCT-" + upper) || (c.replace(/^RCT-0?/, "") === stripped.replace(/^0+/, "")) ||
+               alt === upper || alt.includes(upper) ||
+               mem.includes(qLow) ||
+               (r.serial && r.serial === raw);
+      });
+      if (officialMatch) {
+        return {
+          id: officialMatch.code,
+          receiptNo: officialMatch.code,
+          altCode: officialMatch.alt_code,
+          memberName: officialMatch.member,
+          memberNumber: officialMatch.serial,
+          amount: parseInt(officialMatch.amount.replace(/[^0-9]/g, '')) || 10000,
+          amountText: officialMatch.amount,
+          type: officialMatch.code.startsWith('স্মারক') ? 'অফিসিয়াল স্মারক / নোটিশ' : 'মাসিক সঞ্চয় ও কিস্তি',
+          method: officialMatch.method,
+          depositorName: officialMatch.sender,
+          dateStr: officialMatch.date,
+          recordedBy: 'সাজ্জাদ হোসেন (কোষাধ্যক্ষ)',
+          driveUrl: officialMatch.slip_url,
+          slip_url: officialMatch.slip_url,
+          pad_url: officialMatch.pad_url,
+          somitiName: 'স্বপ্ন ছোঁয়া ঐক্য সমিতি',
+          isOfficialRegistry: true
+        };
+      }
 
       // 1. Search local memory depositsData
       let match = depositsData.find(d => {
@@ -15660,31 +15726,151 @@
 
       if (found) {
         const dDate = found.date?.toDate ? found.date.toDate().toLocaleString('bn-BD') : (found.dateStr || "যাচাইকৃত");
+        const sName = found.somitiName || (currentSomiti && currentSomiti.name) || 'স্বপ্ন ছোঁয়া ঐক্য সমিতি';
+        const isRep = found.depositorName && found.depositorName !== found.memberName;
+        const depositorInfo = isRep ? `${found.depositorName} (প্রতিনিধি/জমাদানকারী)` : `${found.memberName} (সদস্য নিজে)`;
+        const amountDisplay = found.amountText || ('৳' + (found.amount || 0).toLocaleString() + '/- টাকা');
+
         resultArea.innerHTML = `
-          <div class="card" style="border: 2px solid #10B981; background: #ECFDF5; margin-top: 14px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-              <span style="font-size:15px; font-weight:800; color:#065F46;">✅ রসিদটি ১০০% আসল ও অনুমোদিত</span>
-              <span style="background:#10B981; color:white; font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px;">ভেরিফাইড</span>
+          <div class="pad-verified-card" style="background: #ffffff; border: 2.5px solid #10B981; border-radius: 18px; padding: 20px; box-shadow: 0 10px 30px rgba(16,185,129,0.12); margin-top: 18px; position: relative;">
+            <!-- Official Pad Header -->
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; border-bottom: 2px solid #E2E8F0; padding-bottom: 14px;">
+              <!-- Emblem Logo -->
+              <div style="width: 58px; height: 58px; min-width: 58px; border-radius: 50%; background: #ECFDF5; border: 2px solid #10B981; display:flex; align-items:center; justify-content:center; font-size: 28px; box-shadow: 0 3px 10px rgba(16,185,129,0.25);">🌱</div>
+              <!-- Title, Slogan, Established -->
+              <div style="flex:1; text-align:center;">
+                <div style="font-size: 20px; font-weight: 800; line-height: 1.2;">
+                  <span style="color:#15803D;">স্বপ্ন ছোঁয়া</span> <span style="color:#DC2626;">ঐক্য সমিতি</span>
+                </div>
+                <div style="margin-top: 4px;">
+                  <span style="background: linear-gradient(90deg, #F59E0B, #D97706); color: white; font-size: 10px; font-weight: 700; padding: 2px 12px; border-radius: 12px; display: inline-block;">
+                    ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ।
+                  </span>
+                </div>
+                <div style="font-size: 11px; color: #64748B; margin-top: 3px; font-weight: 600;">
+                  স্থাপিত: ২০২৬ ইং • শ্রীনগর, মুন্সীগঞ্জ
+                </div>
+              </div>
+              <!-- Right Pad Info -->
+              <div style="text-align:right; font-size:10px; line-height: 1.5; color: #334155; min-width: 90px;">
+                <div style="font-weight: 800; color: #15803D;">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
+                <div>🏛️ রেজিঃ ৭৮৯০/২০২৬</div>
+                <div>📍 শ্রীনগর, মুন্সীগঞ্জ</div>
+                <div>🏦 সিটি ব্যাংক পিএলসি</div>
+              </div>
             </div>
-            <div style="font-size:13px; line-height:1.7; color:#1F2937;">
-              <div>রসিদ নং: <strong style="color:var(--primary); font-family:monospace;">${found.receiptNo || code}</strong></div>
-              <div>সদস্য: <strong>${found.memberNumber ? '[' + found.memberNumber + '] ' : ''}${found.memberName}</strong></div>
-              ${found.bankSlipNo ? `<div>জমার স্লিপ/রসিদ নং: <strong style="color:#1E3A8A; font-family:monospace;">${found.bankSlipNo}</strong></div>` : ''}
-              ${found.depositorName && found.depositorName !== found.memberName ? `<div>জমাকারী (প্রতিনিধি): <strong>${found.depositorName}</strong></div>` : ''}
-              <div>জমার পরিমাণ: <strong style="color:#0F9D58; font-size:16px;">৳${(found.amount || 0).toLocaleString()}</strong></div>
-              <div>জমার ধরণ: ${found.type || 'মাসিক সঞ্চয়'} ${found.note ? '• ' + found.note : ''}</div>
-              <div>তারিখ ও সময়: ${dDate}</div>
-              <div style="margin-top:4px; font-size:12px; color:#475569;">আদায়কারী: <strong>${found.recordedBy || (currentSomiti && currentSomiti.cashierName) || 'কোষাধ্যক্ষ'}</strong></div>
-              ${found.driveUrl ? `<div style="margin-top:8px;"><a href="${found.driveUrl}" target="_blank" style="color:#10B981; font-weight:700; text-decoration:none;">☁️ গুগল ড্রাইভে মূল রসিদ ও স্লিপ কপি দেখুন ↗</a></div>` : ''}
+
+            <!-- Double Gradient Divider -->
+            <div style="height: 3px; background: linear-gradient(90deg, #10B981, #F59E0B, #10B981); border-radius: 2px; margin: 10px 0 14px 0;"></div>
+
+            <!-- Verification Ribbon -->
+            <div style="background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%); border: 1.5px solid #10B981; border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:22px;">🛡️</span>
+                <div>
+                  <div style="font-size:13px; font-weight:800; color:#065F46;">✅ রসিদটি ১০০% আসল ও অনুমোদিত</div>
+                  <div style="font-size:11px; color:#047857;">ডিজিটাল ভেরিফিকেশন কোড: <strong style="font-family:monospace; color:#065F46;">${found.receiptNo || code}</strong></div>
+                </div>
+              </div>
+              <span style="background: #10B981; color: white; font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 14px; box-shadow: 0 2px 6px rgba(16,185,129,0.3);">
+                VERIFIED
+              </span>
+            </div>
+
+            <!-- Details Key-Value Table -->
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 14px; font-size: 13px; line-height: 1.8; color: #1E293B;">
+              <div style="display:flex; justify-content:space-between; border-bottom: 1px dashed #CBD5E1; padding-bottom: 5px;">
+                <span style="color:#64748B;">রসিদ / স্মারক নং:</span>
+                <strong style="color:var(--primary); font-family:monospace; font-size:14px;">${found.receiptNo || code} ${found.altCode ? '<span style="font-size:11px; color:#64748B;">(' + found.altCode + ')</span>' : ''}</strong>
+              </div>
+              <div style="display:flex; justify-content:space-between; border-bottom: 1px dashed #CBD5E1; padding: 5px 0;">
+                <span style="color:#64748B;">সদস্যের নাম:</span>
+                <strong style="color:#0F172A;">${found.memberNumber ? '[' + found.memberNumber + '] ' : ''}${found.memberName}</strong>
+              </div>
+              ${isRep ? `
+              <div style="display:flex; justify-content:space-between; border-bottom: 1px dashed #CBD5E1; padding: 5px 0;">
+                <span style="color:#64748B;">প্রেরক / জমাদানকারী:</span>
+                <span style="font-weight:600; color:#334155;">${depositorInfo}</span>
+              </div>` : ''}
+              <div style="display:flex; justify-content:space-between; border-bottom: 1px dashed #CBD5E1; padding: 5px 0;">
+                <span style="color:#64748B;">জমার পরিমাণ:</span>
+                <strong style="color:#059669; font-size:16px;">${amountDisplay}</strong>
+              </div>
+              <div style="display:flex; justify-content:space-between; border-bottom: 1px dashed #CBD5E1; padding: 5px 0;">
+                <span style="color:#64748B;">জমার ধরণ:</span>
+                <span>${found.type || 'মাসিক সঞ্চয়'} ${found.note ? '• ' + found.note : ''}</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; border-bottom: 1px dashed #CBD5E1; padding: 5px 0;">
+                <span style="color:#64748B;">মাধ্যম / ব্যাংক:</span>
+                <span style="font-weight:600; color:#1E3A8A; font-size:12px; text-align:right;">${found.method || found.bankSlipNo || 'সিটি ব্যাংক পিএলসি'}</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; border-bottom: 1px dashed #CBD5E1; padding: 5px 0;">
+                <span style="color:#64748B;">তারিখ ও সময়:</span>
+                <span>${dDate}</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; padding-top: 5px;">
+                <span style="color:#64748B;">অনুমোদনকারী:</span>
+                <strong style="color:#1E293B;">${found.recordedBy || 'সাজ্জাদ হোসেন (কোষাধ্যক্ষ)'}</strong>
+              </div>
+            </div>
+
+            <!-- Original Bank Slip Google Drive Link -->
+            ${(found.slip_url || found.driveUrl) ? `
+            <a href="${found.slip_url || found.driveUrl}" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:8px; background: #059669; color: white; font-weight: 700; font-size: 13px; padding: 11px 16px; border-radius: 12px; text-decoration:none; margin-top: 14px; box-shadow: 0 4px 12px rgba(5,150,105,0.25);">
+              <span>🧾</span>
+              <span>মূল ব্যাংক পেমেন্ট স্লিপ দেখুন (Google Drive)</span>
+              <span>↗</span>
+            </a>` : ''}
+
+            ${found.pad_url ? `
+            <a href="${found.pad_url}" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:8px; background: #F8FAFC; color: #1E293B; font-weight: 700; font-size: 12px; padding: 9px 14px; border-radius: 10px; text-decoration:none; margin-top: 8px; border: 1px solid #CBD5E1;">
+              <span>📄</span>
+              <span>অফিশিয়াল প্যাড রিসিট দেখুন (Google Drive)</span>
+              <span>↗</span>
+            </a>` : ''}
+
+            <!-- Executive Seal Stamps Row -->
+            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 18px; padding-top: 14px; border-top: 1.5px dashed #CBD5E1; text-align: center;">
+              <div>
+                <div style="display:inline-block; border: 1.5px solid #059669; color: #059669; padding: 4px 10px; border-radius: 8px; font-size: 10px; font-weight: 700; margin-bottom: 4px; background: #ECFDF5;">
+                  ★ সিলমোহর ★<br>যাচাইকৃত
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #1E293B;">সাজ্জাদ হোসেন</div>
+                <div style="font-size: 10px; color: #64748B;">কোষাধ্যক্ষ</div>
+              </div>
+              <div>
+                <div style="display:inline-block; border: 2px dashed #0284C7; color: #0284C7; padding: 4px 8px; border-radius: 50%; font-size: 9px; font-weight: 800; width: 62px; height: 62px; display:flex; flex-direction:column; align-items:center; justify-content:center; margin: 0 auto 4px auto; background: #F0F9FF;">
+                  <span>কেন্দ্রীয় সিল</span>
+                  <span>ডিজিটাল</span>
+                </div>
+                <div style="font-size: 10px; font-weight: 700; color: #0284C7;">সত্যতা নিশ্চিত</div>
+              </div>
+              <div>
+                <div style="display:inline-block; border: 1.5px solid #D97706; color: #D97706; padding: 4px 10px; border-radius: 8px; font-size: 10px; font-weight: 700; margin-bottom: 4px; background: #FFFBEB;">
+                  ★ সিলমোহর ★<br>অনুমোদিত
+                </div>
+                <div style="font-size: 11px; font-weight: 700; color: #1E293B;">কার্যনির্বাহী পরিষদ</div>
+                <div style="font-size: 10px; color: #64748B;">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
+              </div>
+            </div>
+
+            <!-- Share and External Portal Links -->
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top: 16px; padding-top: 12px; border-top: 1px solid #E2E8F0;">
+              <button type="button" onclick="navigator.clipboard.writeText('https://smartsomiti.vercel.app/verify.html?id=' + encodeURIComponent('${found.receiptNo || code}')).then(() => alert('✅ ভেরিফিকেশন পোর্টাল লিংক কপি হয়েছে!'));" style="flex:1; min-width: 140px; background: #F1F5F9; border: 1px solid #CBD5E1; color: #334155; padding: 8px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer;">
+                📋 ভেরিফাই লিংক কপি
+              </button>
+              <a href="https://smartsomiti.vercel.app/verify.html?id=${encodeURIComponent(found.receiptNo || code)}" target="_blank" rel="noopener" style="flex:1; min-width: 140px; background: #0F172A; color: white; padding: 8px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                🌐 ভেরিফিকেশন পোর্টালে দেখুন ↗
+              </a>
             </div>
           </div>
         `;
       } else {
         resultArea.innerHTML = `
-          <div class="card" style="border: 2px solid #EF4444; background: #FEF2F2; margin-top: 14px; text-align:center;">
-            <div style="font-size:24px;">❌</div>
-            <div style="font-size:14px; font-weight:800; color:#991B1B;">রসিদটি ডাটাবেজে পাওয়া যায়নি</div>
-            <div style="font-size:12px; color:#B91C1C; margin-top:2px;">"${code}" নম্বরের কোনো রসিদ নিবন্ধিত নেই।</div>
+          <div class="card" style="border: 2px solid #EF4444; background: #FEF2F2; margin-top: 14px; text-align:center; padding: 20px; border-radius: 14px;">
+            <div style="font-size:32px;">❌</div>
+            <div style="font-size:15px; font-weight:800; color:#991B1B; margin-top: 6px;">রসিদটি ডাটাবেজে পাওয়া যায়নি</div>
+            <div style="font-size:12px; color:#B91C1C; margin-top:4px;">"${code}" নম্বরের কোনো রসিদ বা স্মারক নিবন্ধিত নেই। সঠিক কোড দিয়ে আবার চেষ্টা করুন।</div>
           </div>
         `;
       }
@@ -22695,7 +22881,7 @@
         mac: 'BC:D1:19:FA:82:11',
         imei: '862910048192841',
         lastHeartbeat: '৫ মিনিট আগে',
-        appVersion: 'v2.6.3-p9',
+        appVersion: 'v2.6.4-p9',
         isAuthorized: true,
         status: 'ACTIVE'
       },
@@ -22706,7 +22892,7 @@
         mac: 'F0:18:98:C2:54:99',
         imei: '864019283746192',
         lastHeartbeat: '১২ মিনিট আগে',
-        appVersion: 'v2.6.3-p9',
+        appVersion: 'v2.6.4-p9',
         isAuthorized: true,
         status: 'ACTIVE'
       },
@@ -22717,7 +22903,7 @@
         mac: '34:08:04:78:E1:5A',
         imei: '869018274619283',
         lastHeartbeat: '২ ঘণ্টা আগে',
-        appVersion: 'v2.6.3-p9',
+        appVersion: 'v2.6.4-p9',
         isAuthorized: true,
         status: 'ACTIVE'
       },
@@ -22728,7 +22914,7 @@
         mac: '78:4F:43:AA:91:02',
         imei: '861129384756201',
         lastHeartbeat: '৩ দিন আগে',
-        appVersion: 'v2.6.3',
+        appVersion: 'v2.6.4',
         isAuthorized: false,
         status: 'REVOKED'
       }
@@ -23268,7 +23454,7 @@
         mac: 'AA:BB:CC:' + Math.floor(10 + Math.random()*89) + ':11:22',
         imei: '86' + Math.floor(1000000000000 + Math.random()*8999999999999),
         lastHeartbeat: 'এইমাত্র',
-        appVersion: 'v2.6.3-p9',
+        appVersion: 'v2.6.4-p9',
         isAuthorized: true,
         status: 'ACTIVE'
       });
@@ -23334,8 +23520,8 @@
 
     // 6. Deployments Data Store
     let devopsDeployments = [
-      { id: 'DEP-20261114-01', version: 'v2.6.3-p10', env: 'PROD', hash: 'a71e89f', status: 'SUCCESS', deployedBy: 'ফারুক হোসেন (ডেভঅপস)', rollbackTarget: 'v2.6.3-p9', time: 'আজ, দুপুর ০১:১৫' },
-      { id: 'DEP-20261113-01', version: 'v2.6.3-p9', env: 'PROD', hash: 'c42d10a', status: 'SUCCESS', deployedBy: 'ফারুক হোসেন (ডেভঅপস)', rollbackTarget: 'v2.6.3', time: 'গতকাল, বিকাল ০৫:০০' },
+      { id: 'DEP-20261114-01', version: 'v2.6.4-p10', env: 'PROD', hash: 'a71e89f', status: 'SUCCESS', deployedBy: 'ফারুক হোসেন (ডেভঅপস)', rollbackTarget: 'v2.6.4-p9', time: 'আজ, দুপুর ০১:১৫' },
+      { id: 'DEP-20261113-01', version: 'v2.6.4-p9', env: 'PROD', hash: 'c42d10a', status: 'SUCCESS', deployedBy: 'ফারুক হোসেন (ডেভঅপস)', rollbackTarget: 'v2.6.4', time: 'গতকাল, বিকাল ০৫:০০' },
     ];
 
     function renderDevopsOpsHub() {
@@ -23673,16 +23859,16 @@
     }
 
     function triggerRollbackPrompt() {
-      const confirmRollback = confirm("সতর্কবার্তা: আপনি কি পূর্ববর্তী স্টেবল রিলিজ v2.6.3-p9 এ ইনস্ট্যান্ট রোলব্যাক করতে চান?\nএটি কার্যকর হলে বর্তমান কোডবেস তাৎক্ষণিকভাবে পূর্ববর্তী বিল্ডে স্থানান্তরিত হবে।");
+      const confirmRollback = confirm("সতর্কবার্তা: আপনি কি পূর্ববর্তী স্টেবল রিলিজ v2.6.4-p9 এ ইনস্ট্যান্ট রোলব্যাক করতে চান?\nএটি কার্যকর হলে বর্তমান কোডবেস তাৎক্ষণিকভাবে পূর্ববর্তী বিল্ডে স্থানান্তরিত হবে।");
       if (confirmRollback) {
         devopsDeployments.unshift({
           id: 'DEP-' + Date.now(),
-          version: 'v2.6.3-p9 (Rolled Back)',
+          version: 'v2.6.4-p9 (Rolled Back)',
           env: 'PROD',
           hash: 'c42d10a',
           status: 'ROLLED_BACK',
           deployedBy: 'সুপার এডমিন (জরুরি রোলব্যাক)',
-          rollbackTarget: 'v2.6.3',
+          rollbackTarget: 'v2.6.4',
           time: 'এইমাত্র'
         });
 
@@ -23691,13 +23877,13 @@
           level: 'DEPLOYMENT',
           time: 'এইমাত্র',
           service: 'ci_cd_pipeline',
-          message: 'প্রোডাকশন ডেপ্লয়মেন্ট তাৎক্ষণিকভাবে v2.6.3-p9 এ রোলব্যাক সম্পন্ন হয়েছে',
+          message: 'প্রোডাকশন ডেপ্লয়মেন্ট তাৎক্ষণিকভাবে v2.6.4-p9 এ রোলব্যাক সম্পন্ন হয়েছে',
           metadata: 'action=rollback'
         });
 
         renderDevopsDeployments();
         renderDevopsLogs();
-        alert("✓ পূর্ববর্তী স্টেবল ভার্সনে (v2.6.3-p9) ইনস্ট্যান্ট রোলব্যাক সম্পন্ন হয়েছে!");
+        alert("✓ পূর্ববর্তী স্টেবল ভার্সনে (v2.6.4-p9) ইনস্ট্যান্ট রোলব্যাক সম্পন্ন হয়েছে!");
       }
     }
 
@@ -24267,7 +24453,7 @@
     }
 
     function downloadProductionCertificate() {
-      alert("📜 অফিসিয়াল প্রোডাকশন গো-লাইভ সার্টিফিকেট v2.6.3-ENTERPRISE-PROD:\n\n• প্ল্যাটফর্ম: স্বপ্ন ছোঁয়া ঐক্য সমিতি (SaaS)\n• মোট মডিউল: ১২টি কোর মডিউল (১০০% কমপ্লায়েন্ট)\n• নিরীক্ষিত পারমিশন: ১২০টি\n• অডিট স্ট্যাটাস: APPROVED FOR PRODUCTION LAUNCH\n• সার্টিফাইড বাই: master_admin_sajjad");
+      alert("📜 অফিসিয়াল প্রোডাকশন গো-লাইভ সার্টিফিকেট v2.6.4-ENTERPRISE-PROD:\n\n• প্ল্যাটফর্ম: স্বপ্ন ছোঁয়া ঐক্য সমিতি (SaaS)\n• মোট মডিউল: ১২টি কোর মডিউল (১০০% কমপ্লায়েন্ট)\n• নিরীক্ষিত পারমিশন: ১২০টি\n• অডিট স্ট্যাটাস: APPROVED FOR PRODUCTION LAUNCH\n• সার্টিফাইড বাই: master_admin_sajjad");
     }
 
     // ============================================================================
@@ -24606,7 +24792,7 @@
     }
 
     function exportQaAuditReport() {
-      alert("📜 এন্টারপ্রাইজ কিউএ ও সিকিউরিটি অডিট রিপোর্ট v2.6.3-AUDIT:\n\n• সমিতি: স্বপ্ন ছোঁয়া ঐক্য সমিতি (SaaS)\n• টেস্ট কভারেজ: ৬টি লেয়ার (১২টি টেস্ট উত্তীর্ণ)\n• সিকিউরিটি স্ট্যাটাস: OWASP Top 10 উত্তীর্ণ\n• আর্থিক সমতা: ৳০.০০ ইমব্যালেন্স (পয়সা প্রিসিশন)\n• গেট সিদ্ধান্ত: APPROVED FOR CONTINUOUS RELEASE\n• নিরীক্ষক: QA Lead & Security Officer Sajjad");
+      alert("📜 এন্টারপ্রাইজ কিউএ ও সিকিউরিটি অডিট রিপোর্ট v2.6.4-AUDIT:\n\n• সমিতি: স্বপ্ন ছোঁয়া ঐক্য সমিতি (SaaS)\n• টেস্ট কভারেজ: ৬টি লেয়ার (১২টি টেস্ট উত্তীর্ণ)\n• সিকিউরিটি স্ট্যাটাস: OWASP Top 10 উত্তীর্ণ\n• আর্থিক সমতা: ৳০.০০ ইমব্যালেন্স (পয়সা প্রিসিশন)\n• গেট সিদ্ধান্ত: APPROVED FOR CONTINUOUS RELEASE\n• নিরীক্ষক: QA Lead & Security Officer Sajjad");
     }
 
     // ============================================================================

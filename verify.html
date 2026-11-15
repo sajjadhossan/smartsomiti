@@ -356,7 +356,7 @@
     syncFromGoogleSheet();
 
     const params = new URLSearchParams(window.location.search);
-    const urlId = params.get('id') || params.get('code');
+    const urlId = params.get('id') || params.get('code') || params.get('verify');
     if (urlId) {
       document.getElementById('verifyInput').value = urlId;
       verifyQuery(urlId);
