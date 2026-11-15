@@ -1,0 +1,43 @@
+{
+  "name": "স্মার্ট সমিতি - সমবায় ডিজিটাল পাসবুক",
+  "short_name": "স্মার্ট সমিতি",
+  "description": "স্মার্ট সমিতি সমবায় ডিজিটাল পাসবুক, রসিদ ভেরিফিকেশন ও আর্থিক ক্লাউড সিস্টেম",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0F9D58",
+  "theme_color": "#0F9D58",
+  "lang": "bn",
+  "categories": ["finance", "business", "productivity"],
+  "icons": [
+    {
+      "src": "/logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "ডিজিটাল রসিদ যাচাই",
+      "short_name": "যাচাইকরণ",
+      "description": "সদস্য জমার কিস্তি রসিদ যাচাই করুন",
+      "url": "/verify.html",
+      "icons": [{ "src": "/logo.jpg", "sizes": "192x192" }]
+    },
+    {
+      "name": "জমা এন্ট্রি",
+      "short_name": "জমা",
+      "description": "নতুন জমার কিস্তি লিপিবদ্ধ করুন",
+      "url": "/index.html#deposits",
+      "icons": [{ "src": "/logo.jpg", "sizes": "192x192" }]
+    }
+  ]
+}
