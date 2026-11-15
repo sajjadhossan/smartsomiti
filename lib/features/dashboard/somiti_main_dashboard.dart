@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 
@@ -390,7 +391,7 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
 
     void updateSmsText(MemberModel m) {
       smsController.text =
-          'সম্মানিত ${m.name}, আসসালামু আলাইকুম। ${somiti.name}-এ আপনার চলতি মাসের সঞ্চয় কিস্তি বাবদ ৳${somiti.monthlyFee.toStringAsFixed(0)} বকেয়া রয়েছে। অনুগ্রহ করে দ্রুত সমিতি অফিসে যোগাযোগ করে বকেয়া পরিশোধ করার জন্য অনুরোধ করা হলো। যোগাযোগের নম্বর: ${somiti.bkashNumber.isNotEmpty ? somiti.bkashNumber : somiti.phone}। ধন্যবাদ, ${somiti.cashierName}।';
+          'সম্মানিত ${m.name}, আসসালামু আলাইকুম। ${somiti.name}-এ আপনার সঞ্চয় কিস্তি জমা বা হিসাব হালনাগাদ করার জন্য অনুরোধ করা হলো। সমিতির বিকাশ/যোগাযোগ নম্বর: ${somiti.bkashNumber}। ধন্যবাদ, ${somiti.cashierName}।';
     }
 
     updateSmsText(selectedMember);
@@ -448,8 +449,8 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('বকেয়া কিস্তির পরিমাণ:', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF991B1B))),
-                        Text('৳${somiti.monthlyFee.toStringAsFixed(0)}', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color(0xFFDC2626))),
+                        const Text('সদস্যের বর্তমান মোট সঞ্চয়:', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF991B1B))),
+                        Text('৳${selectedMember.totalDeposit.toStringAsFixed(0)}', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color(0xFFDC2626))),
                       ],
                     ),
                   ),
@@ -912,7 +913,13 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
   }
 
   // Category 3: Modern 3-Dot Action Bottom Sheet with Live Search (Tip 21 & 29)
-  void _openThreeDotBottomSheet(BuildContext context, SomitiModel somiti) {
+  void _openThreeDotBottomSheet(
+    BuildContext context,
+    SomitiModel somiti, {
+    List<MemberModel> members = const [],
+    List<DepositModel> deposits = const [],
+    List<ExpenseModel> expenses = const [],
+  }) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -924,7 +931,7 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
             final List<Map<String, dynamic>> allItems = [
               // Group 1: দ্রুত কার্যাবলি
               {'group': '⚡ দ্রুত কার্যাবলি', 'title': 'নতুন সদস্য ভর্তি', 'desc': 'সদস্য ফর্ম পূরণ করুন', 'icon': Icons.person_add_alt_1_rounded, 'color': const Color(0xFF0F9D58), 'action': () { Navigator.pop(ctx); _showAddMemberDialog(); }},
-              {'group': '⚡ দ্রুত কার্যাবলি', 'title': 'দ্রুত জমা গ্রহণ ও কিস্তি', 'desc': 'সঞ্চয় বা ঋণের কিস্তি কালেকশন', 'icon': Icons.arrow_downward_rounded, 'color': const Color(0xFF0284C7), 'action': () { Navigator.pop(ctx); _showAddDepositDialog(); }},
+              {'group': '⚡ দ্রুত কার্যাবলি', 'title': 'দ্রুত জমা গ্রহণ ও কিস্তি', 'desc': 'সঞ্চয় বা ঋণের কিস্তি কালেকশন', 'icon': Icons.arrow_downward_rounded, 'color': const Color(0xFF0284C7), 'action': () { Navigator.pop(ctx); _showAddDepositDialog(members); }},
               {'group': '⚡ দ্রুত কার্যাবলি', 'title': 'নতুন ঋণ বিতরণ ও আবেদন', 'desc': 'ঋণ অনুমোদন ও কিস্তি শিডিউল', 'icon': Icons.account_balance_wallet_rounded, 'color': const Color(0xFFD97706), 'action': () {
                 Navigator.pop(ctx);
                 if (FeatureManagementService().canAccess(featureKey: 'loan_management', societyId: somiti.id)) {
@@ -962,7 +969,7 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
               }},
               {'group': '⚙️ প্রশাসনিক ও ক্লাউড', 'title': 'গুগল ড্রাইভ ক্লাউড ব্যাকআপ', 'desc': 'ডেটা সিঙ্ক ও অটো ড্রাইভ সংরক্ষণ', 'icon': Icons.cloud_sync_rounded, 'color': const Color(0xFF1D4ED8), 'action': () {
                 Navigator.pop(ctx);
-                _backupToGoogleDrive();
+                _backupToDrive(members, deposits, expenses);
               }},
 
               // Group 4: সেশন ও সমিতি
@@ -1213,7 +1220,13 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
                       IconButton(
                         tooltip: 'দ্রুত মেনু ও অ্যাকশন',
                         icon: const Icon(Icons.more_vert_rounded, size: 24),
-                        onPressed: () => _openThreeDotBottomSheet(context, somiti),
+                        onPressed: () => _openThreeDotBottomSheet(
+                          context,
+                          somiti,
+                          members: members,
+                          deposits: deposits,
+                          expenses: expenses,
+                        ),
                       ),
                     ],
                   ),
