@@ -49,14 +49,19 @@ jobs:
       - name: Get Flutter Dependencies
         run: flutter pub get
 
-      - name: Build Release APK
-        run: flutter build apk --release --android-skip-build-dependency-validation
+      - name: Build Release APKs (Split per ABI)
+        run: flutter build apk --release --split-per-abi --android-skip-build-dependency-validation
 
       - name: Prepare Named APK Artifacts
         run: |
           mkdir -p release_apks
-          cp build/app/outputs/flutter-apk/app-release.apk release_apks/smartsomiti-v${{ env.VERSION }}.apk
-          cp build/app/outputs/flutter-apk/app-release.apk release_apks/smartsomiti-latest.apk
+          # Main arm64-v8a APK (~16MB, 98%+ modern Android phones)
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk release_apks/smartsomiti-v${{ env.VERSION }}.apk
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk release_apks/smartsomiti-latest.apk
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk release_apks/smartsomiti-v${{ env.VERSION }}-arm64.apk
+          # 32-bit armeabi-v7a APK (~14MB, older Android phones)
+          cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk release_apks/smartsomiti-v${{ env.VERSION }}-arm32.apk
+          ls -lh release_apks/
 
       - name: Upload APK Artifacts
         uses: actions/upload-artifact@v4
@@ -72,14 +77,18 @@ jobs:
           tag_name: v${{ env.VERSION }}
           name: "স্মার্ট সমিতি রিলিজ v${{ env.VERSION }} (Build ${{ env.BUILD }})"
           body: |
-            ### 📱 স্মার্ট সমিতি - অ্যান্ড্রয়েড অ্যাপ রিলিজ
+            ### 📱 স্মার্ট সমিতি - আল্ট্রা-লাইটওয়েট অপ্টিমাইজড রিলিজ (~১৬ MB)
             - **সংস্করণ**: `v${{ env.VERSION }}` (Build: `${{ env.BUILD }}`)
-            - **ইন-প্লেস আপডেট সমর্থিত**: হ্যাঁ (বিদ্যমান অ্যাপ আনইনস্টল করা লাগবে না, সরাসরি আপডেট হবে)
-            - **ফাইল**: `smartsomiti-v${{ env.VERSION }}.apk`
+            - **ইন-প্লেস আপডেট সমর্থিত**: হ্যাঁ (আগের অ্যাপ আনইনস্টল করতে হবে না)
+            - **প্রধান ডাউনলোড (স্মার্টফোন 64-bit, ~১৬ MB)**: [smartsomiti-v${{ env.VERSION }}.apk](https://github.com/sajjadhossan/smartsomiti/releases/download/v${{ env.VERSION }}/smartsomiti-v${{ env.VERSION }}.apk)
+            - **সর্বশেষ সংস্করণ লিংক**: [smartsomiti-latest.apk](https://github.com/sajjadhossan/smartsomiti/releases/download/v${{ env.VERSION }}/smartsomiti-latest.apk)
+            - **পুরাতন ফোন (32-bit, ~১৪ MB)**: [smartsomiti-v${{ env.VERSION }}-arm32.apk](https://github.com/sajjadhossan/smartsomiti/releases/download/v${{ env.VERSION }}/smartsomiti-v${{ env.VERSION }}-arm32.apk)
             - **ওয়েব অ্যাপ**: https://smartsomiti.vercel.app
           files: |
             release_apks/smartsomiti-v${{ env.VERSION }}.apk
             release_apks/smartsomiti-latest.apk
+            release_apks/smartsomiti-v${{ env.VERSION }}-arm64.apk
+            release_apks/smartsomiti-v${{ env.VERSION }}-arm32.apk
           draft: false
           prerelease: false
         env:
