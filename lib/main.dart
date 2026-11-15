@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -73,10 +74,27 @@ class _SomitiWebWrapperScreenState extends State<SomitiWebWrapperScreen> {
   static const String _chromeUserAgent =
       'Mozilla/5.0 (Linux; Android 14; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36';
 
+  DateTime? _lastBackPressTime;
+
   @override
   void initState() {
     super.initState();
+    _requestStartupPermissions();
     _initController();
+  }
+
+  Future<void> _requestStartupPermissions() async {
+    try {
+      final statuses = await [
+        Permission.camera,
+        Permission.photos,
+        Permission.storage,
+        Permission.notification,
+      ].request();
+      debugPrint('Startup permissions requested: $statuses');
+    } catch (e) {
+      debugPrint('Startup permission notice: $e');
+    }
   }
 
   @override
@@ -159,6 +177,14 @@ class _SomitiWebWrapperScreenState extends State<SomitiWebWrapperScreen> {
           }
         },
       )
+      ..addJavaScriptChannel(
+        'NativePermissionBridge',
+        onMessageReceived: (JavaScriptMessage message) {
+          if (message.message == 'request_permissions') {
+            _requestStartupPermissions();
+          }
+        },
+      )
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
@@ -232,17 +258,61 @@ class _SomitiWebWrapperScreenState extends State<SomitiWebWrapperScreen> {
     }
   }
 
+  Future<void> _handleBackPress() async {
+    try {
+      final dynamic jsHandled = await _controller.runJavaScriptReturningResult(
+        "(function() { return (typeof window.handleAndroidBack === 'function') ? window.handleAndroidBack() : false; })();",
+      );
+      if (jsHandled == true || jsHandled == 'true') {
+        // Modal, overlay, or subview handled by JavaScript
+        return;
+      }
+    } catch (e) {
+      debugPrint('Back navigation error: $e');
+    }
+
+    if (await _controller.canGoBack()) {
+      await _controller.goBack();
+      return;
+    }
+
+    final now = DateTime.now();
+    if (_lastBackPressTime == null || now.difference(_lastBackPressTime!) > const Duration(seconds: 2)) {
+      _lastBackPressTime = now;
+      if (mounted) {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Row(
+              children: [
+                Icon(Icons.info_outline, color: Colors.white, size: 18),
+                SizedBox(width: 8),
+                Text(
+                  'অ্যাপ থেকে বের হতে আবার ব্যাক চাপুন',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                ),
+              ],
+            ),
+            duration: const Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: const Color(0xFF1E293B),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          ),
+        );
+      }
+    } else {
+      SystemNavigator.pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
         if (didPop) return;
-        if (await _controller.canGoBack()) {
-          await _controller.goBack();
-        } else {
-          SystemNavigator.pop();
-        }
+        await _handleBackPress();
       },
       child: Scaffold(
         backgroundColor: const Color(0xFFFFFFFF),

@@ -2808,10 +2808,10 @@
         <span>•</span>
         <span>☁️ ফায়ারবেস ক্লাউড সিকিউরড</span>
         <span>•</span>
-        <span>🇧🇩 রিলিজ v2.5.8</span>
+        <span>🇧🇩 রিলিজ v2.5.9</span>
       </div>
       <div style="text-align: center; margin-top: 8px; font-size: 11px; font-weight: 800; color: #0F9D58;">
-        স্মার্ট সমিতি প্ল্যাটফর্ম • সিস্টেম সংস্করণ v2.5.8
+        স্মার্ট সমিতি প্ল্যাটফর্ম • সিস্টেম সংস্করণ v2.5.9
       </div>
 
       <!-- Public Secret Code & Document Verification Box -->
@@ -2923,7 +2923,7 @@
             <div class="society-switch-pill" onclick="openSocietySwitcher()" title="সমিতি পরিবর্তন করতে ক্লিক করুন">
               <span id="dashSomitiName" style="font-size: 13.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 135px; display: inline-block; vertical-align: middle;">স্বপ্ন ছোঁয়া ঐক্য সমিতি</span>
               <span id="dashSomitiCode" style="font-size: 10px; font-weight: 700; color: var(--primary);">SMT-7890</span>
-              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.5.8</span>
+              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.5.9</span>
               <span style="font-size: 10px; opacity: 0.7;">▾</span>
             </div>
             <div id="headerActiveViewTitle" class="header-active-view-badge" title="বর্তমান সক্রিয় মডিউল">📊 এডমিন ড্যাশবোর্ড</div>
@@ -3039,7 +3039,7 @@
           <div>
             <h3 id="sideSomitiName" style="font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.2;">স্বপ্ন ছোঁয়া ঐক্য সমিতি</h3>
             <span id="sideSomitiCode" style="font-size: 10px; background: var(--primary-light); color: var(--primary); font-weight: 700; padding: 1px 6px; border-radius: 4px;">SMT-7890</span>
-            <span style="font-size: 10px; background: #059669; color: white; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 3px;">v2.5.8</span>
+            <span style="font-size: 10px; background: #059669; color: white; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 3px;">v2.5.9</span>
           </div>
         </div>
         <button onclick="closeSidebar()" style="background: none; border: none; font-size: 22px; color: var(--text-muted); cursor: pointer; padding: 4px;">✕</button>
@@ -3259,7 +3259,7 @@
       </div>
 
       <div style="padding: 10px; border-top: 1px solid var(--border); font-size: 11px; text-align: center; color: var(--text-muted); background: var(--bg);">
-        স্বপ্ন ছোঁয়া ঐক্য সমিতি প্ল্যাটফর্ম • v2.5.8 (রিলিজ)
+        স্বপ্ন ছোঁয়া ঐক্য সমিতি প্ল্যাটফর্ম • v2.5.9 (রিলিজ)
       </div>
     </div>
 
@@ -3402,9 +3402,9 @@
           <div class="sheet-icon-circle" style="background: #DCFCE7; color: #166534;">📱</div>
           <div>
             <div style="font-weight: 700; font-size: 13px;">অ্যাপ সংস্করণ ও APK আপডেট</div>
-            <div style="font-size: 10.5px; color: var(--text-muted);">বর্তমান সংস্করণ v2.5.8 • ইন-প্লেস APK ডাউনলোড</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">বর্তমান সংস্করণ v2.5.9 • ইন-প্লেস APK ডাউনলোড</div>
           </div>
-          <span class="sheet-badge" style="background: #BBF7D0; color: #166534;">v2.5.8</span>
+          <span class="sheet-badge" style="background: #BBF7D0; color: #166534;">v2.5.9</span>
         </button>
 
         <!-- Group 4: 🚪 বিপজ্জনক অপশন / সেশন -->
@@ -5180,6 +5180,12 @@
               </div>
               <input type="file" id="nvReadyPadFileInput" accept="image/*" onchange="handleNoticeReadyPadUpload(event)" style="font-size: 11px;">
               <div id="nvReadyPadStatus" style="font-size: 11px; color: #64748B; margin-top: 4px;">কোনো ছবি আপলোড করা হয়নি</div>
+              <div style="margin-top: 8px; text-align: left; background: #F8FAFC; padding: 7px 10px; border-radius: 6px; border: 1px solid #E2E8F0;">
+                <label style="cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; color: #1E293B;">
+                  <input type="checkbox" id="nvHideTextWhenReadyPad" onchange="handleNoticePadModeChange()">
+                  <span>🖼️ ছবিতে নোটিশের সকল বক্তব্য/হেডার ইতিমধ্যে লেখা আছে (লেখা লুকান, শুধু লাইভ QR কোড রাখুন)</span>
+                </label>
+              </div>
             </div>
 
             <!-- Smart QR & Secret Code Positioning -->
@@ -5201,9 +5207,19 @@
         </div>
 
         <div class="official-sample-pad" id="noticeViewPadPrintArea" style="margin-bottom: 14px;">
-          <div class="official-sample-pad-inner">
+          <div class="official-sample-pad-inner" style="position: relative;">
+            <!-- Ready-Made Pad Full Image (AI / Custom Graphics) -->
+            <img id="nvReadyPadImg" src="" alt="রেডি প্যাড নোটিশ" style="display: none; width: 100%; height: auto; border-radius: 2px; margin: 0 auto;">
+
+            <!-- Floating Live Verification QR Badge for Ready-Made Notice Image -->
+            <div id="nvFloatingQrBox" style="display: none; position: absolute; z-index: 25; background: rgba(255, 255, 255, 0.96); padding: 6px 8px; border-radius: 8px; border: 1.5px solid #16A34A; box-shadow: 0 4px 14px rgba(0,0,0,0.2); text-align: center; flex-direction: column; align-items: center; gap: 2px;">
+              <div id="nvFloatingQrCode" style="width: 52px; height: 52px; background: white; padding: 2px; border-radius: 4px; display: flex; align-items: center; justify-content: center;"></div>
+              <div style="font-size: 8px; font-weight: 800; color: #166534; line-height: 1.1;">🔍 অনলাইন ভেরিফাইড</div>
+              <div id="nvFloatingSecretCode" style="font-size: 7.5px; font-weight: 700; color: #334155; line-height: 1.1;">স্মারক-০১/২০২৬</div>
+            </div>
+
             <div class="pad-top-bismillah">বিসমিল্লাহির রাহমানির রাহিম</div>
-                        <!-- Top Header Banner (Uploaded Custom Image) -->
+            <!-- Top Header Banner (Uploaded Custom Image) -->
             <div id="nvBannerContainer" style="display: none; width: 100%; text-align: center; margin-bottom: 6px;">
               <img id="nvBannerImg" src="" alt="প্যাড হেডার ব্যানার" style="width: 100%; max-height: 110px; object-fit: contain; border-radius: 4px; display: block; margin: 0 auto;">
             </div>
@@ -5444,7 +5460,7 @@
               <div style="font-size: 15px; font-weight: 800; color: #78350F;">প্ল্যাটফর্ম সুপার এডমিন কন্ট্রোল</div>
               <div style="font-size: 11px; color: #92400E;">অ্যাকাউন্ট: <strong>hossansajjad1994@gmail.com</strong> (সর্বোচ্চ ক্ষমতা)</div>
             </div>
-            <span style="background: #D97706; color: white; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800;">GLOBAL ACTIVE • v2.5.8</span>
+            <span style="background: #D97706; color: white; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800;">GLOBAL ACTIVE • v2.5.9</span>
           </div>
           <p style="font-size: 12px; color: #92400E; margin-top: 6px;">
             এখানে যেকোনো ফিচার বন্ধ করলে তা সাথে সাথে পুরো সিস্টেমে বা নির্দিষ্ট সমিতিতে নিষ্ক্রিয় হয়ে যাবে।
@@ -13095,7 +13111,7 @@
           alert(`📱 স্বপ্ন ছোঁয়া ঐক্য সমিতি - অ্যাপ সংস্করণ তথ্য:\n\n• বর্তমান সংস্করণ: v${info.version} (Build ${info.buildNumber})\n• রিলিজ তারিখ: ${info.releaseDate}\n• নোট: ${info.changelogBn || 'সর্বশেষ আপডেট কার্যকর'}\n\n✓ এই এপিকে রিলিজটি পারসিস্টেন্ট কি-স্টোর দিয়ে সাইন করা।\nআগের অ্যাপ ডিলিট না করেই সরাসরি আপডেট করা যাবে।\n\nডাউনলোড লিংক: ${info.downloadUrl || 'somiti-latest.apk'}`);
         })
         .catch(() => {
-          alert("📱 স্বপ্ন ছোঁয়া ঐক্য সমিতি\n\n• বর্তমান সংস্করণ: v2.5.8 (Build 3)\n• ইন-প্লেস আপডেট: সক্রিয়\n(আগের অ্যাপ আনইনস্টল না করেই নতুন ভার্সন আপডেট হবে)");
+          alert("📱 স্বপ্ন ছোঁয়া ঐক্য সমিতি\n\n• বর্তমান সংস্করণ: v2.5.9 (Build 3)\n• ইন-প্লেস আপডেট: সক্রিয়\n(আগের অ্যাপ আনইনস্টল না করেই নতুন ভার্সন আপডেট হবে)");
         });
     }
 
@@ -14097,8 +14113,71 @@
         domain = domain.replace(/\/+$/, "");
         return domain + "/";
       }
+      if (typeof window !== 'undefined' && (window.location.protocol === 'file:' || !window.location.origin || window.location.origin === 'null' || window.location.hostname === 'localhost')) {
+        return "https://smartsomiti.vercel.app/";
+      }
       return `${window.location.origin}${window.location.pathname}`;
     }
+
+    // Android Hardware / Gesture Back Navigation Two-Way Bridge
+    window.handleAndroidBack = function() {
+      // 1. Close any visible modal, overlay or popup
+      const modalSelectors = [
+        '#fullPadModal', '#forgotModal', '#globalSearchModal', '#societySwitcherModal',
+        '#addMemberModal', '#addDepositModal', '#addLoanModal', '#addExpenseModal',
+        '#editMemberModal', '#shareReceiptModal', '#noticeViewModal', '#npModal',
+        '.modal-overlay', '.modal-backdrop'
+      ];
+      for (const sel of modalSelectors) {
+        const modals = document.querySelectorAll(sel);
+        for (const m of modals) {
+          if (m && window.getComputedStyle(m).display !== 'none') {
+            const closeBtn = m.querySelector('button[onclick*="close"], .btn-close, .modal-close');
+            if (closeBtn) {
+              closeBtn.click();
+            } else {
+              m.style.display = 'none';
+            }
+            return true;
+          }
+        }
+      }
+
+      // 2. Close mobile sidebar / navigation drawer if open
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar && (sidebar.classList.contains('active') || sidebar.style.display === 'block')) {
+        if (typeof closeSidebar === 'function') {
+          closeSidebar();
+        } else {
+          sidebar.classList.remove('active');
+        }
+        return true;
+      }
+
+      // 3. Close header theme popover if open
+      const themePop = document.getElementById('headerThemeDropdown');
+      if (themePop && themePop.style.display === 'block') {
+        themePop.style.display = 'none';
+        return true;
+      }
+
+      // 4. If on subview, return to main dashboard
+      if (typeof currentActiveView !== 'undefined' && currentActiveView && currentActiveView !== 'dashboard') {
+        if (typeof navTo === 'function') {
+          navTo('dashboard');
+          return true;
+        }
+      }
+
+      // 5. Already on dashboard or auth, let Flutter handle double-tap exit
+      return false;
+    };
+
+    window.addEventListener('popstate', () => {
+      if (window.handleAndroidBack) {
+        window.handleAndroidBack();
+      }
+    });
 
     // Universal High-Resolution Dynamic QR Code Generator for all documents & continuous image exports
     function generateUniversalQr(boxId, targetUrl, size = 50) {
@@ -16398,6 +16477,12 @@
       // Real Dynamic QR Code for Online Notice Verification
       const targetNoticeUrl = `${getVerificationBaseUrl()}?verifyNotice=${encodeURIComponent(memo)}`;
       generateUniversalQr("nvQrCodeBox", targetNoticeUrl, 50);
+      if (document.getElementById("nvFloatingQrCode")) {
+        generateUniversalQr("nvFloatingQrCode", targetNoticeUrl, 52);
+      }
+      if (document.getElementById("nvFloatingSecretCode")) {
+        document.getElementById("nvFloatingSecretCode").innerText = memo;
+      }
 
       // Auto-archive notice to localStorage and Firestore
       saveNoticeToCloudArchive({
@@ -16428,34 +16513,85 @@
 
     function handleNoticePadModeChange() {
       const isReady = document.getElementById("nvPadModeReady")?.checked;
+      const hideText = document.getElementById("nvHideTextWhenReadyPad")?.checked;
       const uploadBox = document.getElementById("nvReadyPadUploadBox");
       const padArea = document.getElementById("noticeViewPadPrintArea");
+      const readyImg = document.getElementById("nvReadyPadImg");
+      const floatingQr = document.getElementById("nvFloatingQrBox");
       const headerGrid = document.getElementById("nvHeaderGrid");
       const bismillah = padArea?.querySelector(".pad-top-bismillah");
       const footerStrip = padArea?.querySelector(".pad-footer-strip");
       const doubleDivider = padArea?.querySelector(".pad-double-divider");
+      const metaRow = padArea?.querySelector(".pad-meta-row");
+      const docBadge = padArea?.querySelector(".pad-doc-badge-wrap");
+      const contentBox = padArea?.querySelector(".pad-content-box");
+      const signRow = document.getElementById("nvSignRow");
 
       if (uploadBox) uploadBox.style.display = isReady ? "block" : "none";
 
       if (isReady && noticeCustomReadyPadImg) {
-        if (padArea) {
-          padArea.style.backgroundImage = `url('${noticeCustomReadyPadImg}')`;
-          padArea.style.backgroundSize = "cover";
-          padArea.style.backgroundPosition = "center";
-          padArea.style.backgroundRepeat = "no-repeat";
+        if (hideText) {
+          // Fully pre-designed Ready-Made Notice (AI / Canva / Photoshop)
+          // Hide system text, display ready image + official live verification QR overlay
+          if (padArea) {
+            padArea.style.backgroundImage = "none";
+          }
+          if (readyImg) {
+            readyImg.src = noticeCustomReadyPadImg;
+            readyImg.style.display = "block";
+          }
+          if (headerGrid) headerGrid.style.display = "none";
+          if (bismillah) bismillah.style.display = "none";
+          if (doubleDivider) doubleDivider.style.display = "none";
+          if (metaRow) metaRow.style.display = "none";
+          if (docBadge) docBadge.style.display = "none";
+          if (contentBox) contentBox.style.display = "none";
+          if (signRow) signRow.style.display = "none";
+          if (footerStrip) footerStrip.style.display = "none";
+
+          if (floatingQr) {
+            floatingQr.style.display = "flex";
+            const memo = document.getElementById('noticeViewMemoNo')?.value || 'স্মারক-০১/২০২৬';
+            const targetNoticeUrl = `${getVerificationBaseUrl()}?verifyNotice=${encodeURIComponent(memo)}`;
+            generateUniversalQr("nvFloatingQrCode", targetNoticeUrl, 52);
+            const secretEl = document.getElementById("nvFloatingSecretCode");
+            if (secretEl) secretEl.innerText = memo;
+          }
+          handleNoticeQrPositionChange();
+        } else {
+          // Ready Letterhead background only: text overlay enabled
+          if (readyImg) readyImg.style.display = "none";
+          if (floatingQr) floatingQr.style.display = "none";
+          if (padArea) {
+            padArea.style.backgroundImage = `url('${noticeCustomReadyPadImg}')`;
+            padArea.style.backgroundSize = "100% 100%";
+            padArea.style.backgroundPosition = "center";
+            padArea.style.backgroundRepeat = "no-repeat";
+          }
+          if (headerGrid) headerGrid.style.display = "none";
+          if (bismillah) bismillah.style.display = "none";
+          if (doubleDivider) doubleDivider.style.display = "none";
+          if (metaRow) metaRow.style.display = "flex";
+          if (docBadge) docBadge.style.display = "flex";
+          if (contentBox) contentBox.style.display = "block";
+          if (signRow) signRow.style.display = "flex";
+          if (footerStrip) footerStrip.style.display = "none";
         }
-        if (headerGrid) headerGrid.style.visibility = "hidden";
-        if (bismillah) bismillah.style.visibility = "hidden";
-        if (doubleDivider) doubleDivider.style.visibility = "hidden";
-        if (footerStrip) footerStrip.style.visibility = "hidden";
       } else {
+        // Standard System Pad mode
+        if (readyImg) readyImg.style.display = "none";
+        if (floatingQr) floatingQr.style.display = "none";
         if (padArea) {
           padArea.style.backgroundImage = "none";
         }
-        if (headerGrid) headerGrid.style.visibility = "visible";
-        if (bismillah) bismillah.style.visibility = "visible";
-        if (doubleDivider) doubleDivider.style.visibility = "visible";
-        if (footerStrip) footerStrip.style.visibility = "visible";
+        if (headerGrid) headerGrid.style.display = "flex";
+        if (bismillah) bismillah.style.display = "block";
+        if (doubleDivider) doubleDivider.style.display = "block";
+        if (metaRow) metaRow.style.display = "flex";
+        if (docBadge) docBadge.style.display = "flex";
+        if (contentBox) contentBox.style.display = "block";
+        if (signRow) signRow.style.display = "flex";
+        if (footerStrip) footerStrip.style.display = "block";
       }
     }
 
@@ -16477,6 +16613,37 @@
 
     function handleNoticeQrPositionChange() {
       const pos = document.getElementById("nvQrPositionSelect")?.value || "bottom-center";
+      const floatingQr = document.getElementById("nvFloatingQrBox");
+      const isReady = document.getElementById("nvPadModeReady")?.checked;
+      const hideText = document.getElementById("nvHideTextWhenReadyPad")?.checked;
+
+      if (isReady && hideText && floatingQr) {
+        // Floating QR position on top of ready-made notice image
+        floatingQr.style.top = "auto";
+        floatingQr.style.bottom = "auto";
+        floatingQr.style.left = "auto";
+        floatingQr.style.right = "auto";
+        floatingQr.style.transform = "none";
+
+        if (pos === "top-right") {
+          floatingQr.style.top = "20px";
+          floatingQr.style.right = "20px";
+        } else if (pos === "bottom-left") {
+          floatingQr.style.bottom = "20px";
+          floatingQr.style.left = "20px";
+        } else if (pos === "bottom-right") {
+          floatingQr.style.bottom = "20px";
+          floatingQr.style.right = "20px";
+        } else {
+          // bottom-center
+          floatingQr.style.bottom = "20px";
+          floatingQr.style.left = "50%";
+          floatingQr.style.transform = "translateX(-50%)";
+        }
+        return;
+      }
+
+      // Normal pad QR positioning inside sign row or meta row
       const qrCenter = document.querySelector("#noticeViewPadPrintArea .pad-sig-center");
       const signRow = document.getElementById("nvSignRow");
       const metaRow = document.querySelector("#noticeViewPadPrintArea .pad-meta-row");

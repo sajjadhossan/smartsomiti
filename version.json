@@ -1,8 +1,8 @@
 {
   "appName": "স্মার্ট সমিতি",
   "projectSlug": "smartsomiti",
-  "version": "2.5.8",
-  "buildNumber": 10,
+  "version": "2.5.9",
+  "buildNumber": 11,
   "releaseDate": "2026-11-15",
   "releaseName": "স্মার্ট সমিতি এন্টারপ্রাইজ প্ল্যাটফর্ম",
   "vercelUrl": "https://smartsomiti.vercel.app",
