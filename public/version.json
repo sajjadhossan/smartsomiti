@@ -1,0 +1,12 @@
+{
+  "appName": "স্মার্ট সমিতি",
+  "projectSlug": "smartsomiti",
+  "version": "2.6.7",
+  "buildNumber": 19,
+  "releaseDate": "2026-11-15",
+  "releaseName": "স্মার্ট সমিতি এন্টারপ্রাইজ প্ল্যাটফর্ম",
+  "vercelUrl": "https://smartsomiti.vercel.app",
+  "minSupportedVersion": "1.0.0",
+  "downloadUrl": "https://github.com/sajjadhossan/smartsomiti/releases/latest/download/smartsomiti-latest.apk",
+  "changelogBn": "সাইডবার মেনুর ডিজাইন সুসংগতকরণ: ৩টি পরিচ্ছন্ন ক্যাটাগরি গ্রুপিং এবং সমবায় নাম অটো-সিঙ্ক (v2.6.3)।"
+}

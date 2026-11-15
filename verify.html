@@ -120,32 +120,56 @@
         <!-- Quick Demo Pills -->
         <div class="flex flex-wrap items-center justify-center gap-1.5 pt-1 text-xs">
           <span class="text-slate-400 mr-1 font-semibold">দ্রুত পরীক্ষা:</span>
+          <button type="button" data-code="RCT-18" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-18 (সফিকুল)</button>
+          <button type="button" data-code="RCT-17" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-17 (ইয়ামেন)</button>
           <button type="button" data-code="RCT-16" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-16 (শেখ মাসুদ)</button>
-          <button type="button" data-code="RCT-14" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-14 (আওলাদ)</button>
-          <button type="button" data-code="RCT-06" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-06 (কালাম)</button>
-          <button type="button" data-code="স্মারক-০১/২০২৬" class="quick-pill bg-amber-50 hover:bg-amber-100 text-amber-800 px-2.5 py-1 rounded-lg border border-amber-200 font-semibold transition">স্মারক-০১/২০২৬ (পেইড)</button>
-          <button type="button" data-code="স্মারক-০২/২০২৬" class="quick-pill bg-amber-50 hover:bg-amber-100 text-amber-800 px-2.5 py-1 rounded-lg border border-amber-200 font-semibold transition">স্মারক-০২/২০২৬ (বকেয়া)</button>
+          <button type="button" data-code="S-07" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">S-07 (আকাশ)</button>
+          <button type="button" data-code="PAID-LIST" class="quick-pill bg-amber-50 hover:bg-amber-100 text-amber-800 px-2.5 py-1 rounded-lg border border-amber-200 font-semibold transition">PAID-LIST (১৮ জন)</button>
+          <button type="button" data-code="DUE-LIST" class="quick-pill bg-amber-50 hover:bg-amber-100 text-amber-800 px-2.5 py-1 rounded-lg border border-amber-200 font-semibold transition">DUE-LIST (৯ জন)</button>
         </div>
       </div>
     </section>
 
-    <!-- ================= SUMMARY KPI STRIP ================= -->
+    <!-- Summary KPI Strip (Live from Google Sheet) -->
     <section class="grid grid-cols-2 sm:grid-cols-4 gap-3">
       <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
-        <p class="text-xs text-slate-500">মোট সংগৃহীত তহবিল</p>
-        <p class="text-xl font-bold text-emerald-700 mt-1">১,৬০,০০০ ৳</p>
+        <p class="text-xs text-slate-500">সর্বমোট সংগৃহীত তহবিল</p>
+        <p id="kpiTotalFund" class="text-xl font-bold text-emerald-700 mt-1">১,৮০,০০০ ৳</p>
       </div>
       <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
-        <p class="text-xs text-slate-500">যাচাইকৃত রিসিট</p>
-        <p class="text-xl font-bold text-slate-800 mt-1">১৬ টি</p>
+        <p class="text-xs text-slate-500">যাচাইকৃত রিসিট (চলতি মাস)</p>
+        <p id="kpiPaidCount" class="text-xl font-bold text-slate-800 mt-1">১৮ টি</p>
       </div>
       <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
-        <p class="text-xs text-slate-500">বকেয়া সদস্য</p>
-        <p class="text-xl font-bold text-amber-600 mt-1">১১ জন</p>
+        <p class="text-xs text-slate-500">বকেয়া সদস্য (চলতি মাস)</p>
+        <p id="kpiDueCount" class="text-xl font-bold text-amber-600 mt-1">৯ জন</p>
       </div>
       <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
         <p class="text-xs text-slate-500">অনুমোদনকারী</p>
-        <p class="text-sm font-bold text-slate-800 mt-2" id="kpiCashier">সাজ্জাদ হোসেন (কোষাধ্যক্ষ)</p>
+        <p id="kpiCashier" class="text-sm font-bold text-slate-800 mt-2">সাজ্জাদ হোসেন (কোষাধ্যক্ষ)</p>
+      </div>
+    </section>
+
+    <!-- Month-wise & Grand Total Deposit Summary -->
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="px-5 py-4 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2 bg-emerald-50/50">
+        <div>
+          <h3 class="text-base font-bold text-slate-800">📊 মাসভিত্তিক ও সর্বমোট ডিপোজিট হিসাব</h3>
+          <p class="text-xs text-slate-500">গুগল শিট থেকে সরাসরি আপডেটকৃত প্রতিটি মাসের জমার বিবরণ</p>
+        </div>
+        <span id="grandTotalBadge" class="bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-sm">
+          সর্বমোট তহবিল: ১,৮০,০০০/- ৳
+        </span>
+      </div>
+      <div id="monthlySummaryGrid" class="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50/40">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">নভেম্বর ২০২৬</span>
+            <span class="text-xs font-semibold text-slate-500">১৮ / ২৭ জন</span>
+          </div>
+          <p class="text-lg font-bold text-emerald-700 mt-2">১,৮০,০০০/- টাকা</p>
+          <p class="text-xs text-amber-700 mt-0.5">বকেয়া: ৯০,০০০/- টাকা (৯ জন)</p>
+        </div>
       </div>
     </section>
 
@@ -550,7 +574,22 @@
       alert("🔄 ডিফল্ট তথ্য সফলভাবে রিস্টোর হয়েছে!");
     }
 
-    // Official 16 Verified Receipts & Memos
+    // Helper to convert numbers to Bengali digits
+    function toBnNum(n) {
+      const bn = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+      return String(n).replace(/[0-9]/g, d => bn[Number(d)]);
+    }
+
+    function formatBnMoney(amount) {
+      return toBnNum(Number(amount).toLocaleString('en-US')) + '/- টাকা';
+    }
+
+    // Sheet tabs to fetch and calculate
+    const SHEET_TABS = [
+      { name: 'নভেম্বর ২০২৬', sheet: 'Sheet1', target: 270000, perMember: 10000 }
+    ];
+
+    // Official 18 Verified Receipts & Memos
     const RECORDS = [
       {"code": "RCT-01", "alt_code": "সছঐস/রিসিট/২০২৬-০১", "member": "কাওসার আহমেদ রিফাত", "serial": "০২", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "সিটি ব্যাংক (শ্রীনগর শাখা) — যৌথ ক্যাশ ডিপোজিট", "sender": "যৌথ ডিপোজিট (সাজ্জাদ, রিফাত ও রাকিব)", "slip_url": "https://drive.google.com/file/d/1VXTQa7sSZBvtds1mGXdINkc3LoyFW7Ix/view?usp=drivesdk", "pad_url": ""},
       {"code": "RCT-02", "alt_code": "সছঐস/রিসিট/২০২৬-০২", "member": "মনিরুজ্জামান", "serial": "০৮", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা (১০,০৭৫.৮৯ ৳)", "method": "Al Mulla Exchange -> City Bank PLC (Txn: 2026/67179693)", "sender": "MANIRUZZAMAN MD MOTIUR RAHMAN (কুয়েত প্রবাসী)", "slip_url": "https://drive.google.com/file/d/1mCL4YxhBqHE4V_mYFBGmrPx7Y93tdpec/view?usp=drivesdk", "pad_url": ""},
@@ -568,8 +607,10 @@
       {"code": "RCT-14", "alt_code": "সছঐস/রিসিট/২০২৬-১৪", "member": "মোঃ আওলাদ হোসেন", "serial": "০১", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — যৌথ ক্যাশ ২০,০০০/-", "sender": "মিনা মমতাজ (যৌথ স্লিপ: Awolad ও Yasin)", "slip_url": "https://drive.google.com/file/d/1IIxhnvcJHJ27aPqbwPxpAL8JUEwsh3lq/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1sJV5My4sl_N3UfYekGeDHZsRtKAJTv5o/view?usp=drivesdk"},
       {"code": "RCT-15", "alt_code": "সছঐস/রিসিট/২০২৬-১৫", "member": "মোঃ ইয়াছিন দেওয়ান", "serial": "২২", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — যৌথ ক্যাশ ২০,০০০/-", "sender": "মিনা মমতাজ (যৌথ স্লিপ: Awolad ও Yasin)", "slip_url": "https://drive.google.com/file/d/1IIxhnvcJHJ27aPqbwPxpAL8JUEwsh3lq/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/15_ZlrKqEhESNaKgm98csOFQheVsT0E-Z/view?usp=drivesdk"},
       {"code": "RCT-16", "alt_code": "সছঐস/রিসিট/২০২৬-১৬", "member": "শেখ মাসুদ", "serial": "১৭", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash", "sender": "MASUD Sheikh / রহিম (হাঁসাড়া, শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1ThTvBdxfA8zuKsFDrsIs5zYzNlObGczQ/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/11g8gQcn01vnQrVGNo7XnqhMPgnD_RvB6/view?usp=drivesdk"},
-      {"code": "স্মারক-০১/২০২৬", "alt_code": "সছঐস/পেমেন্ট/২০২৬-০১", "member": "মাসিক সঞ্চয় ও কিস্তি জমার বিবরণী তালিকা (১৬ জন)", "serial": "অফিসিয়াল তালিকা", "date": "১৫ নভেম্বর ২০২৬", "amount": "১,৬০,০০০/- টাকা (১৬ জন)", "method": "CITY BANK PLC (REKABI BAZAR) — A/C: 2305158045001", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1RPbSL6_NWhglNV37_dS2JTBrKJ6iIxI7/view?usp=drivesdk"},
-      {"code": "স্মারক-০২/২০২৬", "alt_code": "সছঐস/বকেয়া/২০২৬-০২", "member": "বকেয়া মাসিক কিস্তি জমার তালিকা (১১ জন)", "serial": "অফিসিয়াল বিজ্ঞপ্তি", "date": "১৫ নভেম্বর ২০২৬", "amount": "বকেয়া: ১,১০,০০০/- টাকা (১১ জন)", "method": "সিটি ব্যাংক (২৩০৫১৫৮০৪৫০০১) / বিকাশ: ০১৮৮১২১০৪৪৪", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1ScYKdibY7di1Xe-MPADBm54Vz_FrFLXR/view?usp=drivesdk"}
+      {"code": "RCT-17", "alt_code": "সছঐস/রিসিট/২০২৬-১৭", "member": "মোহাম্মদ ইয়ামেন শেখ", "serial": "০৬", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash Deposit", "sender": "মোঃ ইয়ামেন শেখ", "slip_url": "https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-", "pad_url": ""},
+      {"code": "RCT-18", "alt_code": "সছঐস/রিসিট/২০২৬-১৮", "member": "সফিকুল", "serial": "১১", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash Deposit", "sender": "সফিকুল", "slip_url": "https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-", "pad_url": ""},
+      {"code": "স্মারক-০১/২০২৬", "alt_code": "PAID-LIST", "member": "মাসিক সঞ্চয় ও কিস্তি জমার বিবরণী তালিকা (১৮ জন)", "serial": "অফিসিয়াল তালিকা", "date": "১৫ নভেম্বর ২০২৬", "amount": "১,৮০,০০০/- টাকা (১৮ জন)", "method": "CITY BANK PLC (REKABI BAZAR) — A/C: 2305158045001", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1RPbSL6_NWhglNV37_dS2JTBrKJ6iIxI7/view?usp=drivesdk"},
+      {"code": "স্মারক-০২/২০২৬", "alt_code": "DUE-LIST", "member": "বকেয়া মাসিক কিস্তি জমার তালিকা (৯ জন)", "serial": "অফিসিয়াল বিজ্ঞপ্তি", "date": "১৫ নভেম্বর ২০২৬", "amount": "বকেয়া: ৯০,০০০/- টাকা (৯ জন)", "method": "সিটি ব্যাংক (২৩০৫১৫৮০৪৫০০১) / বিকাশ: ০১৮৮১২১০৪৪৪", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1ScYKdibY7di1Xe-MPADBm54Vz_FrFLXR/view?usp=drivesdk"}
     ];
 
     let liveRecords = [...RECORDS];
@@ -610,11 +651,27 @@
     function verifyQuery(query) {
       const q = (query || '').trim().toLowerCase();
       if (!q) return;
+
+      // Check for S-XX or SXX serial format (e.g., S-07, S-7, S7, ০৭)
+      const sMatch = q.match(/^s-?0*([0-9]+)$/i) || q.match(/^s-?0*([০-৯]+)$/i);
+      let targetSerial = null;
+      if (sMatch) {
+        const raw = sMatch[1].replace(/[০-৯]/g, d => '০১২৩৪৫৬৭৮৯'.indexOf(d));
+        targetSerial = String(raw).padStart(2, '0');
+      }
+
       const stripped = q.replace(/^rct-/, '');
       const match = liveRecords.find(r => {
         const c = r.code.toLowerCase();
         const alt = r.alt_code.toLowerCase();
         const mem = r.member.toLowerCase();
+        
+        // Serial match (e.g. S-07, S-7, or direct numeric match)
+        if (targetSerial && r.serial) {
+          const rSerialEng = r.serial.replace(/[০-৯]/g, d => '০১২৩৪৫৬৭৮৯'.indexOf(d)).padStart(2, '0');
+          if (rSerialEng === targetSerial) return true;
+        }
+
         return c === q || c === ('rct-' + q) || (c.replace(/^rct-0?/, '') === stripped.replace(/^0+/, '')) ||
                alt === q || alt.includes(q) ||
                mem.includes(q) ||
@@ -654,50 +711,113 @@
 
     async function syncFromGoogleSheet() {
       const sheetId = '1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0';
-      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Sheet1`;
-      try {
-        const res = await fetch(url);
-        const text = await res.text();
-        const jsonStr = text.substring(text.indexOf('(') + 1, text.lastIndexOf(')'));
-        const data = JSON.parse(jsonStr);
-        const rows = data.table.rows || [];
-        let paidIdx = 1;
-        rows.forEach(r => {
-          const c = r.c || [];
-          const serial = c[0] && c[0].v ? String(c[0].v).trim() : '';
-          const name = c[1] && c[1].v ? String(c[1].v).trim() : '';
-          const amount = c[8] && c[8].v ? Number(c[8].v) : 0;
-          if (!name || !serial || isNaN(Number(serial)) || amount <= 0) return;
+      let grandTotal = 0;
+      let monthSummaries = [];
 
-          const depositor = c[3] && c[3].v ? String(c[3].v) : 'নিজ';
-          const dateVal = c[4] && (c[4].f || c[4].v) ? String(c[4].f || c[4].v) : '';
-          const bank = c[6] && c[6].v ? String(c[6].v) : 'City Bank PLC';
-          const slipCell = c[9] && c[9].f ? String(c[9].f) : (c[9] && c[9].v ? String(c[9].v) : '');
-          const urlMatch = slipCell.match(/https:\/\/[^"\s)]+/);
-          const slipUrl = urlMatch ? urlMatch[0] : 'https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-';
+      for (const tab of SHEET_TABS) {
+        const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(tab.sheet)}`;
+        try {
+          const res = await fetch(url);
+          const text = await res.text();
+          const jsonStr = text.substring(text.indexOf('(') + 1, text.lastIndexOf(')'));
+          const data = JSON.parse(jsonStr);
+          const rows = data.table.rows || [];
 
-          const existing = liveRecords.find(rec => rec.member === name);
-          if (!existing) {
-            const codeNum = String(paidIdx).padStart(2, '0');
-            liveRecords.push({
-              code: `RCT-${codeNum}`,
-              alt_code: `সছঐস/রিসিট/২০২৬-${codeNum}`,
-              member: name,
-              serial: serial,
-              date: dateVal,
-              amount: `${amount.toLocaleString('en-US')}/- টাকা`,
-              method: bank,
-              sender: depositor,
-              slip_url: slipUrl,
-              pad_url: ''
-            });
-          } else if (urlMatch && urlMatch[0]) {
-            existing.slip_url = urlMatch[0];
-          }
-          paidIdx++;
-        });
-        renderGrid(liveRecords);
-      } catch (err) {}
+          let monthCollected = 0;
+          let monthPaidCount = 0;
+          let totalMembers = 27;
+
+          let paidIdx = 1;
+          rows.forEach(r => {
+            const c = r.c || [];
+            const serial = c[0] && c[0].v ? String(c[0].v).trim() : '';
+            const name = c[1] && c[1].v ? String(c[1].v).trim() : '';
+            const amount = c[8] && c[8].v ? Number(c[8].v) : 0;
+            if (!name || !serial || isNaN(Number(serial))) return;
+
+            if (amount > 0) {
+              monthCollected += amount;
+              monthPaidCount++;
+            }
+
+            if (amount <= 0) return;
+
+            const depositor = c[3] && c[3].v ? String(c[3].v) : 'নিজ';
+            const dateVal = c[4] && (c[4].f || c[4].v) ? String(c[4].f || c[4].v) : '';
+            const bank = c[6] && c[6].v ? String(c[6].v) : 'City Bank PLC';
+            const slipCell = c[9] && c[9].f ? String(c[9].f) : (c[9] && c[9].v ? String(c[9].v) : '');
+            const urlMatch = slipCell.match(/https:\/\/[^"\s)]+/);
+            const slipUrl = urlMatch ? urlMatch[0] : 'https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-';
+
+            const existing = liveRecords.find(rec => rec.member === name);
+            if (!existing) {
+              const codeNum = String(paidIdx).padStart(2, '0');
+              liveRecords.push({
+                code: `RCT-${codeNum}`,
+                alt_code: `সছঐস/রিসিট/২০২৬-${codeNum}`,
+                member: name,
+                serial: serial,
+                date: dateVal,
+                amount: `${amount.toLocaleString('en-US')}/- টাকা`,
+                method: bank,
+                sender: depositor,
+                slip_url: slipUrl,
+                pad_url: ''
+              });
+            } else if (urlMatch && urlMatch[0]) {
+              existing.slip_url = urlMatch[0];
+            }
+            paidIdx++;
+          });
+
+          grandTotal += monthCollected;
+          const dueCount = Math.max(0, totalMembers - monthPaidCount);
+          const dueAmount = dueCount * tab.perMember;
+
+          monthSummaries.push({
+            name: tab.name,
+            paidCount: monthPaidCount,
+            totalMembers: totalMembers,
+            collected: monthCollected,
+            dueCount: dueCount,
+            dueAmount: dueAmount
+          });
+
+          // Update KPI Strip with current month
+          const elTotalFund = document.getElementById('kpiTotalFund');
+          const elPaidCount = document.getElementById('kpiPaidCount');
+          const elDueCount = document.getElementById('kpiDueCount');
+          if (elTotalFund) elTotalFund.innerText = `${toBnNum(grandTotal.toLocaleString('en-US'))} ৳`;
+          if (elPaidCount) elPaidCount.innerText = `${toBnNum(monthPaidCount)} টি`;
+          if (elDueCount) elDueCount.innerText = `${toBnNum(dueCount)} জন`;
+
+        } catch (err) {
+          console.error('Google Sheet Sync Error:', err);
+        }
+      }
+
+      // Update Grand Total Badge
+      const elGrandBadge = document.getElementById('grandTotalBadge');
+      if (elGrandBadge && grandTotal > 0) {
+        elGrandBadge.innerText = `সর্বমোট তহবিল: ${toBnNum(grandTotal.toLocaleString('en-US'))}/- ৳`;
+      }
+
+      // Render Monthly Summary Grid
+      const grid = document.getElementById('monthlySummaryGrid');
+      if (grid && monthSummaries.length > 0) {
+        grid.innerHTML = monthSummaries.map(m => `
+          <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50/40">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">${m.name}</span>
+              <span class="text-xs font-semibold text-slate-500">${toBnNum(m.paidCount)} / ${toBnNum(m.totalMembers)} জন</span>
+            </div>
+            <p class="text-lg font-bold text-emerald-700 mt-2">${toBnNum(m.collected.toLocaleString('en-US'))}/- টাকা</p>
+            <p class="text-xs text-amber-700 mt-0.5">বকেয়া: ${toBnNum(m.dueAmount.toLocaleString('en-US'))}/- টাকা (${toBnNum(m.dueCount)} জন)</p>
+          </div>
+        `).join('');
+      }
+
+      renderGrid(liveRecords);
     }
 
     document.getElementById('verifyForm').addEventListener('submit', (e) => {
@@ -723,7 +843,6 @@
     // Initialize
     applyPadConfig();
     renderGrid(liveRecords);
-    syncFromGoogleSheet();
 
     const params = new URLSearchParams(window.location.search);
     const urlId = params.get('id') || params.get('code') || params.get('verify');
@@ -731,6 +850,12 @@
       document.getElementById('verifyInput').value = urlId;
       verifyQuery(urlId);
     }
+
+    syncFromGoogleSheet().then(() => {
+      if (urlId && !currentActiveRecord) {
+        verifyQuery(urlId);
+      }
+    });
   </script>
 </body>
 </html>
