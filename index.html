@@ -2706,10 +2706,26 @@
         <span>•</span>
         <span>☁️ ফায়ারবেস ক্লাউড সিকিউরড</span>
         <span>•</span>
-        <span>🇧🇩 রিলিজ v2.5.5</span>
+        <span>🇧🇩 রিলিজ v2.5.6</span>
       </div>
       <div style="text-align: center; margin-top: 8px; font-size: 11px; font-weight: 800; color: #0F9D58;">
-        স্মার্ট সমিতি প্ল্যাটফর্ম • সিস্টেম সংস্করণ v2.5.5
+        স্মার্ট সমিতি প্ল্যাটফর্ম • সিস্টেম সংস্করণ v2.5.6
+      </div>
+
+      <!-- Public Secret Code & Document Verification Box -->
+      <div class="public-verify-card" style="margin-top: 18px; padding: 14px 16px; border-radius: 12px; background: #F8FAFC; border: 1.5px dashed #0F9D58; text-align: center;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13.5px; font-weight: 800; color: #0F9D58; margin-bottom: 4px;">
+          <span>🔍</span> <span>অফিসিয়াল নোটিশ বা রসিদ যাচাই করুন</span>
+        </div>
+        <p style="font-size: 11px; color: #64748B; margin: 0 0 10px; line-height: 1.4;">
+          লগইন ছাড়াই নোটিশের স্মারক কোড বা রসিদ নম্বর দিয়ে আসল কপি ও অনুমোদন যাচাই করুন
+        </p>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="publicVerifyInput" placeholder="উদা: স্মারক-০১/২০২৬ বা RCT-101" style="flex: 1; padding: 9px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 12px; font-weight: 600; outline: none;" onkeydown="if(event.key==='Enter') handlePublicVerify()">
+          <button type="button" onclick="handlePublicVerify()" style="background: #0F9D58; color: white; border: none; border-radius: 8px; padding: 9px 16px; font-size: 12px; font-weight: 800; cursor: pointer; white-space: nowrap; box-shadow: 0 2px 6px rgba(15,157,88,0.25);">
+            যাচাই করুন
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -2805,7 +2821,7 @@
             <div class="society-switch-pill" onclick="openSocietySwitcher()" title="সমিতি পরিবর্তন করতে ক্লিক করুন">
               <span id="dashSomitiName" style="font-size: 13.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 135px; display: inline-block; vertical-align: middle;">স্বপ্ন ছোঁয়া ঐক্য সমিতি</span>
               <span id="dashSomitiCode" style="font-size: 10px; font-weight: 700; color: var(--primary);">SMT-7890</span>
-              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.5.5</span>
+              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.5.6</span>
               <span style="font-size: 10px; opacity: 0.7;">▾</span>
             </div>
             <div id="headerActiveViewTitle" class="header-active-view-badge" title="বর্তমান সক্রিয় মডিউল">📊 এডমিন ড্যাশবোর্ড</div>
@@ -2916,7 +2932,7 @@
           <div>
             <h3 id="sideSomitiName" style="font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.2;">স্বপ্ন ছোঁয়া ঐক্য সমিতি</h3>
             <span id="sideSomitiCode" style="font-size: 10px; background: var(--primary-light); color: var(--primary); font-weight: 700; padding: 1px 6px; border-radius: 4px;">SMT-7890</span>
-            <span style="font-size: 10px; background: #059669; color: white; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 3px;">v2.5.5</span>
+            <span style="font-size: 10px; background: #059669; color: white; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 3px;">v2.5.6</span>
           </div>
         </div>
         <button onclick="closeSidebar()" style="background: none; border: none; font-size: 22px; color: var(--text-muted); cursor: pointer; padding: 4px;">✕</button>
@@ -3136,7 +3152,7 @@
       </div>
 
       <div style="padding: 10px; border-top: 1px solid var(--border); font-size: 11px; text-align: center; color: var(--text-muted); background: var(--bg);">
-        স্বপ্ন ছোঁয়া ঐক্য সমিতি প্ল্যাটফর্ম • v2.5.5 (রিলিজ)
+        স্বপ্ন ছোঁয়া ঐক্য সমিতি প্ল্যাটফর্ম • v2.5.6 (রিলিজ)
       </div>
     </div>
 
@@ -3279,9 +3295,9 @@
           <div class="sheet-icon-circle" style="background: #DCFCE7; color: #166534;">📱</div>
           <div>
             <div style="font-weight: 700; font-size: 13px;">অ্যাপ সংস্করণ ও APK আপডেট</div>
-            <div style="font-size: 10.5px; color: var(--text-muted);">বর্তমান সংস্করণ v2.5.5 • ইন-প্লেস APK ডাউনলোড</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">বর্তমান সংস্করণ v2.5.6 • ইন-প্লেস APK ডাউনলোড</div>
           </div>
-          <span class="sheet-badge" style="background: #BBF7D0; color: #166534;">v2.5.5</span>
+          <span class="sheet-badge" style="background: #BBF7D0; color: #166534;">v2.5.6</span>
         </button>
 
         <!-- Group 4: 🚪 বিপজ্জনক অপশন / সেশন -->
@@ -3374,10 +3390,15 @@
               <div id="dashSomitiBrandSlogan" style="font-size: 11px; color: var(--text-muted);">"সঞ্চয়ে সমৃদ্ধি, একতায় শক্তি"</div>
             </div>
           </div>
-          <button onclick="navTo('somiti')" style="background: var(--primary-light); color: var(--primary); border: 1px solid var(--border); padding: 7px 11px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 4px;">
-            <span>⚙️ প্রোফাইল</span>
-            <span>↗</span>
-          </button>
+          <div style="display: flex; gap: 6px;">
+            <button type="button" onclick="openSomitiSwitcherModal()" style="background: #0F9D58; color: white; border: none; padding: 7px 11px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 4px; box-shadow: 0 1px 4px rgba(15,157,88,0.25);">
+              <span>🏢 সমিতি হাব</span>
+            </button>
+            <button onclick="navTo('somiti')" style="background: var(--primary-light); color: var(--primary); border: 1px solid var(--border); padding: 7px 11px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 4px;">
+              <span>⚙️ প্রোফাইল</span>
+              <span>↗</span>
+            </button>
+          </div>
         </div>
 
         <!-- ================= SYSTEM STATUS STRIP (Tips 49 & 50) ================= -->
@@ -5024,6 +5045,43 @@
               </label>
             </div>
           </div>
+
+          <!-- Ready Pad Smart Switch & QR Positioning Controls -->
+          <div style="background: #F8FAFC; border: 1.5px solid #CBD5E1; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+              <span style="font-weight: 800; font-size: 13px; color: #0F172A; display: flex; align-items: center; gap: 6px;">
+                <span>📜 প্যাড মোড নির্বাচন:</span>
+              </span>
+              <div style="display: flex; gap: 12px; font-size: 12px; font-weight: 700;">
+                <label style="cursor: pointer; display: flex; align-items: center; gap: 4px; background: white; padding: 4px 8px; border-radius: 6px; border: 1px solid #CBD5E1;">
+                  <input type="radio" name="nvPadMode" id="nvPadModeSystem" value="system" checked onchange="handleNoticePadModeChange()"> 🏛️ সিস্টেম প্যাড
+                </label>
+                <label style="cursor: pointer; display: flex; align-items: center; gap: 4px; background: white; padding: 4px 8px; border-radius: 6px; border: 1px solid #CBD5E1;">
+                  <input type="radio" name="nvPadMode" id="nvPadModeReady" value="ready" onchange="handleNoticePadModeChange()"> 🎨 কাস্টম রেডি প্যাড
+                </label>
+              </div>
+            </div>
+
+            <!-- Upload Ready Pad Section (Visible when Ready Pad selected) -->
+            <div id="nvReadyPadUploadBox" style="display: none; background: #FFFFFF; border: 1.5px dashed #0F9D58; border-radius: 8px; padding: 12px; margin-bottom: 10px; text-align: center;">
+              <div style="font-size: 12px; color: #166534; font-weight: 800; margin-bottom: 6px;">
+                🖼️ আপনার প্রস্তুতকৃত সম্পূর্ণ প্যাডের ছবি (A4 Size) আপলোড করুন:
+              </div>
+              <input type="file" id="nvReadyPadFileInput" accept="image/*" onchange="handleNoticeReadyPadUpload(event)" style="font-size: 11px;">
+              <div id="nvReadyPadStatus" style="font-size: 11px; color: #64748B; margin-top: 4px;">কোনো ছবি আপলোড করা হয়নি</div>
+            </div>
+
+            <!-- Smart QR & Secret Code Positioning -->
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; padding-top: 6px; border-top: 1px dashed #E2E8F0;">
+              <span style="font-weight: 700; color: #334155;">📍 ভেরিফিকেশন QR কোড ও সিক্রেট কোড পজিশন:</span>
+              <select id="nvQrPositionSelect" onchange="handleNoticeQrPositionChange()" style="padding: 6px 10px; border-radius: 6px; border: 1px solid #94A3B8; font-size: 11.5px; font-weight: 700; background: white;">
+                <option value="bottom-center">নিচে মাঝখানে (ডিফল্ট)</option>
+                <option value="bottom-right">নিচে ডানে (সভাপতির সিল ও স্বাক্ষরের পাশে)</option>
+                <option value="bottom-left">নিচে বামে (স্মারক ও কোষাধ্যক্ষের পাশে)</option>
+                <option value="top-right">উপরে ডানে (তারিখের পাশে)</option>
+              </select>
+            </div>
+          </div>
         </div>
 
         <!-- Official Letterhead Pad Display Area -->
@@ -5138,10 +5196,10 @@
             <span>☁️ ড্রাইভে সেভ ও লিংক</span>
           </button>
           <button type="button" onclick="downloadNoticeViewImage()" style="background: #7C3AED; color: white; border: none; padding: 11px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
-            <span>🖼️ নোটিশ ছবি ডাউনলোড</span>
+            <span>🖼️ নোটিশ ছবি (PNG)</span>
           </button>
-          <button type="button" onclick="shareNoticeViewWhatsApp()" class="wa-btn" style="padding: 11px;">
-            <span>📲 WhatsApp শেয়ার</span>
+          <button type="button" onclick="shareNoticeViewWhatsAppText()" class="wa-btn" style="padding: 11px; background: #25D366; color: white; border: none; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <span>📲 WhatsApp টেক্সট ও লিংক</span>
           </button>
         </div>
 
@@ -5273,7 +5331,7 @@
               <div style="font-size: 15px; font-weight: 800; color: #78350F;">প্ল্যাটফর্ম সুপার এডমিন কন্ট্রোল</div>
               <div style="font-size: 11px; color: #92400E;">অ্যাকাউন্ট: <strong>hossansajjad1994@gmail.com</strong> (সর্বোচ্চ ক্ষমতা)</div>
             </div>
-            <span style="background: #D97706; color: white; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800;">GLOBAL ACTIVE • v2.5.5</span>
+            <span style="background: #D97706; color: white; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800;">GLOBAL ACTIVE • v2.5.6</span>
           </div>
           <p style="font-size: 12px; color: #92400E; margin-top: 6px;">
             এখানে যেকোনো ফিচার বন্ধ করলে তা সাথে সাথে পুরো সিস্টেমে বা নির্দিষ্ট সমিতিতে নিষ্ক্রিয় হয়ে যাবে।
@@ -10408,6 +10466,29 @@
     </div>
   </div>
 
+  <!-- ================= SOMITI SWITCHER MODAL ================= -->
+  <div id="somitiSwitcherModal" class="modal-overlay" style="display: none; z-index: 2600;" onclick="if(event.target===this)closeSomitiSwitcherModal()">
+    <div class="modal-box" style="max-width: 440px; border-radius: 16px; padding: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #E2E8F0; padding-bottom: 10px;">
+        <h3 style="font-size: 16px; font-weight: 800; color: #1E293B; margin: 0; display: flex; align-items: center; gap: 6px;">
+          <span>🏢</span> <span>সুপার অ্যাডমিন: সমিতি নির্বাচন হাব</span>
+        </h3>
+        <button type="button" onclick="closeSomitiSwitcherModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #64748B;">✕</button>
+      </div>
+      <p style="font-size: 12px; color: #64748B; margin-bottom: 14px; line-height: 1.4;">
+        যে সমিতিতে কাজ করতে চান সেটি নির্বাচন করুন। সকল হিসাব, সদস্য তালিকা ও নোটিশ স্বয়ংক্রিয়ভাবে সেই সমিতির আন্ডারে পরিচালিত হবে।
+      </p>
+      <div id="somitiSwitcherList" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;">
+        <!-- Dynamically rendered list of societies -->
+      </div>
+      <div style="text-align: right;">
+        <button type="button" onclick="closeSomitiSwitcherModal()" style="background: #E2E8F0; color: #334155; border: none; padding: 9px 16px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;">
+          বন্ধ করুন
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ================= MEMBER PASSBOOK & PROFILE MODAL ================= -->
   <div id="memberModal" class="modal-overlay" style="display: none;">
     <div class="modal-box">
@@ -10691,8 +10772,8 @@
     </div>
   </div>
 
-  <!-- Firebase Scripts -->
-
+  <!-- Firebase & Google Identity Scripts -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -10741,9 +10822,45 @@
         currentUser = user;
         await checkAndRouteUser(user);
       } else {
-        if (!currentUser) showScreen('login');
+        if (!currentUser) {
+          showScreen('login');
+          initWebGoogleOneTap();
+        }
       }
     });
+
+    function initWebGoogleOneTap() {
+      if (window.NativeAuthBridge) return; // Handled natively in Android app
+      if (currentUser) return;
+      if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
+        try {
+          google.accounts.id.initialize({
+            client_id: "122717224216-somitiappweb.apps.googleusercontent.com",
+            auto_select: false,
+            cancel_on_tap_outside: true,
+            callback: async (response) => {
+              if (response && response.credential) {
+                const credential = firebase.auth.GoogleAuthProvider.credential(response.credential);
+                try {
+                  const res = await auth.signInWithCredential(credential);
+                  if (res && res.user) {
+                    currentUser = res.user;
+                    await checkAndRouteUser(res.user);
+                  }
+                } catch(err) {
+                  console.warn("One tap signin notice:", err);
+                }
+              }
+            }
+          });
+          google.accounts.id.prompt();
+        } catch(e) {
+          console.warn("Google One-Tap notice:", e);
+        }
+      } else {
+        setTimeout(initWebGoogleOneTap, 1500);
+      }
+    }
 
     function showScreen(screen) {
       document.getElementById("loginScreen").style.display = screen === 'login' ? 'flex' : 'none';
@@ -11195,6 +11312,86 @@
         try { window.NativeAuthBridge.postMessage('google_sign_out'); } catch(e) {}
       }
       auth.signOut().finally(() => showScreen('login'));
+    }
+
+    // ================= PUBLIC VERIFICATION & SOMITI SWITCHER =================
+    function handlePublicVerify() {
+      const input = document.getElementById("publicVerifyInput");
+      let val = (input ? input.value : "").trim();
+      if (!val) {
+        alert("অনুগ্রহ করে নোটিশের স্মারক নম্বর বা রসিদ কোড লিখুন।");
+        return;
+      }
+      if (val.includes("?")) {
+        try {
+          const url = new URL(val, window.location.origin);
+          val = url.searchParams.get("verify") || url.searchParams.get("verifyNotice") || url.searchParams.get("notice") || url.searchParams.get("memo") || url.searchParams.get("rct") || val;
+        } catch(e) {}
+      }
+      if (val.toLowerCase().startsWith("rct") || val.includes("রসিদ") || /^\d+$/.test(val)) {
+        openVerifyReceiptModal(val);
+      } else {
+        openVerifyNoticeModal(val);
+      }
+    }
+
+    function openSomitiSwitcherModal() {
+      const modal = document.getElementById("somitiSwitcherModal");
+      const list = document.getElementById("somitiSwitcherList");
+      if (!modal || !list) return;
+
+      const currentId = currentSomiti?.id || "main";
+      const somitis = [
+        {
+          id: "main",
+          name: "স্বপ্ন ছোঁয়া ঐক্য সমিতি",
+          code: "SW-2026",
+          tagline: "স্বচ্ছতা ও ঐক্যের প্রতীক",
+          address: "শ্রীনগর, মুন্সীগঞ্জ",
+          isPrimary: true
+        },
+        {
+          id: "branch-mirpur",
+          name: "স্বপ্ন ছোঁয়া ঐক্য সমিতি (মিরপুর শাখা)",
+          code: "SW-MIR-01",
+          tagline: "ছোট সঞ্চয়, বড় স্বপ্ন",
+          address: "মিরপুর-১০, ঢাকা",
+          isPrimary: false
+        }
+      ];
+
+      list.innerHTML = somitis.map(item => `
+        <div onclick="selectSomitiFromSwitcher('${item.id}', '${item.name}')" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-radius: 10px; border: 1.5px solid ${item.id === currentId ? '#0F9D58' : '#CBD5E1'}; background: ${item.id === currentId ? '#F0FDF4' : '#FFFFFF'}; cursor: pointer; transition: all 0.2s;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 24px;">🏛️</span>
+            <div>
+              <div style="font-size: 13.5px; font-weight: 800; color: #1E293B;">${item.name}</div>
+              <div style="font-size: 11px; color: #64748B;">কোড: ${item.code} • ${item.address}</div>
+            </div>
+          </div>
+          <div>
+            ${item.id === currentId ? '<span style="font-size: 11px; font-weight: 800; background: #0F9D58; color: white; padding: 4px 8px; border-radius: 6px;">সক্রিয়</span>' : '<span style="font-size: 11px; font-weight: 700; color: #0F9D58;">প্রবেশ করুন ↗</span>'}
+          </div>
+        </div>
+      `).join('');
+
+      modal.style.display = "flex";
+    }
+
+    function closeSomitiSwitcherModal() {
+      const modal = document.getElementById("somitiSwitcherModal");
+      if (modal) modal.style.display = "none";
+    }
+
+    function selectSomitiFromSwitcher(id, name) {
+      if (currentSomiti) {
+        currentSomiti.id = id;
+        currentSomiti.name = name;
+      }
+      currentSomitiId = id;
+      closeSomitiSwitcherModal();
+      renderPad(currentSomiti);
+      alert(`🎉 "${name}" সফলভাবে নির্বাচন করা হয়েছে! ড্যাশবোর্ড আপডেট হয়েছে।`);
     }
 
     // ================= BENGALI DIGITS, WORDS & LETTERHEAD HELPERS =================
@@ -12619,7 +12816,7 @@
           alert(`📱 স্বপ্ন ছোঁয়া ঐক্য সমিতি - অ্যাপ সংস্করণ তথ্য:\n\n• বর্তমান সংস্করণ: v${info.version} (Build ${info.buildNumber})\n• রিলিজ তারিখ: ${info.releaseDate}\n• নোট: ${info.changelogBn || 'সর্বশেষ আপডেট কার্যকর'}\n\n✓ এই এপিকে রিলিজটি পারসিস্টেন্ট কি-স্টোর দিয়ে সাইন করা।\nআগের অ্যাপ ডিলিট না করেই সরাসরি আপডেট করা যাবে।\n\nডাউনলোড লিংক: ${info.downloadUrl || 'somiti-latest.apk'}`);
         })
         .catch(() => {
-          alert("📱 স্বপ্ন ছোঁয়া ঐক্য সমিতি\n\n• বর্তমান সংস্করণ: v2.5.5 (Build 3)\n• ইন-প্লেস আপডেট: সক্রিয়\n(আগের অ্যাপ আনইনস্টল না করেই নতুন ভার্সন আপডেট হবে)");
+          alert("📱 স্বপ্ন ছোঁয়া ঐক্য সমিতি\n\n• বর্তমান সংস্করণ: v2.5.6 (Build 3)\n• ইন-প্লেস আপডেট: সক্রিয়\n(আগের অ্যাপ আনইনস্টল না করেই নতুন ভার্সন আপডেট হবে)");
         });
     }
 
@@ -15914,15 +16111,97 @@
       exportAreaAsContinuousImage('noticeViewPadPrintArea', `Notice_${title.slice(0, 20)}_Full.png`);
     }
 
-    function shareNoticeViewWhatsApp() {
+    let noticeCustomReadyPadImg = null;
+
+    function handleNoticePadModeChange() {
+      const isReady = document.getElementById("nvPadModeReady")?.checked;
+      const uploadBox = document.getElementById("nvReadyPadUploadBox");
+      const padArea = document.getElementById("noticeViewPadPrintArea");
+      const headerGrid = document.getElementById("nvHeaderGrid");
+      const bismillah = padArea?.querySelector(".pad-top-bismillah");
+      const footerStrip = padArea?.querySelector(".pad-footer-strip");
+      const doubleDivider = padArea?.querySelector(".pad-double-divider");
+
+      if (uploadBox) uploadBox.style.display = isReady ? "block" : "none";
+
+      if (isReady && noticeCustomReadyPadImg) {
+        if (padArea) {
+          padArea.style.backgroundImage = `url('${noticeCustomReadyPadImg}')`;
+          padArea.style.backgroundSize = "cover";
+          padArea.style.backgroundPosition = "center";
+          padArea.style.backgroundRepeat = "no-repeat";
+        }
+        if (headerGrid) headerGrid.style.visibility = "hidden";
+        if (bismillah) bismillah.style.visibility = "hidden";
+        if (doubleDivider) doubleDivider.style.visibility = "hidden";
+        if (footerStrip) footerStrip.style.visibility = "hidden";
+      } else {
+        if (padArea) {
+          padArea.style.backgroundImage = "none";
+        }
+        if (headerGrid) headerGrid.style.visibility = "visible";
+        if (bismillah) bismillah.style.visibility = "visible";
+        if (doubleDivider) doubleDivider.style.visibility = "visible";
+        if (footerStrip) footerStrip.style.visibility = "visible";
+      }
+    }
+
+    function handleNoticeReadyPadUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        noticeCustomReadyPadImg = e.target.result;
+        const status = document.getElementById("nvReadyPadStatus");
+        if (status) {
+          status.innerText = "✅ রেডি প্যাড ছবি সফলভাবে লোড হয়েছে!";
+          status.style.color = "#16A34A";
+        }
+        handleNoticePadModeChange();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleNoticeQrPositionChange() {
+      const pos = document.getElementById("nvQrPositionSelect")?.value || "bottom-center";
+      const qrCenter = document.querySelector("#noticeViewPadPrintArea .pad-sig-center");
+      const signRow = document.getElementById("nvSignRow");
+      const metaRow = document.querySelector("#noticeViewPadPrintArea .pad-meta-row");
+      if (!qrCenter) return;
+
+      if (pos === "top-right" && metaRow) {
+        qrCenter.style.display = "inline-block";
+        metaRow.appendChild(qrCenter);
+      } else if (pos === "bottom-left" && signRow) {
+        qrCenter.style.display = "block";
+        signRow.prepend(qrCenter);
+      } else if (pos === "bottom-right" && signRow) {
+        qrCenter.style.display = "block";
+        signRow.appendChild(qrCenter);
+      } else {
+        qrCenter.style.display = "block";
+        const colCashier = document.getElementById("nvColCashier");
+        if (colCashier && colCashier.nextElementSibling !== qrCenter) {
+          colCashier.after(qrCenter);
+        }
+      }
+    }
+
+    function shareNoticeViewWhatsAppText() {
       const s = currentSomiti || {};
       const memo = document.getElementById('noticeViewMemoNo')?.value || '';
       const date = document.getElementById('noticeViewDate')?.value || '';
       const subject = document.getElementById('noticeViewTitle')?.value || '';
       const body = document.getElementById('noticeViewBody')?.value || '';
+      const verifyLink = `${getVerificationBaseUrl()}?verifyNotice=${encodeURIComponent(memo)}`;
 
-      const text = `*${s.name || 'সমিতি'}*\n📢 *অফিসিয়াল বিজ্ঞপ্তি*\nস্মারক: ${memo} | তারিখ: ${date}\n\n*বিষয়: ${subject}*\n\n${body}\n\nধন্যবাদান্তে,\n*${s.name || 'কার্যনির্বাহী পরিষদ'}*`;
+      const text = `*${s.name || 'স্বপ্ন ছোঁয়া ঐক্য সমিতি'}*\n📢 *অফিসিয়াল বিজ্ঞপ্তি*\n━━━━━━━━━━━━━━━━━━━━\nস্মারক নং: ${memo}\nতারিখ: ${date}\n\n*বিষয়: ${subject}*\n\n${body}\n\n🔍 *অনলাইনে আসল নোটিশ ও অনুমোদন যাচাই করুন:*\n${verifyLink}\n━━━━━━━━━━━━━━━━━━━━\nধন্যবাদান্তে,\n*${s.name || 'কার্যনির্বাহী পরিষদ'}*`;
+
       window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    function shareNoticeViewWhatsApp() {
+      shareNoticeViewWhatsAppText();
     }
 
     async function uploadNoticeToGoogleDrive() {
