@@ -85,10 +85,10 @@ class DriveService {
     buffer.writeln('----------------------------------------------------');
     buffer.writeln('             জমা ও কালেকশন লেনদেন হিস্ট্রি');
     buffer.writeln('----------------------------------------------------');
-    buffer.writeln('তারিখ ও সময়,সদস্য নং,সদস্যের নাম,জমার ধরণ,পরিমাণ (টাকা),মন্তব্য/রসিদ,রেকর্ডকারী,ডিভাইস');
+    buffer.writeln('তারিখ ও সময়,সদস্য নং,সদস্যের নাম,জমার ধরণ,পরিমাণ (টাকা),মন্তব্য/রসিদ,ডিভাইস');
     for (final d in deposits) {
       final formattedDate = DateFormat('dd-MM-yyyy hh:mm a').format(d.date);
-      buffer.writeln('"$formattedDate","${d.memberNumber}","${d.memberName}","${d.type}",${d.amount},"${d.note}","${d.recordedBy}","${d.deviceSource}"');
+      buffer.writeln('"$formattedDate","${d.memberNumber}","${d.memberName}","${d.type}",${d.amount},"${d.note}","${d.deviceSource}"');
     }
     buffer.writeln('');
 

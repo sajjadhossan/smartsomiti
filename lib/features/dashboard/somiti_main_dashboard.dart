@@ -28,6 +28,7 @@ class SomitiMainDashboard extends StatefulWidget {
 class _SomitiMainDashboardState extends State<SomitiMainDashboard> {
   int _currentIndex = 0;
   bool _isBalanceHidden = false;
+  final AuthService _authService = AuthService();
   final SomitiService _somitiService = SomitiService();
   final DriveService _driveService = DriveService();
 
@@ -926,7 +927,7 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
               {'group': '⚡ দ্রুত কার্যাবলি', 'title': 'দ্রুত জমা গ্রহণ ও কিস্তি', 'desc': 'সঞ্চয় বা ঋণের কিস্তি কালেকশন', 'icon': Icons.arrow_downward_rounded, 'color': const Color(0xFF0284C7), 'action': () { Navigator.pop(ctx); _showAddDepositDialog(); }},
               {'group': '⚡ দ্রুত কার্যাবলি', 'title': 'নতুন ঋণ বিতরণ ও আবেদন', 'desc': 'ঋণ অনুমোদন ও কিস্তি শিডিউল', 'icon': Icons.account_balance_wallet_rounded, 'color': const Color(0xFFD97706), 'action': () {
                 Navigator.pop(ctx);
-                if (FeatureManagementService().canAccess('loan_management', somitiId: somiti.id)) {
+                if (FeatureManagementService().canAccess(featureKey: 'loan_management', societyId: somiti.id)) {
                   Navigator.push(context, MaterialPageRoute(builder: (_) => LoanManagementScreen(somitiId: somiti.id, somitiName: somiti.name, currentUserName: widget.user.displayName ?? 'এডমিন')));
                 }
               }},
@@ -935,13 +936,13 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
               // Group 2: রিপোর্ট ও এক্সপোর্ট
               {'group': '📑 রিপোর্ট ও এক্সপোর্ট', 'title': 'আয়-ব্যয় ও লাভ-ক্ষতি রিপোর্ট', 'desc': 'উদ্বৃত্তপত্র ও ব্যালেন্স শিট', 'icon': Icons.analytics_outlined, 'color': const Color(0xFF7C3AED), 'action': () {
                 Navigator.pop(ctx);
-                if (FeatureManagementService().canAccess('reports', somitiId: somiti.id)) {
+                if (FeatureManagementService().canAccess(featureKey: 'reports', societyId: somiti.id)) {
                   Navigator.push(context, MaterialPageRoute(builder: (_) => FinancialReportsScreen(somitiId: somiti.id, somitiName: somiti.name)));
                 }
               }},
               {'group': '📑 রিপোর্ট ও এক্সপোর্ট', 'title': 'ক্যাশ বহি ও ব্যাংক অ্যাকাউন্ট', 'desc': 'দৈনিক জমা-খরচের খতিয়ান', 'icon': Icons.account_balance_rounded, 'color': const Color(0xFF4338CA), 'action': () {
                 Navigator.pop(ctx);
-                if (FeatureManagementService().canAccess('financial_accounting', somitiId: somiti.id)) {
+                if (FeatureManagementService().canAccess(featureKey: 'financial_accounting', societyId: somiti.id)) {
                   Navigator.push(context, MaterialPageRoute(builder: (_) => AccountingScreen(somitiId: somiti.id, somitiName: somiti.name, currentUserName: widget.user.displayName ?? 'এডমিন')));
                 }
               }},
@@ -1137,7 +1138,7 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
                       ),
                     ),
                     actions: [
-                      if (FeatureManagementService().canAccess('loan_management', somitiId: somiti.id))
+                      if (FeatureManagementService().canAccess(featureKey: 'loan_management', societyId: somiti.id))
                         IconButton(
                           tooltip: 'ঋণ ব্যবস্থাপনা',
                           icon: const Icon(Icons.account_balance_wallet_outlined, color: Color(0xFF0F5132)),
@@ -1154,7 +1155,7 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
                             );
                           },
                         ),
-                      if (FeatureManagementService().canAccess('financial_accounting', somitiId: somiti.id))
+                      if (FeatureManagementService().canAccess(featureKey: 'financial_accounting', societyId: somiti.id))
                         IconButton(
                           tooltip: 'হিসাব ও ক্যাশবহি',
                           icon: const Icon(Icons.account_balance_rounded, color: Color(0xFF1E293B)),
@@ -1171,7 +1172,7 @@ ${note.isNotEmpty ? 'নোট: ' + note + '\n' : ''}💰 *জমার পর�
                             );
                           },
                         ),
-                      if (FeatureManagementService().canAccess('reports', somitiId: somiti.id))
+                      if (FeatureManagementService().canAccess(featureKey: 'reports', societyId: somiti.id))
                         IconButton(
                           tooltip: 'আর্থিক নিরীক্ষা (লাভ-ক্ষতি ও ব্যালেন্স শিট)',
                           icon: const Icon(Icons.analytics_outlined, color: Color(0xFF10B981)),
