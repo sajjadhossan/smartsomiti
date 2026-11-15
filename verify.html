@@ -20,6 +20,20 @@
     .animate-pop {
       animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
+    @keyframes toastSlideIn {
+      0% { opacity: 0; transform: translateY(-16px) scale(0.96); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes toastSlideOut {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-16px) scale(0.96); }
+    }
+    .animate-toast-in {
+      animation: toastSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .animate-toast-out {
+      animation: toastSlideOut 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
     .official-pad-frame {
       border: 3px double #15803D;
       box-shadow: 0 10px 35px rgba(21, 128, 61, 0.15);
@@ -449,6 +463,30 @@
     </div>
   </div>
 
+  <!-- ================= MODERN FLOATING TOAST NOTIFICATION ================= -->
+  <div id="toastContainer" class="fixed top-5 left-1/2 -translate-x-1/2 z-[100] flex flex-col items-center gap-2 pointer-events-none w-full max-w-md px-4"></div>
+
+  <!-- ================= MODERN CONFIRMATION MODAL ================= -->
+  <div id="confirmModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-[110] flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-sm w-full shadow-2xl border border-slate-200 overflow-hidden animate-pop">
+      <div class="p-6 text-center">
+        <div id="confirmIconBox" class="w-14 h-14 mx-auto rounded-2xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center text-2xl mb-4 shadow-sm">
+          ⚠️
+        </div>
+        <h3 id="confirmTitle" class="text-base font-bold text-slate-900">আপনি কি নিশ্চিত?</h3>
+        <p id="confirmMessage" class="text-xs text-slate-500 mt-2 leading-relaxed">এই কাজটি সম্পন্ন করতে চান?</p>
+        <div class="grid grid-cols-2 gap-3 mt-6">
+          <button type="button" id="confirmCancelBtn" class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-semibold text-xs hover:bg-slate-50 active:scale-95 transition">
+            বাতিল
+          </button>
+          <button type="button" id="confirmOkBtn" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold text-xs shadow-md shadow-emerald-700/20 hover:from-emerald-700 hover:to-teal-800 active:scale-95 transition">
+            নিশ্চিত করুন
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     // Default Pad Configuration
     const DEFAULT_PAD_CONFIG = {
@@ -521,6 +559,85 @@
       if (pinModal) pinModal.classList.add('hidden');
     }
 
+    // ================= MODERN TOAST NOTIFICATION SYSTEM =================
+    function showToast(message, type = 'success', duration = 3200) {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-2xl shadow-2xl border text-xs font-semibold backdrop-blur-md animate-toast-in transition-all duration-200 max-w-md w-full sm:w-auto`;
+
+      let icon = '✅';
+      let borderClass = 'bg-slate-900/95 text-white border-emerald-500/40 shadow-emerald-950/30';
+      if (type === 'error') {
+        icon = '❌';
+        borderClass = 'bg-slate-900/95 text-white border-rose-500/50 shadow-rose-950/30';
+      } else if (type === 'warning') {
+        icon = '⚠️';
+        borderClass = 'bg-slate-900/95 text-white border-amber-500/50 shadow-amber-950/30';
+      } else if (type === 'info') {
+        icon = 'ℹ️';
+        borderClass = 'bg-slate-900/95 text-white border-sky-500/50 shadow-sky-950/30';
+      }
+
+      toast.className += ` ${borderClass}`;
+      toast.innerHTML = `
+        <span class="text-base flex-shrink-0">${icon}</span>
+        <span class="flex-1 leading-snug break-words">${message.replace(/\n/g, '<br/>')}</span>
+        <button type="button" class="text-slate-400 hover:text-white text-sm font-bold ml-1 p-1" onclick="this.parentElement.remove()">✕</button>
+      `;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove('animate-toast-in');
+        toast.classList.add('animate-toast-out');
+        setTimeout(() => toast.remove(), 250);
+      }, duration);
+    }
+
+    // Override native browser alert with modern toast
+    window.alert = function(msg) {
+      const isErr = typeof msg === 'string' && (msg.includes('ভুল') || msg.includes('অনুমোদিত') || msg.includes('Error') || msg.includes('নিষিদ্ধ'));
+      showToast(msg, isErr ? 'warning' : 'success', 3200);
+    };
+
+    // Custom modern confirmation modal returning Promise<boolean>
+    function showConfirmModal(title, message, icon = '⚠️') {
+      return new Promise((resolve) => {
+        const modal = document.getElementById('confirmModal');
+        const titleEl = document.getElementById('confirmTitle');
+        const msgEl = document.getElementById('confirmMessage');
+        const iconBox = document.getElementById('confirmIconBox');
+        const okBtn = document.getElementById('confirmOkBtn');
+        const cancelBtn = document.getElementById('confirmCancelBtn');
+
+        if (!modal) {
+          resolve(window.confirm(message));
+          return;
+        }
+
+        if (titleEl) titleEl.innerText = title;
+        if (msgEl) msgEl.innerText = message;
+        if (iconBox) iconBox.innerText = icon;
+
+        modal.classList.remove('hidden');
+
+        function cleanUp(result) {
+          modal.classList.add('hidden');
+          okBtn.removeEventListener('click', onOk);
+          cancelBtn.removeEventListener('click', onCancel);
+          resolve(result);
+        }
+
+        function onOk() { cleanUp(true); }
+        function onCancel() { cleanUp(false); }
+
+        okBtn.addEventListener('click', onOk);
+        cancelBtn.addEventListener('click', onCancel);
+      });
+    }
+
     function submitAdminPin() {
       const pinInput = document.getElementById('adminPinInput');
       const pinErr = document.getElementById('adminPinError');
@@ -530,8 +647,10 @@
         isAdminUnlocked = true;
         closeAdminPinModal();
         showActualPadEditModal();
+        showToast("কোষাধ্যক্ষ পিন ভেরিফাইড! এডিট মোড আনলক হয়েছে।", "success");
       } else {
         if (pinErr) pinErr.classList.remove('hidden');
+        showToast("ভুল পিন নম্বর! অনুমোদিত কোষাধ্যক্ষ ছাড়া তথ্য পরিবর্তন নিষিদ্ধ।", "error");
         if (pinInput) {
           pinInput.value = '';
           pinInput.focus();
@@ -555,7 +674,7 @@
 
     function savePadCustomDetails() {
       if (!isAdminUnlocked) {
-        alert("শুধুমাত্র অনুমোদিত কোষাধ্যক্ষ পিন আনলক করে তথ্য সংরক্ষণ করতে পারবেন!");
+        showToast("শুধুমাত্র অনুমোদিত কোষাধ্যক্ষ পিন আনলক করে তথ্য সংরক্ষণ করতে পারবেন!", "warning");
         return;
       }
       const addr = document.getElementById('editAddr').value.trim();
@@ -580,22 +699,27 @@
 
       applyPadConfig();
       closePadEditModal();
-      alert("✅ প্যাডের তথ্য সফলভাবে সংরক্ষিত ও লাইভ আপডেট হয়েছে!");
+      showToast("প্যাডের তথ্য সফলভাবে সংরক্ষিত ও লাইভ আপডেট হয়েছে!", "success");
     }
 
-    function resetPadDefaults() {
+    async function resetPadDefaults() {
       if (!isAdminUnlocked) {
-        alert("শুধুমাত্র অনুমোদিত কোষাধ্যক্ষ পিন আনলক করে ডিফল্ট তথ্য রিস্টোর করতে পারবেন!");
+        showToast("শুধুমাত্র অনুমোদিত কোষাধ্যক্ষ পিন আনলক করে ডিফল্ট তথ্য রিস্টোর করতে পারবেন!", "warning");
         return;
       }
-      if (!confirm("আপনি কি ডিফল্ট তথ্য পুনরুদ্ধার করতে চান?")) return;
+      const confirmed = await showConfirmModal(
+        "ডিফল্ট তথ্য পুনরুদ্ধার",
+        "আপনি কি সত্যিই সকল কাস্টমাইজেশন মুছে প্রাতিষ্ঠানিক ডিফল্ট তথ্য পুনরুদ্ধার করতে চান?",
+        "🔄"
+      );
+      if (!confirmed) return;
       padConfig = { ...DEFAULT_PAD_CONFIG };
       try {
         localStorage.removeItem('somiti_pad_custom_settings');
       } catch (_) {}
       applyPadConfig();
       closePadEditModal();
-      alert("🔄 ডিফল্ট তথ্য সফলভাবে রিস্টোর হয়েছে!");
+      showToast("ডিফল্ট তথ্য সফলভাবে রিস্টোর হয়েছে!", "success");
     }
 
     // Helper to convert numbers to Bengali digits
@@ -673,7 +797,9 @@
       if (!currentActiveRecord) return;
       const url = `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(currentActiveRecord.code)}`;
       navigator.clipboard.writeText(url).then(() => {
-        alert("✅ অফিসিয়াল প্যাড ভেরিফিকেশন লিংক কপি হয়েছে!\n\n" + url);
+        showToast("অফিসিয়াল প্যাড ভেরিফিকেশন লিংক ক্লিপবোর্ডে কপি হয়েছে!", "success");
+      }).catch(() => {
+        showToast("লিংক কপি করা যায়নি, অনুগ্রহ করে ব্রাউজার থেকে কপি করুন।", "error");
       });
     }
 
