@@ -5,8 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter/foundation.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:image_picker/image_picker.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -185,6 +188,32 @@ class _SomitiWebWrapperScreenState extends State<SomitiWebWrapperScreen> {
           }
         },
       )
+      ..addJavaScriptChannel(
+        'NativeFileBridge',
+        onMessageReceived: (JavaScriptMessage message) async {
+          if (message.message.startsWith('pick_image:')) {
+            final callbackId = message.message.substring('pick_image:'.length);
+            try {
+              final ImagePicker picker = ImagePicker();
+              final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+              if (image != null) {
+                final bytes = await image.readAsBytes();
+                final base64Str = base64Encode(bytes);
+                final mimeType = image.name.toLowerCase().endsWith('.png') ? 'image/png' : 'image/jpeg';
+                final dataUrl = 'data:$mimeType;base64,$base64Str';
+                final escapedUrl = jsonEncode(dataUrl);
+                await _controller.runJavaScript('''
+                  if (typeof window.handleNativePickedImage === 'function') {
+                    window.handleNativePickedImage("$callbackId", $escapedUrl);
+                  }
+                ''');
+              }
+            } catch (err) {
+              debugPrint('Native image picker bridge error: $err');
+            }
+          }
+        },
+      )
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
@@ -216,7 +245,32 @@ class _SomitiWebWrapperScreenState extends State<SomitiWebWrapperScreen> {
         ),
       );
 
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      final platform = _controller.platform;
+      if (platform is AndroidWebViewController) {
+        platform.setOnShowFileSelector(_androidFilePicker);
+      }
+    }
+
     _loadContent();
+  }
+
+  Future<List<String>> _androidFilePicker(FileSelectorParams params) async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      if (params.mode == FileSelectorMode.openMultiple) {
+        final List<XFile> images = await picker.pickMultiImage();
+        return images.map((img) => Uri.file(img.path).toString()).toList();
+      } else {
+        final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+        if (image != null) {
+          return [Uri.file(image.path).toString()];
+        }
+      }
+    } catch (e) {
+      debugPrint('Error in _androidFilePicker: $e');
+    }
+    return [];
   }
 
   Future<void> _loadContent() async {

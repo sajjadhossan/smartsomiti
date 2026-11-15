@@ -1,7 +1,7 @@
 name: cloud_sync_drive
 description: "Cross-device real-time sync with Google Sign-in and Google Drive backup"
 publish_to: "none"
-version: 2.5.9+11
+version: 2.6.0+12
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -19,6 +19,8 @@ dependencies:
   extension_google_sign_in_as_googleapis_auth: ^2.0.12
   intl: ^0.19.0
   permission_handler: ^11.3.1
+  webview_flutter_android: ^4.0.0
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
