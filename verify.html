@@ -1103,7 +1103,7 @@
     renderGrid(liveRecords);
 
     const params = new URLSearchParams(window.location.search);
-    const urlId = params.get('id') || params.get('code') || params.get('verify');
+    const urlId = params.get('id') || params.get('code') || params.get('verify') || params.get('search');
     if (urlId) {
       document.getElementById('verifyInput').value = urlId;
       verifyQuery(urlId);
