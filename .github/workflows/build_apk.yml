@@ -47,13 +47,13 @@ jobs:
       - name: Prepare Named APK Artifacts
         run: |
           mkdir -p release_apks
-          cp build/app/outputs/flutter-apk/app-release.apk release_apks/somiti-v${{ env.VERSION }}.apk
-          cp build/app/outputs/flutter-apk/app-release.apk release_apks/somiti-latest.apk
+          cp build/app/outputs/flutter-apk/app-release.apk release_apks/smart-somiti-v${{ env.VERSION }}.apk
+          cp build/app/outputs/flutter-apk/app-release.apk release_apks/smart-somiti-latest.apk
 
       - name: Upload APK Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: somiti-apk-v${{ env.VERSION }}
+          name: smart-somiti-apk-v${{ env.VERSION }}
           path: release_apks/*.apk
           if-no-files-found: error
 
@@ -62,15 +62,16 @@ jobs:
         if: startsWith(github.ref, 'refs/heads/main')
         with:
           tag_name: v${{ env.VERSION }}
-          name: "রিলিজ সংস্করণ v${{ env.VERSION }} (Build ${{ env.BUILD }})"
+          name: "স্মার্ট সমিতি রিলিজ v${{ env.VERSION }} (Build ${{ env.BUILD }})"
           body: |
-            ### 📱 স্বপ্ন ছোঁয়া ঐক্য সমিতি - অ্যান্ড্রয়েড অ্যাপ রিলিজ
+            ### 📱 স্মার্ট সমিতি - অ্যান্ড্রয়েড অ্যাপ রিলিজ
             - **সংস্করণ**: `v${{ env.VERSION }}` (Build: `${{ env.BUILD }}`)
             - **ইন-প্লেস আপডেট সমর্থিত**: হ্যাঁ (বিদ্যমান অ্যাপ আনইনস্টল করা লাগবে না, সরাসরি আপডেট হবে)
-            - **ফাইল**: `somiti-v${{ env.VERSION }}.apk`
+            - **ফাইল**: `smart-somiti-v${{ env.VERSION }}.apk`
+            - **ওয়েব অ্যাপ**: https://smart-somiti.vercel.app
           files: |
-            release_apks/somiti-v${{ env.VERSION }}.apk
-            release_apks/somiti-latest.apk
+            release_apks/smart-somiti-v${{ env.VERSION }}.apk
+            release_apks/smart-somiti-latest.apk
           draft: false
           prerelease: false
         env:

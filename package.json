@@ -1,8 +1,8 @@
 {
-  "name": "somiti-enterprise-platform",
+  "name": "smart-somiti",
   "version": "2.5.1",
   "private": true,
-  "description": "স্মার্ট সমবায় সমিতি ম্যানেজমেন্ট এন্টারপ্রাইজ প্ল্যাটফর্ম",
+  "description": "স্মার্ট সমিতি - সমবায় সমিতি ম্যানেজমেন্ট এন্টারপ্রাইজ প্ল্যাটফর্ম",
   "scripts": {
     "start": "python3 -m http.server 8080",
     "test": "node test/run_automation_test.js",
