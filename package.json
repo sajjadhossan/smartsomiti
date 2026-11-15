@@ -1,0 +1,22 @@
+{
+  "name": "somiti-enterprise-platform",
+  "version": "2.5.1",
+  "private": true,
+  "description": "স্মার্ট সমবায় সমিতি ম্যানেজমেন্ট এন্টারপ্রাইজ প্ল্যাটফর্ম",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "test": "node test/run_automation_test.js",
+    "bump:patch": "node scripts/bump_version.js patch",
+    "bump:minor": "node scripts/bump_version.js minor",
+    "deploy:vercel": "vercel --prod"
+  },
+  "keywords": [
+    "somiti",
+    "cooperative",
+    "enterprise",
+    "bangladesh",
+    "fintech"
+  ],
+  "author": "Master Admin Sajjad",
+  "license": "UNLICENSED"
+}

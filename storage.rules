@@ -1,40 +1,53 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-
+    
     function isAuthenticated() {
       return request.auth != null;
     }
-
-    function isPlatformMasterAdmin() {
-      return isAuthenticated() && (
-        request.auth.token.email.lower() == 'hossansajjad1994@gmail.com' ||
-        (request.auth.token.keys().hasAny(['master_admin']) && request.auth.token.master_admin == true)
-      );
+    
+    function isValidImageOrPdf() {
+      return request.resource.contentType.matches('image/(jpeg|png|webp)') ||
+             request.resource.contentType == 'application/pdf';
+    }
+    
+    function isUnderMaxSize() {
+      return request.resource.size <= 5 * 1024 * 1024; // 5 MB Limit
     }
 
-    // Society documents, logos, banners, seals, and receipts
-    match /societies/{societyId}/{allPaths=**} {
+    // Tenant-isolated Member Documents (KYC, Photos, NID)
+    match /somitis/{somitiId}/members/{memberId}/{fileName} {
       allow read: if isAuthenticated();
-      allow write: if isAuthenticated() && (
-        request.resource.size < 10 * 1024 * 1024 && // max 10MB
-        request.resource.contentType.matches('image/.*|application/pdf')
-      );
+      allow write: if isAuthenticated() && isValidImageOrPdf() && isUnderMaxSize();
     }
 
-    // Member profile photos and KYC proofs
-    match /members/{memberId}/{allPaths=**} {
-      allow read: if isAuthenticated();
-      allow write: if isAuthenticated() && (
-        request.resource.size < 5 * 1024 * 1024 &&
-        request.resource.contentType.matches('image/.*')
-      );
+    // Society Letterhead & Branding (Phase 16 White-Label Assets)
+    match /somitis/{somitiId}/branding/{fileName} {
+      allow read: if true; // Publicly accessible for member receipt verification
+      allow write: if isAuthenticated() && isValidImageOrPdf() && isUnderMaxSize();
     }
 
-    // Master Admin global assets
-    match /master_admin/{allPaths=**} {
+    match /somitis/{somitiId}/branding/{assetType}/{fileName} {
+      allow read: if true; // Publicly accessible branding assets (logo, favicon, seals)
+      allow write: if isAuthenticated() && isValidImageOrPdf() && isUnderMaxSize();
+    }
+
+    // Custom Document & Certificate Templates (Phase 16)
+    match /somitis/{somitiId}/templates/{templateId}/{fileName} {
       allow read: if isAuthenticated();
-      allow write: if isPlatformMasterAdmin();
+      allow write: if isAuthenticated() && isValidImageOrPdf() && isUnderMaxSize();
+    }
+
+    // Financial Vouchers & Audit Receipts
+    match /somitis/{somitiId}/vouchers/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && isValidImageOrPdf() && isUnderMaxSize();
+    }
+
+    // Support Ticket & Complaint Attachments (Phase 14)
+    match /somitis/{somitiId}/support/{ticketId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && isValidImageOrPdf() && isUnderMaxSize();
     }
   }
 }

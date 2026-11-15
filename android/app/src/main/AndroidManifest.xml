@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
-        android:label="Cloud Sync &amp; Drive"
+        android:label="স্মার্ট সমিতি"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

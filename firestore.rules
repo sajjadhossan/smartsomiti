@@ -29,28 +29,39 @@ service cloud.firestore {
     }
 
     function isSocietyCreator(societyId) {
-      let somiti = getSociety(societyId);
-      return isAuthenticated() && (
-        somiti.creatorId == request.auth.uid ||
-        (somiti.creatorEmail != null && somiti.creatorEmail.lower() == currentUserEmail())
+      return isAuthenticated() && exists(/databases/$(database)/documents/somitis/$(societyId)) && (
+        getSociety(societyId).creatorId == request.auth.uid ||
+        (getSociety(societyId).creatorEmail != null && getSociety(societyId).creatorEmail.lower() == currentUserEmail())
       );
     }
 
     function isSocietyMember(societyId) {
-      let somiti = getSociety(societyId);
       return isAuthenticated() && (
-        isSocietyCreator(societyId) ||
+        societyId == 'main' ||
         isPlatformMasterAdmin() ||
-        (somiti.assignedMemberEmails != null && somiti.assignedMemberEmails.hasAny([currentUserEmail()]))
+        (exists(/databases/$(database)/documents/somitis/$(societyId)) && (
+          isSocietyCreator(societyId) ||
+          (getSociety(societyId).assignedMemberEmails != null && getSociety(societyId).assignedMemberEmails.hasAny([currentUserEmail()]))
+        ))
       );
     }
 
     function isSocietyAdmin(societyId) {
       return isAuthenticated() && (
+        societyId == 'main' ||
         isPlatformMasterAdmin() ||
-        isSocietyCreator(societyId) ||
-        exists(/databases/$(database)/documents/somitis/$(societyId)/admins/$(request.auth.uid))
+        (exists(/databases/$(database)/documents/somitis/$(societyId)) && (
+          isSocietyCreator(societyId) ||
+          exists(/databases/$(database)/documents/somitis/$(societyId)/admins/$(request.auth.uid))
+        ))
       );
+    }
+
+    function isFeatureActive(societyId, featureKey) {
+      return !exists(/databases/$(database)/documents/somitis/$(societyId)) ||
+             getSociety(societyId).featureToggles == null ||
+             getSociety(societyId).featureToggles[featureKey] == null ||
+             getSociety(societyId).featureToggles[featureKey] == true;
     }
 
     // ============================================================================
@@ -72,6 +83,40 @@ service cloud.firestore {
       allow write: if isPlatformMasterAdmin();
     }
 
+    // Phase 4: Enterprise Security & Compliance Collections
+    match /security_permissions/{permId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /security_policies/{policyId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /security_sessions/{sessionId} {
+      allow read: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid || isPlatformMasterAdmin()
+      );
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow update: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid || isPlatformMasterAdmin()
+      );
+      allow delete: if isPlatformMasterAdmin();
+    }
+
+    match /security_alerts/{alertId} {
+      allow read: if isPlatformMasterAdmin();
+      allow create: if isAuthenticated();
+      allow update, delete: if false; // Immutable threat alerts
+    }
+
+    match /security_audit_logs/{logId} {
+      allow read: if isPlatformMasterAdmin();
+      allow create: if isAuthenticated();
+      allow update, delete: if false; // Cryptographically chained immutable log
+    }
+
     match /audit_logs/{logId} {
       allow read: if isPlatformMasterAdmin();
       allow create: if isAuthenticated();
@@ -90,8 +135,9 @@ service cloud.firestore {
     // ============================================================================
 
     match /somitis/{somitiId} {
-      // Anyone authenticated can read societies they are assigned to, or Master Admin
+      // Anyone authenticated can read societies they are assigned to, Master Admin, or primary society
       allow read: if isAuthenticated() && (
+        somitiId == 'main' ||
         isPlatformMasterAdmin() ||
         resource.data.creatorId == request.auth.uid ||
         (resource.data.creatorEmail != null && resource.data.creatorEmail.lower() == currentUserEmail()) ||
@@ -129,8 +175,9 @@ service cloud.firestore {
       // Savings deposits subcollection
       match /deposits/{depositId} {
         allow read: if isSocietyMember(somitiId);
-        allow create: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
-        allow update, delete: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow create, update: if (isSocietyAdmin(somitiId) || isPlatformMasterAdmin()) &&
+                                 isFeatureActive(somitiId, 'savings_management');
+        allow delete: if isPlatformMasterAdmin();
       }
 
       // Savings products subcollection
@@ -148,36 +195,41 @@ service cloud.firestore {
       // Loans subcollection
       match /loans/{loanId} {
         allow read: if isSocietyMember(somitiId);
-        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow write: if (isSocietyAdmin(somitiId) || isPlatformMasterAdmin()) &&
+                     isFeatureActive(somitiId, 'loan_management');
 
         match /installments/{installmentId} {
           allow read: if isSocietyMember(somitiId);
-          allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+          allow write: if (isSocietyAdmin(somitiId) || isPlatformMasterAdmin()) &&
+                       isFeatureActive(somitiId, 'loan_management');
         }
 
         match /transactions/{txId} {
           allow read: if isSocietyMember(somitiId);
-          allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+          allow write: if (isSocietyAdmin(somitiId) || isPlatformMasterAdmin()) &&
+                       isFeatureActive(somitiId, 'loan_management');
         }
       }
 
       // Loan applications subcollection
       match /loan_applications/{appId} {
         allow read: if isSocietyMember(somitiId);
-        allow create: if isSocietyMember(somitiId);
+        allow create: if isSocietyMember(somitiId) && isFeatureActive(somitiId, 'loan_management');
         allow update, delete: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
       }
 
       // Expenses subcollection
       match /expenses/{expenseId} {
         allow read: if isSocietyMember(somitiId);
-        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow write: if (isSocietyAdmin(somitiId) || isPlatformMasterAdmin()) &&
+                     isFeatureActive(somitiId, 'financial_accounting');
       }
 
       // Income subcollection
       match /income/{incomeId} {
         allow read: if isSocietyMember(somitiId);
-        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow write: if (isSocietyAdmin(somitiId) || isPlatformMasterAdmin()) &&
+                     isFeatureActive(somitiId, 'financial_accounting');
       }
 
       // Financial accounts (Cash Drawer, Bank, Mobile Financial Services)
@@ -205,12 +257,682 @@ service cloud.firestore {
         allow create: if isAuthenticated();
         allow update, delete: if false; // Immutable audit records
       }
+
+      // Phase 6: Enterprise Society Management Collections
+      match /crm_leads/{leadId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /kyc_records/{kycId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /society_documents/{docId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /hr_employees/{empId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /attendance_records/{attId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /leave_applications/{leaveId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyMember(somitiId);
+      }
+
+      match /payroll_runs/{payId} {
+        allow read, write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /inventory_items/{itemId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /inventory_movements/{mvtId} {
+        allow read: if isSocietyMember(somitiId);
+        allow create: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow update, delete: if false; // Immutable stock log
+      }
+
+      match /asset_register/{assetId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /vendors/{vendorId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /purchase_requests/{prId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyMember(somitiId);
+      }
+
+      match /operations_tasks/{taskId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyMember(somitiId);
+      }
+
+      // ============================================================================
+      // PHASE 7: ENTERPRISE PAYMENT, BANKING & FINANCIAL INTEGRATION
+      // ============================================================================
+
+      match /payment_transactions/{txId} {
+        allow read: if isSocietyMember(somitiId);
+        allow create: if isSocietyMember(somitiId);
+        allow update: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow delete: if false; // Zero silent deletion - immutable audit trail
+      }
+
+      match /society_bank_accounts/{accId} {
+        allow read: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /bank_statements/{stmtId} {
+        allow read: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /qr_payments/{qrId} {
+        allow read: if isSocietyMember(somitiId);
+        allow create: if isSocietyMember(somitiId);
+        allow update: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow delete: if false;
+      }
+
+      match /payment_refunds/{refId} {
+        allow read: if isSocietyMember(somitiId);
+        allow create: if isSocietyMember(somitiId);
+        allow update: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow delete: if false;
+      }
+
+      match /gateway_settlements/{setlId} {
+        allow read: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      // ============================================================================
+      // PHASE 8: ENTERPRISE AI, ADVANCED ANALYTICS & BI COLLECTIONS
+      // ============================================================================
+
+      match /ai_conversations/{msgId} {
+        allow read: if isSocietyMember(somitiId);
+        allow create: if isSocietyMember(somitiId);
+        allow update, delete: if false; // Immutable conversation audit log
+      }
+
+      match /analytics_snapshots/{snapId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /risk_alerts/{alertId} {
+        allow read: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow create, update: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow delete: if false; // Zero silent deletion - mandatory audit compliance
+      }
+
+      match /forecast_runs/{runId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /custom_reports/{repId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyMember(somitiId);
+      }
+
+      match /ai_usage/{quotaId} {
+        allow read: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      // ============================================================================
+      // PHASE 9: ENTERPRISE OFFLINE-FIRST & FIELD OPERATIONS COLLECTIONS
+      // ============================================================================
+
+      match /offline_sync_queue/{opId} {
+        allow read: if isSocietyMember(somitiId);
+        allow create: if isSocietyMember(somitiId);
+        allow update: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow delete: if false; // Immutable audit log
+      }
+
+      match /device_registry/{devId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /cash_reconciliations/{reconId} {
+        allow read: if isSocietyMember(somitiId);
+        allow create: if isSocietyMember(somitiId);
+        allow update: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow delete: if false; // Financial audit trail protection
+      }
+
+      match /collection_routes/{pointId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyMember(somitiId);
+      }
+
+      // ============================================================================
+      // PHASE 11: ENTERPRISE UI/UX MODERNIZATION & DESIGN SYSTEM COLLECTIONS
+      // ============================================================================
+
+      match /ui_preferences/{prefId} {
+        allow read: if isSocietyMember(somitiId);
+        allow create, update: if isSocietyMember(somitiId) && (request.resource.data.userId == request.auth.uid || isSocietyAdmin(somitiId) || isPlatformMasterAdmin());
+        allow delete: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /dashboard_layouts/{layoutId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      // ============================================================================
+      // PHASE 12: ENTERPRISE PRODUCTION & SOCIETY OVERRIDES
+      // ============================================================================
+
+      match /society_control_overrides/{overrideId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      // ============================================================================
+      // PHASE 13: ENTERPRISE ADVANCED QA & TENANT QA REPORTS
+      // ============================================================================
+
+      match /tenant_qa_reports/{reportId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      // ============================================================================
+      // PHASE 14: ENTERPRISE CUSTOMER SUPPORT & HELPDESK
+      // ============================================================================
+
+      match /support_tickets/{ticketId} {
+        allow read: if isSocietyMember(somitiId) || isPlatformMasterAdmin();
+        allow create: if isSocietyMember(somitiId);
+        allow update: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin() || (isAuthenticated() && request.auth.uid == resource.data.requesterId);
+        allow delete: if false; // Tickets are immutable and cannot be deleted
+
+        match /messages/{messageId} {
+          allow read: if isSocietyMember(somitiId) || isPlatformMasterAdmin();
+          allow create: if isSocietyMember(somitiId) || isPlatformMasterAdmin();
+          allow update, delete: if false;
+        }
+      }
+
+      match /support_complaints/{complaintId} {
+        allow read: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow create: if isAuthenticated();
+        allow update: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow delete: if false;
+      }
+
+      match /tenant_knowledge_articles/{articleId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      // ============================================================================
+      // PHASE 15: ENTERPRISE TENANT API & WEBHOOK COLLECTIONS
+      // ============================================================================
+
+      match /tenant_api_keys/{keyId} {
+        allow read: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /tenant_webhooks/{webhookId} {
+        allow read: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      // ============================================================================
+      // PHASE 16: WHITE-LABEL SAAS & SOCIETY CUSTOMIZATION COLLECTIONS
+      // ============================================================================
+
+      match /branding_config/{configId} {
+        allow read: if true; // Public read for official society letters and receipts
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /theme_config/{configId} {
+        allow read: if true; // Public read for portal themed styling
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /custom_domains/{domainId} {
+        allow read: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /document_templates/{templateId} {
+        allow read: if isSocietyMember(somitiId) || isPlatformMasterAdmin();
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /notification_templates/{templateId} {
+        allow read: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /business_config/{configId} {
+        allow read: if isSocietyMember(somitiId) || isPlatformMasterAdmin();
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      // ============================================================================
+      // PHASE 17: DATA WAREHOUSE & ANALYTICS TENANT SUBCOLLECTIONS
+      // ============================================================================
+
+      match /dw_facts/{factId} {
+        allow read: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow write: if isPlatformMasterAdmin(); // Populated by server-side CDC/ETL
+      }
+
+      match /dw_pipelines/{jobId} {
+        allow read: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow write: if isPlatformMasterAdmin();
+      }
+
+      match /dw_quality_reports/{reportId} {
+        allow read: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow write: if isPlatformMasterAdmin();
+      }
+
+      match /dw_archives/{archiveId} {
+        allow read: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow write: if isPlatformMasterAdmin();
+      }
+
+      // ============================================================================
+      // PHASE 18: MEMBER SUPER APP & DIGITAL SELF-SERVICE TENANT SUBCOLLECTIONS
+      // ============================================================================
+
+      match /digital_cards/{cardId} {
+        allow read: if isSocietyMember(somitiId) &&
+                     (request.auth.uid == resource.data.memberUid || isSocietyAdmin(somitiId) || isPlatformMasterAdmin());
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /member_requests/{requestId} {
+        allow read: if isSocietyMember(somitiId) &&
+                     (request.auth.uid == resource.data.memberUid || isSocietyAdmin(somitiId) || isPlatformMasterAdmin());
+        allow create: if isSocietyMember(somitiId) && request.auth.uid == request.resource.data.memberUid;
+        allow update, delete: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin(); // Members cannot self-approve
+      }
+
+      match /member_kyc/{kycId} {
+        allow read: if isSocietyMember(somitiId) &&
+                     (request.auth.uid == resource.data.memberUid || isSocietyAdmin(somitiId) || isPlatformMasterAdmin());
+        allow create: if isSocietyMember(somitiId) && request.auth.uid == request.resource.data.memberUid;
+        allow update: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin(); // Approval requires officer
+        allow delete: if false; // Statutory retention
+      }
+
+      // ============================================================================
+      // PHASE 19: COOPERATIVE GOVERNANCE, AUDIT & COMPLIANCE SUBCOLLECTIONS
+      // ============================================================================
+
+      match /gov_committees/{committeeId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /gov_meetings/{meetingId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /gov_resolutions/{resolutionId} {
+        allow read: if isSocietyMember(somitiId);
+        allow create, update: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow delete: if false; // Immutable resolution history
+      }
+
+      match /gov_elections/{electionId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /gov_audits/{auditId} {
+        allow read: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /gov_compliance/{complianceId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      // ============================================================================
+      // PHASE 20: ENTERPRISE AUTOMATION & AUTONOMOUS OPERATIONS ENGINE SUBCOLLECTIONS
+      // ============================================================================
+
+      match /auto_workflows/{workflowId} {
+        allow read: if isSocietyMember(somitiId);
+        allow write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
+
+      match /auto_executions/{executionId} {
+        allow read: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow create: if isAuthenticated();
+        allow update, delete: if false; // Immutable execution history
+      }
+
+      match /auto_approvals/{approvalId} {
+        allow read: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow create: if isAuthenticated();
+        allow update: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+        allow delete: if false; // Immutable maker-checker audit
+      }
+
+      match /auto_dead_letters/{letterId} {
+        allow read, write: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
+      }
     }
 
-    // Support legacy/root somiti document compatibility for web SPA
-    match /somiti/{document=**} {
+    // ============================================================================
+    // PHASE 5: ENTERPRISE SaaS SUBSCRIPTION & BILLING COLLECTIONS
+    // ============================================================================
+
+    match /saas_plans/{planId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /saas_subscriptions/{subId} {
+      allow read: if isAuthenticated() && (
+        isPlatformMasterAdmin() ||
+        (resource.data.societyId != null && isSocietyMember(resource.data.societyId))
+      );
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /saas_invoices/{invoiceId} {
+      allow read: if isAuthenticated() && (
+        isPlatformMasterAdmin() ||
+        (resource.data.societyId != null && isSocietyAdmin(resource.data.societyId))
+      );
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /saas_payments/{paymentId} {
+      allow read: if isAuthenticated() && (
+        isPlatformMasterAdmin() ||
+        (resource.data.societyId != null && isSocietyAdmin(resource.data.societyId))
+      );
+      allow create: if isAuthenticated();
+      allow update, delete: if isPlatformMasterAdmin();
+    }
+
+    match /saas_coupons/{couponId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    // ============================================================================
+    // PHASE 10: ENTERPRISE MONITORING, DEVOPS, BACKUP & DISASTER RECOVERY
+    // ============================================================================
+
+    match /system_health_checks/{checkId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /system_logs/{logId} {
+      allow read: if isPlatformMasterAdmin();
+      allow create: if isAuthenticated();
+      allow update, delete: if false; // Immutable audit log invariant
+    }
+
+    match /system_alerts/{alertId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /incident_reports/{incId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /backup_registry/{backupId} {
+      allow read, write: if isPlatformMasterAdmin();
+    }
+
+    match /restore_audit/{restoreId} {
+      allow read, write: if isPlatformMasterAdmin();
+    }
+
+    match /deployment_records/{deployId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    // ============================================================================
+    // PHASE 11: ENTERPRISE UI MASTER CONFIG
+    // ============================================================================
+
+    match /ui_master_configs/{configId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    // ============================================================================
+    // PHASE 12: ENTERPRISE PRODUCTION READINESS & UNIVERSAL CONTROL COLLECTIONS
+    // ============================================================================
+
+    match /production_certifications/{certId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /universal_control_settings/{settingId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /platform_control_audit/{auditId} {
+      allow read: if isPlatformMasterAdmin();
+      allow create: if isAuthenticated();
+      allow update, delete: if false; // Immutable audit log
+    }
+
+    // ============================================================================
+    // PHASE 13: ENTERPRISE ADVANCED QA, SECURITY AUDIT & TESTING COLLECTIONS
+    // ============================================================================
+
+    match /qa_test_runs/{runId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /security_audit_findings/{findingId} {
+      allow read: if isPlatformMasterAdmin();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /qa_defects/{defectId} {
       allow read: if isAuthenticated();
       allow write: if isAuthenticated();
+    }
+
+    match /quality_gate_configs/{configId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    // ============================================================================
+    // PHASE 14: ENTERPRISE CUSTOMER SUPPORT GLOBAL COLLECTIONS
+    // ============================================================================
+
+    match /platform_support_tickets/{ticketId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isPlatformMasterAdmin();
+      allow delete: if false;
+
+      match /messages/{messageId} {
+        allow read: if isAuthenticated();
+        allow create: if isAuthenticated();
+        allow update, delete: if false;
+      }
+    }
+
+    match /support_departments/{deptId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /support_agents/{agentId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /support_sla_policies/{policyId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /support_knowledge_base/{articleId} {
+      allow read: if true; // Public for general FAQs
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /support_feedback/{feedbackId} {
+      allow read: if isPlatformMasterAdmin();
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+
+    match /support_automation_rules/{ruleId} {
+      allow read: if isPlatformMasterAdmin();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /support_audit_logs/{logId} {
+      allow read: if isPlatformMasterAdmin();
+      allow create: if isAuthenticated();
+      allow update, delete: if false; // Immutable audit log
+    }
+
+    // ============================================================================
+    // PHASE 15: ENTERPRISE API, DEVELOPER PORTAL & INTEGRATIONS
+    // ============================================================================
+
+    match /api_applications/{appId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin() || (isAuthenticated() && request.auth.uid == resource.data.developerId);
+    }
+
+    match /api_keys/{keyId} {
+      allow read: if isPlatformMasterAdmin() || (isAuthenticated() && request.auth.uid == resource.data.developerId);
+      allow write: if isPlatformMasterAdmin() || (isAuthenticated() && request.auth.uid == resource.data.developerId);
+    }
+
+    match /oauth_clients/{clientId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /webhooks/{webhookId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /webhook_delivery_logs/{logId} {
+      allow read: if isAuthenticated();
+      allow create: if isPlatformMasterAdmin();
+      allow update, delete: if false; // Immutable log
+    }
+
+    match /third_party_integrations/{integrationId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /api_rate_limits/{policyId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /api_usage_logs/{logId} {
+      allow read: if isPlatformMasterAdmin();
+      allow create: if isAuthenticated();
+      allow update, delete: if false; // Immutable
+    }
+
+    match /api_audit_logs/{logId} {
+      allow read: if isPlatformMasterAdmin();
+      allow create: if isAuthenticated();
+      allow update, delete: if false; // Immutable
+    }
+
+    // ============================================================================
+    // PHASE 16: WHITE-LABEL SAAS ROOT COLLECTIONS
+    // ============================================================================
+
+    match /custom_domains/{domainId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /whitelabel_entitlements/{tierId} {
+      allow read: if isAuthenticated();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /whitelabel_audit_logs/{logId} {
+      allow read: if isPlatformMasterAdmin();
+      allow create: if isAuthenticated();
+      allow update, delete: if false; // Immutable audit log
+    }
+
+    // ============================================================================
+    // PHASE 17: DATA WAREHOUSE & BUSINESS INTELLIGENCE ROOT COLLECTIONS
+    // ============================================================================
+
+    match /dw_global_pipelines/{jobId} {
+      allow read: if isPlatformMasterAdmin();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /dw_cross_society_benchmarks/{metricId} {
+      allow read: if isAuthenticated(); // Anonymized aggregate metrics
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /dw_retention_policies/{policyId} {
+      allow read: if isPlatformMasterAdmin();
+      allow write: if isPlatformMasterAdmin();
+    }
+
+    match /dw_audit_logs/{logId} {
+      allow read: if isPlatformMasterAdmin();
+      allow create: if isAuthenticated();
+      allow update, delete: if false; // Immutable audit log
+    }
+
+    // Secured root somiti collection - Master Admin only (prevents multi-tenant data leakage)
+    match /somiti/{document=**} {
+      allow read, write: if isPlatformMasterAdmin();
     }
   }
 }

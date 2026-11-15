@@ -1,17 +1,34 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "headers": [
+  "routes": [
     {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "Access-Control-Allow-Origin", "value": "*" }
-      ]
+      "src": "/version.json",
+      "headers": {
+        "cache-control": "no-cache, no-store, must-revalidate",
+        "content-type": "application/json"
+      },
+      "dest": "/version.json"
+    },
+    {
+      "src": "/(.*\\.apk)",
+      "headers": {
+        "content-type": "application/vnd.android.package-archive",
+        "content-disposition": "attachment"
+      },
+      "dest": "/$1"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html",
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "Access-Control-Allow-Origin": "*"
+      }
     }
   ]
 }

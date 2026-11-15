@@ -5,9 +5,12 @@ on:
     branches: [ "main", "master" ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
-    name: Build Flutter APK
+    name: Build Signed Flutter APK
     runs-on: ubuntu-latest
 
     steps:
@@ -26,15 +29,49 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Get Dependencies
+      - name: Extract Version Info
+        id: version_step
+        run: |
+          VERSION=$(grep -E '^version:' pubspec.yaml | head -n 1 | awk '{print $2}' | cut -d '+' -f 1)
+          BUILD=$(grep -E '^version:' pubspec.yaml | head -n 1 | awk '{print $2}' | cut -d '+' -f 2)
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "BUILD=${BUILD}" >> $GITHUB_ENV
+          echo "Version: ${VERSION} (Build ${BUILD})"
+
+      - name: Get Flutter Dependencies
         run: flutter pub get
 
       - name: Build Release APK
         run: flutter build apk --release
 
-      - name: Upload APK Artifact
+      - name: Prepare Named APK Artifacts
+        run: |
+          mkdir -p release_apks
+          cp build/app/outputs/flutter-apk/app-release.apk release_apks/somiti-v${{ env.VERSION }}.apk
+          cp build/app/outputs/flutter-apk/app-release.apk release_apks/somiti-latest.apk
+
+      - name: Upload APK Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: app-release
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: somiti-apk-v${{ env.VERSION }}
+          path: release_apks/*.apk
           if-no-files-found: error
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/heads/main')
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: "রিলিজ সংস্করণ v${{ env.VERSION }} (Build ${{ env.BUILD }})"
+          body: |
+            ### 📱 স্বপ্ন ছোঁয়া ঐক্য সমিতি - অ্যান্ড্রয়েড অ্যাপ রিলিজ
+            - **সংস্করণ**: `v${{ env.VERSION }}` (Build: `${{ env.BUILD }}`)
+            - **ইন-প্লেস আপডেট সমর্থিত**: হ্যাঁ (বিদ্যমান অ্যাপ আনইনস্টল করা লাগবে না, সরাসরি আপডেট হবে)
+            - **ফাইল**: `somiti-v${{ env.VERSION }}.apk`
+          files: |
+            release_apks/somiti-v${{ env.VERSION }}.apk
+            release_apks/somiti-latest.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -16,6 +16,12 @@ if (localPropertiesFile.exists()) {
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode') ?: '1'
 def flutterVersionName = localProperties.getProperty('flutter.versionName') ?: '1.0'
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     namespace "com.example.cloud_sync_drive"
     compileSdk 34
@@ -39,11 +45,46 @@ android {
         multiDexEnabled true
     }
 
+    signingConfigs {
+        release {
+            if (keystorePropertiesFile.exists()) {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+                v1SigningEnabled true
+                v2SigningEnabled true
+            } else if (file("release.keystore").exists()) {
+                keyAlias "owntemp"
+                keyPassword "owntemp123"
+                storeFile file("release.keystore")
+                storePassword "owntemp123"
+                v1SigningEnabled true
+                v2SigningEnabled true
+            } else {
+                signingConfig signingConfigs.debug
+            }
+        }
+        debug {
+            if (file("release.keystore").exists()) {
+                keyAlias "owntemp"
+                keyPassword "owntemp123"
+                storeFile file("release.keystore")
+                storePassword "owntemp123"
+                v1SigningEnabled true
+                v2SigningEnabled true
+            }
+        }
+    }
+
     buildTypes {
         release {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled false
             shrinkResources false
+        }
+        debug {
+            signingConfig signingConfigs.debug
         }
     }
 }

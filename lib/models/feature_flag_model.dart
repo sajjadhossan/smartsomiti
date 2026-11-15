@@ -384,5 +384,319 @@ class MasterFeatureRegistry {
         FeatureItem(key: 'pgw_online_checkout', title: 'অনলাইন স্বয়ংক্রিয় জমা', description: 'পেমেন্ট গেটওয়ের মাধ্যমে সরাসরি পরিশোধ', moduleKey: 'payment_gateways'),
       ],
     ),
+    ModuleDefinition(
+      key: 'workflow_approval',
+      title: 'অনুমোদন ও ওয়ার্কফ্লো অটোমেশন (Workflow & Approval)',
+      icon: '🔄',
+      description: 'মাল্টি-লেভেল অনুমোদন, মেকার-চেকার পলিসি, প্রতিনিধি অর্পণ ও অটোমেশন',
+      subFeatures: [
+        FeatureItem(key: 'workflow_engine', title: 'ওয়ার্কফ্লো অটোমেশন ইঞ্জিন', description: 'অনুমোদন পাইপলাইন ও স্বয়ংক্রিয় রাউটিং', moduleKey: 'workflow_approval', isCore: true),
+        FeatureItem(key: 'workflow_multi_level', title: 'বহুস্তরীয় অনুমোদন', description: 'পদ ও টাকার পরিমাণের ভিত্তিতে বহুস্তরীয় অনুমোদন চেইন', moduleKey: 'workflow_approval'),
+        FeatureItem(key: 'workflow_maker_checker', title: 'মেকার-চেকার নিরাপত্তা', description: 'আবেদনকারী কর্তৃক নিজ আবেদন অনুমোদন কঠোরভাবে নিষিদ্ধ', moduleKey: 'workflow_approval'),
+        FeatureItem(key: 'workflow_delegation', title: 'অনুমোদন প্রতিনিধি অর্পণ', description: 'অনুপস্থিতিতে অস্থায়ীভাবে অনুমোদন ক্ষমতা হস্তান্তর', moduleKey: 'workflow_approval'),
+        FeatureItem(key: 'workflow_escalation', title: 'স্বয়ংক্রিয় এস্কেলেশন ও তাগিদ', description: 'সময়সীমা অতিক্রান্ত হলে উচ্চতর পর্যায়ে অটো-ফরওয়ার্ড', moduleKey: 'workflow_approval'),
+      ],
+    ),
+    ModuleDefinition(
+      key: 'saas_billing',
+      title: 'সাবস্ক্রিপশন ও কমার্শিয়াল বিলিং (SaaS Billing)',
+      icon: '💎',
+      description: 'সাবস্ক্রিপশন প্ল্যান, ইনভয়েস, স্বয়ংক্রিয় পেমেন্ট ও রাজস্ব ম্যানেজমেন্ট',
+      subFeatures: [
+        FeatureItem(key: 'saas_plans', title: 'প্ল্যান প্যাকেজ ও প্রাইসিং', description: 'বেসিক, স্ট্যান্ডার্ড ও প্রিমিয়াম প্ল্যান কনফিগারেশন', moduleKey: 'saas_billing', isCore: true),
+        FeatureItem(key: 'saas_invoicing', title: 'স্বয়ংক্রিয় ইনভয়েস ও মেমো', description: 'মাসিক ও বার্ষিক রিনিউয়াল ইনভয়েস জেনারেশন', moduleKey: 'saas_billing'),
+        FeatureItem(key: 'saas_payment_gateways', title: 'পেমেন্ট গেটওয়ে ভেরিফিকেশন', description: 'bKash, Nagad ও কার্ড পেমেন্ট স্বয়ংক্রিয় সক্রিয়করণ', moduleKey: 'saas_billing'),
+        FeatureItem(key: 'saas_coupons', title: 'ডিসকাউন্ট ও কুপন কোড', description: 'প্রমোশনাল কুপন ও সমিতিভিত্তিক বিশেষ ছাড়', moduleKey: 'saas_billing'),
+        FeatureItem(key: 'saas_mrr_analytics', title: 'MRR ও রাজস্ব অ্যানালিটিক্স', description: 'মাসিক পুনরাবৃত্তিমূলক রাজস্ব ও গ্রোথ মেট্রিক্স', moduleKey: 'saas_billing'),
+      ],
+    ),
   ];
+}
+
+/// Convenience aliases and constants for modules and features
+class DefaultPlatformModules {
+  static List<ModuleDefinition> get modules => MasterFeatureRegistry.allModules;
+}
+
+class ModuleKeys {
+  static const String society = 'society_management';
+  static const String auth = 'authentication';
+  static const String users = 'user_management';
+  static const String roles = 'role_management';
+  static const String permissions = 'permission_management';
+  static const String members = 'member_management';
+  static const String savings = 'savings_management';
+  static const String loans = 'loan_management';
+  static const String accounting = 'financial_accounting';
+  static const String cash = 'cash_management';
+  static const String bank = 'bank_management';
+  static const String payments = 'payment_management';
+  static const String employees = 'employee_management';
+  static const String collections = 'collection_management';
+  static const String reports = 'reports';
+  static const String pdf = 'pdf_export';
+  static const String excel = 'excel_export';
+  static const String notifications = 'notifications';
+  static const String announcements = 'announcements';
+  static const String documents = 'document_management';
+  static const String audit = 'audit_logs';
+  static const String dashboard = 'dashboard_analytics';
+  static const String settings = 'advanced_settings';
+  static const String gateways = 'payment_gateways';
+  static const String workflow = 'workflow_approval';
+  static const String saas = 'saas_billing';
+  static const String crm = 'society_crm';
+  static const String kyc = 'digital_kyc';
+  static const String hr = 'hr_management';
+  static const String payroll = 'payroll_management';
+  static const String inventory = 'inventory_management';
+  static const String assets = 'asset_management';
+  static const String procurement = 'procurement_management';
+  static const String operations = 'operations_management';
+  static const String paymentEcosystem = 'payment_ecosystem';
+  static const String bankReconciliation = 'bank_reconciliation';
+  static const String qrEngine = 'qr_engine';
+  static const String settlementManagement = 'settlement_management';
+
+  // Phase 8: Enterprise AI, Advanced Analytics & BI
+  static const String aiAssistant = 'ai_assistant';
+  static const String businessIntelligence = 'business_intelligence';
+  static const String fraudAnomalyDetection = 'fraud_anomaly_detection';
+  static const String predictiveAnalytics = 'predictive_analytics';
+  static const String customReportBuilder = 'custom_report_builder';
+
+  // Phase 9: Enterprise Offline-First, Field Operations & Mobile Experience
+  static const String offlineMode = 'offline_mode';
+  static const String fieldOperations = 'field_operations';
+  static const String syncEngine = 'sync_engine';
+  static const String deviceManagement = 'device_management';
+  static const String cashReconciliation = 'cash_reconciliation';
+
+  // Phase 10: Enterprise Monitoring, DevOps, Backup & Disaster Recovery
+  static const String enterpriseMonitoring = 'enterprise_monitoring';
+  static const String centralizedLogging = 'centralized_logging';
+  static const String alertingNotifications = 'alerting_notifications';
+  static const String incidentManagement = 'incident_management';
+  static const String automatedBackups = 'automated_backups';
+  static const String disasterRecovery = 'disaster_recovery';
+  static const String devopsPipeline = 'devops_pipeline';
+  static const String maintenanceMode = 'maintenance_mode';
+
+  // Phase 11: Enterprise UI/UX Modernization, Design System & Accessibility
+  static const String enterpriseUiModernization = 'enterprise_ui_modernization';
+  static const String designSystem = 'design_system';
+  static const String themeManagement = 'theme_management';
+  static const String responsiveLayouts = 'responsive_layouts';
+  static const String accessibilityWcag = 'accessibility_wcag';
+  static const String localizationBilingual = 'localization_bilingual';
+  static const String globalSearchHub = 'global_search_hub';
+  static const String dashboardCustomization = 'dashboard_customization';
+
+  // Phase 12: Enterprise Production Deployment, Launch & Operational Readiness
+  static const String enterpriseProductionReadiness = 'enterprise_production_readiness';
+  static const String universalPlatformControl = 'universal_platform_control';
+  static const String goLiveCertification = 'go_live_certification';
+  static const String crossModuleIntegration = 'cross_module_integration';
+
+  // Phase 13: Enterprise Advanced QA, Security Audit & Continuous Testing Engine
+  static const String enterpriseQaTesting = 'enterprise_qa_testing';
+  static const String continuousTestingEngine = 'continuous_testing_engine';
+  static const String securityAuditEngine = 'security_audit_engine';
+  static const String qualityGates = 'quality_gates';
+
+  // Phase 14: Enterprise Customer Support, Helpdesk & Service Management Engine
+  static const String enterpriseHelpdesk = 'enterprise_helpdesk';
+  static const String ticketManagement = 'ticket_management';
+  static const String supportAgentManagement = 'support_agent_management';
+  static const String slaEscalationEngine = 'sla_escalation_engine';
+  static const String liveSupportChat = 'live_support_chat';
+  static const String grievanceComplaints = 'grievance_complaints';
+  static const String knowledgeBaseSelfService = 'knowledge_base_self_service';
+  static const String customerFeedbackCsat = 'customer_feedback_csat';
+  static const String supportAutomationNotifications = 'support_automation_notifications';
+
+  // Phase 15: Enterprise API, Developer Portal & Third-Party Integration Ecosystem
+  static const String enterpriseApiGateway = 'enterprise_api_gateway';
+  static const String developerPortal = 'developer_portal';
+  static const String apiKeyManagement = 'api_key_management';
+  static const String oauth2Server = 'oauth2_server';
+  static const String webhookEngine = 'webhook_engine';
+  static const String thirdPartyIntegrations = 'third_party_integrations';
+  static const String apiRateLimiting = 'api_rate_limiting';
+  static const String apiSandbox = 'api_sandbox';
+
+  // Phase 16: Enterprise White-Label SaaS & Society Customization Engine
+  static const String whiteLabelEngine = 'whitelabel_engine';
+  static const String societyBranding = 'society_branding';
+  static const String customThemes = 'custom_themes';
+  static const String customDomains = 'custom_domains';
+  static const String documentTemplates = 'document_templates';
+  static const String notificationTemplates = 'notification_templates';
+  static const String businessConfig = 'business_config';
+  static const String whiteLabelEntitlements = 'whitelabel_entitlements';
+
+  // Phase 17: Enterprise Data Warehouse & Advanced Intelligence Platform
+  static const String enterpriseDataWarehouse = 'enterprise_data_warehouse';
+  static const String dwPipelines = 'dw_pipelines';
+  static const String dwFinancialAnalytics = 'dw_financial_analytics';
+  static const String dwBiDashboards = 'dw_bi_dashboards';
+  static const String dwCrossSocietyBenchmarking = 'dw_cross_society_benchmarking';
+  static const String dwDataExportEngine = 'dw_data_export_engine';
+  static const String dwArchivalLifecycle = 'dw_archival_lifecycle';
+  static const String dwDataGovernance = 'dw_data_governance';
+
+  // Phase 18: Member Super App & Self-Service
+  static const String memberSuperApp = 'member_super_app';
+  static const String memberOnboardingKyc = 'member_onboarding_kyc';
+  static const String memberDigitalCard = 'member_digital_card';
+  static const String memberSavingsPortal = 'member_savings_portal';
+  static const String memberLoansPortal = 'member_loans_portal';
+  static const String memberPaymentsPortal = 'member_payments_portal';
+  static const String memberDocumentCenter = 'member_document_center';
+  static const String memberServiceRequests = 'member_service_requests';
+
+  // Phase 19: Cooperative Governance, Audit & Regulatory Compliance
+  static const String cooperativeGovernance = 'cooperative_governance';
+  static const String govBoardCommittees = 'gov_board_committees';
+  static const String govMeetingsAgm = 'gov_meetings_agm';
+  static const String govResolutions = 'gov_resolutions';
+  static const String govElections = 'gov_elections';
+  static const String govInternalAudit = 'gov_internal_audit';
+  static const String govRegulatoryCompliance = 'gov_regulatory_compliance';
+  static const String govComplianceCalendar = 'gov_compliance_calendar';
+
+  // Phase 20: Enterprise Automation & Autonomous Operations
+  static const String enterpriseAutomation = 'enterprise_automation';
+  static const String autoWorkflows = 'auto_workflows';
+  static const String autoTriggers = 'auto_triggers';
+  static const String autoActions = 'auto_actions';
+  static const String autoScheduler = 'auto_scheduler';
+  static const String autoHumanApproval = 'auto_human_approval';
+  static const String autoAiAssistant = 'auto_ai_assistant';
+  static const String autoMonitoring = 'auto_monitoring';
+}
+
+class FeatureKeys {
+  static const String loanApplication = 'loan_application';
+  static const String loanApproval = 'loan_approval';
+  static const String loanDisbursement = 'loan_disbursement';
+  static const String loanInterestFlat = 'loan_interest_flat';
+  static const String loanInterestReducing = 'loan_interest_reducing';
+  static const String loanPartialRepay = 'loan_partial_repay';
+  static const String loanPenaltyOverdue = 'loan_penalty_overdue';
+  static const String memberAdd = 'member_add';
+  static const String memberPassbook = 'member_passbook';
+  static const String memberIdCard = 'member_id_card';
+  static const String savingsDaily = 'savings_daily';
+  static const String savingsDps = 'savings_dps';
+  static const String savingsWithdrawal = 'savings_withdrawal';
+
+  // Double-Entry Financial Accounting Keys
+  static const String doubleEntry = 'double_entry_accounting';
+  static const String chartOfAccounts = 'chart_of_accounts';
+  static const String journalEntries = 'journal_entries';
+  static const String generalLedger = 'general_ledger';
+  static const String trialBalance = 'trial_balance';
+  static const String balanceSheet = 'balance_sheet';
+  static const String profitAndLoss = 'profit_and_loss';
+  static const String cashFlow = 'cash_flow_statement';
+  static const String bankReconciliation = 'bank_reconciliation';
+  static const String periodClosing = 'financial_period_closing';
+  static const String financialAdjustment = 'financial_adjustments';
+  static const String reversalTransaction = 'reversal_transactions';
+
+  // Workflow & Approval Keys
+  static const String workflowEngine = 'workflow_engine';
+  static const String workflowMultiLevel = 'workflow_multi_level';
+  static const String workflowMakerChecker = 'workflow_maker_checker';
+  static const String workflowDelegation = 'workflow_delegation';
+  static const String workflowEscalation = 'workflow_escalation';
+
+  // Button & Action Controls
+  static const String actJournalCreate = 'act_journal_create';
+  static const String actJournalPost = 'act_journal_post';
+  static const String actJournalReverse = 'act_journal_reverse';
+  static const String actPeriodClose = 'act_period_close';
+  static const String actPeriodReopen = 'act_period_reopen';
+  static const String actBankReconcile = 'act_bank_reconcile';
+
+  // Workflow Actions
+  static const String actWfSubmit = 'act_wf_submit';
+  static const String actWfApprove = 'act_wf_approve';
+  static const String actWfReject = 'act_wf_reject';
+  static const String actWfReturn = 'act_wf_return';
+  static const String actWfDelegate = 'act_wf_delegate';
+  static const String actWfEscalate = 'act_wf_escalate';
+
+  // SaaS Commercial Actions
+  static const String saasPlans = 'saas_plans';
+  static const String saasInvoicing = 'saas_invoicing';
+  static const String saasGateways = 'saas_payment_gateways';
+  static const String saasCoupons = 'saas_coupons';
+  static const String saasAnalytics = 'saas_mrr_analytics';
+
+  // Phase 14: Helpdesk & Support Actions
+  static const String actTicketCreate = 'act_ticket_create';
+  static const String actTicketAssign = 'act_ticket_assign';
+  static const String actTicketResolve = 'act_ticket_resolve';
+  static const String actTicketClose = 'act_ticket_close';
+  static const String actTicketReopen = 'act_ticket_reopen';
+  static const String actComplaintSubmit = 'act_complaint_submit';
+  static const String actComplaintInvestigate = 'act_complaint_investigate';
+  static const String actKnowledgeArticlePublish = 'act_knowledge_article_publish';
+  static const String actFeedbackSubmit = 'act_feedback_submit';
+
+  // Phase 15: API & Integration Actions
+  static const String actApiKeyGenerate = 'act_api_key_generate';
+  static const String actApiKeyRevoke = 'act_api_key_revoke';
+  static const String actOAuthClientRegister = 'act_oauth_client_register';
+  static const String actWebhookCreate = 'act_webhook_create';
+  static const String actWebhookTest = 'act_webhook_test';
+  static const String actIntegrationConnect = 'act_integration_connect';
+  static const String actRateLimitUpdate = 'act_rate_limit_update';
+
+  // Phase 16: White-Label & Customization Actions
+  static const String actBrandingUpdate = 'act_branding_update';
+  static const String actThemePublish = 'act_theme_publish';
+  static const String actDomainVerify = 'act_domain_verify';
+  static const String actTemplateSave = 'act_template_save';
+  static const String actTemplateRollback = 'act_template_rollback';
+  static const String actNotificationTemplateTest = 'act_notification_template_test';
+  static const String actWhiteLabelRollback = 'act_whitelabel_rollback';
+
+  // Phase 17: Data Warehouse & BI Actions
+  static const String actDwPipelineRun = 'act_dw_pipeline_run';
+  static const String actDwReconcileVerify = 'act_dw_reconcile_verify';
+  static const String actDwBiExport = 'act_dw_bi_export';
+  static const String actDwBenchmarkAnalyze = 'act_dw_benchmark_analyze';
+  static const String actDwArchiveExecute = 'act_dw_archive_execute';
+  static const String actDwRestoreData = 'act_dw_restore_data';
+  static const String actDwQualityCheck = 'act_dw_quality_check';
+
+  // Phase 18: Member Super App Actions
+  static const String actMemberSelfRegister = 'act_member_self_register';
+  static const String actMemberKycUpload = 'act_member_kyc_upload';
+  static const String actMemberQrScan = 'act_member_qr_scan';
+  static const String actMemberWithdrawalRequest = 'act_member_withdrawal_request';
+  static const String actMemberLoanApplication = 'act_member_loan_application';
+  static const String actMemberOnlinePay = 'act_member_online_pay';
+  static const String actMemberSupportTicket = 'act_member_support_ticket';
+
+  // Phase 19: Cooperative Governance & Compliance Actions
+  static const String actGovMeetingCreate = 'act_gov_meeting_create';
+  static const String actGovResolutionPass = 'act_gov_resolution_pass';
+  static const String actGovAgmNoticePublish = 'act_gov_agm_notice_publish';
+  static const String actGovElectionSchedule = 'act_gov_election_schedule';
+  static const String actGovAuditFindingLog = 'act_gov_audit_finding_log';
+  static const String actGovComplianceFilingSubmit = 'act_gov_compliance_filing_submit';
+  static const String actGovDocumentSign = 'act_gov_document_sign';
+
+  // Phase 20: Enterprise Automation Actions
+  static const String actAutoWorkflowCreate = 'act_auto_workflow_create';
+  static const String actAutoWorkflowRun = 'act_auto_workflow_run';
+  static const String actAutoTriggerToggle = 'act_auto_trigger_toggle';
+  static const String actAutoActionExecute = 'act_auto_action_execute';
+  static const String actAutoApprovalDecide = 'act_auto_approval_decide';
+  static const String actAutoRetryTrigger = 'act_auto_retry_trigger';
+  static const String actAutoLogExport = 'act_auto_log_export';
 }

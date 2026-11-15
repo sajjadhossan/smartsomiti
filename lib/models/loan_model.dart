@@ -357,3 +357,22 @@ class LoanApplicationModel {
     );
   }
 }
+
+/// Calculation engine adapter for financial schedule generation
+class LoanCalculationEngine {
+  static List<LoanInstallmentModel> generateSchedule({
+    required double principal,
+    required double annualRatePercent,
+    required int months,
+    required LoanInterestType type,
+    required DateTime startDate,
+  }) {
+    return LoanModel.generateSchedule(
+      principal: principal,
+      annualRatePercent: annualRatePercent,
+      months: months,
+      interestType: type,
+      startDate: startDate,
+    );
+  }
+}
