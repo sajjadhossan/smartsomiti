@@ -1,12 +1,12 @@
 {
   "appName": "স্মার্ট সমিতি",
   "projectSlug": "smartsomiti",
-  "version": "2.6.0",
-  "buildNumber": 12,
+  "version": "2.6.1",
+  "buildNumber": 13,
   "releaseDate": "2026-11-15",
   "releaseName": "স্মার্ট সমিতি এন্টারপ্রাইজ প্ল্যাটফর্ম",
   "vercelUrl": "https://smartsomiti.vercel.app",
   "minSupportedVersion": "1.0.0",
   "downloadUrl": "https://github.com/sajjadhossan/smartsomiti/releases/latest/download/smartsomiti-latest.apk",
-  "changelogBn": "প্যাড হেডারে নতুন ৩টি লাইন যুক্ত: ব্যাংক অ্যাকাউন্ট, বিকাশ/নগদ অ্যাকাউন্ট ও সমবায় রেজিস্ট্রেশন নম্বর প্রদর্শন এবং রিয়েল-টাইম প্রিন্ট সাপোর্ট।"
+  "changelogBn": "স্মার্ট সমিতি এক্সিকিউটিভ ৩ডি সার্কুলার এমব্লেম লোগো সংস্থাপন, সব প্যাড ও ড্যাশবোর্ডে লোগো ডিসপ্লে এবং অ্যাপ লঞ্চার আইকন আপডেট (v2.6.1)।"
 }

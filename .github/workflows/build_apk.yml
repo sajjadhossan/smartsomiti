@@ -49,6 +49,21 @@ jobs:
       - name: Get Flutter Dependencies
         run: flutter pub get
 
+      - name: Generate App Launcher Icons from Logo
+        run: |
+          python3 -m pip install --upgrade pillow
+          python3 -c "
+          from PIL import Image
+          import os
+          sizes = {'mipmap-mdpi': 48, 'mipmap-hdpi': 72, 'mipmap-xhdpi': 96, 'mipmap-xxhdpi': 144, 'mipmap-xxxhdpi': 192}
+          img = Image.open('assets/logo.jpg').convert('RGBA')
+          for folder, size in sizes.items():
+              d = os.path.join('android/app/src/main/res', folder)
+              os.makedirs(d, exist_ok=True)
+              img.resize((size, size), Image.Resampling.LANCZOS).save(os.path.join(d, 'ic_launcher.png'), 'PNG')
+          print('Successfully generated launcher icons for all mipmap densities!')
+          "
+
       - name: Build Release APKs (Split per ABI)
         run: flutter build apk --release --split-per-abi --android-skip-build-dependency-validation
 

@@ -59,8 +59,8 @@ if (fs.existsSync(pubspecPath)) {
 function updateHtmlFile(filePath, fileName) {
   if (!fs.existsSync(filePath)) return;
   let html = fs.readFileSync(filePath, 'utf8');
-  // Replace v2.5.0 with newVersion
-  html = html.replace(/v2\.5\.\d+/g, `v${newVersion}`);
+  // Replace any existing vX.Y.Z with newVersion
+  html = html.replace(/v\d+\.\d+\.\d+/g, `v${newVersion}`);
   fs.writeFileSync(filePath, html);
   console.log(`✓ Updated ${fileName} version badges -> v${newVersion}`);
 }
