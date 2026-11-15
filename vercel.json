@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "cleanUrls": true,
+  "cleanUrls": false,
   "routes": [
     {
       "src": "/version.json",
@@ -19,7 +19,7 @@
       "dest": "/$1"
     },
     {
-      "src": "^/verify(\\.html)?$",
+      "src": "/verify.*",
       "dest": "/verify.html",
       "headers": {
         "content-type": "text/html; charset=utf-8",
