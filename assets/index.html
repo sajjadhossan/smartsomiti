@@ -16,6 +16,11 @@
       --danger: #EF4444; --danger-light: #FEE2E2;
       --bg: #F8F9FA; --card-bg: #FFFFFF; --text: #202124; --text-muted: #5F6368; --border: #DADCE0;
     }
+    body.theme-snow {
+      --primary: #2563EB; --primary-dark: #1D4ED8; --primary-light: #EFF6FF;
+      --danger: #EF4444; --danger-light: #FEE2E2;
+      --bg: #FFFFFF; --card-bg: #F8FAFC; --text: #0F172A; --text-muted: #475569; --border: #E2E8F0;
+    }
     body.theme-navy {
       --primary: #1A73E8; --primary-dark: #1557B0; --primary-light: #E8F0FE;
       --danger: #EF4444; --danger-light: #FEE2E2;
@@ -39,12 +44,12 @@
     body.theme-dark {
       --primary: #10B981; --primary-dark: #059669; --primary-light: #064E3B;
       --danger: #F87171; --danger-light: #7F1D1D;
-      --bg: #0F172A; --card-bg: #1E293B; --text: #F8FAFC; --text-muted: #94A3B8; --border: #334155;
+      --bg: #000000; --card-bg: #111827; --text: #F8FAFC; --text-muted: #94A3B8; --border: #1F2937;
     }
     body.theme-slate {
-      --primary: #475569; --primary-dark: #334155; --primary-light: #F1F5F9;
-      --danger: #EF4444; --danger-light: #FEE2E2;
-      --bg: #F8FAFC; --card-bg: #FFFFFF; --text: #0F172A; --text-muted: #64748B; --border: #CBD5E1;
+      --primary: #38BDF8; --primary-dark: #0284C7; --primary-light: #0C4A6E;
+      --danger: #EF4444; --danger-light: #7F1D1D;
+      --bg: #0F172A; --card-bg: #1E293B; --text: #F1F5F9; --text-muted: #94A3B8; --border: #334155;
     }
     body.theme-teal {
       --primary: #0D9488; --primary-dark: #0F766E; --primary-light: #CCFBF1;
@@ -59,7 +64,7 @@
     body.theme-neon {
       --primary: #06B6D4; --primary-dark: #0891B2; --primary-light: #164E63;
       --danger: #F43F5E; --danger-light: #881337;
-      --bg: #090D16; --card-bg: #111827; --text: #F0FDF4; --text-muted: #9CA3AF; --border: #1F2937;
+      --bg: #050B14; --card-bg: #0D1525; --text: #F0FDF4; --text-muted: #9CA3AF; --border: #1B2A47;
     }
 
     /* Seal alignment and ordering modifiers */
@@ -1196,6 +1201,19 @@
       border-radius: 50%;
       flex-shrink: 0;
     }
+    .ui-theme-skin-card {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .ui-theme-skin-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border-color: var(--primary) !important;
+    }
+    .ui-theme-skin-card.active {
+      border: 2px solid var(--primary) !important;
+      box-shadow: 0 0 0 3px var(--primary-light), 0 4px 12px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
     /* Global Search Styles */
     .search-cat-tab {
       background: var(--card-bg);
@@ -2083,24 +2101,24 @@
       margin-top: 1px;
       white-space: nowrap;
     }
-    /* 3. Right: Society 6-Line Header (Name, Address, Slogan, Bank, bKash, Reg No) */
+    /* 3. Right: Society 8-Line Header (Name, Motto, Reg No, Address, Bank, Acc, Routing, bKash) */
     .pad-header-right-col {
       flex: 0 0 auto;
-      max-width: 44%;
-      min-width: 105px;
+      max-width: 48%;
+      min-width: 110px;
       text-align: right;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
       justify-content: center;
       gap: 1.5px;
-      overflow: hidden;
+      overflow: visible;
     }
     .pad-right-name-bn {
       font-size: clamp(9px, 2.2vw, 13px);
       font-weight: 800;
       color: #B91C1C;
-      line-height: 1.2;
+      line-height: 1.25;
       text-align: right;
       max-width: 100%;
       overflow: hidden;
@@ -2110,44 +2128,11 @@
     .pad-name-english {
       display: none;
     }
-    .pad-address-line {
-      font-size: clamp(7px, 1.7vw, 10px);
-      font-weight: 700;
-      color: #165B33;
-      line-height: 1.2;
-      text-align: right;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
     .pad-right-tagline {
       font-size: clamp(6.8px, 1.5vw, 9.5px);
       font-weight: 600;
       color: #1E3A8A;
-      line-height: 1.2;
-      text-align: right;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .pad-bank-line {
-      font-size: clamp(6.5px, 1.4vw, 9px);
-      font-weight: 700;
-      color: #1E3A8A;
-      line-height: 1.2;
-      text-align: right;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .pad-bkash-line {
-      font-size: clamp(6.5px, 1.4vw, 9px);
-      font-weight: 700;
-      color: #D97706;
-      line-height: 1.2;
+      line-height: 1.25;
       text-align: right;
       max-width: 100%;
       overflow: hidden;
@@ -2158,7 +2143,62 @@
       font-size: clamp(6.2px, 1.3vw, 8.5px);
       font-weight: 700;
       color: #047857;
-      line-height: 1.2;
+      line-height: 1.25;
+      text-align: right;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .pad-address-line {
+      font-size: clamp(6.8px, 1.5vw, 9.5px);
+      font-weight: 700;
+      color: #165B33;
+      line-height: 1.25;
+      text-align: right;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .pad-bank-line {
+      font-size: clamp(6.5px, 1.4vw, 9px);
+      font-weight: 700;
+      color: #1E3A8A;
+      line-height: 1.25;
+      text-align: right;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .pad-bank-acc-line {
+      font-size: clamp(6.2px, 1.3vw, 8.5px);
+      font-weight: 700;
+      color: #1E40AF;
+      line-height: 1.25;
+      text-align: right;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .pad-bank-routing-line {
+      font-size: clamp(6px, 1.2vw, 8px);
+      font-weight: 700;
+      color: #475569;
+      line-height: 1.25;
+      text-align: right;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .pad-bkash-line {
+      font-size: clamp(6.5px, 1.4vw, 9px);
+      font-weight: 700;
+      color: #D97706;
+      line-height: 1.25;
       text-align: right;
       max-width: 100%;
       overflow: hidden;
@@ -2502,9 +2542,9 @@
         font-weight: 700 !important;
       }
       .a4-sheet-page .pad-header-right-col {
-        min-width: 140px !important;
-        max-width: 42% !important;
-        gap: 3px !important;
+        min-width: 150px !important;
+        max-width: 48% !important;
+        gap: 2.5px !important;
       }
       .a4-sheet-page .pad-right-name-bn {
         font-size: 15px !important;
@@ -2516,13 +2556,6 @@
       .a4-sheet-page .pad-name-english {
         display: none !important;
       }
-      .a4-sheet-page .pad-address-line {
-        font-size: 12px !important;
-        font-weight: 700 !important;
-        color: #165B33 !important;
-        line-height: 1.25 !important;
-        white-space: nowrap !important;
-      }
       .a4-sheet-page .pad-right-tagline {
         font-size: 11px !important;
         font-weight: 600 !important;
@@ -2530,25 +2563,46 @@
         line-height: 1.25 !important;
         white-space: nowrap !important;
       }
+      .a4-sheet-page .pad-reg-line {
+        font-size: 9.5px !important;
+        font-weight: 700 !important;
+        color: #047857 !important;
+        line-height: 1.25 !important;
+        white-space: nowrap !important;
+      }
+      .a4-sheet-page .pad-address-line {
+        font-size: 11.5px !important;
+        font-weight: 700 !important;
+        color: #165B33 !important;
+        line-height: 1.25 !important;
+        white-space: nowrap !important;
+      }
       .a4-sheet-page .pad-bank-line {
         font-size: 10px !important;
         font-weight: 700 !important;
         color: #1E3A8A !important;
-        line-height: 1.2 !important;
+        line-height: 1.25 !important;
+        white-space: nowrap !important;
+      }
+      .a4-sheet-page .pad-bank-acc-line {
+        font-size: 9.5px !important;
+        font-weight: 700 !important;
+        color: #1E40AF !important;
+        line-height: 1.25 !important;
+        white-space: nowrap !important;
+      }
+      .a4-sheet-page .pad-bank-routing-line {
+        font-size: 9px !important;
+        font-weight: 700 !important;
+        color: #475569 !important;
+        line-height: 1.25 !important;
         white-space: nowrap !important;
       }
       .a4-sheet-page .pad-bkash-line {
         font-size: 10px !important;
         font-weight: 700 !important;
         color: #D97706 !important;
-        line-height: 1.2 !important;
-        white-space: nowrap !important;
-      }
-      .a4-sheet-page .pad-reg-line {
-        font-size: 9.5px !important;
-        font-weight: 700 !important;
-        color: #047857 !important;
-        line-height: 1.2 !important;
+        line-height: 1.25 !important;
         white-space: nowrap !important;
       }
       .a4-sheet-page .pad-reg-pill,
@@ -2754,10 +2808,10 @@
         <span>•</span>
         <span>☁️ ফায়ারবেস ক্লাউড সিকিউরড</span>
         <span>•</span>
-        <span>🇧🇩 রিলিজ v2.5.7</span>
+        <span>🇧🇩 রিলিজ v2.5.8</span>
       </div>
       <div style="text-align: center; margin-top: 8px; font-size: 11px; font-weight: 800; color: #0F9D58;">
-        স্মার্ট সমিতি প্ল্যাটফর্ম • সিস্টেম সংস্করণ v2.5.7
+        স্মার্ট সমিতি প্ল্যাটফর্ম • সিস্টেম সংস্করণ v2.5.8
       </div>
 
       <!-- Public Secret Code & Document Verification Box -->
@@ -2869,7 +2923,7 @@
             <div class="society-switch-pill" onclick="openSocietySwitcher()" title="সমিতি পরিবর্তন করতে ক্লিক করুন">
               <span id="dashSomitiName" style="font-size: 13.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 135px; display: inline-block; vertical-align: middle;">স্বপ্ন ছোঁয়া ঐক্য সমিতি</span>
               <span id="dashSomitiCode" style="font-size: 10px; font-weight: 700; color: var(--primary);">SMT-7890</span>
-              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.5.7</span>
+              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.5.8</span>
               <span style="font-size: 10px; opacity: 0.7;">▾</span>
             </div>
             <div id="headerActiveViewTitle" class="header-active-view-badge" title="বর্তমান সক্রিয় মডিউল">📊 এডমিন ড্যাশবোর্ড</div>
@@ -2902,12 +2956,16 @@
           <div id="headerThemeDropdown" class="header-theme-popover" style="display: none;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid var(--border);">
               <span style="font-size: 11px; font-weight: 800; color: var(--text);">🎨 থিম নির্বাচন করুন:</span>
-              <span style="font-size: 10px; color: var(--text-muted);">১০টি কালার মোড</span>
+              <span style="font-size: 10px; color: var(--text-muted);">১১টি কালার স্কিন</span>
             </div>
             <div class="header-theme-grid">
               <div class="theme-pill-option" onclick="selectThemeFromMenu('emerald')">
                 <span class="theme-color-dot" style="background: #0F9D58;"></span>
                 <span>এমারেল্ড</span>
+              </div>
+              <div class="theme-pill-option" onclick="selectThemeFromMenu('snow')">
+                <span class="theme-color-dot" style="background: #FFFFFF; border: 1.5px solid #0284C7;"></span>
+                <span>স্নো হোয়াইট</span>
               </div>
               <div class="theme-pill-option" onclick="selectThemeFromMenu('navy')">
                 <span class="theme-color-dot" style="background: #1A73E8;"></span>
@@ -2951,6 +3009,7 @@
           <!-- Compatibility Select element -->
           <select id="themeSelector" onchange="changeTheme(this.value)" style="display: none;">
             <option value="emerald">🟢 এমারেল্ড</option>
+            <option value="snow">❄️ স্নো হোয়াইট</option>
             <option value="navy">🔵 নেভি</option>
             <option value="purple">🟣 পার্পল</option>
             <option value="golden">🟠 গোল্ডেন</option>
@@ -2980,7 +3039,7 @@
           <div>
             <h3 id="sideSomitiName" style="font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.2;">স্বপ্ন ছোঁয়া ঐক্য সমিতি</h3>
             <span id="sideSomitiCode" style="font-size: 10px; background: var(--primary-light); color: var(--primary); font-weight: 700; padding: 1px 6px; border-radius: 4px;">SMT-7890</span>
-            <span style="font-size: 10px; background: #059669; color: white; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 3px;">v2.5.7</span>
+            <span style="font-size: 10px; background: #059669; color: white; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 3px;">v2.5.8</span>
           </div>
         </div>
         <button onclick="closeSidebar()" style="background: none; border: none; font-size: 22px; color: var(--text-muted); cursor: pointer; padding: 4px;">✕</button>
@@ -3200,7 +3259,7 @@
       </div>
 
       <div style="padding: 10px; border-top: 1px solid var(--border); font-size: 11px; text-align: center; color: var(--text-muted); background: var(--bg);">
-        স্বপ্ন ছোঁয়া ঐক্য সমিতি প্ল্যাটফর্ম • v2.5.7 (রিলিজ)
+        স্বপ্ন ছোঁয়া ঐক্য সমিতি প্ল্যাটফর্ম • v2.5.8 (রিলিজ)
       </div>
     </div>
 
@@ -3343,9 +3402,9 @@
           <div class="sheet-icon-circle" style="background: #DCFCE7; color: #166534;">📱</div>
           <div>
             <div style="font-weight: 700; font-size: 13px;">অ্যাপ সংস্করণ ও APK আপডেট</div>
-            <div style="font-size: 10.5px; color: var(--text-muted);">বর্তমান সংস্করণ v2.5.7 • ইন-প্লেস APK ডাউনলোড</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">বর্তমান সংস্করণ v2.5.8 • ইন-প্লেস APK ডাউনলোড</div>
           </div>
-          <span class="sheet-badge" style="background: #BBF7D0; color: #166534;">v2.5.7</span>
+          <span class="sheet-badge" style="background: #BBF7D0; color: #166534;">v2.5.8</span>
         </button>
 
         <!-- Group 4: 🚪 বিপজ্জনক অপশন / সেশন -->
@@ -4204,14 +4263,16 @@
                 <div class="pad-est-badge" id="livePadEstBadge">স্থাপিত: ২০২৬ ইং</div>
               </div>
 
-              <!-- Right: Society 6-Line Official Header (Name, Address, Slogan, Bank, bKash, Reg No) -->
+              <!-- Right: Society 8-Line Official Header (Name, Motto, Reg No, Address, Bank, Acc, Routing, bKash) -->
               <div class="pad-header-right-col">
                 <div class="pad-right-name-bn" id="livePadRightBnName">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
-                <div class="pad-address-line" id="livePadAddressLine"><span id="livePadAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
                 <div class="pad-right-tagline" id="livePadRightTagline">স্বচ্ছতা ও ঐক্যের প্রতীক</div>
-                <div class="pad-bank-line" id="livePadBankLine">🏦 <span id="livePadBank">সিটি ব্যাংক পিএলসি - ২৩১৫১৫৮০৪৫০০১</span></div>
-                <div class="pad-bkash-line" id="livePadBkashLine">📱 <span id="livePadBkash">০১৭১২-৩৪৫৬৭৮</span></div>
                 <div class="pad-reg-line" id="livePadRegLine"><span id="livePadRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬</span></div>
+                <div class="pad-address-line" id="livePadAddressLine">📍 <span id="livePadAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
+                <div class="pad-bank-line" id="livePadBankLine">🏦 <span id="livePadBank">সিটি ব্যাংক পিএলসি</span></div>
+                <div class="pad-bank-acc-line" id="livePadBankAccLine">💳 হিসাব: <span id="livePadBankAcc">২৩১৫১৫৮০৪৫০০১</span></div>
+                <div class="pad-bank-routing-line" id="livePadBankRoutingLine">🌐 রাউটিং: <span id="livePadBankRouting">২২৫২৬০৪১৫</span></div>
+                <div class="pad-bkash-line" id="livePadBkashLine">📱 বিকাশ: <span id="livePadBkash">০১৭১২-৩৪৫৬৭৮</span></div>
                 <span id="livePadEnglishName" style="display:none;"></span>
                 <span id="livePadCodeBadge" style="display:none;"></span>
               </div>
@@ -4708,14 +4769,16 @@
                 <div class="pad-est-badge" id="apEstYearBadge">স্থাপিত: ২০২৬ ইং</div>
               </div>
 
-              <!-- Right: Society 6-Line Official Header (Name, Address, Slogan, Bank, bKash, Reg No) -->
+              <!-- Right: Society 8-Line Official Header (Name, Motto, Reg No, Address, Bank, Acc, Routing, bKash) -->
               <div class="pad-header-right-col">
                 <div class="pad-right-name-bn" id="apRightBnName">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
-                <div class="pad-address-line" id="apAddressLine"><span id="apAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
                 <div class="pad-right-tagline" id="apRightTagline">স্বচ্ছতা ও ঐক্যের প্রতীক</div>
-                <div class="pad-bank-line" id="apBankLine">🏦 <span id="apBank">সিটি ব্যাংক পিএলসি - ২৩১৫১৫৮০৪৫০০১</span></div>
-                <div class="pad-bkash-line" id="apBkashLine">📱 <span id="apBkash">০১৭১২-৩৪৫৬৭৮</span></div>
                 <div class="pad-reg-line" id="apRegLine"><span id="apRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬</span></div>
+                <div class="pad-address-line" id="apAddressLine">📍 <span id="apAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
+                <div class="pad-bank-line" id="apBankLine">🏦 <span id="apBank">সিটি ব্যাংক পিএলসি</span></div>
+                <div class="pad-bank-acc-line" id="apBankAccLine">💳 হিসাব: <span id="apBankAcc">২৩১৫১৫৮০৪৫০০১</span></div>
+                <div class="pad-bank-routing-line" id="apBankRoutingLine">🌐 রাউটিং: <span id="apBankRouting">২২৫২৬০৪১৫</span></div>
+                <div class="pad-bkash-line" id="apBkashLine">📱 বিকাশ: <span id="apBkash">০১৭১২-৩৪৫৬৭৮</span></div>
                 <span id="apEnglishName" style="display:none;"></span>
                 <span id="apCodeBadge" style="display:none;"></span>
               </div>
@@ -5168,14 +5231,16 @@
                 <div class="pad-est-badge" id="nvEstYearBadge">স্থাপিত: ২০২৬ ইং</div>
               </div>
 
-              <!-- Right: Society 6-Line Official Header (Name, Address, Slogan, Bank, bKash, Reg No) -->
+              <!-- Right: Society 8-Line Official Header (Name, Motto, Reg No, Address, Bank, Acc, Routing, bKash) -->
               <div class="pad-header-right-col">
                 <div class="pad-right-name-bn" id="nvRightBnName">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
-                <div class="pad-address-line" id="nvAddressLine"><span id="nvAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
                 <div class="pad-right-tagline" id="nvRightTagline">স্বচ্ছতা ও ঐক্যের প্রতীক</div>
-                <div class="pad-bank-line" id="nvBankLine">🏦 <span id="nvBank">সিটি ব্যাংক পিএলসি - ২৩১৫১৫৮০৪৫০০১</span></div>
-                <div class="pad-bkash-line" id="nvBkashLine">📱 <span id="nvBkash">০১৭১২-৩৪৫৬৭৮</span></div>
                 <div class="pad-reg-line" id="nvRegLine"><span id="nvRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬</span></div>
+                <div class="pad-address-line" id="nvAddressLine">📍 <span id="nvAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
+                <div class="pad-bank-line" id="nvBankLine">🏦 <span id="nvBank">সিটি ব্যাংক পিএলসি</span></div>
+                <div class="pad-bank-acc-line" id="nvBankAccLine">💳 হিসাব: <span id="nvBankAcc">২৩১৫১৫৮০৪৫০০১</span></div>
+                <div class="pad-bank-routing-line" id="nvBankRoutingLine">🌐 রাউটিং: <span id="nvBankRouting">২২৫২৬০৪১৫</span></div>
+                <div class="pad-bkash-line" id="nvBkashLine">📱 বিকাশ: <span id="nvBkash">০১৭১২-৩৪৫৬৭৮</span></div>
                 <span id="nvEnglishName" style="display:none;"></span>
                 <span id="nvCodeBadge" style="display:none;"></span>
               </div>
@@ -5379,7 +5444,7 @@
               <div style="font-size: 15px; font-weight: 800; color: #78350F;">প্ল্যাটফর্ম সুপার এডমিন কন্ট্রোল</div>
               <div style="font-size: 11px; color: #92400E;">অ্যাকাউন্ট: <strong>hossansajjad1994@gmail.com</strong> (সর্বোচ্চ ক্ষমতা)</div>
             </div>
-            <span style="background: #D97706; color: white; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800;">GLOBAL ACTIVE • v2.5.7</span>
+            <span style="background: #D97706; color: white; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800;">GLOBAL ACTIVE • v2.5.8</span>
           </div>
           <p style="font-size: 12px; color: #92400E; margin-top: 6px;">
             এখানে যেকোনো ফিচার বন্ধ করলে তা সাথে সাথে পুরো সিস্টেমে বা নির্দিষ্ট সমিতিতে নিষ্ক্রিয় হয়ে যাবে।
@@ -7356,6 +7421,98 @@
           <button onclick="applyUiTheme('highContrast')" class="ui-theme-card" id="themeCard-highContrast" style="background: #000000; border: 1px solid #555; border-radius: 10px; padding: 14px; text-align: left; cursor: pointer; color: white;">
             <div style="font-weight: 800; font-size: 14px; color: #00FF66; margin-bottom: 4px;">⚡ হাই-কন্ট্রাস্ট (High Contrast)</div>
             <div style="font-size: 11.5px; color: #FFFF00;">২১:১ কনট্রাস্ট অনুপাত (দৃষ্টিশক্তি দুর্বলদের জন্য)</div>
+          </button>
+        </div>
+
+        <h3 style="font-size: 15px; font-weight: 800; color: #1E293B; margin-top: 20px; margin-bottom: 12px;">🎨 ১১টি ভিজ্যুয়াল কালার স্কিন ও প্রিসেট মোড</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 24px;">
+          <!-- 1. Emerald -->
+          <button type="button" onclick="changeTheme('emerald')" class="ui-theme-skin-card" style="border: 1.5px solid #CBD5E1; border-radius: 10px; padding: 10px; background: #FFFFFF; text-align: left; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span style="width: 18px; height: 18px; border-radius: 50%; background: #0F9D58; display: inline-block; flex-shrink: 0;"></span>
+              <strong style="font-size: 12px; color: #0F172A;">এমারেল্ড</strong>
+            </div>
+            <div style="font-size: 10px; color: #64748B;">অফিসিয়াল ক্লাসিক সবুজ</div>
+          </button>
+          <!-- 2. Snow White -->
+          <button type="button" onclick="changeTheme('snow')" class="ui-theme-skin-card" style="border: 1.5px solid #CBD5E1; border-radius: 10px; padding: 10px; background: #FFFFFF; text-align: left; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span style="width: 18px; height: 18px; border-radius: 50%; background: #FFFFFF; border: 2px solid #0284C7; display: inline-block; flex-shrink: 0;"></span>
+              <strong style="font-size: 12px; color: #0F172A;">স্নো হোয়াইট</strong>
+            </div>
+            <div style="font-size: 10px; color: #64748B;">শুভ্র ও মিনিমালিস্ট ব্লু</div>
+          </button>
+          <!-- 3. Navy -->
+          <button type="button" onclick="changeTheme('navy')" class="ui-theme-skin-card" style="border: 1.5px solid #CBD5E1; border-radius: 10px; padding: 10px; background: #FFFFFF; text-align: left; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span style="width: 18px; height: 18px; border-radius: 50%; background: #1A73E8; display: inline-block; flex-shrink: 0;"></span>
+              <strong style="font-size: 12px; color: #0F172A;">রয়্যাল নেভি</strong>
+            </div>
+            <div style="font-size: 10px; color: #64748B;">কর্পোরেট শান্ত নীল</div>
+          </button>
+          <!-- 4. Purple -->
+          <button type="button" onclick="changeTheme('purple')" class="ui-theme-skin-card" style="border: 1.5px solid #CBD5E1; border-radius: 10px; padding: 10px; background: #FFFFFF; text-align: left; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span style="width: 18px; height: 18px; border-radius: 50%; background: #7C3AED; display: inline-block; flex-shrink: 0;"></span>
+              <strong style="font-size: 12px; color: #0F172A;">রয়েল পার্পল</strong>
+            </div>
+            <div style="font-size: 10px; color: #64748B;">অভিজাত বেগুনি আভা</div>
+          </button>
+          <!-- 5. Golden -->
+          <button type="button" onclick="changeTheme('golden')" class="ui-theme-skin-card" style="border: 1.5px solid #CBD5E1; border-radius: 10px; padding: 10px; background: #FFFFFF; text-align: left; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span style="width: 18px; height: 18px; border-radius: 50%; background: #D97706; display: inline-block; flex-shrink: 0;"></span>
+              <strong style="font-size: 12px; color: #0F172A;">সানসেট গোল্ড</strong>
+            </div>
+            <div style="font-size: 10px; color: #64748B;">উষ্ণ সোনালী অ্যাম্বার</div>
+          </button>
+          <!-- 6. Crimson -->
+          <button type="button" onclick="changeTheme('crimson')" class="ui-theme-skin-card" style="border: 1.5px solid #CBD5E1; border-radius: 10px; padding: 10px; background: #FFFFFF; text-align: left; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span style="width: 18px; height: 18px; border-radius: 50%; background: #E11D48; display: inline-block; flex-shrink: 0;"></span>
+              <strong style="font-size: 12px; color: #0F172A;">রুবি ক্রিমসন</strong>
+            </div>
+            <div style="font-size: 10px; color: #64748B;">উজ্জ্বল লাল মানিক্য</div>
+          </button>
+          <!-- 7. Dark -->
+          <button type="button" onclick="changeTheme('dark')" class="ui-theme-skin-card" style="border: 1.5px solid #334155; border-radius: 10px; padding: 10px; background: #0F172A; text-align: left; cursor: pointer; color: white;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span style="width: 18px; height: 18px; border-radius: 50%; background: #0F172A; border: 1.5px solid #94A3B8; display: inline-block; flex-shrink: 0;"></span>
+              <strong style="font-size: 12px; color: #F1F5F9;">ডার্ক নাইট</strong>
+            </div>
+            <div style="font-size: 10px; color: #94A3B8;">OLED ব্যাটারি সাশ্রয়ী</div>
+          </button>
+          <!-- 8. Slate -->
+          <button type="button" onclick="changeTheme('slate')" class="ui-theme-skin-card" style="border: 1.5px solid #CBD5E1; border-radius: 10px; padding: 10px; background: #FFFFFF; text-align: left; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span style="width: 18px; height: 18px; border-radius: 50%; background: #475569; display: inline-block; flex-shrink: 0;"></span>
+              <strong style="font-size: 12px; color: #0F172A;">মডার্ন স্লেট</strong>
+            </div>
+            <div style="font-size: 10px; color: #64748B;">প্রফেশনাল নিউট্রাল</div>
+          </button>
+          <!-- 9. Teal -->
+          <button type="button" onclick="changeTheme('teal')" class="ui-theme-skin-card" style="border: 1.5px solid #CBD5E1; border-radius: 10px; padding: 10px; background: #FFFFFF; text-align: left; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span style="width: 18px; height: 18px; border-radius: 50%; background: #0D9488; display: inline-block; flex-shrink: 0;"></span>
+              <strong style="font-size: 12px; color: #0F172A;">সি টিল</strong>
+            </div>
+            <div style="font-size: 10px; color: #64748B;">সাগর নীল ও সবুজ</div>
+          </button>
+          <!-- 10. Orange -->
+          <button type="button" onclick="changeTheme('orange')" class="ui-theme-skin-card" style="border: 1.5px solid #CBD5E1; border-radius: 10px; padding: 10px; background: #FFFFFF; text-align: left; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span style="width: 18px; height: 18px; border-radius: 50%; background: #EA580C; display: inline-block; flex-shrink: 0;"></span>
+              <strong style="font-size: 12px; color: #0F172A;">সানসেট অরেঞ্জ</strong>
+            </div>
+            <div style="font-size: 10px; color: #64748B;">দীপ্তিময় কমলা আভা</div>
+          </button>
+          <!-- 11. Neon -->
+          <button type="button" onclick="changeTheme('neon')" class="ui-theme-skin-card" style="border: 1.5px solid #CBD5E1; border-radius: 10px; padding: 10px; background: #FFFFFF; text-align: left; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span style="width: 18px; height: 18px; border-radius: 50%; background: #06B6D4; display: inline-block; flex-shrink: 0;"></span>
+              <strong style="font-size: 12px; color: #0F172A;">সাইবার নিয়ন</strong>
+            </div>
+            <div style="font-size: 10px; color: #64748B;">উজ্জ্বল সাইয়ান গ্লো</div>
           </button>
         </div>
 
@@ -9665,14 +9822,16 @@
                 <div class="pad-est-badge" id="rcptEstYearBadge">স্থাপিত: ২০২৬ ইং</div>
               </div>
 
-              <!-- Right: Society 6-Line Official Header (Name, Address, Slogan, Bank, bKash, Reg No) -->
+              <!-- Right: Society 8-Line Official Header (Name, Motto, Reg No, Address, Bank, Acc, Routing, bKash) -->
               <div class="pad-header-right-col">
                 <div class="pad-right-name-bn" id="rcptRightBnName">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
-                <div class="pad-address-line" id="rcptAddressLine"><span id="rcptAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
                 <div class="pad-right-tagline" id="rcptRightTagline">স্বচ্ছতা ও ঐক্যের প্রতীক</div>
-                <div class="pad-bank-line" id="rcptBankLine">🏦 <span id="rcptBank">সিটি ব্যাংক পিএলসি - ২৩১৫১৫৮০৪৫০০১</span></div>
-                <div class="pad-bkash-line" id="rcptBkashLine">📱 <span id="rcptBkash">০১৭১২-৩৪৫৬৭৮</span></div>
                 <div class="pad-reg-line" id="rcptRegLine"><span id="rcptRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬</span></div>
+                <div class="pad-address-line" id="rcptAddressLine">📍 <span id="rcptAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
+                <div class="pad-bank-line" id="rcptBankLine">🏦 <span id="rcptBank">সিটি ব্যাংক পিএলসি</span></div>
+                <div class="pad-bank-acc-line" id="rcptBankAccLine">💳 হিসাব: <span id="rcptBankAcc">২৩১৫১৫৮০৪৫০০১</span></div>
+                <div class="pad-bank-routing-line" id="rcptBankRoutingLine">🌐 রাউটিং: <span id="rcptBankRouting">২২৫২৬০৪১৫</span></div>
+                <div class="pad-bkash-line" id="rcptBkashLine">📱 বিকাশ: <span id="rcptBkash">০১৭১২-৩৪৫৬৭৮</span></div>
                 <span id="rcptEnglishName" style="display:none;"></span>
                 <span id="rcptCodeBadge" style="display:none;"></span>
               </div>
@@ -10056,14 +10215,16 @@
                 <div class="pad-est-badge" id="npEstYearBadge">স্থাপিত: ২০২৬ ইং</div>
               </div>
 
-              <!-- Right: Society 6-Line Official Header (Name, Address, Slogan, Bank, bKash, Reg No) -->
+              <!-- Right: Society 8-Line Official Header (Name, Motto, Reg No, Address, Bank, Acc, Routing, bKash) -->
               <div class="pad-header-right-col">
                 <div class="pad-right-name-bn" id="npRightBnName">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
-                <div class="pad-address-line" id="npAddressLine"><span id="npAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
                 <div class="pad-right-tagline" id="npRightTagline">স্বচ্ছতা ও ঐক্যের প্রতীক</div>
-                <div class="pad-bank-line" id="npBankLine">🏦 <span id="npBank">সিটি ব্যাংক পিএলসি - ২৩১৫১৫৮০৪৫০০১</span></div>
-                <div class="pad-bkash-line" id="npBkashLine">📱 <span id="npBkash">০১৭১২-৩৪৫৬৭৮</span></div>
                 <div class="pad-reg-line" id="npRegLine"><span id="npRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬</span></div>
+                <div class="pad-address-line" id="npAddressLine">📍 <span id="npAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
+                <div class="pad-bank-line" id="npBankLine">🏦 <span id="npBank">সিটি ব্যাংক পিএলসি</span></div>
+                <div class="pad-bank-acc-line" id="npBankAccLine">💳 হিসাব: <span id="npBankAcc">২৩১৫১৫৮০৪৫০০১</span></div>
+                <div class="pad-bank-routing-line" id="npBankRoutingLine">🌐 রাউটিং: <span id="npBankRouting">২২৫২৬০৪১৫</span></div>
+                <div class="pad-bkash-line" id="npBkashLine">📱 বিকাশ: <span id="npBkash">০১৭১২-৩৪৫৬৭৮</span></div>
                 <span id="npEnglishName" style="display:none;"></span>
                 <span id="npCodeBadge" style="display:none;"></span>
               </div>
@@ -10221,14 +10382,16 @@
                 <div class="pad-est-badge" id="fpEstYearBadge">স্থাপিত: ২০২৬ ইং</div>
               </div>
 
-              <!-- Right: Society 6-Line Official Header (Name, Address, Slogan, Bank, bKash, Reg No) -->
+              <!-- Right: Society 8-Line Official Header (Name, Motto, Reg No, Address, Bank, Acc, Routing, bKash) -->
               <div class="pad-header-right-col">
                 <div class="pad-right-name-bn" id="fpRightBnName">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
-                <div class="pad-address-line" id="fpAddressLine"><span id="fpAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
                 <div class="pad-right-tagline" id="fpRightTagline">স্বচ্ছতা ও ঐক্যের প্রতীক</div>
-                <div class="pad-bank-line" id="fpBankLine">🏦 <span id="fpBank">সিটি ব্যাংক পিএলসি - ২৩১৫১৫৮০৪৫০০১</span></div>
-                <div class="pad-bkash-line" id="fpBkashLine">📱 <span id="fpBkash">০১৭১২-৩৪৫৬৭৮</span></div>
                 <div class="pad-reg-line" id="fpRegLine"><span id="fpRegBadge">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬</span></div>
+                <div class="pad-address-line" id="fpAddressLine">📍 <span id="fpAddress">শ্রীনগর, মুন্সীগঞ্জ</span></div>
+                <div class="pad-bank-line" id="fpBankLine">🏦 <span id="fpBank">সিটি ব্যাংক পিএলসি</span></div>
+                <div class="pad-bank-acc-line" id="fpBankAccLine">💳 হিসাব: <span id="fpBankAcc">২৩১৫১৫৮০৪৫০০১</span></div>
+                <div class="pad-bank-routing-line" id="fpBankRoutingLine">🌐 রাউটিং: <span id="fpBankRouting">২২৫২৬০৪১৫</span></div>
+                <div class="pad-bkash-line" id="fpBkashLine">📱 বিকাশ: <span id="fpBkash">০১৭১২-৩৪৫৬৭৮</span></div>
                 <span id="fpEnglishName" style="display:none;"></span>
                 <span id="fpCodeBadge" style="display:none;"></span>
               </div>
@@ -11196,6 +11359,7 @@
 
     const themeColors = {
       emerald: '#0F9D58',
+      snow: '#0284C7',
       navy: '#1A73E8',
       purple: '#7C3AED',
       golden: '#D97706',
@@ -11209,7 +11373,7 @@
 
     // Theme Switcher & Storage
     function changeTheme(themeName) {
-      const themes = ['emerald', 'navy', 'purple', 'golden', 'crimson', 'dark', 'slate', 'teal', 'orange', 'neon'];
+      const themes = ['emerald', 'snow', 'navy', 'purple', 'golden', 'crimson', 'dark', 'slate', 'teal', 'orange', 'neon'];
       themes.forEach(t => document.body.classList.remove('theme-' + t));
       document.body.classList.add('theme-' + themeName);
       localStorage.setItem('somiti_theme', themeName);
@@ -11221,7 +11385,7 @@
         dot.style.background = themeColors[themeName];
       }
 
-      document.querySelectorAll(".theme-pill-option").forEach(opt => {
+      document.querySelectorAll(".theme-pill-option, .ui-theme-skin-card").forEach(opt => {
         const onclickAttr = opt.getAttribute("onclick") || "";
         opt.classList.toggle("active", onclickAttr.includes("'" + themeName + "'"));
       });
@@ -11540,7 +11704,7 @@
       return `${day} ${month} ${year} ইং, ${period} ${displayHours}:${minutes} মি.`;
     }
 
-    // Dynamic Logo Renderer: shows uploaded logo or universal cooperative wreath emblem
+    // Dynamic Logo Renderer: shows uploaded logo or executive cooperative wreath emblem
     function renderPadLogo(logoHolderId, s = currentSomiti || {}, uid = "default") {
       const box = document.getElementById(logoHolderId);
       if (!box) return;
@@ -11551,33 +11715,66 @@
         const sealText = s.padHeader ? (s.padHeader.length > 32 ? s.padHeader.substring(0, 32) + '...' : s.padHeader) : "একতা আমাদের শক্তি, একতা আমাদের ভবিষ্যৎ";
         box.innerHTML = `
           <svg viewBox="0 0 130 130" style="width: 100%; height: 100%; display: block;" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="65" cy="65" r="62" fill="#FFFFFF" stroke="#165B33" stroke-width="2.5"/>
-            <circle cx="65" cy="65" r="56" fill="none" stroke="#165B33" stroke-width="1" stroke-dasharray="2,2"/>
-            <path d="M 22 80 C 15 58, 26 36, 48 22" fill="none" stroke="#165B33" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M 20 70 Q 14 65 19 62 Q 23 68 20 70 Z" fill="#165B33"/>
-            <path d="M 23 58 Q 16 52 22 49 Q 26 55 23 58 Z" fill="#165B33"/>
-            <path d="M 28 46 Q 22 39 29 37 Q 32 44 28 46 Z" fill="#165B33"/>
-            <path d="M 37 35 Q 31 28 38 27 Q 41 33 37 35 Z" fill="#165B33"/>
-            <path d="M 108 80 C 115 58, 104 36, 82 22" fill="none" stroke="#165B33" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M 110 70 Q 116 65 111 62 Q 107 68 110 70 Z" fill="#165B33"/>
-            <path d="M 107 58 Q 114 52 108 49 Q 104 55 107 58 Z" fill="#165B33"/>
-            <path d="M 102 46 Q 108 39 101 37 Q 98 44 102 46 Z" fill="#165B33"/>
-            <path d="M 93 35 Q 99 28 92 27 Q 89 33 93 35 Z" fill="#165B33"/>
-            <defs><path id="${arcId}" d="M 22 62 A 44 44 0 0 1 108 62"/></defs>
-            <text font-size="6.8" font-weight="bold" fill="#165B33" letter-spacing="0.3">
+            <defs>
+              <linearGradient id="goldRing_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#D97706"/>
+                <stop offset="50%" stop-color="#FBBF24"/>
+                <stop offset="100%" stop-color="#B45309"/>
+              </linearGradient>
+              <linearGradient id="emRing_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#047857"/>
+                <stop offset="50%" stop-color="#10B981"/>
+                <stop offset="100%" stop-color="#064E3B"/>
+              </linearGradient>
+              <path id="${arcId}" d="M 20 64 A 45 45 0 0 1 110 64"/>
+            </defs>
+            <!-- Outer Gold Rim -->
+            <circle cx="65" cy="65" r="62.5" fill="#FFFFFF" stroke="url(#goldRing_${uid})" stroke-width="2.2"/>
+            <!-- Inner Emerald Beaded Ring -->
+            <circle cx="65" cy="65" r="57.5" fill="none" stroke="#047857" stroke-width="1.2" stroke-dasharray="2.5,2.5"/>
+            <circle cx="65" cy="65" r="54" fill="#F8FAFC" stroke="#047857" stroke-width="0.8"/>
+            
+            <!-- Symmetrical Golden Laurel Wreath (Left branch) -->
+            <path d="M 22 84 C 14 62, 23 38, 46 23" fill="none" stroke="url(#goldRing_${uid})" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M 21 75 Q 15 69 20 66 Q 24 72 21 75 Z" fill="#D97706"/>
+            <path d="M 23 63 Q 16 57 22 54 Q 26 60 23 63 Z" fill="#F59E0B"/>
+            <path d="M 27 51 Q 20 44 28 42 Q 31 49 27 51 Z" fill="#D97706"/>
+            <path d="M 35 39 Q 29 32 37 31 Q 40 37 35 39 Z" fill="#F59E0B"/>
+            <path d="M 45 29 Q 40 22 48 23 Q 49 29 45 29 Z" fill="#D97706"/>
+
+            <!-- Symmetrical Golden Laurel Wreath (Right branch) -->
+            <path d="M 108 84 C 116 62, 107 38, 84 23" fill="none" stroke="url(#goldRing_${uid})" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M 109 75 Q 115 69 110 66 Q 106 72 109 75 Z" fill="#D97706"/>
+            <path d="M 107 63 Q 114 57 108 54 Q 104 60 107 63 Z" fill="#F59E0B"/>
+            <path d="M 103 51 Q 110 44 102 42 Q 99 49 103 51 Z" fill="#D97706"/>
+            <path d="M 95 39 Q 101 32 93 31 Q 90 37 95 39 Z" fill="#F59E0B"/>
+            <path d="M 85 29 Q 90 22 82 23 Q 81 29 85 29 Z" fill="#D97706"/>
+
+            <!-- Top Curved Motto Ribbon Text -->
+            <text font-size="6.2" font-weight="800" fill="#047857" letter-spacing="0.4">
               <textPath href="#${arcId}" startOffset="50%" text-anchor="middle">${sealText}</textPath>
             </text>
-            <circle cx="65" cy="44" r="5.5" fill="#B91C1C"/>
-            <circle cx="52" cy="49" r="4.8" fill="#165B33"/>
-            <circle cx="78" cy="49" r="4.8" fill="#165B33"/>
-            <path d="M 44 65 C 48 54, 82 54, 86 65 C 76 60, 54 60, 44 65 Z" fill="#B91C1C"/>
-            <path d="M 52 64 C 55 57, 75 57, 78 64 Z" fill="#FFFFFF"/>
-            <path d="M 65 77 C 57 69, 52 65, 47 67 C 49 74, 57 77, 65 77 Z" fill="#165B33"/>
-            <path d="M 65 77 C 73 69, 78 65, 83 67 C 81 74, 73 77, 65 77 Z" fill="#165B33"/>
-            <ellipse cx="65" cy="80" rx="14" ry="4.5" fill="#EAB308" stroke="#CA8A04" stroke-width="0.8"/>
-            <ellipse cx="65" cy="84" rx="16" ry="5" fill="#FACC15" stroke="#CA8A04" stroke-width="0.8"/>
-            <ellipse cx="65" cy="88" rx="17" ry="5.2" fill="#EAB308" stroke="#CA8A04" stroke-width="0.8"/>
-            <text x="65" y="106" font-size="12" fill="#165B33" text-anchor="middle" font-weight="bold" letter-spacing="3">★ ★ ★</text>
+
+            <!-- Central Cooperative Unity Emblem -->
+            <circle cx="65" cy="50" r="16" fill="#FEF3C7" stroke="#FDE68A" stroke-width="0.8"/>
+            <circle cx="65" cy="42" r="6" fill="#DC2626"/>
+            <circle cx="51" cy="48" r="4.8" fill="#047857"/>
+            <circle cx="79" cy="48" r="4.8" fill="#047857"/>
+
+            <!-- Interlocking Arms / Solid Shield Arch of Unity -->
+            <path d="M 42 66 C 46 54, 84 54, 88 66 C 77 60, 53 60, 42 66 Z" fill="#B91C1C"/>
+            <path d="M 50 65 C 53 58, 77 58, 80 65 Z" fill="#FFFFFF"/>
+            <path d="M 65 77 C 56 68, 50 64, 45 66 C 47 74, 56 77, 65 77 Z" fill="#047857"/>
+            <path d="M 65 77 C 74 68, 80 64, 85 66 C 83 74, 74 77, 65 77 Z" fill="#047857"/>
+
+            <!-- Golden Tiered Pedestal -->
+            <ellipse cx="65" cy="80" rx="15" ry="4.5" fill="#D97706" stroke="#B45309" stroke-width="0.8"/>
+            <ellipse cx="65" cy="84" rx="17" ry="5.2" fill="#FBBF24" stroke="#D97706" stroke-width="0.8"/>
+            <ellipse cx="65" cy="89" rx="18.5" ry="5.5" fill="#D97706" stroke="#B45309" stroke-width="0.8"/>
+
+            <!-- 5 Gold Stars at Base -->
+            <text x="65" y="106" font-size="11.5" fill="#D97706" text-anchor="middle" font-weight="bold" letter-spacing="2.5">★ ★ ★ ★ ★</text>
+            <text x="65" y="117" font-size="6" fill="#065F46" text-anchor="middle" font-weight="bold" letter-spacing="1">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার অনুমোদিত</text>
           </svg>
         `;
       }
@@ -11658,13 +11855,30 @@
           let bkash = cleanPadValue(s && s.bkashNumber, 'bkash');
           if (!bkash) bkash = "০১৭১২-৩৪৫৬৭৮";
 
-          let rawBank = (s && s.bankAccount) ? s.bankAccount : "";
-          if (!rawBank && s && s.bankName) {
-            rawBank = `${s.bankName}${s.bankAcc ? ' - ' + s.bankAcc : ''}`;
+          let bankName = "";
+          let bankAcc = "";
+          let bankRouting = "";
+
+          if (s && s.bankName) {
+            bankName = cleanPadValue(s.bankName, 'bank');
           }
-          if (!rawBank) rawBank = "সিটি ব্যাংক পিএলসি - ২৩১৫১৫৮০৪৫০০১";
-          let bank = cleanPadValue(rawBank, 'bank');
-          if (!bank) bank = "সিটি ব্যাংক পিএলসি";
+          if (s && s.bankAcc) {
+            bankAcc = String(s.bankAcc).trim();
+          }
+          if (s && s.bankRouting) {
+            bankRouting = String(s.bankRouting).trim();
+          }
+
+          if (!bankName && s && s.bankAccount) {
+            let parts = String(s.bankAccount).split(/[-–—]/);
+            bankName = cleanPadValue(parts[0], 'bank');
+            if (parts.length > 1 && !bankAcc) {
+              bankAcc = parts.slice(1).join('-').trim();
+            }
+          }
+          if (!bankName) bankName = "সিটি ব্যাংক পিএলসি";
+          if (!bankAcc) bankAcc = "২৩১৫১৫৮০৪৫০০১";
+          if (!bankRouting) bankRouting = "২২৫২৬০৪১৫";
 
           // Center Column: Main Bangla Title, Slogan Ribbon, Est Year Badge
           const titleEl = document.getElementById(prefix === "livePad" ? "livePadTitle" : (prefix + "SomitiName"));
@@ -11676,7 +11890,8 @@
           const estBadgeEl = document.getElementById(prefix === "livePad" ? "livePadEstBadge" : (prefix + "EstYearBadge"));
           if (estBadgeEl) estBadgeEl.innerText = estYear;
 
-          // Right Column: Society 3-Line Official Header (Name, Address, Tagline)
+          // Right Column: Society 8-Line Official Header
+          // 1. Name, 2. Motto, 3. Reg No, 4. Address, 5. Bank Name, 6. Bank Acc, 7. Routing, 8. bKash
           const padRightName = (s && s.padRightName) ? s.padRightName : somitiName;
           const padRightAddress = (s && s.padRightAddress) ? s.padRightAddress : address;
           const padRightTagline = (s && s.padRightTagline) ? s.padRightTagline : tagline;
@@ -11684,29 +11899,39 @@
           const rightBnEl = document.getElementById(prefix === "livePad" ? "livePadRightBnName" : (prefix + "RightBnName"));
           if (rightBnEl) rightBnEl.innerText = padRightName;
 
-          const addrEl = document.getElementById(prefix === "livePad" ? "livePadAddress" : (prefix + "Address"));
-          if (addrEl) addrEl.innerText = padRightAddress;
-
           const tagEl = document.getElementById(prefix === "livePad" ? "livePadRightTagline" : (prefix + "RightTagline"));
           if (tagEl) tagEl.innerText = padRightTagline;
-
-          const enEl = document.getElementById(prefix === "livePad" ? "livePadEnglishName" : (prefix + "EnglishName"));
-          if (enEl) enEl.innerText = englishName;
 
           const regEl = document.getElementById(prefix === "livePad" ? "livePadRegBadge" : (prefix + "RegBadge"));
           if (regEl) regEl.innerText = cleanRegBadge;
           const regLineEl = document.getElementById(prefix === "livePad" ? "livePadRegLine" : (prefix + "RegLine"));
           if (regLineEl) regLineEl.style.display = rawRegNo ? "block" : "none";
 
+          const addrEl = document.getElementById(prefix === "livePad" ? "livePadAddress" : (prefix + "Address"));
+          if (addrEl) addrEl.innerText = padRightAddress;
+
+          const bankEl = document.getElementById(prefix === "livePad" ? "livePadBank" : (prefix + "Bank"));
+          if (bankEl) bankEl.innerText = bankName;
+          const bankLineEl = document.getElementById(prefix === "livePad" ? "livePadBankLine" : (prefix + "BankLine"));
+          if (bankLineEl) bankLineEl.style.display = bankName ? "block" : "none";
+
+          const bankAccEl = document.getElementById(prefix === "livePad" ? "livePadBankAcc" : (prefix + "BankAcc"));
+          if (bankAccEl) bankAccEl.innerText = bankAcc;
+          const bankAccLineEl = document.getElementById(prefix === "livePad" ? "livePadBankAccLine" : (prefix + "BankAccLine"));
+          if (bankAccLineEl) bankAccLineEl.style.display = bankAcc ? "block" : "none";
+
+          const bankRoutingEl = document.getElementById(prefix === "livePad" ? "livePadBankRouting" : (prefix + "BankRouting"));
+          if (bankRoutingEl) bankRoutingEl.innerText = bankRouting;
+          const bankRoutingLineEl = document.getElementById(prefix === "livePad" ? "livePadBankRoutingLine" : (prefix + "BankRoutingLine"));
+          if (bankRoutingLineEl) bankRoutingLineEl.style.display = bankRouting ? "block" : "none";
+
           const bkashEl = document.getElementById(prefix === "livePad" ? "livePadBkash" : (prefix + "Bkash"));
           if (bkashEl) bkashEl.innerText = bkash;
           const bkashLineEl = document.getElementById(prefix === "livePad" ? "livePadBkashLine" : (prefix + "BkashLine"));
           if (bkashLineEl) bkashLineEl.style.display = bkash ? "block" : "none";
 
-          const bankEl = document.getElementById(prefix === "livePad" ? "livePadBank" : (prefix + "Bank"));
-          if (bankEl) bankEl.innerText = bank;
-          const bankLineEl = document.getElementById(prefix === "livePad" ? "livePadBankLine" : (prefix + "BankLine"));
-          if (bankLineEl) bankLineEl.style.display = bank ? "block" : "none";
+          const enEl = document.getElementById(prefix === "livePad" ? "livePadEnglishName" : (prefix + "EnglishName"));
+          if (enEl) enEl.innerText = englishName;
 
           const codeEl = document.getElementById(prefix === "livePad" ? "livePadCodeBadge" : (prefix + "CodeBadge"));
           if (codeEl) codeEl.innerText = somitiCode;
@@ -12870,7 +13095,7 @@
           alert(`📱 স্বপ্ন ছোঁয়া ঐক্য সমিতি - অ্যাপ সংস্করণ তথ্য:\n\n• বর্তমান সংস্করণ: v${info.version} (Build ${info.buildNumber})\n• রিলিজ তারিখ: ${info.releaseDate}\n• নোট: ${info.changelogBn || 'সর্বশেষ আপডেট কার্যকর'}\n\n✓ এই এপিকে রিলিজটি পারসিস্টেন্ট কি-স্টোর দিয়ে সাইন করা।\nআগের অ্যাপ ডিলিট না করেই সরাসরি আপডেট করা যাবে।\n\nডাউনলোড লিংক: ${info.downloadUrl || 'somiti-latest.apk'}`);
         })
         .catch(() => {
-          alert("📱 স্বপ্ন ছোঁয়া ঐক্য সমিতি\n\n• বর্তমান সংস্করণ: v2.5.7 (Build 3)\n• ইন-প্লেস আপডেট: সক্রিয়\n(আগের অ্যাপ আনইনস্টল না করেই নতুন ভার্সন আপডেট হবে)");
+          alert("📱 স্বপ্ন ছোঁয়া ঐক্য সমিতি\n\n• বর্তমান সংস্করণ: v2.5.8 (Build 3)\n• ইন-প্লেস আপডেট: সক্রিয়\n(আগের অ্যাপ আনইনস্টল না করেই নতুন ভার্সন আপডেট হবে)");
         });
     }
 
@@ -14216,8 +14441,30 @@
       const tagline = (s && s.tagline) ? s.tagline : "স্বচ্ছতা ও ঐক্যের প্রতীক";
       const address = cleanPadValue(s && s.address, 'address') || "শ্রীনগর, মুন্সীগঞ্জ";
       const bkash = cleanPadValue(s && s.bkashNumber, 'bkash') || "০১৭১২-৩৪৫৬৭৮";
-      let rawBank = s.bankAccount || (s.bankName ? `${s.bankName}${s.bankAcc ? ' - ' + s.bankAcc : ''}` : "সিটি ব্যাংক পিএলসি");
-      const bank = cleanPadValue(rawBank, 'bank') || "সিটি ব্যাংক পিএলসি";
+      let bankName = "";
+      let bankAcc = "";
+      let bankRouting = "";
+
+      if (s && s.bankName) {
+        bankName = cleanPadValue(s.bankName, 'bank');
+      }
+      if (s && s.bankAcc) {
+        bankAcc = String(s.bankAcc).trim();
+      }
+      if (s && s.bankRouting) {
+        bankRouting = String(s.bankRouting).trim();
+      }
+
+      if (!bankName && s && s.bankAccount) {
+        let parts = String(s.bankAccount).split(/[-–—]/);
+        bankName = cleanPadValue(parts[0], 'bank');
+        if (parts.length > 1 && !bankAcc) {
+          bankAcc = parts.slice(1).join('-').trim();
+        }
+      }
+      if (!bankName) bankName = "সিটি ব্যাংক পিএলসি";
+      if (!bankAcc) bankAcc = "২৩১৫১৫৮০৪৫০০১";
+      if (!bankRouting) bankRouting = "২২৫২৬০৪১৫";
 
       const padRightName = (s && s.padRightName) ? s.padRightName : somitiName;
       const padRightAddress = (s && s.padRightAddress) ? s.padRightAddress : address;
@@ -14226,18 +14473,25 @@
       const logoBox = document.getElementById(prefix === "livePad" ? "livePadLogoBox" : (prefix + "PadLogoBox"));
       const logoHtml = logoBox ? logoBox.innerHTML : `
         <svg viewBox="0 0 130 130" style="width: 100%; height: 100%; display: block;" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="65" cy="65" r="62" fill="#FFFFFF" stroke="#165B33" stroke-width="2.5"/>
-          <circle cx="65" cy="65" r="56" fill="none" stroke="#165B33" stroke-width="1" stroke-dasharray="2,2"/>
-          <defs><path id="wArcA4" d="M 22 62 A 44 44 0 0 1 108 62"/></defs>
-          <text font-size="6.8" font-weight="bold" fill="#165B33" letter-spacing="0.3">
+          <circle cx="65" cy="65" r="62.5" fill="#FFFFFF" stroke="#D97706" stroke-width="2.2"/>
+          <circle cx="65" cy="65" r="57.5" fill="none" stroke="#047857" stroke-width="1.2" stroke-dasharray="2.5,2.5"/>
+          <circle cx="65" cy="65" r="54" fill="#F8FAFC" stroke="#047857" stroke-width="0.8"/>
+          <defs><path id="wArcA4" d="M 20 64 A 45 45 0 0 1 110 64"/></defs>
+          <text font-size="6.2" font-weight="800" fill="#047857" letter-spacing="0.4">
             <textPath href="#wArcA4" startOffset="50%" text-anchor="middle">একতা আমাদের শক্তি, একতা আমাদের ভবিষ্যৎ</textPath>
           </text>
-          <circle cx="65" cy="44" r="5.5" fill="#B91C1C"/>
-          <circle cx="52" cy="49" r="4.8" fill="#165B33"/>
-          <circle cx="78" cy="49" r="4.8" fill="#165B33"/>
-          <path d="M 44 65 C 48 54, 82 54, 86 65 C 76 60, 54 60, 44 65 Z" fill="#B91C1C"/>
-          <ellipse cx="65" cy="84" rx="16" ry="5" fill="#FACC15" stroke="#CA8A04" stroke-width="0.8"/>
-          <text x="65" y="106" font-size="12" fill="#165B33" text-anchor="middle" font-weight="bold" letter-spacing="3">★ ★ ★</text>
+          <circle cx="65" cy="50" r="16" fill="#FEF3C7" stroke="#FDE68A" stroke-width="0.8"/>
+          <circle cx="65" cy="42" r="6" fill="#DC2626"/>
+          <circle cx="51" cy="48" r="4.8" fill="#047857"/>
+          <circle cx="79" cy="48" r="4.8" fill="#047857"/>
+          <path d="M 42 66 C 46 54, 84 54, 88 66 C 77 60, 53 60, 42 66 Z" fill="#B91C1C"/>
+          <path d="M 50 65 C 53 58, 77 58, 80 65 Z" fill="#FFFFFF"/>
+          <path d="M 65 77 C 56 68, 50 64, 45 66 C 47 74, 56 77, 65 77 Z" fill="#047857"/>
+          <path d="M 65 77 C 74 68, 80 64, 85 66 C 83 74, 74 77, 65 77 Z" fill="#047857"/>
+          <ellipse cx="65" cy="80" rx="15" ry="4.5" fill="#D97706" stroke="#B45309" stroke-width="0.8"/>
+          <ellipse cx="65" cy="84" rx="17" ry="5.2" fill="#FBBF24" stroke="#D97706" stroke-width="0.8"/>
+          <ellipse cx="65" cy="89" rx="18.5" ry="5.5" fill="#D97706" stroke="#B45309" stroke-width="0.8"/>
+          <text x="65" y="106" font-size="11.5" fill="#D97706" text-anchor="middle" font-weight="bold" letter-spacing="2.5">★ ★ ★ ★ ★</text>
         </svg>
       `;
 
@@ -14258,14 +14512,16 @@
             </div>
             <div class="pad-est-badge" style="display: inline-block; background: #0F172A; color: #FFFFFF; font-size: 9.5px; font-weight: 700; padding: 1.5px 8px; border-radius: 4px;">স্থাপিত: ${escapeHtml(estYear)}</div>
           </div>
-          <!-- Right Column: 6-line Society Header (Name, Address, Slogan, Bank, bKash, Reg No) -->
-          <div class="pad-header-right-col" style="flex: 0 0 auto; max-width: 44%; text-align: right; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 2px; overflow: hidden;">
-            <div class="pad-right-name-bn" style="font-size: 15px; font-weight: 800; color: #B91C1C; line-height: 1.2; text-align: right; white-space: nowrap;">${escapeHtml(padRightName)}</div>
-            <div class="pad-address-line" style="font-size: 11.5px; font-weight: 700; color: #165B33; line-height: 1.2; text-align: right; white-space: nowrap;">${escapeHtml(padRightAddress)}</div>
-            <div class="pad-right-tagline" style="font-size: 10.5px; font-weight: 600; color: #1E3A8A; line-height: 1.2; text-align: right; white-space: nowrap;">${escapeHtml(padRightTagline)}</div>
-            ${bank ? `<div class="pad-bank-line" style="font-size: 10px; font-weight: 700; color: #1E3A8A; line-height: 1.2; text-align: right; white-space: nowrap;">🏦 ${escapeHtml(bank)}</div>` : ''}
-            ${bkash ? `<div class="pad-bkash-line" style="font-size: 10px; font-weight: 700; color: #D97706; line-height: 1.2; text-align: right; white-space: nowrap;">📱 ${escapeHtml(bkash)}</div>` : ''}
-            ${regNo ? `<div class="pad-reg-line" style="font-size: 9.5px; font-weight: 700; color: #047857; line-height: 1.2; text-align: right; white-space: nowrap;">🏛️ সমবায় রেজিঃ নং ${escapeHtml(regNo)}</div>` : ''}
+          <!-- Right Column: 8-Line Society Header (Name, Motto, Reg No, Address, Bank, Acc, Routing, bKash) -->
+          <div class="pad-header-right-col" style="flex: 0 0 auto; max-width: 46%; text-align: right; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 1.5px; overflow: visible;">
+            <div class="pad-right-name-bn" style="font-size: 14px; font-weight: 800; color: #B91C1C; line-height: 1.25; text-align: right; white-space: nowrap;">${escapeHtml(padRightName)}</div>
+            <div class="pad-right-tagline" style="font-size: 10px; font-weight: 600; color: #1E3A8A; line-height: 1.25; text-align: right; white-space: nowrap;">${escapeHtml(padRightTagline)}</div>
+            ${regNo ? `<div class="pad-reg-line" style="font-size: 9.5px; font-weight: 700; color: #047857; line-height: 1.25; text-align: right; white-space: nowrap;">🏛️ সমবায় রেজিঃ নং ${escapeHtml(regNo)}</div>` : ''}
+            <div class="pad-address-line" style="font-size: 10.5px; font-weight: 700; color: #165B33; line-height: 1.25; text-align: right; white-space: nowrap;">📍 ${escapeHtml(padRightAddress)}</div>
+            ${bankName ? `<div class="pad-bank-line" style="font-size: 9.5px; font-weight: 700; color: #1E3A8A; line-height: 1.25; text-align: right; white-space: nowrap;">🏦 ${escapeHtml(bankName)}</div>` : ''}
+            ${bankAcc ? `<div class="pad-bank-acc-line" style="font-size: 9.5px; font-weight: 700; color: #0284C7; line-height: 1.25; text-align: right; white-space: nowrap;">💳 হিসাব: ${escapeHtml(bankAcc)}</div>` : ''}
+            ${bankRouting ? `<div class="pad-bank-routing-line" style="font-size: 9px; font-weight: 700; color: #6D28D9; line-height: 1.25; text-align: right; white-space: nowrap;">🌐 রাউটিং: ${escapeHtml(bankRouting)}</div>` : ''}
+            ${bkash ? `<div class="pad-bkash-line" style="font-size: 9.5px; font-weight: 700; color: #D97706; line-height: 1.25; text-align: right; white-space: nowrap;">📱 বিকাশ: ${escapeHtml(bkash)}</div>` : ''}
           </div>
         </div>
         <div class="pad-double-divider" style="border-top: 3px solid #14532D; border-bottom: 1.5px solid #14532D; height: 3px; margin: 8px 0;"></div>
