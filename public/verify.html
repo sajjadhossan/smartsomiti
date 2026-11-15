@@ -173,12 +173,36 @@
       </div>
     </section>
 
+    <!-- Method-wise & Date-wise Breakdown -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="px-5 py-3.5 border-b border-slate-100 bg-slate-50/70">
+          <h3 class="text-sm font-bold text-slate-800">🏦 পেমেন্ট মাধ্যম ভিত্তিক হিসাব</h3>
+          <p class="text-[11px] text-slate-500">সিটি ব্যাংক ক্যাশ, NPSB/ট্রান্সফার ও রেমিট্যান্স অনুযায়ী</p>
+        </div>
+        <div id="methodBreakdownGrid" class="p-4 space-y-2.5 text-xs"></div>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="px-5 py-3.5 border-b border-slate-100 bg-slate-50/70">
+          <h3 class="text-sm font-bold text-slate-800">📅 তারিখ ভিত্তিক জমা হিসাব</h3>
+          <p class="text-[11px] text-slate-500">কোন তারিখে কতজন ও কত টাকা জমা হয়েছে</p>
+        </div>
+        <div id="dateBreakdownGrid" class="p-4 space-y-2 text-xs max-h-60 overflow-y-auto"></div>
+      </div>
+    </section>
+
     <!-- ================= VERIFIED RECEIPTS DIRECTORY ================= -->
     <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-      <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+      <div class="px-5 py-4 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2 bg-slate-50/70">
         <div>
           <h3 class="text-base font-bold text-slate-800">ভেরিফাইড পেমেন্ট রিসিট ও স্মারক তালিকা</h3>
           <p class="text-xs text-slate-500">যেকোনো কার্ডে ক্লিক করলে পূর্ণাঙ্গ অফিসিয়াল প্যাড রিসিট ও মূল ব্যাংক স্লিপ দেখতে পাবেন</p>
+        </div>
+        <div class="flex flex-wrap gap-1.5 text-xs">
+          <button type="button" data-filter="all" class="filter-btn bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold transition">সবাই</button>
+          <button type="button" data-filter="paid" class="filter-btn bg-slate-100 hover:bg-emerald-50 text-slate-700 px-3 py-1.5 rounded-lg font-semibold transition">✅ পরিশোধিত</button>
+          <button type="button" data-filter="due" class="filter-btn bg-slate-100 hover:bg-rose-50 text-slate-700 px-3 py-1.5 rounded-lg font-semibold transition">⏳ বকেয়া</button>
         </div>
       </div>
       <div id="recordsGrid" class="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
@@ -579,9 +603,14 @@
       const bn = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
       return String(n).replace(/[0-9]/g, d => bn[Number(d)]);
     }
+    const toBn = toBnNum;
 
     function formatBnMoney(amount) {
       return toBnNum(Number(amount).toLocaleString('en-US')) + '/- টাকা';
+    }
+
+    function formatBnTaka(amt) {
+      return toBnNum(Number(amt).toLocaleString('en-US'));
     }
 
     // Sheet tabs to fetch and calculate
@@ -685,7 +714,63 @@
       }
     }
 
-    function renderGrid(list = liveRecords) {
+    let currentFilter = 'all';
+    let dueMembers = [];
+
+    function renderBreakdowns() {
+      const mGrid = document.getElementById('methodBreakdownGrid');
+      const dGrid = document.getElementById('dateBreakdownGrid');
+      const paidOnly = liveRecords.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-') && !r.code.startsWith('স্মারক'));
+      const catTotals = {
+        'সিটি ব্যাংক (সরাসরি ক্যাশ / এজেন্ট)': { count: 0, amt: 0 },
+        'অন্য ব্যাংক ট্রান্সফার / NPSB': { count: 0, amt: 0 },
+        'রেমিট্যান্স (Western Union / Taptap / Al Mulla)': { count: 0, amt: 0 }
+      };
+      const dateTotals = {};
+
+      paidOnly.forEach(r => {
+        const m = (r.method || '').toLowerCase();
+        if (m.includes('western') || m.includes('taptap') || m.includes('mulla')) {
+          catTotals['রেমিট্যান্স (Western Union / Taptap / Al Mulla)'].count++;
+          catTotals['রেমিট্যান্স (Western Union / Taptap / Al Mulla)'].amt += 10000;
+        } else if (m.includes('npsb') || m.includes('other bank') || m.includes('ucb') || m.includes('rupali')) {
+          catTotals['অন্য ব্যাংক ট্রান্সফার / NPSB'].count++;
+          catTotals['অন্য ব্যাংক ট্রান্সফার / NPSB'].amt += 10000;
+        } else {
+          catTotals['সিটি ব্যাংক (সরাসরি ক্যাশ / এজেন্ট)'].count++;
+          catTotals['সিটি ব্যাংক (সরাসরি ক্যাশ / এজেন্ট)'].amt += 10000;
+        }
+        const dt = (r.date || 'তারিখ অনির্ধারিত').trim();
+        if (!dateTotals[dt]) dateTotals[dt] = { count: 0, amt: 0 };
+        dateTotals[dt].count++;
+        dateTotals[dt].amt += 10000;
+      });
+
+      if (mGrid) {
+        mGrid.innerHTML = Object.entries(catTotals).map(([k, v]) => `
+          <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+            <div>
+              <p class="font-bold text-slate-800">${k}</p>
+              <p class="text-[11px] text-slate-500">${toBn(v.count)} জন সদস্য</p>
+            </div>
+            <span class="font-bold text-emerald-700">${formatBnTaka(v.amt)}/- ৳</span>
+          </div>
+        `).join('');
+      }
+      if (dGrid) {
+        dGrid.innerHTML = Object.entries(dateTotals).map(([dt, v]) => `
+          <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+            <span class="font-semibold text-slate-700">📅 ${dt}</span>
+            <div class="text-right">
+              <span class="font-bold text-emerald-700">${formatBnTaka(v.amt)}/- ৳</span>
+              <span class="text-[11px] text-slate-500 ml-1">(${toBn(v.count)} জন)</span>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function renderGridWithData(list) {
       recordsGrid.innerHTML = '';
       list.forEach(rec => {
         const isNotice = rec.code.startsWith('স্মারক');
@@ -709,12 +794,43 @@
       });
     }
 
+    function renderGrid(list = liveRecords) {
+      renderBreakdowns();
+      if (currentFilter === 'due') {
+        recordsGrid.innerHTML = '';
+        if (dueMembers.length === 0) {
+          recordsGrid.innerHTML = '<p class="col-span-full text-center text-sm text-emerald-700 py-6 font-bold">🎉 সকল সদস্যের কিস্তি পরিশোধিত!</p>';
+          return;
+        }
+        dueMembers.forEach(dm => {
+          const card = document.createElement('div');
+          card.className = 'p-3.5 rounded-xl border border-rose-200 bg-rose-50/40';
+          card.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md bg-rose-100 text-rose-800">ক্রমিক: ${toBn(dm.serial)}</span>
+              <span class="text-[11px] font-bold text-rose-700">⏳ বকেয়া</span>
+            </div>
+            <h4 class="text-sm font-bold text-slate-800 mt-2">${dm.name}</h4>
+            <p class="text-xs text-rose-700 font-semibold mt-0.5">বকেয়া: ১০,০০০/- টাকা</p>
+          `;
+          recordsGrid.appendChild(card);
+        });
+        return;
+      }
+      const filtered = currentFilter === 'paid'
+        ? list.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-') && !r.code.startsWith('স্মারক'))
+        : list;
+      renderGridWithData(filtered);
+    }
+
     async function syncFromGoogleSheet() {
       const sheetId = '1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0';
       let grandTotal = 0;
       let monthSummaries = [];
+      dueMembers = [];
 
-      for (const tab of SHEET_TABS) {
+      for (let tIdx = 0; tIdx < SHEET_TABS.length; tIdx++) {
+        const tab = SHEET_TABS[tIdx];
         const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(tab.sheet)}`;
         try {
           const res = await fetch(url);
@@ -740,7 +856,12 @@
               monthPaidCount++;
             }
 
-            if (amount <= 0) return;
+            if (amount <= 0) {
+              if (tIdx === 0) {
+                dueMembers.push({ serial, name });
+              }
+              return;
+            }
 
             const depositor = c[3] && c[3].v ? String(c[3].v) : 'নিজ';
             const dateVal = c[4] && (c[4].f || c[4].v) ? String(c[4].f || c[4].v) : '';
@@ -830,6 +951,17 @@
         const code = e.currentTarget.getAttribute('data-code');
         document.getElementById('verifyInput').value = code;
         verifyQuery(code);
+      });
+    });
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        currentFilter = e.currentTarget.getAttribute('data-filter');
+        document.querySelectorAll('.filter-btn').forEach(b => {
+          b.className = 'filter-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold transition';
+        });
+        e.currentTarget.className = 'filter-btn bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold transition';
+        renderGrid(liveRecords);
       });
     });
 
