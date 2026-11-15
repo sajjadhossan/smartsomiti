@@ -1,10 +1,22 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    debugPrint('Firebase init notice: $e');
+  }
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -50,6 +62,13 @@ class _SomitiWebWrapperScreenState extends State<SomitiWebWrapperScreen> {
   bool _hasError = false;
   Timer? _loadTimeoutTimer;
 
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: <String>[
+      'email',
+      'https://www.googleapis.com/auth/drive.file',
+    ],
+  );
+
   static const String _liveUrl = 'https://smartsomiti.vercel.app';
   static const String _chromeUserAgent =
       'Mozilla/5.0 (Linux; Android 14; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36';
@@ -66,11 +85,80 @@ class _SomitiWebWrapperScreenState extends State<SomitiWebWrapperScreen> {
     super.dispose();
   }
 
+  Future<void> _performNativeGoogleSignIn() async {
+    try {
+      final GoogleSignInAccount? account = await _googleSignIn.signIn();
+      if (account == null) {
+        debugPrint('Google Sign-In cancelled by user');
+        return;
+      }
+
+      final GoogleSignInAuthentication auth = await account.authentication;
+      final String? idToken = auth.idToken;
+      final String? accessToken = auth.accessToken;
+      final String email = account.email;
+      final String displayName = account.displayName ?? '';
+      final String photoUrl = account.photoUrl ?? '';
+      final String uid = account.id;
+
+      // Sync Firebase Auth natively
+      try {
+        final OAuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: accessToken,
+          idToken: idToken,
+        );
+        await FirebaseAuth.instance.signInWithCredential(credential);
+      } catch (fbErr) {
+        debugPrint('Native FirebaseAuth sync notice: $fbErr');
+      }
+
+      final payload = jsonEncode({
+        'idToken': idToken,
+        'accessToken': accessToken,
+        'email': email,
+        'displayName': displayName,
+        'photoUrl': photoUrl,
+        'uid': uid,
+      });
+
+      await _controller.runJavaScript('''
+        if (typeof window.handleNativeGoogleSignInResult === 'function') {
+          window.handleNativeGoogleSignInResult($payload);
+        }
+      ''');
+    } catch (e) {
+      debugPrint('Google Sign-In Error: $e');
+      final errPayload = jsonEncode(e.toString());
+      await _controller.runJavaScript('''
+        alert("গুগল সাইন-ইন সম্পন্ন করা সম্ভব হয়নি: " + $errPayload);
+      ''');
+    }
+  }
+
+  Future<void> _handleNativeSignOut() async {
+    try {
+      await _googleSignIn.signOut();
+      await FirebaseAuth.instance.signOut();
+    } catch (e) {
+      debugPrint('Native signOut notice: $e');
+    }
+  }
+
   void _initController() {
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0xFFFFFFFF))
       ..setUserAgent(_chromeUserAgent)
+      ..addJavaScriptChannel(
+        'NativeAuthBridge',
+        onMessageReceived: (JavaScriptMessage message) {
+          if (message.message == 'google_sign_in') {
+            _performNativeGoogleSignIn();
+          } else if (message.message == 'google_sign_out') {
+            _handleNativeSignOut();
+          }
+        },
+      )
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {

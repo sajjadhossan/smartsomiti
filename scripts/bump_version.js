@@ -65,7 +65,9 @@ function updateHtmlFile(filePath, fileName) {
   console.log(`✓ Updated ${fileName} version badges -> v${newVersion}`);
 }
 
+const assetsHtmlPath = path.join(rootDir, 'assets', 'index.html');
 updateHtmlFile(indexHtmlPath, 'index.html');
+updateHtmlFile(assetsHtmlPath, 'assets/index.html');
 updateHtmlFile(previewHtmlPath, 'preview.html');
 
 console.log(`\n🎉 All files synchronized to version v${newVersion} (Build ${buildNum})!`);
