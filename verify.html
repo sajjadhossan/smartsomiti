@@ -372,6 +372,35 @@
     </div>
   </div>
 
+  <!-- ================= ADMIN PIN VERIFICATION MODAL ================= -->
+  <div id="adminPinModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl border-2 border-emerald-500 animate-pop space-y-4">
+      <div class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl mx-auto shadow-inner">
+        🔐
+      </div>
+      <div>
+        <h3 class="text-base font-bold text-slate-900">কোষাধ্যক্ষ / এডমিন ভেরিফিকেশন</h3>
+        <p class="text-xs text-slate-500 mt-1">প্যাডের তথ্য ও হিসাব বিবরণী পরিবর্তনের জন্য আপনার অনুমোদিত গোপন পিন কোড প্রদান করুন।</p>
+      </div>
+
+      <div class="space-y-2">
+        <input type="password" id="adminPinInput" placeholder="গোপন পিন কোড দিন..."
+          class="w-full text-center px-4 py-2.5 text-base font-bold tracking-widest bg-slate-50 border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none transition shadow-inner font-mono"
+          onkeydown="if(event.key==='Enter') submitAdminPin();" />
+        <p id="adminPinError" class="text-rose-600 text-xs font-semibold hidden">❌ ভুল পিন নম্বর! অনুমোদিত কোষাধ্যক্ষ ছাড়া তথ্য পরিবর্তন নিষিদ্ধ।</p>
+      </div>
+
+      <div class="flex gap-2 pt-1">
+        <button type="button" onclick="closeAdminPinModal()" class="flex-1 py-2.5 border rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50">
+          বাতিল
+        </button>
+        <button type="button" onclick="submitAdminPin()" class="flex-1 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs shadow-md shadow-emerald-700/20 transition">
+          🔓 আনলক করুন
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script>
     // Default Pad Configuration
     const DEFAULT_PAD_CONFIG = {
@@ -382,6 +411,9 @@
       bkash: "📱 বিকাশ: ০১৭১২-৩৪৫৬৭৮",
       cashier: "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)"
     };
+
+    const ADMIN_SECRET_PIN = "01721298969";
+    let isAdminUnlocked = false;
 
     function loadPadConfig() {
       try {
@@ -423,6 +455,43 @@
     }
 
     function openPadEditModal() {
+      if (isAdminUnlocked) {
+        showActualPadEditModal();
+        return;
+      }
+      const pinModal = document.getElementById('adminPinModal');
+      const pinInput = document.getElementById('adminPinInput');
+      const pinErr = document.getElementById('adminPinError');
+      if (pinInput) pinInput.value = '';
+      if (pinErr) pinErr.classList.add('hidden');
+      if (pinModal) pinModal.classList.remove('hidden');
+      setTimeout(() => pinInput && pinInput.focus(), 100);
+    }
+
+    function closeAdminPinModal() {
+      const pinModal = document.getElementById('adminPinModal');
+      if (pinModal) pinModal.classList.add('hidden');
+    }
+
+    function submitAdminPin() {
+      const pinInput = document.getElementById('adminPinInput');
+      const pinErr = document.getElementById('adminPinError');
+      const val = (pinInput ? pinInput.value : '').trim();
+
+      if (val === ADMIN_SECRET_PIN) {
+        isAdminUnlocked = true;
+        closeAdminPinModal();
+        showActualPadEditModal();
+      } else {
+        if (pinErr) pinErr.classList.remove('hidden');
+        if (pinInput) {
+          pinInput.value = '';
+          pinInput.focus();
+        }
+      }
+    }
+
+    function showActualPadEditModal() {
       document.getElementById('editAddr').value = padConfig.addr.replace(/^📍\s*/, '');
       document.getElementById('editBank').value = padConfig.bank.replace(/^🏦\s*/, '');
       document.getElementById('editRouting').value = padConfig.routing.replace(/^🌐\s*রাউটিং:\s*/, '');
@@ -437,6 +506,10 @@
     }
 
     function savePadCustomDetails() {
+      if (!isAdminUnlocked) {
+        alert("শুধুমাত্র অনুমোদিত কোষাধ্যক্ষ পিন আনলক করে তথ্য সংরক্ষণ করতে পারবেন!");
+        return;
+      }
       const addr = document.getElementById('editAddr').value.trim();
       const bank = document.getElementById('editBank').value.trim();
       const routing = document.getElementById('editRouting').value.trim();
@@ -463,6 +536,10 @@
     }
 
     function resetPadDefaults() {
+      if (!isAdminUnlocked) {
+        alert("শুধুমাত্র অনুমোদিত কোষাধ্যক্ষ পিন আনলক করে ডিফল্ট তথ্য রিস্টোর করতে পারবেন!");
+        return;
+      }
       if (!confirm("আপনি কি ডিফল্ট তথ্য পুনরুদ্ধার করতে চান?")) return;
       padConfig = { ...DEFAULT_PAD_CONFIG };
       try {
