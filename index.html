@@ -1404,7 +1404,19 @@
     .nav-divider {
       height: 1px;
       background: var(--border);
-      margin: 8px 6px;
+      margin: 10px 6px;
+      opacity: 0.6;
+    }
+    .nav-section-title {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      padding: 10px 14px 4px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     /* Quick Action Cards on Clean Dashboard */
@@ -2810,10 +2822,10 @@
         <span>•</span>
         <span>☁️ ফায়ারবেস ক্লাউড সিকিউরড</span>
         <span>•</span>
-        <span>🇧🇩 রিলিজ v2.6.2</span>
+        <span>🇧🇩 রিলিজ v2.6.3</span>
       </div>
       <div style="text-align: center; margin-top: 8px; font-size: 11px; font-weight: 800; color: #0F9D58;">
-        স্মার্ট সমিতি প্ল্যাটফর্ম • সিস্টেম সংস্করণ v2.6.2
+        স্মার্ট সমিতি প্ল্যাটফর্ম • সিস্টেম সংস্করণ v2.6.3
       </div>
 
       <!-- Public Secret Code & Document Verification Box -->
@@ -2925,7 +2937,7 @@
             <div class="society-switch-pill" onclick="openSocietySwitcher()" title="সমিতি পরিবর্তন করতে ক্লিক করুন">
               <span id="dashSomitiName" style="font-size: 13.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 135px; display: inline-block; vertical-align: middle;">স্মার্ট সমিতি</span>
               <span id="dashSomitiCode" style="font-size: 10px; font-weight: 700; color: var(--primary);">SMT-7890</span>
-              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.6.2</span>
+              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.6.3</span>
               <span style="font-size: 10px; opacity: 0.7;">▾</span>
             </div>
             <div id="headerActiveViewTitle" class="header-active-view-badge" title="বর্তমান সক্রিয় মডিউল">📊 এডমিন ড্যাশবোর্ড</div>
@@ -3041,7 +3053,7 @@
           <div>
             <h3 id="sideSomitiName" style="font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.2;">স্মার্ট সমিতি</h3>
             <span id="sideSomitiCode" style="font-size: 10px; background: var(--primary-light); color: var(--primary); font-weight: 700; padding: 1px 6px; border-radius: 4px;">SMT-7890</span>
-            <span style="font-size: 10px; background: #059669; color: white; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 3px;">v2.6.2</span>
+            <span style="font-size: 10px; background: #059669; color: white; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 3px;">v2.6.3</span>
           </div>
         </div>
         <button onclick="closeSidebar()" style="background: none; border: none; font-size: 22px; color: var(--text-muted); cursor: pointer; padding: 4px;">✕</button>
@@ -3061,115 +3073,20 @@
           <span>প্রধান ড্যাশবোর্ড</span>
         </button>
 
-        <!-- New Enterprise Modules -->
-        <button class="nav-item" id="navItem-masterAdmin" onclick="navTo('masterAdmin')" style="background: #FFFBEB; color: #92400E; font-weight: 800; border-left: 3px solid #D97706;">
-          <span class="nav-icon">👑</span>
-          <span>মাস্টার এডমিন কন্ট্রোল</span>
-        </button>
-
-        <button class="nav-item" id="navItem-loans" onclick="navTo('loans')">
-          <span class="nav-icon">💳</span>
-          <span>ঋণ ব্যবস্থাপনা ও কিস্তি</span>
-        </button>
-
-        <button class="nav-item" id="navItem-accounting" onclick="navTo('accounting')">
-          <span class="nav-icon">🏦</span>
-          <span>ব্যাংক ও মাল্টি-অ্যাকাউন্ট</span>
-        </button>
-
-        <button class="nav-item" id="navItem-workflow" onclick="navTo('workflow')">
-          <span class="nav-icon">🔄</span>
-          <span>অনুমোদন ও ওয়ার্কফ্লো</span>
-        </button>
-
-        <button class="nav-item" id="navItem-security" onclick="navTo('security')" style="background: #FDF2F8; color: #9D174D; font-weight: 700; border-left: 3px solid #DB2777;">
-          <span class="nav-icon">🛡️</span>
-          <span>সিকিউরিটি ও এক্সেস কন্ট্রোল</span>
-        </button>
-
-        <button class="nav-item" id="navItem-saas" onclick="navTo('saas')" style="background: #EFF6FF; color: #1E40AF; font-weight: 700; border-left: 3px solid #2563EB;">
-          <span class="nav-icon">💳</span>
-          <span>SaaS সাবস্ক্রিপশন ও বিলিং</span>
-        </button>
-
-        <button class="nav-item" id="navItem-societyOps" onclick="navTo('societyOps')" style="background: #F0FDF4; color: #166534; font-weight: 700; border-left: 3px solid #16A34A;">
-          <span class="nav-icon">🏢</span>
-          <span>সমিতি অপারেশনস (CRM, HR, স্টক)</span>
-        </button>
-
-        <button class="nav-item" id="navItem-payments" onclick="navTo('payments')" style="background: #FDF4FF; color: #86198F; font-weight: 700; border-left: 3px solid #C026D3;">
-          <span class="nav-icon">💳</span>
-          <span>পেমেন্ট গেটওয়ে ও ব্যাংকিং</span>
-        </button>
-
-        <button class="nav-item" id="navItem-aiAnalytics" onclick="navTo('aiAnalytics')" style="background: #ECFDF5; color: #047857; font-weight: 700; border-left: 3px solid #10B981;">
-          <span class="nav-icon">🤖</span>
-          <span>এআই ও বিজনেস ইন্টেলিজেন্স</span>
-        </button>
-
-        <button class="nav-item" id="navItem-fieldOps" onclick="navTo('fieldOps')" style="background: #F0F9FF; color: #0369A1; font-weight: 700; border-left: 3px solid #0EA5E9;">
-          <span class="nav-icon">📱</span>
-          <span>মাঠ অফিসার ও অফলাইন মোড</span>
-        </button>
-
-        <button class="nav-item" id="navItem-devopsOps" onclick="navTo('devopsOps')" style="background: #FEF2F2; color: #991B1B; font-weight: 700; border-left: 3px solid #DC2626;">
-          <span class="nav-icon">🛠️</span>
-          <span>সিস্টেম হেলথ, ব্যাকআপ ও DevOps</span>
-        </button>
-
-        <button class="nav-item" id="navItem-uiModernization" onclick="navTo('uiModernization')" style="background: #F5F3FF; color: #6D28D9; font-weight: 700; border-left: 3px solid #8B5CF6;">
-          <span class="nav-icon">🎨</span>
-          <span>ডিজাইন সিস্টেম ও UI/UX</span>
-        </button>
-
-        <button class="nav-item" id="navItem-productionReadiness" onclick="navTo('productionReadiness')" style="background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); color: #92400E; font-weight: 800; border-left: 3px solid #D97706; box-shadow: 0 1px 3px rgba(217, 119, 6, 0.15);">
-          <span class="nav-icon">🚀</span>
-          <span>প্রোডাকশন ডেপ্লয়মেন্ট ও কন্ট্রোল</span>
-        </button>
-
-        <button class="nav-item" id="navItem-qaAudit" onclick="navTo('qaAudit')" style="background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%); color: #065F46; font-weight: 800; border-left: 3px solid #10B981; box-shadow: 0 1px 3px rgba(16, 185, 129, 0.15);">
-          <span class="nav-icon">🧪</span>
-          <span>কোয়ালিটি ও সিকিউরিটি অডিট</span>
-        </button>
-
-        <button class="nav-item" id="navItem-helpdesk" onclick="navTo('helpdesk')" style="background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); color: #1E40AF; font-weight: 800; border-left: 3px solid #2563EB; box-shadow: 0 1px 3px rgba(37, 99, 235, 0.15);">
-          <span class="nav-icon">🎧</span>
-          <span>কাস্টমার সাপোর্ট ও হেল্পডেস্ক</span>
-        </button>
-
-        <button class="nav-item" id="navItem-apiGateway" onclick="navTo('apiGateway')" style="background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%); color: #5B21B6; font-weight: 800; border-left: 3px solid #7C3AED; box-shadow: 0 1px 3px rgba(124, 58, 237, 0.15);">
-          <span class="nav-icon">⚡</span>
-          <span>এপিআই ও ডেভেলপার পোর্টাল</span>
-        </button>
-
-        <button class="nav-item" id="navItem-whitelabel" onclick="navTo('whitelabel')" style="background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%); color: #065F46; font-weight: 800; border-left: 3px solid #059669; box-shadow: 0 1px 3px rgba(5, 150, 105, 0.15);">
-          <span class="nav-icon">🎨</span>
-          <span>হোয়াইট-লেবেল ও কাস্টমাইজেশন</span>
-        </button>
-
-        <button class="nav-item" id="navItem-dataWarehouse" onclick="navTo('dataWarehouse')" style="background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); color: #1E3A8A; font-weight: 800; border-left: 3px solid #1D4ED8; box-shadow: 0 1px 3px rgba(29, 78, 216, 0.15);">
-          <span class="nav-icon">🏢</span>
-          <span>ডাটা ওয়্যারহাউজ ও বিআই</span>
-        </button>
-
-        <button class="nav-item" id="navItem-memberSuperApp" onclick="navTo('memberSuperApp')" style="background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); color: #92400E; font-weight: 800; border-left: 3px solid #D97706; box-shadow: 0 1px 3px rgba(217, 119, 6, 0.15);">
-          <span class="nav-icon">📱</span>
-          <span>মেম্বার সুপার অ্যাপ</span>
-        </button>
-
-        <button class="nav-item" id="navItem-governance" onclick="navTo('governance')" style="background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%); color: #166534; font-weight: 800; border-left: 3px solid #16A34A; box-shadow: 0 1px 3px rgba(22, 163, 74, 0.15);">
-          <span class="nav-icon">🏛️</span>
-          <span>গভর্ন্যান্স ও কমপ্লায়েন্স</span>
-        </button>
-
-        <button class="nav-item" id="navItem-automation" onclick="navTo('automation')" style="background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%); color: #3730A3; font-weight: 800; border-left: 3px solid #4F46E5; box-shadow: 0 1px 3px rgba(79, 70, 229, 0.15);">
-          <span class="nav-icon">⚡</span>
-          <span>অটোমেশন ও অটোনোমাস ইঞ্জিন</span>
-        </button>
+        <!-- SECTION 1: মূল সমবায় কার্যক্রম -->
+        <div class="nav-section-title">
+          <span>🏛️</span>
+          <span>মূল সমবায় কার্যক্রম</span>
+        </div>
 
         <button class="nav-item" id="navItem-somiti" onclick="navTo('somiti')">
           <span class="nav-icon">🏛️</span>
           <span>সমিতি প্রোফাইল ও অফিসিয়াল প্যাড</span>
+        </button>
+
+        <button class="nav-item" id="navItem-members" onclick="navTo('members')">
+          <span class="nav-icon">👥</span>
+          <span>সদস্য তালিকা ও পাসবুক</span>
         </button>
 
         <button class="nav-item" id="navItem-deposits" onclick="navTo('deposits')">
@@ -3182,23 +3099,9 @@
           <span>মাসিক বকেয়া তালিকা</span>
         </button>
 
-        <button class="nav-item" id="navItem-members" onclick="navTo('members')">
-          <span class="nav-icon">👥</span>
-          <span>সদস্য তালিকা ও পাসবুক</span>
-        </button>
-
-        <button class="nav-item" id="navItem-expenses" onclick="navTo('expenses')">
-          <span class="nav-icon">💸</span>
-          <span>দৈনন্দিন খরচ খাতা</span>
-        </button>
-
-        <button class="nav-item" id="navItem-audit" onclick="navTo('audit')">
-          <span class="nav-icon">📊</span>
-          <span>আয়-ব্যয় অডিট ও ব্যালেন্স শিট</span>
-        </button>
-        <button class="nav-item" id="navItem-cashbook" onclick="navTo('cashbook')">
-          <span class="nav-icon">📒</span>
-          <span>ক্যাশ বুক ও মাসিক রিপোর্ট</span>
+        <button class="nav-item" id="navItem-loans" onclick="navTo('loans')">
+          <span class="nav-icon">💳</span>
+          <span>ঋণ ব্যবস্থাপনা ও কিস্তি</span>
         </button>
 
         <button class="nav-item" id="navItem-notice" onclick="navTo('notice')">
@@ -3206,9 +3109,38 @@
           <span>নোটিশ ও রেজুলেশন প্যাড</span>
         </button>
 
-        <button class="nav-item" id="navItem-backup" onclick="navTo('backup')">
-          <span class="nav-icon">☁️</span>
-          <span>গুগল ড্রাইভ ক্লাউড ব্যাকআপ</span>
+        <button class="nav-item" id="navItem-pending" onclick="navTo('pending')">
+          <span class="nav-icon">⏳</span>
+          <span>অপেক্ষমাণ আবেদনকারী</span>
+          <span class="nav-badge" id="sidePendingBadge" style="display:none;">০</span>
+        </button>
+
+        <div class="nav-divider"></div>
+
+        <!-- SECTION 2: হিসাব, ব্যাংকিং ও অডিট -->
+        <div class="nav-section-title">
+          <span>💰</span>
+          <span>হিসাব, ব্যাংকিং ও অডিট</span>
+        </div>
+
+        <button class="nav-item" id="navItem-expenses" onclick="navTo('expenses')">
+          <span class="nav-icon">💸</span>
+          <span>দৈনন্দিন খরচ খাতা</span>
+        </button>
+
+        <button class="nav-item" id="navItem-cashbook" onclick="navTo('cashbook')">
+          <span class="nav-icon">📒</span>
+          <span>ক্যাশ বুক ও মাসিক রিপোর্ট</span>
+        </button>
+
+        <button class="nav-item" id="navItem-audit" onclick="navTo('audit')">
+          <span class="nav-icon">📊</span>
+          <span>আয়-ব্যয় অডিট ও ব্যালেন্স শিট</span>
+        </button>
+
+        <button class="nav-item" id="navItem-accounting" onclick="navTo('accounting')">
+          <span class="nav-icon">🏦</span>
+          <span>ব্যাংক ও মাল্টি-অ্যাকাউন্ট</span>
         </button>
 
         <button class="nav-item" id="navItem-verify" onclick="navTo('verify')">
@@ -3216,10 +3148,112 @@
           <span>রসিদ যাচাই ও QR কোড</span>
         </button>
 
-        <button class="nav-item" id="navItem-pending" onclick="navTo('pending')">
-          <span class="nav-icon">⏳</span>
-          <span>অপেক্ষমাণ আবেদনকারী</span>
-          <span class="nav-badge" id="sidePendingBadge" style="display:none;">০</span>
+        <button class="nav-item" id="navItem-backup" onclick="navTo('backup')">
+          <span class="nav-icon">☁️</span>
+          <span>গুগল ড্রাইভ ক্লাউড ব্যাকআপ</span>
+        </button>
+
+        <div class="nav-divider"></div>
+
+        <!-- SECTION 3: এন্টারপ্রাইজ ও কন্ট্রোল -->
+        <div class="nav-section-title">
+          <span>⚡</span>
+          <span>এন্টারপ্রাইজ ও কন্ট্রোল</span>
+        </div>
+
+        <button class="nav-item" id="navItem-masterAdmin" onclick="navTo('masterAdmin')">
+          <span class="nav-icon">👑</span>
+          <span>মাস্টার এডমিন কন্ট্রোল</span>
+        </button>
+
+        <button class="nav-item" id="navItem-workflow" onclick="navTo('workflow')">
+          <span class="nav-icon">🔄</span>
+          <span>অনুমোদন ও ওয়ার্কফ্লো</span>
+        </button>
+
+        <button class="nav-item" id="navItem-security" onclick="navTo('security')">
+          <span class="nav-icon">🛡️</span>
+          <span>সিকিউরিটি ও এক্সেস কন্ট্রোল</span>
+        </button>
+
+        <button class="nav-item" id="navItem-saas" onclick="navTo('saas')">
+          <span class="nav-icon">💳</span>
+          <span>SaaS সাবস্ক্রিপশন ও বিলিং</span>
+        </button>
+
+        <button class="nav-item" id="navItem-societyOps" onclick="navTo('societyOps')">
+          <span class="nav-icon">🏢</span>
+          <span>সমিতি অপারেশনস (CRM, HR, স্টক)</span>
+        </button>
+
+        <button class="nav-item" id="navItem-payments" onclick="navTo('payments')">
+          <span class="nav-icon">💳</span>
+          <span>পেমেন্ট গেটওয়ে ও ব্যাংকিং</span>
+        </button>
+
+        <button class="nav-item" id="navItem-aiAnalytics" onclick="navTo('aiAnalytics')">
+          <span class="nav-icon">🤖</span>
+          <span>এআই ও বিজনেস ইন্টেলিজেন্স</span>
+        </button>
+
+        <button class="nav-item" id="navItem-fieldOps" onclick="navTo('fieldOps')">
+          <span class="nav-icon">📱</span>
+          <span>মাঠ অফিসার ও অফলাইন মোড</span>
+        </button>
+
+        <button class="nav-item" id="navItem-devopsOps" onclick="navTo('devopsOps')">
+          <span class="nav-icon">🛠️</span>
+          <span>সিস্টেম হেলথ, ব্যাকআপ ও DevOps</span>
+        </button>
+
+        <button class="nav-item" id="navItem-uiModernization" onclick="navTo('uiModernization')">
+          <span class="nav-icon">🎨</span>
+          <span>ডিজাইন সিস্টেম ও UI/UX</span>
+        </button>
+
+        <button class="nav-item" id="navItem-productionReadiness" onclick="navTo('productionReadiness')">
+          <span class="nav-icon">🚀</span>
+          <span>প্রোডাকশন ডেপ্লয়মেন্ট ও কন্ট্রোল</span>
+        </button>
+
+        <button class="nav-item" id="navItem-qaAudit" onclick="navTo('qaAudit')">
+          <span class="nav-icon">🧪</span>
+          <span>কোয়ালিটি ও সিকিউরিটি অডিট</span>
+        </button>
+
+        <button class="nav-item" id="navItem-helpdesk" onclick="navTo('helpdesk')">
+          <span class="nav-icon">🎧</span>
+          <span>কাস্টমার সাপোর্ট ও হেল্পডেস্ক</span>
+        </button>
+
+        <button class="nav-item" id="navItem-apiGateway" onclick="navTo('apiGateway')">
+          <span class="nav-icon">⚡</span>
+          <span>এপিআই ও ডেভেলপার পোর্টাল</span>
+        </button>
+
+        <button class="nav-item" id="navItem-whitelabel" onclick="navTo('whitelabel')">
+          <span class="nav-icon">🎨</span>
+          <span>হোয়াইট-লেবেল ও কাস্টমাইজেশন</span>
+        </button>
+
+        <button class="nav-item" id="navItem-dataWarehouse" onclick="navTo('dataWarehouse')">
+          <span class="nav-icon">🏢</span>
+          <span>ডাটা ওয়্যারহাউজ ও বিআই</span>
+        </button>
+
+        <button class="nav-item" id="navItem-memberSuperApp" onclick="navTo('memberSuperApp')">
+          <span class="nav-icon">📱</span>
+          <span>মেম্বার সুপার অ্যাপ</span>
+        </button>
+
+        <button class="nav-item" id="navItem-governance" onclick="navTo('governance')">
+          <span class="nav-icon">🏛️</span>
+          <span>গভর্ন্যান্স ও কমপ্লায়েন্স</span>
+        </button>
+
+        <button class="nav-item" id="navItem-automation" onclick="navTo('automation')">
+          <span class="nav-icon">⚡</span>
+          <span>অটোমেশন ও অটোনোমাস ইঞ্জিন</span>
         </button>
 
         <div class="nav-divider"></div>
@@ -3261,7 +3295,7 @@
       </div>
 
       <div style="padding: 10px; border-top: 1px solid var(--border); font-size: 11px; text-align: center; color: var(--text-muted); background: var(--bg);">
-        স্মার্ট সমিতি প্ল্যাটফর্ম • v2.6.2 (রিলিজ)
+        স্মার্ট সমিতি প্ল্যাটফর্ম • v2.6.3 (রিলিজ)
       </div>
     </div>
 
@@ -3404,9 +3438,9 @@
           <div class="sheet-icon-circle" style="background: #DCFCE7; color: #166534;">📱</div>
           <div>
             <div style="font-weight: 700; font-size: 13px;">অ্যাপ সংস্করণ ও APK আপডেট</div>
-            <div style="font-size: 10.5px; color: var(--text-muted);">বর্তমান সংস্করণ v2.6.2 • ইন-প্লেস APK ডাউনলোড</div>
+            <div style="font-size: 10.5px; color: var(--text-muted);">বর্তমান সংস্করণ v2.6.3 • ইন-প্লেস APK ডাউনলোড</div>
           </div>
-          <span class="sheet-badge" style="background: #BBF7D0; color: #166534;">v2.6.2</span>
+          <span class="sheet-badge" style="background: #BBF7D0; color: #166534;">v2.6.3</span>
         </button>
 
         <!-- Group 4: 🚪 বিপজ্জনক অপশন / সেশন -->
@@ -5481,7 +5515,7 @@
               <div style="font-size: 15px; font-weight: 800; color: #78350F;">প্ল্যাটফর্ম সুপার এডমিন কন্ট্রোল</div>
               <div style="font-size: 11px; color: #92400E;">অ্যাকাউন্ট: <strong>hossansajjad1994@gmail.com</strong> (সর্বোচ্চ ক্ষমতা)</div>
             </div>
-            <span style="background: #D97706; color: white; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800;">GLOBAL ACTIVE • v2.6.2</span>
+            <span style="background: #D97706; color: white; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800;">GLOBAL ACTIVE • v2.6.3</span>
           </div>
           <p style="font-size: 12px; color: #92400E; margin-top: 6px;">
             এখানে যেকোনো ফিচার বন্ধ করলে তা সাথে সাথে পুরো সিস্টেমে বা নির্দিষ্ট সমিতিতে নিষ্ক্রিয় হয়ে যাবে।
@@ -7062,7 +7096,7 @@
           <span style="font-size: 11.5px; font-weight: 700; color: var(--text-muted);">প্রোডাকশন ডেপ্লয়মেন্ট রিলিজ</span>
           <span style="font-size: 18px;">🚀</span>
         </div>
-        <div style="font-size: 20px; font-weight: 900; color: #7C3AED;" id="devopsKpiRelease">v2.6.2-p10</div>
+        <div style="font-size: 20px; font-weight: 900; color: #7C3AED;" id="devopsKpiRelease">v2.6.3-p10</div>
         <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 4px;">অটো-রোলব্যাক স্ট্যান্ডবাই প্রস্তুত</div>
       </div>
     </div>
@@ -7767,7 +7801,7 @@
           <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.22); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-bottom: 8px;">
             <span>🚀 প্রোডাকশন কন্ট্রোল সেন্টার</span>
             <span>•</span>
-            <span id="prodHeaderCertBadge">🟢 ১০০% প্রোডাকশন ভেরিফাইড (v2.6.2-PROD)</span>
+            <span id="prodHeaderCertBadge">🟢 ১০০% প্রোডাকশন ভেরিফাইড (v2.6.3-PROD)</span>
           </div>
           <h2 style="font-size: 20px; font-weight: 800; margin: 0 0 6px 0;">এন্টারপ্রাইজ প্রোডাকশন ডেপ্লয়মেন্ট ও সেন্ট্রালাইজড প্ল্যাটফর্ম কন্ট্রোল সেন্টার</h2>
           <p style="font-size: 12.5px; opacity: 0.95; margin: 0; max-width: 700px; line-height: 1.5;">
@@ -8005,7 +8039,7 @@
             এন্টারপ্রাইজ প্রোডাকশন গো-লাইভ সার্টিফাইড
           </h2>
           <div style="font-size: 13px; font-weight: 700; color: #047857; margin-bottom: 8px;">
-            ভার্সন: v2.6.2-ENTERPRISE-PROD | তারিখ: ১৪ নভেম্বর ২০২৬ ইং
+            ভার্সন: v2.6.3-ENTERPRISE-PROD | তারিখ: ১৪ নভেম্বর ২০২৬ ইং
           </div>
           <p style="font-size: 12.5px; color: #065F46; max-width: 600px; margin: 0 auto; line-height: 1.5;">
             "স্বপ্ন ছোঁয়া ঐক্য সমিতি" মাল্টি-টেন্যান্ট কো-অপারেটিভ SaaS প্ল্যাটফর্মের সকল কোর মডিউল, আর্থিক হিসাববিজ্ঞান, নিরাপত্তা বিধিমালা এবং ক্লাউড আর্কিটেকচার সফলভাবে অডিট ও অনুমোদিত হয়েছে।
@@ -8029,7 +8063,7 @@
         </div>
 
         <div style="text-align: center;">
-          <button onclick="alert('✓ প্রোডাকশন ডেপ্লয়মেন্ট সফলভাবে লাইভ এবং ভেরিফাইড (v2.6.2-PROD)!')" style="background: #059669; color: white; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);">
+          <button onclick="alert('✓ প্রোডাকশন ডেপ্লয়মেন্ট সফলভাবে লাইভ এবং ভেরিফাইড (v2.6.3-PROD)!')" style="background: #059669; color: white; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 800; font-size: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);">
             🚀 প্রোডাকশন লাইভ স্ট্যাটাস নিশ্চিত করুন
           </button>
         </div>
@@ -12779,11 +12813,12 @@
       if (cached) {
         try {
           const parsed = JSON.parse(cached);
-          if (parsed && (parsed.name === "প্রগতি ক্ষুদ্র সঞ্চয় সমবায় সমিতি" || parsed.name === "প্রগতি ক্ষুদ্র সঞ্চয় সমবায় সমিতি")) {
+          if (parsed && (parsed.name === "প্রগতি ক্ষুদ্র সঞ্চয় সমবায় সমিতি" || parsed.name === "প্রগতি ক্ষুদ্র সঞ্চয় সমবায় সমিতি" || parsed.name === "স্বপ্ন ছোঁয়া ঐক্য সমিতি" || parsed.name === "স্বপ্ন ছোঁয়া ঐক্য সমিতি" || parsed.name === "সমিতি")) {
             parsed.name = defaultSomiti.name;
             parsed.padRightName = defaultSomiti.padRightName;
             parsed.padRightAddress = defaultSomiti.padRightAddress;
             parsed.padRightTagline = defaultSomiti.padRightTagline;
+            parsed.englishName = defaultSomiti.englishName;
             parsed.padHeader = defaultSomiti.padHeader;
             parsed.tagline = defaultSomiti.tagline;
             parsed.address = defaultSomiti.address;
@@ -12793,6 +12828,7 @@
             parsed.bankName = defaultSomiti.bankName;
             parsed.bankAcc = defaultSomiti.bankAcc;
             parsed.bankBranch = defaultSomiti.bankBranch;
+            try { localStorage.setItem("saved_somiti_settings", JSON.stringify(parsed)); } catch(e) {}
           }
           defaultSomiti = { ...defaultSomiti, ...parsed };
         } catch(e){}
@@ -13125,7 +13161,7 @@
           alert(`📱 স্মার্ট সমিতি - অ্যাপ সংস্করণ তথ্য:\n\n• বর্তমান সংস্করণ: v${info.version} (Build ${info.buildNumber})\n• রিলিজ তারিখ: ${info.releaseDate}\n• নোট: ${info.changelogBn || 'সর্বশেষ আপডেট কার্যকর'}\n\n✓ এই এপিকে রিলিজটি পারসিস্টেন্ট কি-স্টোর দিয়ে সাইন করা।\nআগের অ্যাপ ডিলিট না করেই সরাসরি আপডেট করা যাবে।\n\nডাউনলোড লিংক: ${info.downloadUrl || 'somiti-latest.apk'}`);
         })
         .catch(() => {
-          alert("📱 স্মার্ট সমিতি\n\n• বর্তমান সংস্করণ: v2.6.2 (Build 14)\n• ইন-প্লেস আপডেট: সক্রিয়\n(আগের অ্যাপ আনইনস্টল না করেই নতুন ভার্সন আপডেট হবে)");
+          alert("📱 স্মার্ট সমিতি\n\n• বর্তমান সংস্করণ: v2.6.3 (Build 14)\n• ইন-প্লেস আপডেট: সক্রিয়\n(আগের অ্যাপ আনইনস্টল না করেই নতুন ভার্সন আপডেট হবে)");
         });
     }
 
@@ -22659,7 +22695,7 @@
         mac: 'BC:D1:19:FA:82:11',
         imei: '862910048192841',
         lastHeartbeat: '৫ মিনিট আগে',
-        appVersion: 'v2.6.2-p9',
+        appVersion: 'v2.6.3-p9',
         isAuthorized: true,
         status: 'ACTIVE'
       },
@@ -22670,7 +22706,7 @@
         mac: 'F0:18:98:C2:54:99',
         imei: '864019283746192',
         lastHeartbeat: '১২ মিনিট আগে',
-        appVersion: 'v2.6.2-p9',
+        appVersion: 'v2.6.3-p9',
         isAuthorized: true,
         status: 'ACTIVE'
       },
@@ -22681,7 +22717,7 @@
         mac: '34:08:04:78:E1:5A',
         imei: '869018274619283',
         lastHeartbeat: '২ ঘণ্টা আগে',
-        appVersion: 'v2.6.2-p9',
+        appVersion: 'v2.6.3-p9',
         isAuthorized: true,
         status: 'ACTIVE'
       },
@@ -22692,7 +22728,7 @@
         mac: '78:4F:43:AA:91:02',
         imei: '861129384756201',
         lastHeartbeat: '৩ দিন আগে',
-        appVersion: 'v2.6.2',
+        appVersion: 'v2.6.3',
         isAuthorized: false,
         status: 'REVOKED'
       }
@@ -23232,7 +23268,7 @@
         mac: 'AA:BB:CC:' + Math.floor(10 + Math.random()*89) + ':11:22',
         imei: '86' + Math.floor(1000000000000 + Math.random()*8999999999999),
         lastHeartbeat: 'এইমাত্র',
-        appVersion: 'v2.6.2-p9',
+        appVersion: 'v2.6.3-p9',
         isAuthorized: true,
         status: 'ACTIVE'
       });
@@ -23298,8 +23334,8 @@
 
     // 6. Deployments Data Store
     let devopsDeployments = [
-      { id: 'DEP-20261114-01', version: 'v2.6.2-p10', env: 'PROD', hash: 'a71e89f', status: 'SUCCESS', deployedBy: 'ফারুক হোসেন (ডেভঅপস)', rollbackTarget: 'v2.6.2-p9', time: 'আজ, দুপুর ০১:১৫' },
-      { id: 'DEP-20261113-01', version: 'v2.6.2-p9', env: 'PROD', hash: 'c42d10a', status: 'SUCCESS', deployedBy: 'ফারুক হোসেন (ডেভঅপস)', rollbackTarget: 'v2.6.2', time: 'গতকাল, বিকাল ০৫:০০' },
+      { id: 'DEP-20261114-01', version: 'v2.6.3-p10', env: 'PROD', hash: 'a71e89f', status: 'SUCCESS', deployedBy: 'ফারুক হোসেন (ডেভঅপস)', rollbackTarget: 'v2.6.3-p9', time: 'আজ, দুপুর ০১:১৫' },
+      { id: 'DEP-20261113-01', version: 'v2.6.3-p9', env: 'PROD', hash: 'c42d10a', status: 'SUCCESS', deployedBy: 'ফারুক হোসেন (ডেভঅপস)', rollbackTarget: 'v2.6.3', time: 'গতকাল, বিকাল ০৫:০০' },
     ];
 
     function renderDevopsOpsHub() {
@@ -23637,16 +23673,16 @@
     }
 
     function triggerRollbackPrompt() {
-      const confirmRollback = confirm("সতর্কবার্তা: আপনি কি পূর্ববর্তী স্টেবল রিলিজ v2.6.2-p9 এ ইনস্ট্যান্ট রোলব্যাক করতে চান?\nএটি কার্যকর হলে বর্তমান কোডবেস তাৎক্ষণিকভাবে পূর্ববর্তী বিল্ডে স্থানান্তরিত হবে।");
+      const confirmRollback = confirm("সতর্কবার্তা: আপনি কি পূর্ববর্তী স্টেবল রিলিজ v2.6.3-p9 এ ইনস্ট্যান্ট রোলব্যাক করতে চান?\nএটি কার্যকর হলে বর্তমান কোডবেস তাৎক্ষণিকভাবে পূর্ববর্তী বিল্ডে স্থানান্তরিত হবে।");
       if (confirmRollback) {
         devopsDeployments.unshift({
           id: 'DEP-' + Date.now(),
-          version: 'v2.6.2-p9 (Rolled Back)',
+          version: 'v2.6.3-p9 (Rolled Back)',
           env: 'PROD',
           hash: 'c42d10a',
           status: 'ROLLED_BACK',
           deployedBy: 'সুপার এডমিন (জরুরি রোলব্যাক)',
-          rollbackTarget: 'v2.6.2',
+          rollbackTarget: 'v2.6.3',
           time: 'এইমাত্র'
         });
 
@@ -23655,13 +23691,13 @@
           level: 'DEPLOYMENT',
           time: 'এইমাত্র',
           service: 'ci_cd_pipeline',
-          message: 'প্রোডাকশন ডেপ্লয়মেন্ট তাৎক্ষণিকভাবে v2.6.2-p9 এ রোলব্যাক সম্পন্ন হয়েছে',
+          message: 'প্রোডাকশন ডেপ্লয়মেন্ট তাৎক্ষণিকভাবে v2.6.3-p9 এ রোলব্যাক সম্পন্ন হয়েছে',
           metadata: 'action=rollback'
         });
 
         renderDevopsDeployments();
         renderDevopsLogs();
-        alert("✓ পূর্ববর্তী স্টেবল ভার্সনে (v2.6.2-p9) ইনস্ট্যান্ট রোলব্যাক সম্পন্ন হয়েছে!");
+        alert("✓ পূর্ববর্তী স্টেবল ভার্সনে (v2.6.3-p9) ইনস্ট্যান্ট রোলব্যাক সম্পন্ন হয়েছে!");
       }
     }
 
@@ -24231,7 +24267,7 @@
     }
 
     function downloadProductionCertificate() {
-      alert("📜 অফিসিয়াল প্রোডাকশন গো-লাইভ সার্টিফিকেট v2.6.2-ENTERPRISE-PROD:\n\n• প্ল্যাটফর্ম: স্বপ্ন ছোঁয়া ঐক্য সমিতি (SaaS)\n• মোট মডিউল: ১২টি কোর মডিউল (১০০% কমপ্লায়েন্ট)\n• নিরীক্ষিত পারমিশন: ১২০টি\n• অডিট স্ট্যাটাস: APPROVED FOR PRODUCTION LAUNCH\n• সার্টিফাইড বাই: master_admin_sajjad");
+      alert("📜 অফিসিয়াল প্রোডাকশন গো-লাইভ সার্টিফিকেট v2.6.3-ENTERPRISE-PROD:\n\n• প্ল্যাটফর্ম: স্বপ্ন ছোঁয়া ঐক্য সমিতি (SaaS)\n• মোট মডিউল: ১২টি কোর মডিউল (১০০% কমপ্লায়েন্ট)\n• নিরীক্ষিত পারমিশন: ১২০টি\n• অডিট স্ট্যাটাস: APPROVED FOR PRODUCTION LAUNCH\n• সার্টিফাইড বাই: master_admin_sajjad");
     }
 
     // ============================================================================
@@ -24570,7 +24606,7 @@
     }
 
     function exportQaAuditReport() {
-      alert("📜 এন্টারপ্রাইজ কিউএ ও সিকিউরিটি অডিট রিপোর্ট v2.6.2-AUDIT:\n\n• সমিতি: স্বপ্ন ছোঁয়া ঐক্য সমিতি (SaaS)\n• টেস্ট কভারেজ: ৬টি লেয়ার (১২টি টেস্ট উত্তীর্ণ)\n• সিকিউরিটি স্ট্যাটাস: OWASP Top 10 উত্তীর্ণ\n• আর্থিক সমতা: ৳০.০০ ইমব্যালেন্স (পয়সা প্রিসিশন)\n• গেট সিদ্ধান্ত: APPROVED FOR CONTINUOUS RELEASE\n• নিরীক্ষক: QA Lead & Security Officer Sajjad");
+      alert("📜 এন্টারপ্রাইজ কিউএ ও সিকিউরিটি অডিট রিপোর্ট v2.6.3-AUDIT:\n\n• সমিতি: স্বপ্ন ছোঁয়া ঐক্য সমিতি (SaaS)\n• টেস্ট কভারেজ: ৬টি লেয়ার (১২টি টেস্ট উত্তীর্ণ)\n• সিকিউরিটি স্ট্যাটাস: OWASP Top 10 উত্তীর্ণ\n• আর্থিক সমতা: ৳০.০০ ইমব্যালেন্স (পয়সা প্রিসিশন)\n• গেট সিদ্ধান্ত: APPROVED FOR CONTINUOUS RELEASE\n• নিরীক্ষক: QA Lead & Security Officer Sajjad");
     }
 
     // ============================================================================

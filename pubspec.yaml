@@ -1,7 +1,7 @@
 name: cloud_sync_drive
 description: "Cross-device real-time sync with Google Sign-in and Google Drive backup"
 publish_to: "none"
-version: 2.6.2+14
+version: 2.6.3+15
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
