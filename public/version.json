@@ -1,12 +1,12 @@
 {
   "appName": "স্মার্ট সমিতি",
   "projectSlug": "smartsomiti",
-  "version": "2.7.0",
-  "buildNumber": 24,
-  "releaseDate": "2026-11-15",
+  "version": "2.7.1",
+  "buildNumber": 25,
+  "releaseDate": "2026-11-16",
   "releaseName": "স্মার্ট সমিতি এন্টারপ্রাইজ প্ল্যাটফর্ম",
   "vercelUrl": "https://smartsomiti.vercel.app",
   "minSupportedVersion": "1.0.0",
   "downloadUrl": "https://github.com/sajjadhossan/smartsomiti/releases/latest/download/smartsomiti-latest.apk",
-  "changelogBn": "ফেজ ৪ ও মাইলস্টোন সম্পন্ন: PWA অফলাইন সার্ভিস ওয়ার্কার ক্যাশিং, ১-ক্লিক সম্পূর্ণ JSON ডাটাবেস ব্যাকআপ ও রিস্টোর হাব, সমবায় বাৎসরিক মুনাফা ও লভ্যাংশ সিমুলেটর এবং ডুপ্লিকেট স্লিপ প্রোটেকশন শিল্ড (v2.7.0)।"
+  "changelogBn": "ভেরিফিকেশন পোর্টাল আপডেট: লাইভ গুগল শিট সিঙ্ক, ২১ জন পরিশোধিত রসিদ (RCT-19, 20, 21 সহ), ক্যামেরা QR স্ক্যানার, ডার্ক মোড, WhatsApp রিমাইন্ডার ও পেমেন্ট গাইড সংযোজন (v2.7.1)।"
 }
