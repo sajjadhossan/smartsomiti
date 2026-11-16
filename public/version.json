@@ -1,12 +1,12 @@
 {
   "appName": "স্মার্ট সমিতি",
   "projectSlug": "smartsomiti",
-  "version": "2.7.1",
-  "buildNumber": 25,
+  "version": "2.7.2",
+  "buildNumber": 26,
   "releaseDate": "2026-11-16",
   "releaseName": "স্মার্ট সমিতি এন্টারপ্রাইজ প্ল্যাটফর্ম",
   "vercelUrl": "https://smartsomiti.vercel.app",
   "minSupportedVersion": "1.0.0",
   "downloadUrl": "https://github.com/sajjadhossan/smartsomiti/releases/latest/download/smartsomiti-latest.apk",
-  "changelogBn": "ভেরিফিকেশন পোর্টাল আপডেট: লাইভ গুগল শিট সিঙ্ক, ২১ জন পরিশোধিত রসিদ (RCT-19, 20, 21 সহ), ক্যামেরা QR স্ক্যানার, ডার্ক মোড, WhatsApp রিমাইন্ডার ও পেমেন্ট গাইড সংযোজন (v2.7.1)।"
+  "changelogBn": "অফিশিয়াল প্যাড হেডার ব্যানার (pad_header.jpg) ও তথ্যাবলী রিস্টোর, আধুনিক এডমিন পিন ভেরিফিকেশন মডাল (#adminPinModal) ও সরাসরি প্যাড এডিট সিস্টেম (#padEditModal) সংযোজন (v2.7.2)।"
 }

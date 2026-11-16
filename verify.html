@@ -41,29 +41,44 @@
 </head>
 <body class="min-h-screen text-slate-800 pb-16">
 
-  <!-- Top Brand Header -->
-  <header class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-800 text-white shadow-lg border-b-4 border-amber-400">
-    <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-      <div class="flex items-center space-x-3.5">
-        <div class="w-12 h-12 rounded-full bg-white text-emerald-800 flex items-center justify-center text-2xl shadow-md border-2 border-amber-300">🛡️</div>
-        <div>
-          <div class="flex items-center space-x-2">
-            <h1 class="text-xl sm:text-2xl font-bold tracking-tight">স্বপ্ন ছোঁয়া ঐক্য সমিতি</h1>
-            <span class="bg-emerald-700/80 text-emerald-100 text-[10px] font-semibold px-2 py-0.5 rounded-full border border-emerald-400/40">ভেরিফিকেশন পোর্টাল</span>
-          </div>
-          <p class="text-xs text-emerald-100 mt-0.5">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ • শ্রীনগর, মুন্সীগঞ্জ</p>
-        </div>
+  <!-- ================= TOP OFFICIAL PAD BANNER & NAV ================= -->
+  <header class="max-w-5xl mx-auto px-3 sm:px-4 pt-3 sm:pt-5">
+    <div class="bg-white rounded-2xl shadow-lg border-2 border-emerald-700 overflow-hidden">
+      <!-- High Resolution Crisp Official Pad Banner -->
+      <div class="relative bg-white border-b-2 border-emerald-700">
+        <img src="pad_header.jpg" alt="স্বপ্ন ছোঁয়া ঐক্য সমিতি অফিসিয়াল প্যাড হেডার"
+          class="w-full h-auto object-contain block select-none" />
       </div>
-      <div class="flex flex-wrap items-center justify-center gap-2 text-xs">
-        <button type="button" id="refreshBtn" onclick="manualSync()" class="bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg font-semibold border border-white/20 transition">🔄 লাইভ আপডেট</button>
-        <button type="button" id="darkModeBtn" onclick="toggleDarkMode()" class="bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg font-semibold border border-white/20 transition">🌙 ডার্ক</button>
-        <button type="button" id="adminBtn" onclick="toggleAdminMode()" class="bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg font-semibold border border-white/20 transition">🔐 অ্যাডমিন</button>
-        <a href="https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit" target="_blank" rel="noopener" class="bg-amber-400 hover:bg-amber-300 text-slate-900 px-3 py-1.5 rounded-lg font-bold shadow transition">
-          📊 লাইভ শিট
-        </a>
-        <a href="index.html" class="bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg font-semibold border border-white/20 transition">
-          🏛️ মূল অ্যাপ
-        </a>
+
+      <!-- Official Sub-bar with Society Address, Bank & Live Action Buttons -->
+      <div class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-900 text-white px-3 sm:px-5 py-2.5 text-xs flex flex-col md:flex-row items-center justify-between gap-2.5 border-t-2 border-amber-400">
+        <div class="flex flex-wrap items-center justify-center md:justify-start gap-x-3.5 gap-y-1 text-center md:text-left text-[11px] sm:text-xs">
+          <span class="font-semibold text-emerald-100" id="hdrReg">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬</span>
+          <span class="text-emerald-300 hidden sm:inline">•</span>
+          <span class="font-semibold text-emerald-100" id="hdrAddr">📍 শ্রীনগর, মুন্সীগঞ্জ</span>
+          <span class="text-emerald-300 hidden sm:inline">•</span>
+          <span class="font-semibold text-emerald-100" id="hdrBank">🏦 সিটি ব্যাংক পিএলসি • হিসাব: ২৩১৫১৫৮০৪৫০০১</span>
+          <span class="text-emerald-300 hidden sm:inline">•</span>
+          <span class="font-semibold text-emerald-100" id="hdrRouting">🌐 রাউটিং: ২২৫২৬০৪১৫</span>
+          <span class="text-emerald-300 hidden sm:inline">•</span>
+          <span class="font-semibold text-amber-200" id="hdrBkash">📱 বিকাশ: ০১৭১২-৩৪৫৬৭৮</span>
+        </div>
+        <div class="flex flex-wrap items-center justify-center gap-2 text-xs shrink-0">
+          <button type="button" onclick="openPadEditModal()"
+            class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-3 py-1.5 rounded-lg shadow transition flex items-center space-x-1">
+            <span>✏️</span>
+            <span>প্যাড তথ্য এডিট</span>
+          </button>
+          <button type="button" id="refreshBtn" onclick="manualSync()" class="bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg font-semibold border border-white/20 transition">🔄 লাইভ আপডেট</button>
+          <button type="button" id="darkModeBtn" onclick="toggleDarkMode()" class="bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg font-semibold border border-white/20 transition">🌙 ডার্ক</button>
+          <button type="button" id="adminBtn" onclick="toggleAdminMode()" class="bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg font-semibold border border-white/20 transition">🔐 অ্যাডমিন</button>
+          <a href="https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit" target="_blank" rel="noopener" class="bg-amber-400/90 hover:bg-amber-300 text-slate-900 px-3 py-1.5 rounded-lg font-bold shadow transition">
+            📊 লাইভ শিট
+          </a>
+          <a href="index.html" class="bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg font-semibold border border-white/20 transition">
+            🏛️ মূল অ্যাপ
+          </a>
+        </div>
       </div>
     </div>
   </header>
@@ -355,7 +370,7 @@
         </div>
 
         <p class="text-[11px] text-center text-slate-400">
-          অনুমোদনকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ) • স্বপ্ন ছোঁয়া ঐক্য সমিতি
+          অনুমোদনকারী: <span id="mCashierSignName">সাজ্জাদ হোসেন (কোষাধ্যক্ষ)</span> • স্বপ্ন ছোঁয়া ঐক্য সমিতি
         </p>
       </div>
     </div>
@@ -375,7 +390,279 @@
     </div>
   </div>
 
+  <!-- ================= EDIT PAD DETAILS MODAL ================= -->
+  <div id="padEditModal" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-emerald-300 animate-pop space-y-3.5">
+      <div class="flex justify-between items-center border-b pb-2.5">
+        <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+          <span>✏️</span> <span>প্যাডের তথ্য সম্পাদনা ও কাস্টমাইজেশন</span>
+        </h3>
+        <button type="button" onclick="closePadEditModal()" class="text-slate-400 hover:text-slate-700 font-bold text-lg">✕</button>
+      </div>
+      <p class="text-xs text-slate-500">
+        প্যাডে প্রদর্শিত ঠিকানা, ব্যাংক একাউন্ট বা নম্বর এখানে এডিট করুন। সেভ করলে পুরো পোর্টালে লাইভ আপডেট হয়ে যাবে এবং ব্রাউজারে সংরক্ষিত থাকবে।
+      </p>
+      <div class="space-y-2.5 text-xs">
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">📍 কার্যালয়ের ঠিকানা:</label>
+          <input type="text" id="editAddr" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: শ্রীনগর, মুন্সীগঞ্জ" />
+        </div>
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">🏦 ব্যাংক নাম ও হিসাব বিবরণ:</label>
+          <input type="text" id="editBank" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: সিটি ব্যাংক পিএলসি • হিসাব: ২৩১৫১৫৮০৪৫০০১" />
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">🌐 ব্যাংক রাউটিং নং:</label>
+            <input type="text" id="editRouting" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: ২২৫২৬০৪১৫" />
+          </div>
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">📱 বিকাশ / নগদ নম্বর:</label>
+            <input type="text" id="editBkash" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: ০১৭১২-৩৪৫৬৭৮" />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">🏛️ সমবায় রেজিঃ নম্বর:</label>
+            <input type="text" id="editReg" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: ৭৮৯০/২০২৬" />
+          </div>
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">👤 কোষাধ্যক্ষ / অনুমোদনকারী:</label>
+            <input type="text" id="editCashier" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)" />
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between pt-3 border-t">
+        <button type="button" onclick="resetPadDefaults()" class="text-rose-600 hover:text-rose-700 font-semibold text-xs">
+          🔄 ডিফল্ট রিস্টোর
+        </button>
+        <div class="flex gap-2">
+          <button type="button" onclick="closePadEditModal()" class="px-4 py-2 border rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-50">
+            বাতিল
+          </button>
+          <button type="button" onclick="savePadCustomDetails()" class="px-5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold shadow">
+            💾 তথ্য সেভ করুন
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ADMIN PIN VERIFICATION MODAL ================= -->
+  <div id="adminPinModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl border-2 border-emerald-500 animate-pop space-y-4">
+      <div class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl mx-auto shadow-inner">
+        🔐
+      </div>
+      <div>
+        <h3 class="text-base font-bold text-slate-900">কোষাধ্যক্ষ / এডমিন ভেরিফিকেশন</h3>
+        <p class="text-xs text-slate-500 mt-1">প্যাডের তথ্য ও হিসাব বিবরণী পরিবর্তনের জন্য আপনার অনুমোদিত গোপন পিন কোড প্রদান করুন।</p>
+      </div>
+
+      <div class="space-y-2">
+        <div class="relative">
+          <input type="password" id="adminPinInput" placeholder="গোপন পিন কোড দিন..."
+            class="w-full text-center px-4 py-2.5 text-base font-bold tracking-widest bg-slate-50 border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none transition shadow-inner font-mono"
+            onkeydown="if(event.key==='Enter') submitAdminPin();" />
+          <button type="button" onclick="togglePinVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">👁️</button>
+        </div>
+        <p id="adminPinError" class="text-rose-600 text-xs font-semibold hidden">❌ ভুল পিন নম্বর! অনুগ্রহ করে সঠিক পিন কোড দিন।</p>
+      </div>
+
+      <div class="flex gap-2 pt-1">
+        <button type="button" onclick="closeAdminPinModal()" class="flex-1 py-2.5 border rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50">
+          বাতিল
+        </button>
+        <button type="button" onclick="submitAdminPin()" class="flex-1 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs shadow-md shadow-emerald-700/20 transition">
+          🔓 আনলক করুন
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Toast Container -->
+  <div id="toastContainer" class="fixed top-5 left-1/2 -translate-x-1/2 z-[100] flex flex-col items-center gap-2 pointer-events-none w-full max-w-md px-4"></div>
+
   <script>
+    // ================= PAD CONFIGURATION & ADMIN AUTH =================
+    const DEFAULT_PAD_CONFIG = {
+      reg: "🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬",
+      addr: "📍 শ্রীনগর, মুন্সীগঞ্জ",
+      bank: "🏦 সিটি ব্যাংক পিএলসি • হিসাব: ২৩১৫১৫৮০৪৫০০১",
+      routing: "🌐 রাউটিং: ২২৫২৬০৪১৫",
+      bkash: "📱 বিকাশ: ০১৭১২-৩৪৫৬৭৮",
+      cashier: "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)"
+    };
+
+    const VALID_ADMIN_PINS = ["01721298969", "2026"];
+    let isAdminUnlocked = false;
+    let adminPinTargetAction = 'admin'; // 'admin' or 'pad'
+
+    function loadPadConfig() {
+      try {
+        const saved = localStorage.getItem('somiti_pad_custom_settings');
+        if (saved) return { ...DEFAULT_PAD_CONFIG, ...JSON.parse(saved) };
+      } catch (_) {}
+      return { ...DEFAULT_PAD_CONFIG };
+    }
+
+    let padConfig = loadPadConfig();
+
+    function applyPadConfig() {
+      const elReg = document.getElementById('hdrReg');
+      const elAddr = document.getElementById('hdrAddr');
+      const elBank = document.getElementById('hdrBank');
+      const elRouting = document.getElementById('hdrRouting');
+      const elBkash = document.getElementById('hdrBkash');
+      const elCashier = document.getElementById('mCashierSignName');
+
+      if (elReg) elReg.innerText = padConfig.reg;
+      if (elAddr) elAddr.innerText = padConfig.addr;
+      if (elBank) elBank.innerText = padConfig.bank;
+      if (elRouting) elRouting.innerText = padConfig.routing;
+      if (elBkash) elBkash.innerText = padConfig.bkash;
+      if (elCashier) elCashier.innerText = padConfig.cashier;
+    }
+
+    function showToast(msg, type = "info") {
+      const c = document.getElementById('toastContainer');
+      if (!c) return;
+      const t = document.createElement('div');
+      const bg = type === 'success' ? 'bg-emerald-800 text-white border-emerald-500' :
+                 type === 'error' ? 'bg-rose-800 text-white border-rose-500' :
+                 type === 'warning' ? 'bg-amber-800 text-white border-amber-500' :
+                 'bg-slate-800 text-white border-slate-600';
+      t.className = `${bg} border px-4 py-2.5 rounded-xl shadow-xl text-xs font-semibold pointer-events-auto transition-all duration-300 transform translate-y-0 opacity-100 flex items-center space-x-2`;
+      t.innerHTML = `<span>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span><span>${msg}</span>`;
+      c.appendChild(t);
+      setTimeout(() => {
+        t.style.opacity = '0';
+        t.style.transform = 'translateY(-10px)';
+        setTimeout(() => t.remove(), 300);
+      }, 3000);
+    }
+
+    function openAdminPinModal(target = 'admin') {
+      adminPinTargetAction = target;
+      const modal = document.getElementById('adminPinModal');
+      const pinInput = document.getElementById('adminPinInput');
+      const pinErr = document.getElementById('adminPinError');
+      if (pinErr) pinErr.classList.add('hidden');
+      if (pinInput) {
+        pinInput.value = '';
+        pinInput.type = 'password';
+      }
+      modal.classList.remove('hidden');
+      setTimeout(() => pinInput && pinInput.focus(), 150);
+    }
+
+    function closeAdminPinModal() {
+      const modal = document.getElementById('adminPinModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function togglePinVisibility() {
+      const pinInput = document.getElementById('adminPinInput');
+      if (pinInput) {
+        pinInput.type = pinInput.type === 'password' ? 'text' : 'password';
+      }
+    }
+
+    function submitAdminPin() {
+      const pinInput = document.getElementById('adminPinInput');
+      const pinErr = document.getElementById('adminPinError');
+      const val = (pinInput ? pinInput.value : '').trim();
+
+      if (VALID_ADMIN_PINS.includes(val)) {
+        isAdmin = true;
+        isAdminUnlocked = true;
+        closeAdminPinModal();
+        const aBtn = document.getElementById('adminBtn');
+        if (aBtn) aBtn.innerText = '🔓 অ্যাডমিন (সক্রিয়)';
+        renderGrid(liveRecords);
+
+        if (adminPinTargetAction === 'pad') {
+          showActualPadEditModal();
+          showToast("অ্যাডমিন পিন ভেরিফাইড! প্যাড এডিট মোড ওপেন হয়েছে।", "success");
+        } else {
+          showToast("অ্যাডমিন মোড সফলভাবে সক্রিয় হয়েছে!", "success");
+        }
+      } else {
+        if (pinErr) pinErr.classList.remove('hidden');
+        showToast("ভুল পিন নম্বর! অনুগ্রহ করে সঠিক পিন কোড দিন।", "error");
+        if (pinInput) {
+          pinInput.value = '';
+          pinInput.focus();
+        }
+      }
+    }
+
+    function openPadEditModal() {
+      if (isAdminUnlocked) {
+        showActualPadEditModal();
+      } else {
+        openAdminPinModal('pad');
+      }
+    }
+
+    function showActualPadEditModal() {
+      document.getElementById('editAddr').value = padConfig.addr.replace(/^📍\s*/, '');
+      document.getElementById('editBank').value = padConfig.bank.replace(/^🏦\s*/, '');
+      document.getElementById('editRouting').value = padConfig.routing.replace(/^🌐\s*রাউটিং:\s*/, '');
+      document.getElementById('editBkash').value = padConfig.bkash.replace(/^📱\s*বিকাশ:\s*/, '');
+      document.getElementById('editReg').value = padConfig.reg.replace(/^🏛️\s*সমবায়\s*রেজিঃ\s*নং-?/, '');
+      document.getElementById('editCashier').value = padConfig.cashier;
+      document.getElementById('padEditModal').classList.remove('hidden');
+    }
+
+    function closePadEditModal() {
+      document.getElementById('padEditModal').classList.add('hidden');
+    }
+
+    function savePadCustomDetails() {
+      if (!isAdminUnlocked) {
+        showToast("শুধুমাত্র অনুমোদিত কোষাধ্যক্ষ পিন আনলক করে তথ্য সংরক্ষণ করতে পারবেন!", "warning");
+        return;
+      }
+      const addr = document.getElementById('editAddr').value.trim();
+      const bank = document.getElementById('editBank').value.trim();
+      const routing = document.getElementById('editRouting').value.trim();
+      const bkash = document.getElementById('editBkash').value.trim();
+      const reg = document.getElementById('editReg').value.trim();
+      const cashier = document.getElementById('editCashier').value.trim();
+
+      padConfig = {
+        addr: addr ? ("📍 " + addr) : DEFAULT_PAD_CONFIG.addr,
+        bank: bank ? ("🏦 " + bank) : DEFAULT_PAD_CONFIG.bank,
+        routing: routing ? ("🌐 রাউটিং: " + routing) : DEFAULT_PAD_CONFIG.routing,
+        bkash: bkash ? ("📱 বিকাশ: " + bkash) : DEFAULT_PAD_CONFIG.bkash,
+        reg: reg ? ("🏛️ সমবায় রেজিঃ নং-" + reg) : DEFAULT_PAD_CONFIG.reg,
+        cashier: cashier || DEFAULT_PAD_CONFIG.cashier
+      };
+
+      try {
+        localStorage.setItem('somiti_pad_custom_settings', JSON.stringify(padConfig));
+      } catch (_) {}
+
+      applyPadConfig();
+      closePadEditModal();
+      showToast("প্যাডের তথ্য সফলভাবে সংরক্ষিত ও লাইভ আপডেট হয়েছে!", "success");
+    }
+
+    function resetPadDefaults() {
+      if (!isAdminUnlocked) {
+        showToast("শুধুমাত্র অনুমোদিত কোষাধ্যক্ষ পিন আনলক করে ডিফল্ট তথ্য রিস্টোর করতে পারবেন!", "warning");
+        return;
+      }
+      padConfig = { ...DEFAULT_PAD_CONFIG };
+      try {
+        localStorage.removeItem('somiti_pad_custom_settings');
+      } catch (_) {}
+      applyPadConfig();
+      closePadEditModal();
+      showToast("ডিফল্ট তথ্য সফলভাবে রিস্টোর হয়েছে!", "success");
+    }
+
     const RECORDS = [
       {"code": "RCT-01", "alt_code": "সছঐস/রিসিট/২০২৬-০১", "member": "কাওসার আহমেদ রিফাত", "serial": "০২", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "সিটি ব্যাংক (শ্রীনগর শাখা) — যৌথ ক্যাশ ডিপোজিট", "sender": "যৌথ ডিপোজিট (সাজ্জাদ, রিফাত ও রাকিব)", "slip_url": "https://drive.google.com/file/d/1VXTQa7sSZBvtds1mGXdINkc3LoyFW7Ix/view?usp=drivesdk", "pad_url": ""},
       {"code": "RCT-02", "alt_code": "সছঐস/রিসিট/২০২৬-০২", "member": "মনিরুজ্জামান", "serial": "০৮", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা (১০,০৭৫.৮৯ ৳)", "method": "Al Mulla Exchange -> City Bank PLC (Txn: 2026/67179693)", "sender": "MANIRUZZAMAN MD MOTIUR RAHMAN (কুয়েত প্রবাসী)", "slip_url": "https://drive.google.com/file/d/1mCL4YxhBqHE4V_mYFBGmrPx7Y93tdpec/view?usp=drivesdk", "pad_url": ""},
@@ -452,6 +739,7 @@
         }
       }
 
+      applyPadConfig();
       verifyModal.classList.remove('hidden');
     }
 
@@ -836,17 +1124,12 @@
     function toggleAdminMode() {
       if (isAdmin) {
         isAdmin = false;
+        isAdminUnlocked = false;
         document.getElementById('adminBtn').innerText = '🔐 অ্যাডমিন';
         renderGrid(liveRecords);
-        return;
-      }
-      const pin = prompt('অ্যাডমিন পিন দিন (2026 বা মাস্টার পিন):');
-      if (pin === '2026' || pin === '01721298969') {
-        isAdmin = true;
-        document.getElementById('adminBtn').innerText = '🔓 অ্যাডমিন (সক্রিয়)';
-        renderGrid(liveRecords);
-      } else if (pin !== null) {
-        alert('ভুল পিন!');
+        showToast("অ্যাডমিন মোড লক করা হয়েছে।", "info");
+      } else {
+        openAdminPinModal('admin');
       }
     }
 
@@ -934,6 +1217,10 @@
     window.addEventListener('click', (e) => {
       if (e.target === verifyModal) verifyModal.classList.add('hidden');
       if (e.target === errorModal) errorModal.classList.add('hidden');
+      const padModal = document.getElementById('padEditModal');
+      const pinModal = document.getElementById('adminPinModal');
+      if (padModal && e.target === padModal) padModal.classList.add('hidden');
+      if (pinModal && e.target === pinModal) pinModal.classList.add('hidden');
     });
 
     // Camera QR Scanner
@@ -969,6 +1256,7 @@
     });
 
     // Initial render and URL query handling
+    applyPadConfig();
     renderGrid(liveRecords);
 
     (async () => {
