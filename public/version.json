@@ -1,12 +1,12 @@
 {
   "appName": "স্মার্ট সমিতি",
   "projectSlug": "smartsomiti",
-  "version": "2.7.2",
-  "buildNumber": 26,
+  "version": "2.7.3",
+  "buildNumber": 27,
   "releaseDate": "2026-11-16",
   "releaseName": "স্মার্ট সমিতি এন্টারপ্রাইজ প্ল্যাটফর্ম",
   "vercelUrl": "https://smartsomiti.vercel.app",
   "minSupportedVersion": "1.0.0",
   "downloadUrl": "https://github.com/sajjadhossan/smartsomiti/releases/latest/download/smartsomiti-latest.apk",
-  "changelogBn": "অফিশিয়াল প্যাড হেডার ব্যানার (pad_header.jpg) ও তথ্যাবলী রিস্টোর, আধুনিক এডমিন পিন ভেরিফিকেশন মডাল (#adminPinModal) ও সরাসরি প্যাড এডিট সিস্টেম (#padEditModal) সংযোজন (v2.7.2)।"
+  "changelogBn": "মাল্টি-সমিতি কোর ও সমিতি প্রোফাইল হাব (#somitiHubScreen) সংযোজন: লগইনের পরপরই পরিচালনাধীন সমিতির প্রোফাইল কার্ড নির্বাচন, 'স্বপ্ন ছোঁয়া ঐক্য সমিতি'তে সরাসরি প্রবেশ, নতুন সমিতি তৈরি (#createSomitiModal) এবং ভেরিফিকেশন পোর্টাল ইন্টারলিঙ্ক (v2.7.3)।"
 }
