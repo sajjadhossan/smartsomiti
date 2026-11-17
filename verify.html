@@ -38,6 +38,7 @@
   </style>
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body class="min-h-screen text-slate-800 pb-16">
 
@@ -368,9 +369,10 @@
             <span>↗</span>
           </a>
 
-          <div class="grid grid-cols-3 gap-2 pt-1">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
             <button type="button" id="mCopyLinkBtn" class="bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold py-2.5 px-2 rounded-xl text-xs border border-amber-200 transition">🔗 লিংক কপি</button>
-            <button type="button" id="mWaShareBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-2 rounded-xl text-xs transition">📲 WhatsApp</button>
+            <button type="button" id="mWaShareBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-2 rounded-xl text-xs transition shadow-sm">📲 WhatsApp ছবি</button>
+            <button type="button" id="mSaveImgBtn" class="bg-teal-700 hover:bg-teal-800 text-white font-bold py-2.5 px-2 rounded-xl text-xs transition shadow-sm">🖼️ ছবি সেভ</button>
             <button type="button" onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 px-2 rounded-xl text-xs transition">🖨️ প্রিন্ট</button>
           </div>
         </div>
@@ -1255,11 +1257,105 @@
       copyText(shareUrl, e.currentTarget);
     });
 
-    document.getElementById('mWaShareBtn').addEventListener('click', () => {
+    // Helper function to capture clean receipt image as Canvas
+    async function captureReceiptCanvas() {
+      const card = document.getElementById('modalCard');
+      const closeBtn = document.getElementById('closeModalBtn');
+      const actionBtns = document.getElementById('modalActionBtns');
+
+      const prevCloseDisp = closeBtn ? closeBtn.style.display : '';
+      const prevActionDisp = actionBtns ? actionBtns.style.display : '';
+      if (closeBtn) closeBtn.style.display = 'none';
+      if (actionBtns) actionBtns.style.display = 'none';
+
+      try {
+        if (typeof html2canvas === 'undefined') {
+          throw new Error('html2canvas লাইব্রেরি লোড হয়নি!');
+        }
+        const canvas = await html2canvas(card, {
+          scale: 2.5,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff',
+          logging: false
+        });
+        return canvas;
+      } finally {
+        if (closeBtn) closeBtn.style.display = prevCloseDisp;
+        if (actionBtns) actionBtns.style.display = prevActionDisp;
+      }
+    }
+
+    // Modal WhatsApp Share with Direct Image File (Web Share API Level 2)
+    document.getElementById('mWaShareBtn').addEventListener('click', async () => {
       if (!activeModalRec) return;
+      const btn = document.getElementById('mWaShareBtn');
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = '⏳ ছবি হচ্ছে...';
+      btn.disabled = true;
+
       const vUrl = `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(activeModalRec.code)}`;
-      const msg = `✅ *স্বপ্ন ছোঁয়া ঐক্য সমিতি — ডিজিটাল রিসিট*\nসদস্য: ${activeModalRec.member}\nরিসিট নং: ${activeModalRec.code}\nপরিমাণ: ${activeModalRec.amount}\nঅনলাইনে যাচাই করুন: ${vUrl}`;
-      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+      const caption = `✅ *স্বপ্ন ছোঁয়া ঐক্য সমিতি — ডিজিটাল রিসিট*\n👤 সদস্য: ${activeModalRec.member}\n🧾 রিসিট নং: ${activeModalRec.code}\n💰 পরিমাণ: ${activeModalRec.amount}\n📅 তারিখ: ${activeModalRec.date}\n🔍 অনলাইনে যাচাই করুন: ${vUrl}`;
+
+      try {
+        const canvas = await captureReceiptCanvas();
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        const fileName = `Receipt_${(activeModalRec.code || 'somiti').replace(/[^a-zA-Z0-9_-]/g, '_')}.png`;
+        const file = new File([blob], fileName, { type: 'image/png' });
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            title: `রিসিট — ${activeModalRec.member}`,
+            text: caption,
+            files: [file]
+          });
+          showToast('✅ রিসিটের ছবি WhatsApp/শেয়ার তালিকায় পাঠানো হয়েছে!', 'success');
+        } else {
+          // Fallback: Auto download PNG and open WhatsApp
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = fileName;
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+
+          showToast('📥 রিসিটের ছবি ডাউনলোড হয়েছে! WhatsApp ওপেন হচ্ছে...', 'info');
+          window.open(`https://wa.me/?text=${encodeURIComponent(caption + '\n\n(ছবিটি ডাউনলোড হয়েছে, WhatsApp-এ সহজে অ্যাটাচ করতে পারবেন)')}`, '_blank');
+        }
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          console.warn('Image share fallback:', err);
+          window.open(`https://wa.me/?text=${encodeURIComponent(caption)}`, '_blank');
+        }
+      } finally {
+        btn.innerHTML = originalHtml;
+        btn.disabled = false;
+      }
+    });
+
+    // Save Image Directly
+    document.getElementById('mSaveImgBtn').addEventListener('click', async () => {
+      if (!activeModalRec) return;
+      const btn = document.getElementById('mSaveImgBtn');
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = '⏳ সেভ হচ্ছে...';
+      btn.disabled = true;
+
+      try {
+        const canvas = await captureReceiptCanvas();
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        const fileName = `Receipt_${(activeModalRec.code || 'somiti').replace(/[^a-zA-Z0-9_-]/g, '_')}.png`;
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = fileName;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+        showToast('✅ রিসিটটি হাই-কোয়ালিটি ছবি হিসেবে সেভ হয়েছে!', 'success');
+      } catch (err) {
+        showToast('ছবি সংরক্ষণে সমস্যা হয়েছে: ' + err.message, 'error');
+      } finally {
+        btn.innerHTML = originalHtml;
+        btn.disabled = false;
+      }
     });
 
     // Modal Closes

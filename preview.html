@@ -18451,8 +18451,33 @@
       return text;
     }
 
-    function shareReceiptWhatsApp() {
-      const text = encodeURIComponent(getReceiptPlainText());
+    async function shareReceiptWhatsApp() {
+      const plainText = getReceiptPlainText();
+      const wrap = document.getElementById("receiptContainerWrap");
+      if (typeof html2canvas !== 'undefined' && wrap) {
+        try {
+          const canvas = await html2canvas(wrap, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#ffffff',
+            logging: false
+          });
+          const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+          const rNo = (activeReceiptData && activeReceiptData.receiptNo) ? activeReceiptData.receiptNo.replace(/[^a-zA-Z0-9_-]/g, '_') : 'Somiti';
+          const file = new File([blob], `Receipt_${rNo}.png`, { type: 'image/png' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              title: `রসিদ — ${activeReceiptData ? activeReceiptData.memberName : ''}`,
+              text: plainText,
+              files: [file]
+            });
+            return;
+          }
+        } catch(e) {
+          console.warn("Direct image share fallback to text:", e);
+        }
+      }
+      const text = encodeURIComponent(plainText);
       window.open(`https://wa.me/?text=${text}`, '_blank');
     }
 
