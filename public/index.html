@@ -3142,8 +3142,8 @@
       <!-- Top Brand Header Bar in Hub -->
       <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; background: white; padding: 16px 20px; border-radius: 20px; box-shadow: 0 4px 20px rgba(15, 157, 88, 0.08); border: 1.5px solid #E2E8F0; margin-bottom: 24px;">
         <div style="display: flex; align-items: center; gap: 12px;">
-          <div style="width: 48px; height: 48px; border-radius: 16px; background: #0F9D58; color: white; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 12px rgba(15, 157, 88, 0.3); border: 2px solid #F59E0B;">
-            🏛️
+          <div style="width: 48px; height: 48px; border-radius: 16px; background: white; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(15, 157, 88, 0.25); border: 2px solid #F59E0B; overflow: hidden; flex-shrink: 0;">
+            <img src="smart_somiti_logo.jpg" alt="স্মার্ট সমিতি প্ল্যাটফর্ম" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.src='logo.jpg';">
           </div>
           <div>
             <div style="display: flex; align-items: center; gap: 8px;">
@@ -14767,15 +14767,21 @@
       dueAmount: "৬০,০০০/- টাকা (৬ জন)",
       active: true,
       verifyUrl: "verify.html",
-      logo: "logo.jpg"
+      logo: "swapno_chowa_logo.jpg"
     };
 
     function getRegisteredSocieties() {
       const stored = localStorage.getItem(USER_SOCIETIES_KEY);
       if (stored) {
         try {
-          const list = JSON.parse(stored);
+          let list = JSON.parse(stored);
           if (Array.isArray(list) && list.length > 0) {
+            list = list.map(s => {
+              if (s.id === 'swapnochowa' || s.name === 'স্বপ্ন ছোঁয়া ঐক্য সমিতি' || s.name === 'স্বপ্ন ছোঁয়া ঐক্য সমিতি') {
+                return { ...s, logo: 'swapno_chowa_logo.jpg' };
+              }
+              return s;
+            });
             if (!list.some(s => s.id === 'swapnochowa' || s.name === 'স্বপ্ন ছোঁয়া ঐক্য সমিতি')) {
               list.unshift(DEFAULT_PRIMARY_SOMITI);
             }
