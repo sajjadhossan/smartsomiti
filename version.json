@@ -1,12 +1,12 @@
 {
   "appName": "স্মার্ট সমিতি",
   "projectSlug": "smartsomiti",
-  "version": "2.7.9",
-  "buildNumber": 33,
+  "version": "2.8.0",
+  "buildNumber": 34,
   "releaseDate": "2026-11-17",
   "releaseName": "স্মার্ট সমিতি এন্টারপ্রাইজ প্ল্যাটফর্ম",
   "vercelUrl": "https://smartsomiti.vercel.app",
   "minSupportedVersion": "1.0.0",
   "downloadUrl": "https://github.com/sajjadhossan/smartsomiti/releases/latest/download/smartsomiti-latest.apk",
-  "changelogBn": "ভেরিফাই পোর্টাল ও মূল অ্যাপে মানি রিসিট সরাসরি হাই-কোয়ালিটি ছবি (Image File) আকারে WhatsApp-এ শেয়ার এবং ছবি সেভ করার নতুন ফিচার সংযোজন (v2.7.9)।"
+  "changelogBn": "ভেরিফিকেশন পোর্টাল ও মূল অ্যাপের মধ্যে সরাসরি ফায়ারবেস ফায়ারস্টোর (Firebase Firestore) লাইভ ক্লাউড ডাটাবেজ ইন্টিগ্রেশন সম্পন্ন: ২২ জন আদায়, ৫ জন বকেয়া ও রিয়েল-টাইম ডাটা সিঙ্ক (v2.8.0)।"
 }

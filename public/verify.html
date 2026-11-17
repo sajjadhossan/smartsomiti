@@ -39,6 +39,8 @@
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body class="min-h-screen text-slate-800 pb-16">
 
@@ -707,8 +709,9 @@
       {"code": "RCT-19", "serial_code": "S-06", "alt_code": "সছঐস/রিসিট/২০২৬-১৯", "member": "মোঃ নাজমুল ইসলাম", "serial": "০৬", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Western Union Direct to Bank (MTCN: 376-060-3297)", "sender": "MOHAMMAD AOULAD HOSSAIN (যৌথ ৩০,০০০/-)", "slip_url": "https://drive.google.com/file/d/1C2Wp0qfddtNCzLWHlkfghsC-FblupxhS/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/12lG6BdMm19Ta7wvMtaTp0KbuDsIPNqCM/view?usp=drivesdk"},
       {"code": "RCT-20", "serial_code": "S-10", "alt_code": "সছঐস/রিসিট/২০২৬-২০", "member": "জুয়েল শিকদার", "serial": "১০", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Western Union Direct to Bank (MTCN: 376-060-3297)", "sender": "MOHAMMAD AOULAD HOSSAIN (যৌথ ৩০,০০০/-)", "slip_url": "https://drive.google.com/file/d/1C2Wp0qfddtNCzLWHlkfghsC-FblupxhS/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/12lG6BdMm19Ta7wvMtaTp0KbuDsIPNqCM/view?usp=drivesdk"},
       {"code": "RCT-21", "serial_code": "S-11", "alt_code": "সছঐস/রিসিট/২০২৬-২১", "member": "চঞ্চল হাওলাদার", "serial": "১১", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Western Union Direct to Bank (MTCN: 376-060-3297)", "sender": "MOHAMMAD AOULAD HOSSAIN (যৌথ ৩০,০০০/-)", "slip_url": "https://drive.google.com/file/d/1C2Wp0qfddtNCzLWHlkfghsC-FblupxhS/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/12lG6BdMm19Ta7wvMtaTp0KbuDsIPNqCM/view?usp=drivesdk"},
-      {"code": "PAID-LIST", "alt_code": "স্মারক-০১/২০২৬", "member": "মাসিক সঞ্চয় ও কিস্তি জমার বিবরণী তালিকা (২১ জন)", "serial": "অফিসিয়াল তালিকা", "date": "১৬ নভেম্বর ২০২৬", "amount": "২,১০,০০০/- টাকা (২১ জন)", "method": "CITY BANK PLC (REKABI BAZAR) — A/C: 2305158045001", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1L2zU3q7lr0_kiVKFSu35tOFFanaTBry-/view?usp=drivesdk"},
-      {"code": "DUE-LIST", "alt_code": "স্মারক-০২/২০২৬", "member": "বকেয়া মাসিক কিস্তি জমার তালিকা ও জরুরি বিজ্ঞপ্তি (৬ জন)", "serial": "অফিসিয়াল বিজ্ঞপ্তি", "date": "১৬ নভেম্বর ২০২৬", "amount": "বকেয়া: ৬০,০০০/- টাকা (৬ জন)", "method": "সিটি ব্যাংক (২৩০৫১৫৮০৪৫০০১) / বিকাশ: ০১৮৮১২১০৪৪৪", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1BSItXlgreVUKVGHIIkma56-AEZyVtnKh/view?usp=drivesdk"}
+      {"code": "RCT-22", "serial_code": "S-20", "alt_code": "সছঐস/রিসিট/২০২৬-২২", "member": "মেহেদী হাসান", "serial": "২০", "date": "১৬ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch)", "sender": "MEHEDI HASAN (মত্তগ্রাম, শ্রীনগর)", "slip_url": "https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-", "pad_url": ""},
+      {"code": "PAID-LIST", "alt_code": "স্মারক-০১/২০২৬", "member": "মাসিক সঞ্চয় ও কিস্তি জমার বিবরণী তালিকা (২২ জন)", "serial": "অফিসিয়াল তালিকা", "date": "১৬ নভেম্বর ২০২৬", "amount": "২,২০,০০০/- টাকা (২২ জন)", "method": "CITY BANK PLC (REKABI BAZAR) — A/C: 2305158045001", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1L2zU3q7lr0_kiVKFSu35tOFFanaTBry-/view?usp=drivesdk"},
+      {"code": "DUE-LIST", "alt_code": "স্মারক-০২/২০২৬", "member": "বকেয়া মাসিক কিস্তি জমার তালিকা ও জরুরি বিজ্ঞপ্তি (৫ জন)", "serial": "অফিসিয়াল বিজ্ঞপ্তি", "date": "১৬ নভেম্বর ২০২৬", "amount": "বকেয়া: ৫০,০০০/- টাকা (৫ জন)", "method": "সিটি ব্যাংক (২৩০৫১৫৮০৪৫০০১) / বিকাশ: ০১৮৮১২১০৪৪৪", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1BSItXlgreVUKVGHIIkma56-AEZyVtnKh/view?usp=drivesdk"}
     ];
 
     const recordsGrid = document.getElementById('recordsGrid');
@@ -1402,9 +1405,170 @@
       if (qrScanner) qrScanner.stop().catch(() => {});
     });
 
+    // ================= REAL-TIME FIRESTORE DATABASE SYNC =================
+    const firebaseConfig = {
+      apiKey: "AIzaSyBaOVbmjGZi-7zyPGIc0LmP4Ou4_hW4shA",
+      authDomain: "somitiapp-1f0a2.firebaseapp.com",
+      projectId: "somitiapp-1f0a2",
+      storageBucket: "somitiapp-1f0a2.firebasestorage.app",
+      messagingSenderId: "122717224216",
+      appId: "1:122717224216:web:preview"
+    };
+
+    if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+      try {
+        firebase.initializeApp(firebaseConfig);
+      } catch(e) {
+        console.warn("Firebase init notice:", e);
+      }
+    }
+    const db = (typeof firebase !== 'undefined' && firebase.firestore) ? firebase.firestore() : null;
+
+    let firestoreMembers = [];
+    let firestoreDeposits = [];
+
+    function syncFromFirestoreData() {
+      if (!firestoreMembers.length && !firestoreDeposits.length) return;
+
+      const delKey = 'somiti_deleted_receipt_codes';
+      let deletedCodes = [];
+      try { deletedCodes = JSON.parse(localStorage.getItem(delKey) || '[]'); } catch(_) {}
+
+      dueMembers = [];
+      allMembersMap = {};
+      let totalFundAmount = 0;
+      let paidMembersCount = 0;
+
+      firestoreMembers.forEach(m => {
+        const memNum = m.memberNumber || m.serial || '0';
+        const name = m.name;
+        const totalDep = Number(m.totalDeposit || 0);
+        allMembersMap[name] = {
+          serial: Number(memNum),
+          name: name,
+          paidTotal: totalDep,
+          paidMonths: totalDep > 0 ? 1 : 0,
+          dueTotal: totalDep <= 0 ? 10000 : 0,
+          history: []
+        };
+        memberTotals[name] = totalDep;
+        memberMonths[name] = totalDep > 0 ? 1 : 0;
+
+        if (totalDep > 0 || m.status === 'paid') {
+          paidMembersCount++;
+          totalFundAmount += (totalDep || 10000);
+        } else {
+          dueMembers.push({ serial: memNum, name: name });
+        }
+      });
+
+      const dueCount = dueMembers.length;
+      const dueAmount = dueCount * 10000;
+
+      // Build live receipt records from Firestore deposits
+      let newLiveRecords = [];
+
+      firestoreDeposits.forEach((d, idx) => {
+        const rNo = d.receiptNo || (`RCT-${String(idx + 1).padStart(2, '0')}`);
+        if (deletedCodes.includes(rNo)) return;
+
+        const memNum = d.memberNumber || '';
+        const sCode = memNum ? ('S-' + String(memNum).padStart(2, '0')) : '';
+        const dateVal = d.date?.toDate ? d.date.toDate().toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' }) : (d.date || '১৫ নভেম্বর ২০২৬');
+        const amt = Number(d.amount || 10000);
+
+        newLiveRecords.push({
+          code: rNo,
+          serial_code: sCode,
+          alt_code: `সছঐস/রিসিট/২০২৬-${rNo.replace(/^RCT-/, '')}`,
+          member: d.memberName || '',
+          serial: toBn(memNum),
+          date: dateVal,
+          amount: `${formatBnTaka(amt)}/- টাকা`,
+          method: d.method || 'City Bank PLC',
+          sender: d.depositor || d.memberName || 'নিজ',
+          slip_url: d.slipUrl || 'https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-',
+          pad_url: d.padUrl || ''
+        });
+      });
+
+      // If Firestore deposits is empty but default RECORDS exist, use base
+      if (newLiveRecords.length === 0) {
+        newLiveRecords = [...RECORDS.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-') && !deletedCodes.includes(r.code))];
+      }
+
+      // Add Official Paid & Due Notice Cards
+      newLiveRecords.push({
+        code: 'PAID-LIST',
+        alt_code: 'স্মারক-০১/২০২৬',
+        member: `মাসিক সঞ্চয় ও কিস্তি জমার বিবরণী তালিকা (${toBn(paidMembersCount)} জন)`,
+        serial: 'অফিসিয়াল তালিকা',
+        date: '১৬ নভেম্বর ২০২৬',
+        amount: `${formatBnTaka(totalFundAmount)}/- টাকা (${toBn(paidMembersCount)} জন)`,
+        method: 'CITY BANK PLC (REKABI BAZAR) — A/C: 2305158045001',
+        sender: 'প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)',
+        slip_url: 'https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit',
+        pad_url: 'https://drive.google.com/file/d/1L2zU3q7lr0_kiVKFSu35tOFFanaTBry-/view?usp=drivesdk'
+      });
+
+      newLiveRecords.push({
+        code: 'DUE-LIST',
+        alt_code: 'স্মারক-০২/২০২৬',
+        member: `বকেয়া মাসিক কিস্তি জমার তালিকা ও জরুরি বিজ্ঞপ্তি (${toBn(dueCount)} জন)`,
+        serial: 'অফিসিয়াল বিজ্ঞপ্তি',
+        date: '১৬ নভেম্বর ২০২৬',
+        amount: `বকেয়া: ${formatBnTaka(dueAmount)}/- টাকা (${toBn(dueCount)} জন)`,
+        method: 'সিটি ব্যাংক (২৩০৫১৫৮০৪৫০০১) / বিকাশ: ০১৮৮১২১০৪৪৪',
+        sender: 'প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)',
+        slip_url: 'https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit',
+        pad_url: 'https://drive.google.com/file/d/1BSItXlgreVUKVGHIIkma56-AEZyVtnKh/view?usp=drivesdk'
+      });
+
+      liveRecords = newLiveRecords;
+
+      // Update KPI Badges
+      const kpiPaid = document.getElementById('kpiPaidCount');
+      const kpiDue = document.getElementById('kpiDueCount');
+      const kpiFund = document.getElementById('kpiTotalFund');
+      if (kpiPaid) kpiPaid.innerText = `${toBn(paidMembersCount)} টি`;
+      if (kpiDue) kpiDue.innerText = `${toBn(dueCount)} জন`;
+      if (kpiFund) kpiFund.innerText = `৳ ${formatBnTaka(totalFundAmount)}/-`;
+
+      renderGrid(liveRecords);
+      renderBreakdowns();
+    }
+
+    function initFirestoreVerifySync() {
+      if (!db) return;
+      try {
+        const somitiRef = db.collection("somitis").doc("swapnochowa");
+
+        somitiRef.collection("members").orderBy("memberNumber")
+          .onSnapshot((snapshot) => {
+            if (!snapshot.empty) {
+              firestoreMembers = [];
+              snapshot.forEach(doc => firestoreMembers.push({ id: doc.id, ...doc.data() }));
+              syncFromFirestoreData();
+            }
+          }, (err) => console.warn("Firestore members listener:", err));
+
+        somitiRef.collection("deposits")
+          .onSnapshot((snapshot) => {
+            if (!snapshot.empty) {
+              firestoreDeposits = [];
+              snapshot.forEach(doc => firestoreDeposits.push({ id: doc.id, ...doc.data() }));
+              syncFromFirestoreData();
+            }
+          }, (err) => console.warn("Firestore deposits listener:", err));
+      } catch(e) {
+        console.warn("Firestore init notice:", e);
+      }
+    }
+
     // Initial render and URL query handling
     applyPadConfig();
     renderGrid(liveRecords);
+    initFirestoreVerifySync();
 
     (async () => {
       const params = new URLSearchParams(window.location.search);
