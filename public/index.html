@@ -3237,6 +3237,29 @@
           </div>
         </div>
 
+        <div style="background: #F8FAFC; border: 1.5px dashed #0F9D58; border-radius: 12px; padding: 12px 14px;">
+          <label style="font-size: 12px; font-weight: 700; color: #166534; display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <span style="display: flex; align-items: center; gap: 6px;">🖼️ সমিতির প্রোফাইল পিকচার / লোগো</span>
+            <span style="font-size: 11px; color: #64748B; font-weight: normal;">(ঐচ্ছিক • গ্যালারি থেকে ছবি বা লোগো নির্বাচন)</span>
+          </label>
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div id="newSomitiLogoPreviewBox" style="width: 56px; height: 56px; border-radius: 16px; background: white; border: 2px solid #F59E0B; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); flex-shrink: 0;">
+              <span id="newSomitiLogoPlaceholder" style="font-size: 26px;">🏛️</span>
+              <img id="newSomitiLogoPreviewImg" src="" alt="লোগো প্রিভিউ" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div style="flex: 1;">
+              <input type="file" id="newSomitiLogoInput" accept="image/*" onchange="previewNewSomitiLogo(this)" style="display: none;">
+              <button type="button" onclick="document.getElementById('newSomitiLogoInput').click()" style="background: white; border: 1.5px solid #0F9D58; color: #0F9D58; padding: 7px 14px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                <span>📁</span> <span>ছবি / লোগো আপলোড করুন</span>
+              </button>
+              <button type="button" id="btnRemoveNewSomitiLogo" onclick="removeNewSomitiLogo()" style="display: none; background: #FEF2F2; border: 1px solid #FECACA; color: #DC2626; padding: 7px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; margin-left: 6px;">
+                ✕ মুছুন
+              </button>
+              <p style="font-size: 10.5px; color: #64748B; margin: 4px 0 0 0;">PNG, JPG বা WebP ফরম্যাট সমর্থিত</p>
+            </div>
+          </div>
+        </div>
+
         <div style="display: flex; gap: 10px; margin-top: 8px;">
           <button type="button" onclick="closeCreateSomitiModal()" style="flex: 1; padding: 11px; background: #F1F5F9; color: #475569; border: 1px solid #CBD5E1; border-radius: 12px; font-size: 12.5px; font-weight: 700; cursor: pointer;">
             বাতিল
@@ -14943,18 +14966,62 @@
       showSomitiHubScreen(isAdmin);
     }
 
+    let currentNewSomitiLogoBase64 = '';
+
+    function previewNewSomitiLogo(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        if (file.size > 2 * 1024 * 1024) {
+          alert("ছবির সাইজ ২MB এর কম হতে হবে!");
+          input.value = '';
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          currentNewSomitiLogoBase64 = e.target.result;
+          const previewImg = document.getElementById('newSomitiLogoPreviewImg');
+          const placeholder = document.getElementById('newSomitiLogoPlaceholder');
+          const removeBtn = document.getElementById('btnRemoveNewSomitiLogo');
+          if (previewImg) {
+            previewImg.src = currentNewSomitiLogoBase64;
+            previewImg.style.display = 'block';
+          }
+          if (placeholder) placeholder.style.display = 'none';
+          if (removeBtn) removeBtn.style.display = 'inline-block';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function removeNewSomitiLogo() {
+      currentNewSomitiLogoBase64 = '';
+      const input = document.getElementById('newSomitiLogoInput');
+      if (input) input.value = '';
+      const previewImg = document.getElementById('newSomitiLogoPreviewImg');
+      const placeholder = document.getElementById('newSomitiLogoPlaceholder');
+      const removeBtn = document.getElementById('btnRemoveNewSomitiLogo');
+      if (previewImg) {
+        previewImg.src = '';
+        previewImg.style.display = 'none';
+      }
+      if (placeholder) placeholder.style.display = 'block';
+      if (removeBtn) removeBtn.style.display = 'none';
+    }
+
     function openCreateSomitiModal() {
       const modal = document.getElementById('createSomitiModal');
       if (modal) {
         modal.style.display = 'flex';
         const form = document.getElementById('createSomitiForm');
         if (form) form.reset();
+        removeNewSomitiLogo();
       }
     }
 
     function closeCreateSomitiModal() {
       const modal = document.getElementById('createSomitiModal');
       if (modal) modal.style.display = 'none';
+      removeNewSomitiLogo();
     }
 
     function handleCreateSomitiSubmit(e) {
@@ -14989,7 +15056,7 @@
         dueAmount: "০/- টাকা",
         active: false,
         verifyUrl: "verify.html",
-        logo: "logo.jpg"
+        logo: currentNewSomitiLogoBase64 || "logo.jpg"
       };
 
       const societies = getRegisteredSocieties();

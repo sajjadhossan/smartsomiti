@@ -1,12 +1,12 @@
 {
   "appName": "স্মার্ট সমিতি",
   "projectSlug": "smartsomiti",
-  "version": "2.7.4",
-  "buildNumber": 28,
+  "version": "2.7.5",
+  "buildNumber": 29,
   "releaseDate": "2026-11-17",
   "releaseName": "স্মার্ট সমিতি এন্টারপ্রাইজ প্ল্যাটফর্ম",
   "vercelUrl": "https://smartsomiti.vercel.app",
   "minSupportedVersion": "1.0.0",
   "downloadUrl": "https://github.com/sajjadhossan/smartsomiti/releases/latest/download/smartsomiti-latest.apk",
-  "changelogBn": "অফিসিয়াল লোগো বিন্যাস আপডেট: হাব স্ক্রিনের হেডারে মূল স্মার্ট সমিতি প্ল্যাটফর্ম ক্রেস্ট এমব্লেম (smart_somiti_logo.jpg) এবং সমিতি কার্ডে স্বপ্ন ছোঁয়া ঐক্য সমিতির নিজস্ব লোগো (swapno_chowa_logo.jpg) সুবিন্যস্তকরণ (v2.7.4)।"
+  "changelogBn": "নতুন সমিতি যুক্তকরণে প্রোফাইল পিকচার/লোগো আপলোড সংযোজন: গ্যালারি থেকে নিজস্ব লোগো নির্বাচন, তাৎক্ষণিক লাইভ প্রিভিউ, রিসেট এবং প্রোফাইল কার্ডে সুবিন্যস্ত প্রদর্শন (v2.7.5)।"
 }
