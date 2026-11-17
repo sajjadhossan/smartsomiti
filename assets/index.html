@@ -11428,12 +11428,15 @@
         </button>
       </div>
 
-      <div style="margin-top: 6px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-        <button onclick="verifyCurrentReceiptOnline()" style="background: #1E3A8A; color: white; border: none; padding: 8px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
-          <span>🔍 রসিদের সত্যতা যাচাই</span>
+      <div style="margin-top: 6px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
+        <button onclick="verifyCurrentReceiptOnline()" style="background: #1E3A8A; color: white; border: none; padding: 8px 4px; border-radius: 8px; font-size: 10.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 3px;">
+          <span>🔍 যাচাই</span>
         </button>
-        <button type="button" onclick="openVoidReceiptModal()" style="background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; padding: 8px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;">
-          <span>🚫 রসিদ বাতিল (Void)</span>
+        <button type="button" onclick="openVoidReceiptModal()" style="background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; padding: 8px 4px; border-radius: 8px; font-size: 10.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 3px;">
+          <span>🚫 বাতিল</span>
+        </button>
+        <button type="button" onclick="deleteActiveReceiptPermanently()" style="background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; padding: 8px 4px; border-radius: 8px; font-size: 10.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 3px;" title="রসিদ চিরতরে মুছুন ও ভেরিফাই পোর্টাল থেকে সরান">
+          <span>🗑️ ডিলিট</span>
         </button>
       </div>
       <button class="btn btn-outline" style="margin-top: 8px; padding: 9px;" onclick="closeReceiptModal()">
@@ -15522,6 +15525,36 @@
         const attachedSlip = currentDepositSlipDataUrl;
         clearDepositSlip();
 
+        // Two-way sync: Add newly created receipt to verify.html storage so it appears immediately on verification portal
+        try {
+          const customKey = 'somiti_custom_verified_records';
+          let customList = JSON.parse(localStorage.getItem(customKey) || '[]');
+          // Remove from deleted list if it was deleted previously
+          const delKey = 'somiti_deleted_receipt_codes';
+          let delList = JSON.parse(localStorage.getItem(delKey) || '[]');
+          delList = delList.filter(c => c !== receiptNo);
+          localStorage.setItem(delKey, JSON.stringify(delList));
+
+          const newVerifyItem = {
+            code: receiptNo,
+            serial_code: memberNumber ? ('S-' + String(memberNumber).padStart(2, '0')) : '',
+            alt_code: `সছঐস/রিসিট/২০২৬-${receiptNo.replace(/\D/g, '').substring(0, 4) || '৯৯'}`,
+            member: memberName,
+            serial: toBn(memberNumber || '০১'),
+            date: new Date().toLocaleDateString('bn-BD', { day: 'numeric', month: 'long', year: 'numeric' }),
+            amount: `${formatCurrencyBD(amount)}/- টাকা`,
+            method: bankSlipNo ? `সিটি ব্যাংক (স্লিপ নং: ${bankSlipNo})` : (type || 'ক্যাশ ডিপোজিট'),
+            sender: (depositorType === 'representative' && depositorName) ? `${depositorName} (${memberName}-এর পক্ষে)` : `${memberName} (সদস্য নিজে)`,
+            slip_url: attachedSlip || 'https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-',
+            pad_url: ''
+          };
+          customList = customList.filter(r => r.code !== receiptNo);
+          customList.unshift(newVerifyItem);
+          localStorage.setItem(customKey, JSON.stringify(customList));
+        } catch(syncErr) {
+          console.warn("Verify portal sync error:", syncErr);
+        }
+
         // Show Digital Receipt Modal
         showReceiptModal({
           id: depositRef.id,
@@ -16251,9 +16284,14 @@
                 </div>
               </div>
             </div>
-            <div style="text-align:right;">
-              <div style="font-weight:700; color:${d.isVoid ? '#DC2626; text-decoration: line-through;' : 'var(--primary);'} font-size:16px;">৳${(d.amount || 0).toLocaleString()}</div>
-              <div style="font-size:10px; color:#16A34A; margin-top:3px;">রসিদ দেখুন ↗</div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="text-align:right;">
+                <div style="font-weight:700; color:${d.isVoid ? '#DC2626; text-decoration: line-through;' : 'var(--primary);'} font-size:16px;">৳${(d.amount || 0).toLocaleString()}</div>
+                <div style="font-size:10px; color:#16A34A; margin-top:3px;">রসিদ দেখুন ↗</div>
+              </div>
+              <button type="button" onclick="event.stopPropagation(); deleteDepositById('${d.id}', '${d.receiptNo || ''}', '${d.memberName || ''}', ${d.amount || 0}, '${d.memberId || ''}')" style="background: #FEF2F2; border: 1px solid #FECACA; color: #DC2626; border-radius: 8px; padding: 6px 8px; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center;" title="রসিদ মুছুন">
+                🗑️
+              </button>
             </div>
           </div>
         `}).join("");
@@ -18506,6 +18544,108 @@
         alert("🚫 রসিদটি সফলভাবে বাতিল (VOID) হিসেবে চিহ্নিত করা হয়েছে!");
       } catch (e) {
         alert("রসিদ বাতিল ত্রুটি: " + e.message);
+      }
+    }
+
+    async function deleteActiveReceiptPermanently() {
+      if (!activeReceiptData || !activeReceiptData.receiptNo) {
+        alert("কোনো রসিদ নির্বাচন করা নেই");
+        return;
+      }
+      const rctNo = activeReceiptData.receiptNo;
+      const memName = activeReceiptData.memberName || "";
+      const amt = activeReceiptData.amount || 0;
+      const memId = activeReceiptData.memberId;
+
+      if (!confirm(`⚠️ আপনি কি নিশ্চিতভাবে রসিদ নং "${rctNo}" (${memName} - ৳${amt}) চিরতরে ডিলিট করতে চান?\n\nএটি করলে মূল অ্যাপ এবং অনলাইন ভেরিফিকেশন পোর্টাল (verify.html) উভয় স্থান থেকেই এটি পুরোপুরি মুছে যাবে!`)) {
+        return;
+      }
+
+      try {
+        // 1. Remove from Firestore if doc id exists
+        if (activeReceiptData.id && getSomitiDocRef()) {
+          try {
+            await getSomitiDocRef().collection("deposits").doc(activeReceiptData.id).delete();
+            if (memId && amt > 0) {
+              const memberRef = getSomitiDocRef().collection("members").doc(memId);
+              await memberRef.update({
+                totalDeposit: firebase.firestore.FieldValue.increment(-amt)
+              }).catch(() => {});
+            }
+          } catch(fsErr) {
+            console.warn("Firestore delete notice:", fsErr);
+          }
+        }
+
+        // 2. Remove from local depositsData
+        depositsData = depositsData.filter(d => d.receiptNo !== rctNo && d.id !== activeReceiptData.id);
+
+        // 3. Sync deletion to verify.html custom records (remove if it was added)
+        try {
+          const customKey = 'somiti_custom_verified_records';
+          let customList = JSON.parse(localStorage.getItem(customKey) || '[]');
+          customList = customList.filter(r => r.code !== rctNo && r.alt_code !== rctNo);
+          localStorage.setItem(customKey, JSON.stringify(customList));
+
+          // Also track in deleted list so verify.html ignores it even if present in static list
+          const delKey = 'somiti_deleted_receipt_codes';
+          let delList = JSON.parse(localStorage.getItem(delKey) || '[]');
+          if (!delList.includes(rctNo)) delList.push(rctNo);
+          localStorage.setItem(delKey, JSON.stringify(delList));
+        } catch(stErr) {
+          console.warn("Storage sync notice:", stErr);
+        }
+
+        closeReceiptModal();
+        renderDeposits();
+        updateSummary();
+        alert(`✅ রসিদ নং "${rctNo}" সফলভাবে ডিলিট করা হয়েছে! ভেরিফিকেশন পোর্টালেও এটি আর প্রদর্শিত হবে না।`);
+      } catch(err) {
+        alert("ডিলিট করতে সমস্যা হয়েছে: " + err.message);
+      }
+    }
+
+    async function deleteDepositById(id, receiptNo, memberName, amount, memberId) {
+      const rctNo = receiptNo || ("RCT-" + (id ? id.substring(0, 6).toUpperCase() : ''));
+      if (!confirm(`⚠️ আপনি কি নিশ্চিতভাবে "${memberName}"-এর রসিদ নং "${rctNo}" (৳${amount}) চিরতরে ডিলিট করতে চান?\n\nএটি করলে মূল অ্যাপ এবং অনলাইন ভেরিফিকেশন পোর্টাল উভয় স্থান থেকেই এটি পুরোপুরি মুছে যাবে!`)) {
+        return;
+      }
+      try {
+        if (id && getSomitiDocRef()) {
+          try {
+            await getSomitiDocRef().collection("deposits").doc(id).delete();
+            if (memberId && amount > 0) {
+              const memberRef = getSomitiDocRef().collection("members").doc(memberId);
+              await memberRef.update({
+                totalDeposit: firebase.firestore.FieldValue.increment(-amount)
+              }).catch(() => {});
+            }
+          } catch(fsErr) {
+            console.warn("Firestore delete notice:", fsErr);
+          }
+        }
+
+        depositsData = depositsData.filter(d => d.id !== id && d.receiptNo !== rctNo);
+
+        try {
+          const customKey = 'somiti_custom_verified_records';
+          let customList = JSON.parse(localStorage.getItem(customKey) || '[]');
+          customList = customList.filter(r => r.code !== rctNo && r.alt_code !== rctNo);
+          localStorage.setItem(customKey, JSON.stringify(customList));
+
+          const delKey = 'somiti_deleted_receipt_codes';
+          let delList = JSON.parse(localStorage.getItem(delKey) || '[]');
+          if (rctNo && !delList.includes(rctNo)) delList.push(rctNo);
+          localStorage.setItem(delKey, JSON.stringify(delList));
+        } catch(stErr) {
+          console.warn("Storage sync notice:", stErr);
+        }
+
+        renderDeposits();
+        updateSummary();
+        alert(`✅ রসিদ নং "${rctNo}" সফলভাবে মুছে ফেলা হয়েছে!`);
+      } catch(err) {
+        alert("ডিলিট করতে সমস্যা: " + err.message);
       }
     }
 

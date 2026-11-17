@@ -764,7 +764,31 @@
       }
     }
 
-    let liveRecords = [...RECORDS];
+    function getCombinedLiveRecords() {
+      const customKey = 'somiti_custom_verified_records';
+      const delKey = 'somiti_deleted_receipt_codes';
+      let deletedCodes = [];
+      let customRecords = [];
+      try {
+        deletedCodes = JSON.parse(localStorage.getItem(delKey) || '[]');
+        customRecords = JSON.parse(localStorage.getItem(customKey) || '[]');
+      } catch(_) {}
+
+      // Filter out deleted codes from default static RECORDS
+      let base = RECORDS.filter(r => !deletedCodes.includes(r.code) && !deletedCodes.includes(r.alt_code));
+
+      // Append custom records that are not deleted
+      customRecords.forEach(c => {
+        if (!deletedCodes.includes(c.code) && !deletedCodes.includes(c.alt_code)) {
+          if (!base.some(b => b.code === c.code)) {
+            base.unshift(c);
+          }
+        }
+      });
+      return base;
+    }
+
+    let liveRecords = getCombinedLiveRecords();
     let currentFilter = 'paid';
     let dueMembers = [];
     let allMembersMap = {};
@@ -1028,23 +1052,30 @@
             const slipUrl = urlMatch ? urlMatch[0] : 'https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-';
 
             if (tIdx === 0) {
+              const delKey = 'somiti_deleted_receipt_codes';
+              let deletedCodes = [];
+              try { deletedCodes = JSON.parse(localStorage.getItem(delKey) || '[]'); } catch(_) {}
+
               const existing = liveRecords.find(rec => rec.member === name);
               if (!existing) {
                 const nextNum = liveRecords.filter(rec => rec.code.startsWith('RCT-')).length + 1;
                 const codeNum = String(nextNum).padStart(2, '0');
-                liveRecords.push({
-                  code: `RCT-${codeNum}`,
-                  serial_code: sCode,
-                  alt_code: `সছঐস/রিসিট/২০২৬-${codeNum}`,
-                  member: name,
-                  serial: toBn(serial),
-                  date: dateVal,
-                  amount: `${formatBnTaka(amount)}/- টাকা`,
-                  method: bank,
-                  sender: depositor,
-                  slip_url: slipUrl,
-                  pad_url: ''
-                });
+                const candCode = `RCT-${codeNum}`;
+                if (!deletedCodes.includes(candCode) && !deletedCodes.includes(sCode) && !deletedCodes.includes(name)) {
+                  liveRecords.push({
+                    code: candCode,
+                    serial_code: sCode,
+                    alt_code: `সছঐস/রিসিট/২০২৬-${codeNum}`,
+                    member: name,
+                    serial: toBn(serial),
+                    date: dateVal,
+                    amount: `${formatBnTaka(amount)}/- টাকা`,
+                    method: bank,
+                    sender: depositor,
+                    slip_url: slipUrl,
+                    pad_url: ''
+                  });
+                }
               } else {
                 existing.serial_code = sCode;
                 if (urlMatch && urlMatch[0]) existing.slip_url = urlMatch[0];
