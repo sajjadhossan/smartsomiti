@@ -1,12 +1,12 @@
 {
   "appName": "স্মার্ট সমিতি",
   "projectSlug": "smartsomiti",
-  "version": "2.7.7",
-  "buildNumber": 31,
+  "version": "2.7.8",
+  "buildNumber": 32,
   "releaseDate": "2026-11-17",
   "releaseName": "স্মার্ট সমিতি এন্টারপ্রাইজ প্ল্যাটফর্ম",
   "vercelUrl": "https://smartsomiti.vercel.app",
   "minSupportedVersion": "1.0.0",
   "downloadUrl": "https://github.com/sajjadhossan/smartsomiti/releases/latest/download/smartsomiti-latest.apk",
-  "changelogBn": "স্বপ্ন ছোঁয়া ঐক্য সমিতি ও ভেরিফিকেশন পোর্টালের (verify.html) মধ্যে দ্বিমুখী লাইভ সংযুক্তি: রসিদ যুক্ত হলে ভেরিফাই পোর্টালে স্বয়ংক্রিয় সংযোজন এবং মূল অ্যাপে ডিলিট করলে ভেরিফাই পোর্টাল থেকেও স্থায়ীভাবে অপসারণ (v2.7.7)।"
+  "changelogBn": "অনলাইন ভেরিফিকেশন পোর্টালে (verify.html) মানি রিসিটের ভেরিফাইড ব্যানারের শীর্ষে স্বপ্ন ছোঁয়া ঐক্য সমিতির অফিশিয়াল প্যাড হেডার সংযোজন (v2.7.8)।"
 }
