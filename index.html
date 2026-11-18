@@ -3360,6 +3360,99 @@
     </div>
   </div>
 
+  <!-- ================= EDIT SOMITI PROFILE MODAL ================= -->
+  <div id="editSomitiModal" class="modal-overlay" style="display: none; z-index: 2550; align-items: center; justify-content: center; padding: 16px; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(5px);" onclick="if(event.target === this) closeEditSomitiModal()">
+    <div class="modal-box" style="max-width: 540px; width: 100%; border-radius: 20px; box-shadow: 0 25px 60px rgba(0,0,0,0.3); background: white; border: 1.5px solid #CBD5E1; overflow: hidden; padding: 22px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid #E2E8F0; padding-bottom: 12px; margin-bottom: 16px;">
+        <h3 style="font-size: 16.5px; font-weight: 800; color: #0F172A; display: flex; align-items: center; gap: 8px; margin: 0;">
+          <span>✏️</span> <span>সমিতির প্রোফাইল সম্পাদনা করুন</span>
+        </h3>
+        <button type="button" onclick="closeEditSomitiModal()" style="background: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 50%; width: 32px; height: 32px; font-size: 15px; font-weight: bold; color: #64748B; cursor: pointer; display: flex; align-items: center; justify-content: center;">✕</button>
+      </div>
+
+      <p style="font-size: 12px; color: #64748B; margin-bottom: 14px; line-height: 1.4;">
+        সমিতির নাম, লোগো, কোড, ঠিকানা ও আর্থিক হিসাব সংক্রান্ত তথ্য সংশোধন করে সংরক্ষণ করুন।
+      </p>
+
+      <form id="editSomitiForm" onsubmit="handleEditSomitiSubmit(event)" style="display: flex; flex-direction: column; gap: 12px; max-height: 75vh; overflow-y: auto; padding-right: 4px;">
+        <input type="hidden" id="editSomitiId">
+
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">🏛️ সমিতির নাম (বাংলা) *</label>
+          <input type="text" id="editSomitiName" required placeholder="যেমন: স্বপ্ন ছোঁয়া ঐক্য সমিতি" style="width: 100%; padding: 10px 12px; border-radius: 10px; border: 1.5px solid #CBD5E1; font-size: 13px; outline: none; box-sizing: border-box;">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">🔖 সমিতি কোড *</label>
+            <input type="text" id="editSomitiCode" required placeholder="যেমন: SMT-7890" style="width: 100%; padding: 10px 12px; border-radius: 10px; border: 1.5px solid #CBD5E1; font-size: 13px; outline: none; box-sizing: border-box;">
+          </div>
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">📜 সমবায় রেজিঃ নম্বর</label>
+            <input type="text" id="editSomitiReg" placeholder="যেমন: সমবায় রেজিঃ নং-৭৮৯০/২০২৬" style="width: 100%; padding: 10px 12px; border-radius: 10px; border: 1.5px solid #CBD5E1; font-size: 13px; outline: none; box-sizing: border-box;">
+          </div>
+        </div>
+
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">🌟 স্লোগান / মূলমন্ত্র</label>
+          <input type="text" id="editSomitiSlogan" placeholder="যেমন: ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ" style="width: 100%; padding: 10px 12px; border-radius: 10px; border: 1.5px solid #CBD5E1; font-size: 13px; outline: none; box-sizing: border-box;">
+        </div>
+
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">📍 কার্যালয়ের ঠিকানা</label>
+          <input type="text" id="editSomitiAddress" placeholder="যেমন: শ্রীনগর, মুন্সীগঞ্জ" style="width: 100%; padding: 10px 12px; border-radius: 10px; border: 1.5px solid #CBD5E1; font-size: 13px; outline: none; box-sizing: border-box;">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">🏦 ব্যাংকের নাম ও হিসাব</label>
+            <input type="text" id="editSomitiBank" placeholder="যেমন: সিটি ব্যাংক পিএলসি • ২৩১৫১৫৮০৪৫০০১" style="width: 100%; padding: 10px 12px; border-radius: 10px; border: 1.5px solid #CBD5E1; font-size: 13px; outline: none; box-sizing: border-box;">
+          </div>
+          <div>
+            <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">📱 বিকাশ / নগদ নম্বর</label>
+            <input type="text" id="editSomitiBkash" placeholder="যেমন: ০১৭১২-৩৪৫৬৭৮" style="width: 100%; padding: 10px 12px; border-radius: 10px; border: 1.5px solid #CBD5E1; font-size: 13px; outline: none; box-sizing: border-box;">
+          </div>
+        </div>
+
+        <div>
+          <label style="font-size: 12px; font-weight: 700; color: #334155; display: block; margin-bottom: 4px;">💼 কোষাধ্যক্ষ / দায়িত্বরত কর্মকর্তার নাম</label>
+          <input type="text" id="editSomitiCashier" placeholder="যেমন: সাজ্জাদ হোসেন" style="width: 100%; padding: 10px 12px; border-radius: 10px; border: 1.5px solid #CBD5E1; font-size: 13px; outline: none; box-sizing: border-box;">
+        </div>
+
+        <!-- Logo Upload Section -->
+        <div style="background: #F8FAFC; border: 1.5px dashed #2563EB; border-radius: 12px; padding: 12px 14px;">
+          <label style="font-size: 12px; font-weight: 700; color: #1E40AF; display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <span style="display: flex; align-items: center; gap: 6px;">🖼️ সমিতির লোগো / প্রোফাইল ছবি</span>
+            <span style="font-size: 11px; color: #64748B; font-weight: normal;">(ছবি পরিবর্তন করতে পারেন)</span>
+          </label>
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div id="editSomitiLogoPreviewBox" style="width: 56px; height: 56px; border-radius: 16px; background: white; border: 2px solid #3B82F6; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); flex-shrink: 0;">
+              <img id="editSomitiLogoPreviewImg" src="logo.jpg" alt="লোগো প্রিভিউ" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.src='logo.jpg';">
+            </div>
+            <div style="flex: 1;">
+              <input type="file" id="editSomitiLogoInput" accept="image/*" onchange="previewEditSomitiLogo(this)" style="display: none;">
+              <button type="button" onclick="document.getElementById('editSomitiLogoInput').click()" style="background: white; border: 1.5px solid #2563EB; color: #2563EB; padding: 7px 14px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                <span>📁</span> <span>নতুন ছবি / লোগো সিলেক্ট করুন</span>
+              </button>
+              <button type="button" id="btnRemoveEditSomitiLogo" onclick="removeEditSomitiLogo()" style="display: none; background: #FEF2F2; border: 1px solid #FECACA; color: #DC2626; padding: 7px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; margin-left: 6px;">
+                ✕ ডিফল্ট লোগো
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+          <button type="button" onclick="closeEditSomitiModal()" style="flex: 1; padding: 11px; background: #F1F5F9; color: #475569; border: 1px solid #CBD5E1; border-radius: 12px; font-size: 12.5px; font-weight: 700; cursor: pointer;">
+            বাতিল
+          </button>
+          <button type="submit" style="flex: 2; padding: 11px; background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%); color: white; border: none; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(37,99,235,0.3);">
+            💾 পরিবর্তন সংরক্ষণ করুন
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- ================= 3. SOMITI MAIN DASHBOARD ================= -->
   <div id="dashboardScreen" style="display: none;">
 
@@ -14311,6 +14404,27 @@
 
       currentSomiti = updated;
       localStorage.setItem("saved_somiti_settings", JSON.stringify(updated));
+
+      // Sync changes back to USER_SOCIETIES_KEY so hub cards reflect the updated profile
+      try {
+        let societies = getRegisteredSocieties();
+        const sIdx = societies.findIndex(item => item.id === updated.id);
+        if (sIdx !== -1) {
+          societies[sIdx].name = updated.name;
+          societies[sIdx].slogan = updated.slogan || updated.tagline;
+          societies[sIdx].address = updated.address;
+          societies[sIdx].code = updated.somitiCode;
+          societies[sIdx].regNo = updated.regNo;
+          societies[sIdx].bankAccount = updated.bankAccount;
+          societies[sIdx].bkashNumber = updated.bkashNumber;
+          societies[sIdx].cashierName = updated.cashierName;
+          if (updated.logo) societies[sIdx].logo = updated.logo;
+          localStorage.setItem(USER_SOCIETIES_KEY, JSON.stringify(societies));
+        }
+      } catch (syncErr) {
+        console.warn("Could not sync to registered societies list:", syncErr);
+      }
+
       renderPad(updated);
 
       try {
@@ -14330,6 +14444,12 @@
 
     function openSomitiDashboard(s, isAdmin = true, targetRole = null) {
       currentSomiti = s;
+      membersData = [];
+      depositsData = [];
+      expensesData = [];
+      loansData = [];
+      accountsData = [];
+      if (typeof stopRealtimeListeners === 'function') stopRealtimeListeners();
       renderPad(s);
       showScreen('dashboard');
       const roleToSet = targetRole || (isAdmin ? 'admin' : 'member');
@@ -14966,11 +15086,11 @@
             <div style="display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; margin-bottom: 16px;">
               <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 10px; padding: 8px 10px;">
                 <span style="font-size: 10.5px; color: #166534; font-weight: 700; display: block;">👥 মোট সদস্য</span>
-                <span style="font-size: 14px; font-weight: 800; color: #15803D;">${toBnNum(s.membersCount || 27)} জন</span>
+                <span style="font-size: 14px; font-weight: 800; color: #15803D;">${toBnNum(s.membersCount !== undefined ? s.membersCount : (s.id === 'swapnochowa' ? 27 : 0))} জন</span>
               </div>
               <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 10px; padding: 8px 10px;">
                 <span style="font-size: 10.5px; color: #065F46; font-weight: 700; display: block;">💰 আদায়কৃত তহবিল</span>
-                <span style="font-size: 13.5px; font-weight: 800; color: #047857;">${s.totalFund || '২,১০,০০০/- ৳'}</span>
+                <span style="font-size: 13.5px; font-weight: 800; color: #047857;">${s.totalFund || (s.id === 'swapnochowa' ? '২,১০,০০০/- ৳' : '০/- টাকা')}</span>
               </div>
             </div>
           </div>
@@ -14981,8 +15101,11 @@
               <span>🚀</span> <span>প্যানেল নির্বাচন ও প্রবেশ করুন</span>
             </button>
             <div style="display: flex; gap: 8px;">
-              <a href="${s.verifyUrl || 'verify.html'}" onclick="event.stopPropagation()" target="_blank" rel="noopener" style="flex: 1; text-align: center; background: #FFFBEB; color: #92400E; border: 1px solid #FCD34D; padding: 8px; border-radius: 10px; font-size: 11.5px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 5px;">
-                <span>🛡️</span> <span>ভেরিফিকেশন পোর্টাল ↗</span>
+              <button type="button" onclick="event.stopPropagation(); openEditSomitiModal('${s.id}')" style="flex: 1.2; text-align: center; background: #EFF6FF; color: #1D4ED8; border: 1px solid #93C5FD; padding: 8px; border-radius: 10px; font-size: 11.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; transition: all 0.15s ease;">
+                <span>✏️</span> <span>প্রোফাইল এডিট</span>
+              </button>
+              <a href="${s.verifyUrl || 'verify.html'}" onclick="event.stopPropagation()" target="_blank" rel="noopener" style="flex: 1.2; text-align: center; background: #FFFBEB; color: #92400E; border: 1px solid #FCD34D; padding: 8px; border-radius: 10px; font-size: 11.5px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                <span>🛡️</span> <span>ভেরিফিকেশন ↗</span>
               </a>
               ${s.id !== 'swapnochowa' ? `
                 <button type="button" onclick="event.stopPropagation(); deleteCustomSomiti('${s.id}')" style="background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; padding: 8px 12px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer;" title="সমিতি মুছুন">
@@ -15049,31 +15172,33 @@
       societies = societies.map(s => ({ ...s, active: s.id === somitiId }));
       localStorage.setItem(USER_SOCIETIES_KEY, JSON.stringify(societies));
       const activeOne = societies.find(s => s.active) || societies[0];
+      const isSwapno = (activeOne.id === 'swapnochowa');
 
       let defaultSomiti = {
         id: activeOne.id,
         name: activeOne.name,
         customDomain: "",
         padRightName: activeOne.name,
-        padRightAddress: activeOne.address || "শ্রীনগর, মুন্সীগঞ্জ",
-        padRightTagline: activeOne.slogan || "ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ",
-        englishName: (activeOne.id === 'swapnochowa') ? "SWAPNO CHOWA OIKKO SOMITI" : activeOne.name,
-        regNo: activeOne.regNo || "সমবায় রেজিঃ নং-৭৮৯০/২০২৬",
-        padHeader: activeOne.slogan || "ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ",
-        tagline: activeOne.slogan || "ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ",
-        address: activeOne.address || "শ্রীনগর, মুন্সীগঞ্জ",
-        estYear: "২০২৬ ইং",
-        bankAccount: activeOne.bankAccount || "২৩১৫১৫৮০৪৫০০১",
-        bankName: activeOne.bankName || "সিটি ব্যাংক পিএলসি",
-        bankAcc: activeOne.bankAccount || "২৩১৫১৫৮০৪৫০০১",
-        bankBranch: "শ্রীনগর শাখা",
-        bkashNumber: activeOne.bkashNumber || "০১৭১২-৩৪৫৬৭৮",
-        presidentName: "জনাব সভাপতি",
-        secretaryName: "জনাব সাধারণ সম্পাদক",
-        cashierName: activeOne.cashierName || "সাজ্জাদ হোসেন",
-        somitiCode: activeOne.code || "SMT-7890",
-        notice: "সকল সদস্যকে নিয়মিত মাসিক সঞ্চয় কিস্তি যথাসময়ে জমা দেওয়ার জন্য অনুরোধ করা যাচ্ছে।",
-        logoEmoji: "🏛️",
+        padRightAddress: activeOne.address || (isSwapno ? "শ্রীনগর, মুন্সীগঞ্জ" : "বাংলাদেশ"),
+        padRightTagline: activeOne.slogan || (isSwapno ? "ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ" : "স্বচ্ছতা ও ঐক্যের প্রতীক"),
+        englishName: isSwapno ? "SWAPNO CHOWA OIKKO SOMITI" : (activeOne.name || "SOMITI"),
+        regNo: activeOne.regNo || (isSwapno ? "সমবায় রেজিঃ নং-৭৮৯০/২০২৬" : "সমবায় রেজিঃ প্রক্রিয়াধীন"),
+        padHeader: activeOne.slogan || (isSwapno ? "ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ" : "স্বচ্ছতা ও ঐক্যের প্রতীক"),
+        tagline: activeOne.slogan || (isSwapno ? "ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ" : "স্বচ্ছতা ও ঐক্যের প্রতীক"),
+        address: activeOne.address || (isSwapno ? "শ্রীনগর, মুন্সীগঞ্জ" : "বাংলাদেশ"),
+        estYear: activeOne.estYear || "২০২৬ ইং",
+        bankAccount: activeOne.bankAccount || (isSwapno ? "২৩১৫১৫৮০৪৫০০১" : ""),
+        bankName: activeOne.bankName || (isSwapno ? "সিটি ব্যাংক পিএলসি" : (activeOne.bankAccount ? "ব্যাংক" : "")),
+        bankAcc: activeOne.bankAccount || (isSwapno ? "২৩১৫১৫৮০৪৫০০১" : ""),
+        bankBranch: activeOne.bankBranch || (isSwapno ? "শ্রীনগর শাখা" : ""),
+        bkashNumber: activeOne.bkashNumber || (isSwapno ? "০১৭১২-৩৪৫৬৭৮" : ""),
+        presidentName: activeOne.presidentName || (isSwapno ? "জনাব সভাপতি" : "সভাপতি"),
+        secretaryName: activeOne.secretaryName || (isSwapno ? "জনাব সাধারণ সম্পাদক" : "সাধারণ সম্পাদক"),
+        cashierName: activeOne.cashierName || (isSwapno ? "সাজ্জাদ হোসেন" : "কোষাধ্যক্ষ"),
+        somitiCode: activeOne.code || (isSwapno ? "SMT-7890" : "SMT-0001"),
+        notice: activeOne.notice || "সকল সদস্যকে নিয়মিত মাসিক সঞ্চয় কিস্তি যথাসময়ে জমা দেওয়ার জন্য অনুরোধ করা যাচ্ছে।",
+        logoEmoji: activeOne.logoEmoji || "🏛️",
+        logo: activeOne.logo || (isSwapno ? "swapno_chowa_logo.jpg" : "logo.jpg"),
         sealPos: "bottom",
         sealAlign: "between",
         sealOrder: "sign-seal"
@@ -15201,6 +15326,156 @@
       societies = societies.filter(s => s.id !== somitiId);
       localStorage.setItem(USER_SOCIETIES_KEY, JSON.stringify(societies));
       renderSomitiCardsGrid(true);
+    }
+
+    let currentEditSomitiId = null;
+    let currentEditSomitiLogoBase64 = '';
+
+    function openEditSomitiModal(somitiId) {
+      currentEditSomitiId = somitiId;
+      const societies = getRegisteredSocieties();
+      const s = societies.find(item => item.id === somitiId);
+      if (!s) {
+        alert("সমিতি খুঁজে পাওয়া যায়নি!");
+        return;
+      }
+      const editIdEl = document.getElementById('editSomitiId');
+      const editNameEl = document.getElementById('editSomitiName');
+      const editCodeEl = document.getElementById('editSomitiCode');
+      const editRegEl = document.getElementById('editSomitiReg');
+      const editSloganEl = document.getElementById('editSomitiSlogan');
+      const editAddrEl = document.getElementById('editSomitiAddress');
+      const editBankEl = document.getElementById('editSomitiBank');
+      const editBkashEl = document.getElementById('editSomitiBkash');
+      const editCashierEl = document.getElementById('editSomitiCashier');
+
+      if (editIdEl) editIdEl.value = s.id;
+      if (editNameEl) editNameEl.value = s.name || '';
+      if (editCodeEl) editCodeEl.value = s.code || '';
+      if (editRegEl) editRegEl.value = (s.regNo || '').replace(/^সমবায় রেজিঃ নং-/, '').replace(/^সমবায় রেজিঃ /, '');
+      if (editSloganEl) editSloganEl.value = s.slogan || '';
+      if (editAddrEl) editAddrEl.value = s.address || '';
+      if (editBankEl) editBankEl.value = s.bankAccount || s.bankName || '';
+      if (editBkashEl) editBkashEl.value = s.bkashNumber || '';
+      if (editCashierEl) editCashierEl.value = s.cashierName || '';
+
+      currentEditSomitiLogoBase64 = s.logo || '';
+      const previewImg = document.getElementById('editSomitiLogoPreviewImg');
+      const removeBtn = document.getElementById('btnRemoveEditSomitiLogo');
+      if (previewImg) {
+        previewImg.src = currentEditSomitiLogoBase64 || (s.id === 'swapnochowa' ? 'swapno_chowa_logo.jpg' : 'logo.jpg');
+      }
+      if (removeBtn) {
+        removeBtn.style.display = currentEditSomitiLogoBase64 ? 'inline-block' : 'none';
+      }
+
+      const modal = document.getElementById('editSomitiModal');
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function closeEditSomitiModal() {
+      const modal = document.getElementById('editSomitiModal');
+      if (modal) modal.style.display = 'none';
+      currentEditSomitiId = null;
+      currentEditSomitiLogoBase64 = '';
+      const input = document.getElementById('editSomitiLogoInput');
+      if (input) input.value = '';
+    }
+
+    function previewEditSomitiLogo(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        if (file.size > 2 * 1024 * 1024) {
+          alert("ছবির সাইজ ২MB এর কম হতে হবে!");
+          input.value = '';
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          currentEditSomitiLogoBase64 = e.target.result;
+          const previewImg = document.getElementById('editSomitiLogoPreviewImg');
+          const removeBtn = document.getElementById('btnRemoveEditSomitiLogo');
+          if (previewImg) previewImg.src = currentEditSomitiLogoBase64;
+          if (removeBtn) removeBtn.style.display = 'inline-block';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function removeEditSomitiLogo() {
+      currentEditSomitiLogoBase64 = '';
+      const input = document.getElementById('editSomitiLogoInput');
+      if (input) input.value = '';
+      const previewImg = document.getElementById('editSomitiLogoPreviewImg');
+      const removeBtn = document.getElementById('btnRemoveEditSomitiLogo');
+      if (previewImg) {
+        previewImg.src = (currentEditSomitiId === 'swapnochowa') ? 'swapno_chowa_logo.jpg' : 'logo.jpg';
+      }
+      if (removeBtn) removeBtn.style.display = 'none';
+    }
+
+    function handleEditSomitiSubmit(e) {
+      e.preventDefault();
+      const sId = document.getElementById('editSomitiId').value;
+      const name = document.getElementById('editSomitiName').value.trim();
+      const code = document.getElementById('editSomitiCode').value.trim();
+      const reg = document.getElementById('editSomitiReg').value.trim();
+      const slogan = document.getElementById('editSomitiSlogan').value.trim();
+      const addr = document.getElementById('editSomitiAddress').value.trim();
+      const bank = document.getElementById('editSomitiBank').value.trim();
+      const bkash = document.getElementById('editSomitiBkash').value.trim();
+      const cashier = document.getElementById('editSomitiCashier').value.trim();
+
+      if (!name || !code) {
+        alert("সমিতির নাম ও কোড অবশ্যই পূরণ করতে হবে!");
+        return;
+      }
+
+      let societies = getRegisteredSocieties();
+      const idx = societies.findIndex(item => item.id === sId);
+      if (idx === -1) {
+        alert("সমিতি খুঁজে পাওয়া যায়নি!");
+        return;
+      }
+
+      societies[idx].name = name;
+      societies[idx].code = code;
+      societies[idx].slogan = slogan;
+      societies[idx].regNo = reg ? (reg.startsWith("সমবায় রেজিঃ") ? reg : ("সমবায় রেজিঃ নং-" + reg)) : societies[idx].regNo;
+      societies[idx].address = addr;
+      societies[idx].bankName = bank || societies[idx].bankName;
+      societies[idx].bankAccount = bank;
+      societies[idx].bkashNumber = bkash;
+      societies[idx].cashierName = cashier || societies[idx].cashierName;
+      if (currentEditSomitiLogoBase64) {
+        societies[idx].logo = currentEditSomitiLogoBase64;
+      }
+
+      localStorage.setItem(USER_SOCIETIES_KEY, JSON.stringify(societies));
+
+      // Sync active currentSomiti if this somiti is currently open
+      if (currentSomiti && currentSomiti.id === sId) {
+        currentSomiti.name = name;
+        currentSomiti.padRightName = name;
+        currentSomiti.somitiCode = code;
+        currentSomiti.code = code;
+        currentSomiti.slogan = slogan;
+        currentSomiti.padHeader = slogan;
+        currentSomiti.tagline = slogan;
+        currentSomiti.address = addr;
+        currentSomiti.regNo = societies[idx].regNo;
+        currentSomiti.bankAccount = bank;
+        currentSomiti.bankAcc = bank;
+        currentSomiti.bankName = bank;
+        currentSomiti.bkashNumber = bkash;
+        currentSomiti.cashierName = cashier;
+        if (currentEditSomitiLogoBase64) currentSomiti.logo = currentEditSomitiLogoBase64;
+        renderPad(currentSomiti);
+      }
+
+      closeEditSomitiModal();
+      renderSomitiCardsGrid(true);
+      alert(`✅ "${name}" এর প্রোফাইল তথ্য সফলভাবে আপডেট হয়েছে!`);
     }
 
     function checkAppVersionModal() {
@@ -15426,9 +15701,18 @@
       }
     }
 
+    let realtimeUnsubscribers = [];
+    function stopRealtimeListeners() {
+      realtimeUnsubscribers.forEach(unsub => {
+        try { if (typeof unsub === 'function') unsub(); } catch(e){}
+      });
+      realtimeUnsubscribers = [];
+    }
+
     function initRealtimeListeners() {
+      stopRealtimeListeners();
       // 1. Members
-      getSomitiDocRef().collection("members").orderBy("memberNumber")
+      const unsubMembers = getSomitiDocRef().collection("members").orderBy("memberNumber")
         .onSnapshot((snapshot) => {
           membersData = [];
           snapshot.forEach((doc) => membersData.push({ id: doc.id, ...doc.data() }));
@@ -15438,9 +15722,10 @@
           renderDueInstallments();
           if (currentActiveView === 'audit') calculateAndRenderAudit();
         });
+      realtimeUnsubscribers.push(unsubMembers);
 
       // 2. Deposits
-      getSomitiDocRef().collection("deposits").orderBy("date", "desc")
+      const unsubDeposits = getSomitiDocRef().collection("deposits").orderBy("date", "desc")
         .onSnapshot((snapshot) => {
           depositsData = [];
           snapshot.forEach((doc) => {
@@ -15457,9 +15742,10 @@
           renderDueInstallments();
           if (currentActiveView === 'audit') calculateAndRenderAudit();
         });
+      realtimeUnsubscribers.push(unsubDeposits);
 
       // 3. Expenses
-      getSomitiDocRef().collection("expenses").orderBy("date", "desc")
+      const unsubExpenses = getSomitiDocRef().collection("expenses").orderBy("date", "desc")
         .onSnapshot((snapshot) => {
           expensesData = [];
           snapshot.forEach((doc) => expensesData.push({ id: doc.id, ...doc.data() }));
@@ -15467,6 +15753,7 @@
           updateSummary();
           if (currentActiveView === 'audit') calculateAndRenderAudit();
         });
+      realtimeUnsubscribers.push(unsubExpenses);
     }
 
     // Add Member
@@ -15811,7 +16098,8 @@
       if (membersData && membersData.length > 0) {
         return membersData;
       }
-      return MASTER_SOCIETY_MEMBERS;
+      const isSwapno = (currentSomiti && currentSomiti.id === 'swapnochowa');
+      return isSwapno ? MASTER_SOCIETY_MEMBERS : [];
     }
 
     function renderMembers(customList) {
@@ -15898,8 +16186,43 @@
 
     function syncDynamicDashboardCounters() {
       try {
-        const members = (typeof getCombinedMembers === 'function') ? getCombinedMembers() : (window.MASTER_SOCIETY_MEMBERS || []);
-        if (!members || !members.length) return;
+        const members = (typeof getCombinedMembers === 'function') ? getCombinedMembers() : [];
+        const isSwapno = (currentSomiti && currentSomiti.id === 'swapnochowa');
+        const toBn = n => String(n).replace(/[0-9]/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+        const formatBnTaka = n => toBn(Number(n || 0).toLocaleString('en-IN'));
+        const setTxt = (id, txt) => {
+          const el = document.getElementById(id);
+          if (el) el.innerText = txt;
+        };
+
+        if (!members || !members.length) {
+          setTxt('dynPaidMemberCount', `০ জন`);
+          setTxt('dynDueMemberCount', `০ জন`);
+          setTxt('dynCurrentMonthDeposit', `০/- ৳`);
+          setTxt('dynPaymentSummaryBadge', `০ জন পরিশোধিত`);
+          setTxt('dynDonutPaidCount', `০ জন`);
+          setTxt('dynDonutPaidAmount', `০/- ৳`);
+          setTxt('auditPaidLabel', `১. মোট সংগৃহীত সঞ্চয়ী কিস্তি (০ জন)`);
+          setTxt('auditPaidAmt1', `+ ০/- ৳`);
+          setTxt('auditPaidAmt2', `০/- ৳`);
+          setTxt('auditPaidAmt3', `০/- ৳`);
+          setTxt('bkStatDeposits', `০ টি (০ ৳)`);
+          setTxt('memTabAll', `সবাই (০)`);
+          setTxt('memTabPaid', `✅ পরিশোধিত (০)`);
+          setTxt('memTabDue', `⏳ বকেয়া (০)`);
+          setTxt('memTabExpat', `✈️ প্রবাসী (০)`);
+          setTxt('dueReminderSubHeader', `বকেয়া সদস্য নেই (০/- ৳)`);
+          setTxt('dynDueControlText', `বকেয়া তালিকা (০ জন)`);
+          setTxt('dynDueReminderSubtext', `বর্তমানে কোনো বকেয়া কিস্তি নেই।`);
+          setTxt('dynDueWhatsAppBtnText', `বকেয়া তাগাদা`);
+          setTxt('dynDueKhataBadge', `০ জন বাকি`);
+          const trendLbl = document.getElementById('dynNovTrendLabel');
+          if (trendLbl) trendLbl.innerText = '০লাখ';
+          if (typeof renderRecentVerifiedTransactions === 'function') {
+            renderRecentVerifiedTransactions();
+          }
+          return;
+        }
 
         const totalMembers = members.length;
         const paidMembers = members.filter(m => m.status === 'paid' || (Number(m.totalDeposit) > 0));
@@ -15907,19 +16230,12 @@
         const expatMembers = members.filter(m => m.expat === true || (m.phone && m.phone.startsWith('+')));
 
         const paidCount = paidMembers.length;
-        const dueCount = dueMembers.length;
+        const dueCount = isSwapno ? dueMembers.length : (membersData.length > 0 ? dueMembers.length : 0);
         const expatCount = expatMembers.length;
-        const paidTotal = paidMembers.reduce((sum, m) => sum + (Number(m.totalDeposit) || 10000), 0);
-        const dueTotal = dueMembers.reduce((sum, m) => sum + (Number(m.dueAmount) || 10000), 0);
+        const paidTotal = paidMembers.reduce((sum, m) => sum + (Number(m.totalDeposit) || (isSwapno ? 10000 : 0)), 0);
+        const dueTotal = dueMembers.reduce((sum, m) => sum + (Number(m.dueAmount) || (isSwapno ? 10000 : 0)), 0);
 
-        const toBn = n => String(n).replace(/[0-9]/g, d => '০১২৩৪৫৬৭৮৯'[d]);
-        const formatBnTaka = n => toBn(Number(n || 0).toLocaleString('en-IN'));
         const paidLakhStr = toBn((paidTotal / 100000).toFixed(2)) + 'লাখ';
-
-        const setTxt = (id, txt) => {
-          const el = document.getElementById(id);
-          if (el) el.innerText = txt;
-        };
 
         setTxt('dynPaidMemberCount', `${toBn(paidCount)} জন`);
         setTxt('dynDueMemberCount', `${toBn(dueCount)} জন`);
@@ -15962,11 +16278,40 @@
       try {
         const feedList = document.getElementById("dashRecentTransList");
         const linkEl = document.getElementById("dynAllReceiptsLink");
+        const isSwapno = (currentSomiti && currentSomiti.id === 'swapnochowa');
+        const toBn = n => String(n).replace(/[0-9]/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+
+        if (!isSwapno) {
+          if (!feedList) return;
+          if (depositsData && depositsData.length > 0) {
+            const recent = depositsData.slice(-3).reverse();
+            if (linkEl) linkEl.innerText = `সকল রসিদ (${toBn(depositsData.length)}টি) ↗`;
+            feedList.innerHTML = recent.map(r => `
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: #F8FAFC; border: 1px solid #E2E8F0;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; color: #047857; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center;">
+                    ${r.memberNumber || '০১'}
+                  </div>
+                  <div>
+                    <div style="font-size: 12.5px; font-weight: 800; color: #1E293B;">${escapeHtml(r.memberName || 'সদস্য')}</div>
+                    <div style="font-size: 10.5px; color: #64748B;">${escapeHtml(r.type || 'কিস্তি')}</div>
+                  </div>
+                </div>
+                <div style="text-align: right;">
+                  <div style="font-size: 13px; font-weight: 800; color: #047857;">+ ${toBn(Number(r.amount || 0).toLocaleString('en-IN'))} ৳</div>
+                  <div style="font-size: 9.5px; color: #059669; font-weight: 700;">✅ জমা</div>
+                </div>
+              </div>
+            `).join('');
+          } else {
+            if (linkEl) linkEl.innerText = `সকল রসিদ (০টি) ↗`;
+            feedList.innerHTML = `<div style="text-align:center; padding:18px 10px; color:#64748B; font-size:12px;">এখনও কোনো কিস্তি জমা লিপিবদ্ধ হয়নি</div>`;
+          }
+          return;
+        }
 
         const registry = (typeof OFFICIAL_VERIFIED_REGISTRY !== 'undefined') ? OFFICIAL_VERIFIED_REGISTRY : [];
         const receipts = registry.filter(r => r.code && r.code.startsWith('RCT-'));
-
-        const toBn = n => String(n).replace(/[0-9]/g, d => '০১২৩৪৫৬৭৮৯'[d]);
 
         if (linkEl) {
           linkEl.innerText = `সকল রসিদ (${toBn(receipts.length || 23)}টি) ↗`;
@@ -16671,6 +17016,7 @@
     window.showReceipt = function(data) { showReceiptModal(data); };
 
     function updateSummary() {
+      const isSwapno = (currentSomiti && currentSomiti.id === 'swapnochowa');
       const totalDeposits = membersData.reduce((sum, m) => sum + (m.totalDeposit || 0), 0);
       const totalExpenses = expensesData.reduce((sum, e) => sum + (e.amount || 0), 0);
       const cashInHand = totalDeposits - totalExpenses;
@@ -16678,14 +17024,14 @@
       // Calculate Bank & MFS accounts total
       const bankMfsTotal = (accountsData && accountsData.length > 0)
         ? accountsData.filter(a => a.type !== 'cash').reduce((sum, a) => sum + (a.balance || 0), 0)
-        : 75000; // default initial bank reserve
+        : (isSwapno ? 75000 : 0);
 
       const totalLiquidAssets = cashInHand + bankMfsTotal;
 
       // Calculate active loans
       const activeLoanTotal = (loansData && loansData.length > 0)
         ? loansData.filter(l => l.status === 'disbursed').reduce((sum, l) => sum + (l.outstandingBalance || 0), 0)
-        : 45000; // sample initial ongoing loan fund
+        : (isSwapno ? 45000 : 0);
 
       // Update DOM
       const heroTotalEl = document.getElementById("heroTotalBalance");
@@ -16707,7 +17053,10 @@
       if (activeLoanEl) activeLoanEl.innerText = formatCurrencyBD(activeLoanTotal);
 
       const totalMembersEl = document.getElementById("totalMembers");
-      if (totalMembersEl) totalMembersEl.innerText = membersData.length + " জন";
+      if (totalMembersEl) {
+        const count = membersData.length > 0 ? membersData.length : (isSwapno ? 27 : 0);
+        totalMembersEl.innerText = count + " জন";
+      }
 
       // Set initial privacy icon
       const pIcon = document.getElementById("privacyIcon");
@@ -16719,9 +17068,9 @@
       const targetCollectedEl = document.getElementById("dashTargetCollected");
       const targetDueEl = document.getElementById("dashTargetDue");
 
-      const currentCollected = totalDeposits > 0 ? totalDeposits : 180000;
-      const targetGoal = 270000;
-      const pct = Math.min(100, Math.round((currentCollected / targetGoal) * 100));
+      const currentCollected = totalDeposits > 0 ? totalDeposits : (isSwapno ? 180000 : 0);
+      const targetGoal = isSwapno ? 270000 : (membersData.length > 0 ? membersData.length * 10000 : 0);
+      const pct = targetGoal > 0 ? Math.min(100, Math.round((currentCollected / targetGoal) * 100)) : 0;
       const dueAmt = Math.max(0, targetGoal - currentCollected);
 
       if (targetProgBar) targetProgBar.style.width = pct + "%";
@@ -18957,8 +19306,9 @@
 
     // ================= MEMBER PASSBOOK MODAL LOGIC =================
     function openMemberModal(memberId) {
+      const isSwapno = (currentSomiti && currentSomiti.id === 'swapnochowa');
       let m = (membersData || []).find(x => x.id === memberId || x.memberNumber === memberId);
-      if (!m) {
+      if (!m && isSwapno) {
         m = MASTER_SOCIETY_MEMBERS.find(x => x.id === memberId || x.serial === memberId || x.memberNumber === memberId);
       }
       if (!m) return;
@@ -19035,15 +19385,18 @@
     let activeIdCardMember = null;
 
     function openMemberIdCard(memberId) {
+      const isSwapno = (currentSomiti && currentSomiti.id === 'swapnochowa');
       let m = null;
       if (memberId) {
-        m = (membersData || []).find(x => x.id === memberId || x.memberNumber === memberId) ||
-            MASTER_SOCIETY_MEMBERS.find(x => x.id === memberId || x.serial === memberId || x.memberNumber === memberId);
+        m = (membersData || []).find(x => x.id === memberId || x.memberNumber === memberId);
+        if (!m && isSwapno) {
+          m = MASTER_SOCIETY_MEMBERS.find(x => x.id === memberId || x.serial === memberId || x.memberNumber === memberId);
+        }
       }
       if (!m && activeMemberData) {
         m = activeMemberData;
       }
-      if (!m && MASTER_SOCIETY_MEMBERS.length > 0) {
+      if (!m && isSwapno && MASTER_SOCIETY_MEMBERS.length > 0) {
         m = MASTER_SOCIETY_MEMBERS[0];
       }
       if (!m) {
