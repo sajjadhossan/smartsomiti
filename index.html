@@ -4929,7 +4929,7 @@
             <button type="button" onclick="navTo('due')" style="background: var(--card-bg); border: 1.5px solid #FDE68A; border-radius: 14px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: all 0.15s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
               <div style="width: 36px; height: 36px; border-radius: 10px; background: #FEF3C7; color: #D97706; display: flex; align-items: center; justify-content: center; font-size: 18px;">⏳</div>
               <span style="font-size: 12px; font-weight: 800; color: var(--text);">বকেয়া খাতা</span>
-              <span style="font-size: 10px; color: #D97706; font-weight: 600;">৯ জন বাকি</span>
+              <span id="dynDueKhataBadge" style="font-size: 10px; color: #D97706; font-weight: 600;">৪ জন বাকি</span>
             </button>
           </div>
         </div>
@@ -4959,52 +4959,52 @@
               <span>🕒</span>
               <span>সাম্প্রতিক ভেরিফাইড লেনদেন রসিদ</span>
             </div>
-            <a href="verify.html" target="_blank" style="font-size: 11px; color: var(--primary); font-weight: 700; text-decoration: none;">
-              সকল রসিদ (১৮টি) ↗
+            <a id="dynAllReceiptsLink" href="verify.html" target="_blank" style="font-size: 11px; color: var(--primary); font-weight: 700; text-decoration: none;">
+              সকল রসিদ (২৩টি) ↗
             </a>
           </div>
 
           <div id="dashRecentTransList" style="display: flex; flex-direction: column; gap: 8px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: #F8FAFC; border: 1px solid #E2E8F0;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: #F8FAFC; border: 1px solid #E2E8F0; cursor: pointer;" onclick="triggerVerifySearch('RCT-23')">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; color: #047857; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center;">
+                  ১৪
+                </div>
+                <div>
+                  <div style="font-size: 12.5px; font-weight: 800; color: #1E293B;">রাজু আহমেদ খান (RCT-23)</div>
+                  <div style="font-size: 10.5px; color: #64748B;">১৭ নভেম্বর ২০২৬ • Trust Money NPSB -> City Bank PLC</div>
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 13px; font-weight: 800; color: #047857;">+ ১০,০০০ ৳</div>
+                <div style="font-size: 9.5px; color: #059669; font-weight: 700;">✅ ভেরিফাইড</div>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: #F8FAFC; border: 1px solid #E2E8F0; cursor: pointer;" onclick="triggerVerifySearch('RCT-22')">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; color: #047857; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center;">
+                  ২০
+                </div>
+                <div>
+                  <div style="font-size: 12.5px; font-weight: 800; color: #1E293B;">মেহেদী হাসান (RCT-22)</div>
+                  <div style="font-size: 10.5px; color: #64748B;">১৬ নভেম্বর ২০২৬ • City Bank PLC (Sreenagar Sub Branch)</div>
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 13px; font-weight: 800; color: #047857;">+ ১০,০০০ ৳</div>
+                <div style="font-size: 9.5px; color: #059669; font-weight: 700;">✅ ভেরিফাইড</div>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: #F8FAFC; border: 1px solid #E2E8F0; cursor: pointer;" onclick="triggerVerifySearch('RCT-21')">
               <div style="display: flex; align-items: center; gap: 10px;">
                 <div style="width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; color: #047857; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center;">
                   ১১
                 </div>
                 <div>
-                  <div style="font-size: 12.5px; font-weight: 800; color: #1E293B;">সফিকুল (RCT-18)</div>
-                  <div style="font-size: 10.5px; color: #64748B;">১৫ নভেম্বর ২০২৬ • City Bank PLC Cash</div>
-                </div>
-              </div>
-              <div style="text-align: right;">
-                <div style="font-size: 13px; font-weight: 800; color: #047857;">+ ১০,০০০ ৳</div>
-                <div style="font-size: 9.5px; color: #059669; font-weight: 700;">✅ ভেরিফাইড</div>
-              </div>
-            </div>
-
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: #F8FAFC; border: 1px solid #E2E8F0;">
-              <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; color: #047857; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center;">
-                  ০৬
-                </div>
-                <div>
-                  <div style="font-size: 12.5px; font-weight: 800; color: #1E293B;">মোহাম্মদ ইয়ামেন শেখ (RCT-17)</div>
-                  <div style="font-size: 10.5px; color: #64748B;">১৫ নভেম্বর ২০২৬ • City Bank PLC Cash</div>
-                </div>
-              </div>
-              <div style="text-align: right;">
-                <div style="font-size: 13px; font-weight: 800; color: #047857;">+ ১০,০০০ ৳</div>
-                <div style="font-size: 9.5px; color: #059669; font-weight: 700;">✅ ভেরিফাইড</div>
-              </div>
-            </div>
-
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: #F8FAFC; border: 1px solid #E2E8F0;">
-              <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; color: #047857; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center;">
-                  ১৭
-                </div>
-                <div>
-                  <div style="font-size: 12.5px; font-weight: 800; color: #1E293B;">শেখ মাসুদ (RCT-16)</div>
-                  <div style="font-size: 10.5px; color: #64748B;">১৫ নভেম্বর ২০২৬ • City Bank PLC Cash</div>
+                  <div style="font-size: 12.5px; font-weight: 800; color: #1E293B;">চঞ্চল হাওলাদার (RCT-21)</div>
+                  <div style="font-size: 10.5px; color: #64748B;">১৫ নভেম্বর ২০২৬ • Western Union Direct to Bank</div>
                 </div>
               </div>
               <div style="text-align: right;">
@@ -15778,16 +15778,69 @@
         setTxt('dynDueControlText', `বকেয়া তালিকা (${toBn(dueCount)} জন)`);
         setTxt('dynDueReminderSubtext', `নভেম্বর ২০২৬ কিস্তির বকেয়া ${toBn(dueCount)} জন সদস্য (${formatBnTaka(dueTotal)}/- ৳) কে এক ক্লিকে সতর্কবার্তা পাঠান।`);
         setTxt('dynDueWhatsAppBtnText', `সকল ${toBn(dueCount)} জন বকেয়া সদস্যকে তাগাদা পাঠান`);
+        setTxt('dynDueKhataBadge', `${toBn(dueCount)} জন বাকি`);
 
         const trendLbl = document.getElementById('dynNovTrendLabel');
         if (trendLbl) trendLbl.innerText = paidLakhStr;
         const trendBar = document.getElementById('dynNovTrendBar');
         if (trendBar) trendBar.title = `নভেম্বর ২০২৬: ${formatBnTaka(paidTotal)} ৳ (${toBn(paidCount)} জন আদায়, ${toBn(dueCount)} জন বাকি)`;
+
+        if (typeof renderRecentVerifiedTransactions === 'function') {
+          renderRecentVerifiedTransactions();
+        }
       } catch (err) {
         console.warn("syncDynamicDashboardCounters warning:", err);
       }
     }
     window.syncDynamicDashboardCounters = syncDynamicDashboardCounters;
+
+    function renderRecentVerifiedTransactions() {
+      try {
+        const feedList = document.getElementById("dashRecentTransList");
+        const linkEl = document.getElementById("dynAllReceiptsLink");
+
+        const registry = (typeof OFFICIAL_VERIFIED_REGISTRY !== 'undefined') ? OFFICIAL_VERIFIED_REGISTRY : [];
+        const receipts = registry.filter(r => r.code && r.code.startsWith('RCT-'));
+
+        const toBn = n => String(n).replace(/[0-9]/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+
+        if (linkEl) {
+          linkEl.innerText = `সকল রসিদ (${toBn(receipts.length || 23)}টি) ↗`;
+        }
+
+        if (!feedList) return;
+
+        const recentThree = receipts.length > 0 ? receipts.slice(-3).reverse() : [
+          {"code": "RCT-23", "serial": "১৪", "member": "রাজু আহমেদ খান", "date": "১৭ নভেম্বর ২০২৬", "method": "Trust Money NPSB -> City Bank PLC"},
+          {"code": "RCT-22", "serial": "২০", "member": "মেহেদী হাসান", "date": "১৬ নভেম্বর ২০২৬", "method": "City Bank PLC (Sreenagar Sub Branch)"},
+          {"code": "RCT-21", "serial": "১১", "member": "চঞ্চল হাওলাদার", "date": "১৫ নভেম্বর ২০২৬", "method": "Western Union Direct to Bank"}
+        ];
+
+        feedList.innerHTML = recentThree.map(r => {
+          const serial = r.serial || (r.serial_code ? r.serial_code.replace('S-', '') : '০০');
+          return `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: #F8FAFC; border: 1px solid #E2E8F0; cursor: pointer; transition: background 0.15s ease;" onclick="triggerVerifySearch('${r.code}')">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; color: #047857; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center;">
+                  ${serial}
+                </div>
+                <div>
+                  <div style="font-size: 12.5px; font-weight: 800; color: #1E293B;">${escapeHtml(r.member)} (${r.code})</div>
+                  <div style="font-size: 10.5px; color: #64748B;">${escapeHtml(r.date)} • ${escapeHtml(r.method || 'City Bank PLC')}</div>
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 13px; font-weight: 800; color: #047857;">+ ১০,০০০ ৳</div>
+                <div style="font-size: 9.5px; color: #059669; font-weight: 700;">✅ ভেরিফাইড</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        console.warn("renderRecentVerifiedTransactions error:", err);
+      }
+    }
+    window.renderRecentVerifiedTransactions = renderRecentVerifiedTransactions;
 
     function filterMembersDirectory(status, btn) {
       activeMemberStatusFilter = status;

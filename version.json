@@ -1,12 +1,12 @@
 {
   "appName": "স্মার্ট সমিতি",
   "projectSlug": "smartsomiti",
-  "version": "2.8.4",
-  "buildNumber": 38,
+  "version": "2.8.5",
+  "buildNumber": 39,
   "releaseDate": "2026-11-18",
   "releaseName": "স্মার্ট সমিতি এন্টারপ্রাইজ প্ল্যাটফর্ম",
   "vercelUrl": "https://smartsomiti.vercel.app",
   "minSupportedVersion": "1.0.0",
   "downloadUrl": "https://github.com/sajjadhossan/smartsomiti/releases/latest/download/smartsomiti-latest.apk",
-  "changelogBn": "ড্যাশবোর্ড ও মেম্বার ডিরেক্টরি স্ট্যাটিস্টিকস অটো-ডাইনামিক ক্যালকুলেটর (syncDynamicDashboardCounters) যোগ, ২৩ জন পরিশোধিত (২,৩০,০০০/- ৳) ও ৪ জন বকেয়া (৪০,০০০/- ৳) পূর্ণ সিঙ্ক এবং ভবিষ্যৎ ডেটা অমিল প্রতিরোধ (v2.8.4)।"
+  "changelogBn": "বকেয়া খাতা বাটন (৪ জন বাকি) ডাইনামিক সিঙ্ক এবং সাম্প্রতিক ভেরিফাইড লেনদেন ফিড (RCT-23 রাজু, RCT-22 মেহেদী, RCT-21 চঞ্চল) স্বয়ংক্রিয় রেন্ডারিং ইঞ্জিন যুক্ত (v2.8.5)।"
 }
