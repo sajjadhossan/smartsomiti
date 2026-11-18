@@ -726,6 +726,40 @@
 
     let activeModalRec = null;
 
+    function getMemberTotalAndMonths(memberName) {
+      if (!memberName) return { total: 10000, months: 1 };
+
+      // 1. Direct check in live firestoreMembers
+      if (typeof firestoreMembers !== 'undefined' && Array.isArray(firestoreMembers) && firestoreMembers.length > 0) {
+        const fsMem = firestoreMembers.find(m => m.name === memberName || m.name?.trim() === memberName?.trim());
+        if (fsMem && fsMem.totalDeposit !== undefined && fsMem.totalDeposit !== null) {
+          const amt = Number(fsMem.totalDeposit);
+          if (amt > 0) {
+            const months = Math.max(1, Math.round(amt / 10000));
+            return { total: amt, months: months };
+          }
+        }
+      }
+
+      // 2. Count actual verified receipts for this member in liveRecords
+      if (typeof liveRecords !== 'undefined' && Array.isArray(liveRecords)) {
+        const memRecs = liveRecords.filter(r => (r.member === memberName || r.member?.trim() === memberName?.trim()) && !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-'));
+        if (memRecs.length > 0) {
+          let sum = 0;
+          memRecs.forEach(r => {
+            const numMatch = (r.amount || '').replace(/,/g, '').match(/\d+/);
+            const parsed = numMatch ? Number(numMatch[0]) : 10000;
+            sum += (parsed > 0 ? parsed : 10000);
+          });
+          const months = Math.max(1, memRecs.length);
+          return { total: sum, months: months };
+        }
+      }
+
+      // 3. Fallback
+      return { total: 10000, months: 1 };
+    }
+
     function openVerifiedModal(rec) {
       activeModalRec = rec;
       document.getElementById('mCode').innerText = `${rec.code} (${rec.alt_code})`;
@@ -736,14 +770,7 @@
         totRow.classList.add('hidden');
       } else {
         totRow.classList.remove('hidden');
-        let totAmt = memberTotals[rec.member];
-        if (totAmt === undefined || totAmt === null || isNaN(totAmt)) {
-          totAmt = 10000;
-        }
-        let totMo = memberMonths[rec.member];
-        if (!totMo || isNaN(totMo)) {
-          totMo = Math.max(1, Math.round(totAmt / 10000));
-        }
+        const { total: totAmt, months: totMo } = getMemberTotalAndMonths(rec.member);
         document.getElementById('mMemberTotal').innerText = `${formatBnTaka(totAmt)}/- টাকা (${toBn(totMo)} মাস)`;
       }
       document.getElementById('mDate').innerText = rec.date;
@@ -1029,8 +1056,8 @@
     ];
 
     async function syncFromGoogleSheet() {
-      // If Firestore live database is active, skip Google Sheet to prevent double-accumulation
-      if (firestoreMembers && firestoreMembers.length > 0) {
+      // If Firestore live database is active or connecting, skip Google Sheet to prevent race condition double-accumulation
+      if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
         return;
       }
       const sheetId = '1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0';
@@ -1551,6 +1578,9 @@
 
       renderGrid(liveRecords);
       renderBreakdowns();
+      if (verifyModal && !verifyModal.classList.contains('hidden') && activeModalRec) {
+        openVerifiedModal(activeModalRec);
+      }
     }
 
     function initFirestoreVerifySync() {
