@@ -15009,14 +15009,14 @@
       slogan: "ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ",
       regNo: "সমবায় রেজিঃ নং-৭৮৯০/২০২৬",
       address: "শ্রীনগর, মুন্সীগঞ্জ",
-      bankName: "সিটি ব্যাংক পিএলসি • হিসাব: ২৩১৫১৫৮০৪৫০০১",
-      bankAccount: "২৩১৫১৫৮০৪৫০০১",
+      bankName: "সিটি ব্যাংক পিএলসি (রেকাবী বাজার) • হিসাব: ২৩০৫১৫৮০৪৫০০১",
+      bankAccount: "২৩০৫১৫৮০৪৫০০১",
       routingNo: "২২৫২৬০৪১৫",
-      bkashNumber: "০১৭১২-৩৪৫৬৭৮",
+      bkashNumber: "০১৮৮১২১০৪৪৪",
       cashierName: "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)",
       membersCount: 27,
-      totalFund: "২,২০,০০০/- টাকা (৮১.৫%)",
-      dueAmount: "৫০,০০০/- টাকা (৫ জন)",
+      totalFund: "২,৪০,০০০/- টাকা (৮৮.৯%)",
+      dueAmount: "৩০,০০০/- টাকা (৩ জন)",
       active: true,
       verifyUrl: "verify.html",
       logo: "swapno_chowa_logo.jpg"
@@ -16114,7 +16114,7 @@
       { id: "S-06", serial: "০৬", memberNumber: "06", name: "মোঃ নাজমুল ইসলাম", phone: "+39 3930844056", status: "paid", amount: 10000, totalDeposit: 10000, method: "Western Union Direct to Bank", rct: "RCT-19", expat: true, country: "ইতালি 🇮🇹" },
       { id: "S-07", serial: "০৭", memberNumber: "07", name: "শফিকুল", phone: "+65 90528770", status: "paid", amount: 10000, totalDeposit: 10000, method: "City Bank PLC Cash", rct: "RCT-18", expat: true, country: "সিঙ্গাপুর 🇸🇬" },
       { id: "S-08", serial: "০৮", memberNumber: "08", name: "মনিরুজ্জামান", phone: "+965 66686271", status: "paid", amount: 10000, totalDeposit: 10000, method: "Al Mulla Exchange (কুয়েত)", rct: "RCT-02", expat: true, country: "কুয়েত 🇰🇼" },
-      { id: "S-09", serial: "০৯", memberNumber: "09", name: "আওলাদ খান", phone: "+39 3273830227", status: "due", amount: 0, totalDeposit: 0, method: "বকেয়া", rct: "", expat: true, country: "ইতালি 🇮🇹" },
+      { id: "S-09", serial: "০৯", memberNumber: "09", name: "আওলাদ খান", phone: "+39 3273830227", status: "paid", amount: 10000, totalDeposit: 10000, method: "City Bank PLC (Sreenagar Sub Branch) — Cash (Slip #2914)", rct: "RCT-24", expat: true, country: "ইতালি 🇮🇹" },
       { id: "S-10", serial: "১০", memberNumber: "10", name: "জুয়েল শিকদার", phone: "+39 3478350779", status: "paid", amount: 10000, totalDeposit: 10000, method: "Western Union Direct to Bank", rct: "RCT-20", expat: true, country: "ইতালি 🇮🇹" },
       { id: "S-11", serial: "১১", memberNumber: "11", name: "চঞ্চল হাওলাদার", phone: "+39 3510055930", status: "paid", amount: 10000, totalDeposit: 10000, method: "Western Union Direct to Bank", rct: "RCT-21", expat: true, country: "ইতালি 🇮🇹" },
       { id: "S-12", serial: "১২", memberNumber: "12", name: "মোঃ নোমান হাওলাদার", phone: "+385 95 745 1898", status: "due", amount: 0, totalDeposit: 0, method: "বকেয়া", rct: "", expat: true, country: "ক্রোয়েশিয়া 🇭🇷" },
@@ -16362,15 +16362,15 @@
         const receipts = registry.filter(r => r.code && r.code.startsWith('RCT-'));
 
         if (linkEl) {
-          linkEl.innerText = `সকল রসিদ (${toBn(receipts.length || 23)}টি) ↗`;
+          linkEl.innerText = `সকল রসিদ (${toBn(receipts.length || 24)}টি) ↗`;
         }
 
         if (!feedList) return;
 
         const recentThree = receipts.length > 0 ? receipts.slice(-3).reverse() : [
+          {"code": "RCT-24", "serial": "০৯", "member": "আওলাদ খান", "date": "১৮ নভেম্বর ২০২৬", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash"},
           {"code": "RCT-23", "serial": "১৪", "member": "রাজু আহমেদ খান", "date": "১৭ নভেম্বর ২০২৬", "method": "Trust Money NPSB -> City Bank PLC"},
-          {"code": "RCT-22", "serial": "২০", "member": "মেহেদী হাসান", "date": "১৬ নভেম্বর ২০২৬", "method": "City Bank PLC (Sreenagar Sub Branch)"},
-          {"code": "RCT-21", "serial": "১১", "member": "চঞ্চল হাওলাদার", "date": "১৫ নভেম্বর ২০২৬", "method": "Western Union Direct to Bank"}
+          {"code": "RCT-22", "serial": "২০", "member": "মেহেদী হাসান", "date": "১৬ নভেম্বর ২০২৬", "method": "City Bank PLC (Sreenagar Sub Branch)"}
         ];
 
         feedList.innerHTML = recentThree.map(r => {
@@ -18477,10 +18477,11 @@
       {"code": "RCT-19", "serial_code": "S-06", "alt_code": "সছঐস/রিসিট/২০২৬-১৯", "member": "মোঃ নাজমুল ইসলাম", "serial": "০৬", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Western Union Direct to Bank (MTCN: 376-060-3297)", "sender": "MOHAMMAD AOULAD HOSSAIN (যৌথ ৩০,০০০/-)", "slip_url": "https://drive.google.com/file/d/1C2Wp0qfddtNCzLWHlkfghsC-FblupxhS/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/12lG6BdMm19Ta7wvMtaTp0KbuDsIPNqCM/view?usp=drivesdk"},
       {"code": "RCT-20", "serial_code": "S-10", "alt_code": "সছঐস/রিসিট/২০২৬-২০", "member": "জুয়েল শিকদার", "serial": "১০", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Western Union Direct to Bank (MTCN: 376-060-3297)", "sender": "MOHAMMAD AOULAD HOSSAIN (যৌথ ৩০,০০০/-)", "slip_url": "https://drive.google.com/file/d/1C2Wp0qfddtNCzLWHlkfghsC-FblupxhS/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/12lG6BdMm19Ta7wvMtaTp0KbuDsIPNqCM/view?usp=drivesdk"},
       {"code": "RCT-21", "serial_code": "S-11", "alt_code": "সছঐস/রিসিট/২০২৬-২১", "member": "চঞ্চল হাওলাদার", "serial": "১১", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Western Union Direct to Bank (MTCN: 376-060-3297)", "sender": "MOHAMMAD AOULAD HOSSAIN (যৌথ ৩০,০০০/-)", "slip_url": "https://drive.google.com/file/d/1C2Wp0qfddtNCzLWHlkfghsC-FblupxhS/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/12lG6BdMm19Ta7wvMtaTp0KbuDsIPNqCM/view?usp=drivesdk"},
-      {"code": "RCT-22", "serial_code": "S-20", "alt_code": "সছঐস/রিসিট/২০২৬-২২", "member": "মেহেদী হাসান", "serial": "২০", "date": "১৬ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch)", "sender": "MEHEDI HASAN (মত্তগ্রাম, শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1uQqbEO8IYbX6jsma8ZjojzwyczGFUhgw/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1EDufXkc_Yu15NDvTovOAYLWBySgnotEj/view?usp=drivesdk"},
+      {"code": "RCT-22", "serial_code": "S-20", "alt_code": "সছঐস/রিসিট/২০২৬-২২", "member": "মেহেদী হাসান", "serial": "২০", "date": "১৬ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash (Slip #52824)", "sender": "MEHEDI HASAN (মত্তগ্রাম, শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1uQqbEO8IYbX6jsma8ZjojzwyczGFUhgw/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1EDufXkc_Yu15NDvTovOAYLWBySgnotEj/view?usp=drivesdk"},
       {"code": "RCT-23", "serial_code": "S-14", "alt_code": "সছঐস/রিসিট/২০২৬-২৩", "member": "রাজু আহমেদ খান", "serial": "১৪", "date": "১৭ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Trust Money NPSB -> City Bank PLC (Ref: OWS100716910256)", "sender": "Trust Money A/C: 0071-0310015289", "slip_url": "https://drive.google.com/file/d/1r_yqW5kA9LarJlvE7GV0VgFrm70EOybb/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1YTponCBffimFVHDlXba1EAxHs8W4ArkS/view?usp=drivesdk"},
-      {"code": "স্মারক-০১/২০২৬", "alt_code": "PAID-LIST", "member": "মাসিক সঞ্চয় ও কিস্তি জমার বিবরণী তালিকা (২৩ জন)", "serial": "অফিসিয়াল তালিকা", "date": "১৬ নভেম্বর ২০২৬", "amount": "২,৩০,০০০/- টাকা (২৩ জন)", "method": "CITY BANK PLC (REKABI BAZAR) — A/C: 2305158045001", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1IJYVnfNH6u2T-gmaO1E4Rr_Qe4Ga2YWa/view?usp=drivesdk"},
-      {"code": "স্মারক-০২/২০২৬", "alt_code": "DUE-LIST", "member": "বকেয়া মাসিক কিস্তি জমার তালিকা (৪ জন)", "serial": "অফিসিয়াল বিজ্ঞপ্তি", "date": "১৬ নভেম্বর ২০২৬", "amount": "বকেয়া: ৪০,০০০/- টাকা (৪ জন)", "method": "সিটি ব্যাংক (২৩০৫১৫৮০৪৫০০১) / বিকাশ: ০১৮৮১২১০৪৪৪", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1K-inuZ3wyzoga5VBsHPOytZKbGMpO0UV/view?usp=drivesdk"}
+      {"code": "RCT-24", "serial_code": "S-09", "alt_code": "সছঐস/রিসিট/২০২৬-২৪", "member": "আওলাদ খান", "serial": "০৯", "date": "১৮ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash (Slip #2914)", "sender": "Jihad Hasan (বাঘবাড়ী, শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1E-UOGXj0bWbwB1bSFpzPgOa7fnJv5Qyj/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1lnM3Twj_vURkd6eqlhcxHwMOa6Cs2SQ8/view?usp=drivesdk"},
+      {"code": "স্মারক-০১/২০২৬", "alt_code": "PAID-LIST", "member": "মাসিক সঞ্চয় ও কিস্তি জমার বিবরণী তালিকা (২৪ জন)", "serial": "অফিসিয়াল তালিকা", "date": "১৮ নভেম্বর ২০২৬", "amount": "২,৪০,০০০/- টাকা (২৪ জন)", "method": "CITY BANK PLC (REKABI BAZAR) — A/C: 2305158045001", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1jnX3xpBdSOW6L9OcfC5_Yksd1plVH4AZ/view?usp=drivesdk"},
+      {"code": "স্মারক-০২/২০২৬", "alt_code": "DUE-LIST", "member": "বকেয়া মাসিক কিস্তি জমার তালিকা ও জরুরি বিজ্ঞপ্তি (৩ জন)", "serial": "অফিসিয়াল বিজ্ঞপ্তি", "date": "১৮ নভেম্বর ২০২৬", "amount": "বকেয়া: ৩০,০০০/- টাকা (৩ জন)", "method": "সিটি ব্যাংক (২৩০৫১৫৮০৪৫০০১) / বিকাশ: ০১৮৮১২১০৪৪৪", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1lMfTEiZKr5BXFnAqm9NWfJ0eDPjFsmD3/view?usp=drivesdk"}
     ];
 
     async function findReceiptRecord(queryCode) {

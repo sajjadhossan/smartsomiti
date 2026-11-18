@@ -135,14 +135,14 @@ service cloud.firestore {
     // ============================================================================
 
     match /somitis/{somitiId} {
-      // Anyone authenticated can read societies they are assigned to, Master Admin, or primary society
-      allow read: if isAuthenticated() && (
+      // Anyone authenticated can read societies they are assigned to, Master Admin, or primary society; or public verification for 'swapnochowa'
+      allow read: if somitiId == 'swapnochowa' || (isAuthenticated() && (
         somitiId == 'main' ||
         isPlatformMasterAdmin() ||
         resource.data.creatorId == request.auth.uid ||
         (resource.data.creatorEmail != null && resource.data.creatorEmail.lower() == currentUserEmail()) ||
         (resource.data.assignedMemberEmails != null && resource.data.assignedMemberEmails.hasAny([currentUserEmail()]))
-      );
+      ));
 
       // Only Master Admin or authenticated users can create new societies
       allow create: if isAuthenticated() && (
@@ -167,14 +167,14 @@ service cloud.firestore {
 
       // Members subcollection
       match /members/{memberId} {
-        allow read: if isSocietyMember(somitiId);
+        allow read: if isSocietyMember(somitiId) || somitiId == 'swapnochowa';
         allow create, update: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
         allow delete: if isSocietyAdmin(somitiId) || isPlatformMasterAdmin();
       }
 
       // Savings deposits subcollection
       match /deposits/{depositId} {
-        allow read: if isSocietyMember(somitiId);
+        allow read: if isSocietyMember(somitiId) || somitiId == 'swapnochowa';
         allow create, update: if (isSocietyAdmin(somitiId) || isPlatformMasterAdmin()) &&
                                  isFeatureActive(somitiId, 'savings_management');
         allow delete: if isPlatformMasterAdmin();
