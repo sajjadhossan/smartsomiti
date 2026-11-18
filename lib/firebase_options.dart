@@ -19,8 +19,8 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBaOVbmjGZi-7zyPGIc0LmP4Ou4_hW4shA',
-    appId: '1:122717224216:web:somitiappweb',
+    apiKey: 'AIzaSyCg4XAdBGbZOLzrWnRmIh9QItthL9IAEGc',
+    appId: '1:122717224216:web:9f108416895741b190726d',
     messagingSenderId: '122717224216',
     projectId: 'somitiapp-1f0a2',
     authDomain: 'somitiapp-1f0a2.firebaseapp.com',
