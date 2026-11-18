@@ -1488,21 +1488,29 @@
         const memNum = m.memberNumber || m.serial || '0';
         const name = m.name;
         const totalDep = Number(m.totalDeposit || 0);
+        // Auto-reconciliation: If member has an official verified receipt in RECORDS, mark as paid
+        const hasVerifiedReceipt = RECORDS.some(r =>
+          (r.member === name || r.member?.trim() === name?.trim()) &&
+          !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-') &&
+          !deletedCodes.includes(r.code)
+        );
+        const isPaid = totalDep > 0 || m.status === 'paid' || hasVerifiedReceipt;
+        const calcAmt = isPaid ? Math.max(totalDep, 10000) : 0;
+
         allMembersMap[name] = {
           serial: Number(memNum),
           name: name,
-          paidTotal: totalDep,
-          paidMonths: totalDep > 0 ? 1 : 0,
-          dueTotal: totalDep <= 0 ? 10000 : 0,
+          paidTotal: calcAmt,
+          paidMonths: isPaid ? 1 : 0,
+          dueTotal: isPaid ? 0 : 10000,
           history: []
         };
-        const calcAmt = totalDep > 0 ? totalDep : (m.status === 'paid' ? 10000 : 0);
         memberTotals[name] = calcAmt;
         memberMonths[name] = calcAmt > 0 ? Math.max(1, Math.round(calcAmt / 10000)) : 0;
 
-        if (totalDep > 0 || m.status === 'paid') {
+        if (isPaid) {
           paidMembersCount++;
-          totalFundAmount += (totalDep || 10000);
+          totalFundAmount += calcAmt;
         } else {
           dueMembers.push({ serial: memNum, name: name });
         }
@@ -1538,10 +1546,14 @@
         });
       });
 
-      // If Firestore deposits is empty but default RECORDS exist, use base
-      if (newLiveRecords.length === 0) {
-        newLiveRecords = [...RECORDS.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-') && !deletedCodes.includes(r.code))];
-      }
+      // Smart Merge: Ensure all base verified RECORDS are merged so newly added receipts are NEVER dropped even if Firestore deposit doc isn't created yet
+      RECORDS.forEach(baseRec => {
+        if (baseRec.code.startsWith('PAID-') || baseRec.code.startsWith('DUE-') || deletedCodes.includes(baseRec.code)) return;
+        const existsInFs = newLiveRecords.some(r => r.code === baseRec.code || (r.member && r.member.trim() === baseRec.member.trim()));
+        if (!existsInFs) {
+          newLiveRecords.push({ ...baseRec });
+        }
+      });
 
       // Add Official Paid & Due Notice Cards
       newLiveRecords.push({

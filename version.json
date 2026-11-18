@@ -1,12 +1,12 @@
 {
   "appName": "স্মার্ট সমিতি",
   "projectSlug": "smartsomiti",
-  "version": "2.8.2",
-  "buildNumber": 36,
+  "version": "2.8.3",
+  "buildNumber": 37,
   "releaseDate": "2026-11-18",
   "releaseName": "স্মার্ট সমিতি এন্টারপ্রাইজ প্ল্যাটফর্ম",
   "vercelUrl": "https://smartsomiti.vercel.app",
   "minSupportedVersion": "1.0.0",
   "downloadUrl": "https://github.com/sajjadhossan/smartsomiti/releases/latest/download/smartsomiti-latest.apk",
-  "changelogBn": "ভেরিফাই রিসিট মোডালে সদস্যের মোট জমার রেস-কন্ডিশন ফিক্স এবং ১ মাস (১০,০০০/- টাকা) গণনা নিখুঁতকরণ (v2.8.2)।"
+  "changelogBn": "রাজু আহমেদ খান (S-14)-এর ১০,০০০/- টাকা পরিশোধ লাইভ ডাটাবেসে সিঙ্ক এবং ভবিষ্যৎ রিসিট-ফায়ারবেস অটো-রিকনসিলিয়েশন কার্যকর (v2.8.3)।"
 }
