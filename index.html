@@ -3471,7 +3471,7 @@
             <div class="society-switch-pill" onclick="openSocietySwitcher()" title="সমিতি পরিবর্তন করতে ক্লিক করুন">
               <span id="dashSomitiName" style="font-size: 13.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 135px; display: inline-block; vertical-align: middle;">স্মার্ট সমিতি</span>
               <span id="dashSomitiCode" style="font-size: 10px; font-weight: 700; color: var(--primary);">SMT-7890</span>
-              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.7.3</span>
+              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.8.12</span>
               <span style="font-size: 10px; opacity: 0.7;">▾</span>
             </div>
             <div id="headerActiveViewTitle" class="header-active-view-badge" onclick="openSomitiPanelSelector(currentSomiti ? currentSomiti.id : 'swapnochowa')" style="cursor: pointer;" title="প্যানেল বা ভূমিকা পরিবর্তন করতে ক্লিক করুন">📊 এডমিন ড্যাশবোর্ড ▾</div>
@@ -5077,22 +5077,22 @@
             <div id="targetProgressBar" style="width: 77.8%; height: 100%; background: linear-gradient(90deg, #10B981, #059669); border-radius: 99px; transition: width 0.6s ease;"></div>
           </div>
 
-          <!-- 3-Col Target Mini Summary -->
+          <!-- 3-Col Target Mini Summary (Mathematically Synchronized) -->
           <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center;">
             <div style="background: #F0FDF4; border: 1px solid #BBF7D0; padding: 8px; border-radius: 10px;">
               <div style="font-size: 10px; color: #166534; font-weight: 600;">সংগৃহীত তহবিল</div>
-              <div id="dashTargetCollected" style="font-size: 13px; font-weight: 800; color: #047857; margin-top: 2px;">২,১০,০০০ ৳</div>
-              <div style="font-size: 9.5px; color: #15803D;">২১ জন সদস্য</div>
+              <div id="dashTargetCollected" style="font-size: 13px; font-weight: 800; color: #047857; margin-top: 2px;">১,৮০,০০০ ৳</div>
+              <div id="dashTargetCollectedSub" style="font-size: 9.5px; color: #15803D; font-weight: 700;">১৮ জন সদস্য</div>
             </div>
             <div style="background: #FEF2F2; border: 1px solid #FECDD3; padding: 8px; border-radius: 10px;">
               <div style="font-size: 10px; color: #991B1B; font-weight: 600;">চলতি বকেয়া</div>
-              <div id="dashTargetDue" style="font-size: 13px; font-weight: 800; color: #B91C1C; margin-top: 2px;">৬০,০০০ ৳</div>
-              <div style="font-size: 9.5px; color: #DC2626;">৬ জন সদস্য</div>
+              <div id="dashTargetDue" style="font-size: 13px; font-weight: 800; color: #B91C1C; margin-top: 2px;">৯০,০০০ ৳</div>
+              <div id="dashTargetDueSub" style="font-size: 9.5px; color: #DC2626; font-weight: 700;">৯ জন সদস্য</div>
             </div>
             <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 8px; border-radius: 10px;">
               <div style="font-size: 10px; color: #475569; font-weight: 600;">মোট টার্গেট</div>
               <div style="font-size: 13px; font-weight: 800; color: #1E293B; margin-top: 2px;">২,৭০,০০০ ৳</div>
-              <div style="font-size: 9.5px; color: #64748B;">২৭ জন সদস্য</div>
+              <div id="dashTargetTotalSub" style="font-size: 9.5px; color: #64748B; font-weight: 700;">২৭ জন সদস্য</div>
             </div>
           </div>
         </div>
@@ -5147,13 +5147,18 @@
 
         <!-- 4. Recent Verified Transactions Activity Feed (সর্বশেষ লেনদেন ফিড) -->
         <div class="dash-recent-feed-card" style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <div style="display: flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 800; color: var(--text);">
-              <span>🕒</span>
-              <span>সাম্প্রতিক ভেরিফাইড লেনদেন রসিদ</span>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 800; color: var(--text);">
+                <span>🕒</span>
+                <span>সাম্প্রতিক ভেরিফাইড লেনদেন রসিদ</span>
+              </div>
+              <div id="dynReceiptsSubBreakdown" style="font-size: 10.5px; color: var(--subtext, #64748B); font-weight: 600; margin-top: 2px;">
+                ১৮ জন আদায়কৃত • ৯ জন বকেয়া (মোট ২৭ জন)
+              </div>
             </div>
-            <a id="dynAllReceiptsLink" href="verify.html" target="_blank" style="font-size: 11px; color: var(--primary); font-weight: 700; text-decoration: none;">
-              সকল রসিদ (২৩টি) ↗
+            <a id="dynAllReceiptsLink" href="verify.html" target="_blank" style="font-size: 11px; color: var(--primary); font-weight: 700; text-decoration: none; white-space: nowrap;">
+              সকল রসিদ (১৮টি) ↗
             </a>
           </div>
 
@@ -12575,6 +12580,29 @@
     </div>
   </div>
 
+  <!-- ================= ULTRA-MODERN CUSTOM CONFIRMATION MODAL ================= -->
+  <div id="customConfirmModal" class="modal-overlay" style="display: none; position: fixed; inset: 0; z-index: 9999999; align-items: center; justify-content: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); background: rgba(15, 23, 42, 0.72); padding: 16px;" onclick="if(event.target === this) window._handleConfirmModalAction(false)">
+    <div class="modal-box" style="max-width: 410px; width: 92%; border-radius: 24px; box-shadow: 0 25px 60px rgba(0,0,0,0.38); overflow: hidden; padding: 24px 22px; background: var(--card-bg, #ffffff); border: 1.5px solid var(--border, #E2E8F0); text-align: center; animation: confirmPopIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);">
+      <div id="customConfirmIconBox" style="width: 58px; height: 58px; margin: 0 auto 16px auto; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 28px; background: #FEE2E2; color: #DC2626;">
+        <span id="customConfirmIcon">⚠️</span>
+      </div>
+      <h3 id="customConfirmTitle" style="font-size: 17.5px; font-weight: 800; color: var(--text, #0F172A); margin: 0 0 10px 0; line-height: 1.35;">
+        নিশ্চিতকরণ প্রয়োজন
+      </h3>
+      <div id="customConfirmMessage" style="font-size: 13.5px; color: var(--subtext, #475569); line-height: 1.6; margin-bottom: 22px; white-space: pre-line; word-break: break-word;">
+        আপনি কি এই কাজটি সম্পন্ন করতে চান?
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;" id="customConfirmBtnGroup">
+        <button type="button" id="customConfirmCancelBtn" onclick="window._handleConfirmModalAction(false)" style="padding: 12px 14px; border-radius: 14px; background: #F1F5F9; border: 1.5px solid #CBD5E1; color: #475569; font-weight: 700; font-size: 13.5px; cursor: pointer; transition: all 0.15s ease;">
+          বাতিল করুন
+        </button>
+        <button type="button" id="customConfirmOkBtn" onclick="window._handleConfirmModalAction(true)" style="padding: 12px 14px; border-radius: 14px; background: #EF4444; border: none; color: #ffffff; font-weight: 700; font-size: 13.5px; cursor: pointer; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); transition: all 0.15s ease;">
+          হ্যাঁ, নিশ্চিত
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -12706,6 +12734,105 @@
       window.alert = function(msg) {
         window.showAppToast(msg);
       };
+    })();
+
+    // ================= GLOBAL PROFESSIONAL CONFIRMATION DIALOG SYSTEM =================
+    (function initGlobalConfirmModal() {
+      let confirmPromiseResolve = null;
+
+      window.showAppConfirm = function(options) {
+        return new Promise((resolve) => {
+          confirmPromiseResolve = resolve;
+
+          let title = "নিশ্চিতকরণ প্রয়োজন";
+          let message = "";
+          let icon = "⚠️";
+          let confirmText = "হ্যাঁ, নিশ্চিত";
+          let cancelText = "বাতিল করুন";
+          let type = "danger"; // 'danger', 'warning', 'primary', 'info'
+
+          if (typeof options === 'string') {
+            message = options;
+            if (options.includes("মুছে") || options.includes("ডিলিট") || options.includes("বাতিল") || options.includes("রোলব্যাক")) {
+              type = "danger";
+              icon = "🗑️";
+              confirmText = "হ্যাঁ, মুছে ফেলুন";
+            } else if (options.includes("সতর্ক") || options.includes("স্থগিত")) {
+              type = "warning";
+              icon = "⚠️";
+            } else {
+              type = "primary";
+              icon = "❓";
+            }
+          } else if (typeof options === 'object' && options !== null) {
+            title = options.title || title;
+            message = options.message || "";
+            icon = options.icon || (options.type === 'danger' ? '🗑️' : options.type === 'warning' ? '⚠️' : '❓');
+            confirmText = options.confirmText || confirmText;
+            cancelText = options.cancelText || cancelText;
+            type = options.type || "danger";
+          }
+
+          const modal = document.getElementById("customConfirmModal");
+          const titleEl = document.getElementById("customConfirmTitle");
+          const msgEl = document.getElementById("customConfirmMessage");
+          const iconEl = document.getElementById("customConfirmIcon");
+          const iconBox = document.getElementById("customConfirmIconBox");
+          const okBtn = document.getElementById("customConfirmOkBtn");
+          const cancelBtn = document.getElementById("customConfirmCancelBtn");
+
+          if (titleEl) titleEl.innerText = title;
+          if (msgEl) msgEl.innerText = message;
+          if (iconEl) iconEl.innerText = icon;
+          if (okBtn) okBtn.innerText = confirmText;
+          if (cancelBtn) cancelBtn.innerText = cancelText;
+
+          if (iconBox && okBtn) {
+            if (type === 'danger') {
+              iconBox.style.background = '#FEE2E2';
+              iconBox.style.color = '#DC2626';
+              okBtn.style.background = '#EF4444';
+              okBtn.style.boxShadow = '0 4px 12px rgba(239, 68, 68, 0.35)';
+            } else if (type === 'warning') {
+              iconBox.style.background = '#FEF3C7';
+              iconBox.style.color = '#D97706';
+              okBtn.style.background = '#F59E0B';
+              okBtn.style.boxShadow = '0 4px 12px rgba(245, 158, 11, 0.35)';
+            } else if (type === 'primary') {
+              iconBox.style.background = '#ECFDF5';
+              iconBox.style.color = '#059669';
+              okBtn.style.background = '#0F9D58';
+              okBtn.style.boxShadow = '0 4px 12px rgba(15, 157, 88, 0.35)';
+            } else {
+              iconBox.style.background = '#EFF6FF';
+              iconBox.style.color = '#2563EB';
+              okBtn.style.background = '#3B82F6';
+              okBtn.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.35)';
+            }
+          }
+
+          if (modal) modal.style.display = "flex";
+        });
+      };
+
+      window._handleConfirmModalAction = function(result) {
+        const modal = document.getElementById("customConfirmModal");
+        if (modal) modal.style.display = "none";
+        if (typeof confirmPromiseResolve === 'function') {
+          const fn = confirmPromiseResolve;
+          confirmPromiseResolve = null;
+          fn(result);
+        }
+      };
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          const modal = document.getElementById("customConfirmModal");
+          if (modal && modal.style.display === "flex") {
+            window._handleConfirmModalAction(false);
+          }
+        }
+      });
     })();
 
     const firebaseConfig = {
@@ -15276,16 +15403,25 @@
       alert(`🎉 "${name}" সফলভাবে যুক্ত হয়েছে! প্রবেশ করতে কার্ডে ক্লিক করুন।`);
     }
 
-    function deleteCustomSomiti(somitiId) {
+    async function deleteCustomSomiti(somitiId) {
       if (somitiId === 'swapnochowa') {
-        alert("প্রধান সমিতি মুছে ফেলা সম্ভব নয়!");
+        showAppToast("প্রধান সমিতি মুছে ফেলা সম্ভব নয়!", "warning");
         return;
       }
-      if (!confirm("আপনি কি নিশ্চিত যে এই সমিতিটি তালিকা থেকে মুছে ফেলতে চান?")) return;
+      const confirmed = await showAppConfirm({
+        title: "সমিতি মুছে ফেলবেন?",
+        message: "আপনি কি নিশ্চিত যে এই সমিতিটি তালিকা থেকে মুছে ফেলতে চান?\nমুছে ফেললে এর সকল কনফিগারেশন স্থানীয় ডিভাইস থেকে অপসারিত হবে।",
+        confirmText: "হ্যাঁ, মুছে ফেলুন",
+        cancelText: "বাতিল করুন",
+        type: "danger",
+        icon: "🗑️"
+      });
+      if (!confirmed) return;
       let societies = getRegisteredSocieties();
       societies = societies.filter(s => s.id !== somitiId);
       localStorage.setItem(USER_SOCIETIES_KEY, JSON.stringify(societies));
       renderSomitiCardsGrid(true);
+      showAppToast("সমিতি সফলভাবে তালিকা থেকে মুছে ফেলা হয়েছে!", "success");
     }
 
     let currentEditSomitiId = null;
@@ -15861,7 +15997,7 @@
     }
 
     // Add Deposit & Generate Receipt
-    function addDeposit() {
+    async function addDeposit() {
       const select = document.getElementById("depositMemberSelect");
       const memberId = select.value;
       const memberName = select.options[select.selectedIndex]?.dataset.name || "";
@@ -15879,7 +16015,14 @@
           d.bankSlipNo && d.bankSlipNo.toLowerCase() === bankSlipNo.toLowerCase()
         );
         if (dupDeposit) {
-          const confirmDup = confirm(`⚠️ ডুপ্লিকেট স্লিপ সতর্কবার্তা!\n\n'${bankSlipNo}' স্লিপ নম্বরটি ইতিমধ্যেই ডাটাবেজে উপস্থিত আছে!\n\nজমাকারী: ${dupDeposit.memberName || 'সদস্য'}\nরসিদ নং: ${dupDeposit.receiptNo || 'N/A'}\nপরিমাণ: ৳${(dupDeposit.amount||0).toLocaleString('bn-BD')}\n\nআপনি কি নিশ্চিত যে এই স্লিপ দিয়ে পুনরায় জমা রেকর্ড করতে চান?`);
+          const confirmDup = await showAppConfirm({
+            title: "ডুপ্লিকেট স্লিপ সতর্কবার্তা",
+            message: `'${bankSlipNo}' স্লিপ নম্বরটি ইতিমধ্যেই ডাটাবেজে উপস্থিত আছে!\n\nজমাকারী: ${dupDeposit.memberName || 'সদস্য'}\nরসিদ নং: ${dupDeposit.receiptNo || 'N/A'}\nপরিমাণ: ৳${(dupDeposit.amount||0).toLocaleString('bn-BD')}\n\nআপনি কি নিশ্চিত যে এই স্লিপ দিয়ে পুনরায় জমা রেকর্ড করতে চান?`,
+            confirmText: "হ্যাঁ, রেকর্ড করুন",
+            cancelText: "বাতিল",
+            type: "warning",
+            icon: "⚠️"
+          });
           if (!confirmDup) return;
         }
       }
@@ -16014,9 +16157,20 @@
     }
 
     // Delete Expense
-    function deleteExpense(id) {
-      if (confirm("আপনি কি নিশ্চিত এই খরচের এন্ট্রি মুছে ফেলতে চান?")) {
-        getSomitiDocRef().collection("expenses").doc(id).delete();
+    async function deleteExpense(id) {
+      const confirmed = await showAppConfirm({
+        title: "খরচের এন্ট্রি মুছে ফেলা",
+        message: "আপনি কি নিশ্চিত এই খরচের এন্ট্রি মুছে ফেলতে চান?",
+        confirmText: "হ্যাঁ, মুছুন",
+        cancelText: "বাতিল",
+        type: "danger",
+        icon: "🗑️"
+      });
+      if (confirmed) {
+        if (getSomitiDocRef()) {
+          getSomitiDocRef().collection("expenses").doc(id).delete();
+        }
+        showAppToast("খরচের এন্ট্রি সফলভাবে মুছে ফেলা হয়েছে", "info");
       }
     }
 
@@ -16218,7 +16372,11 @@
         setTxt('dynDueControlText', `বকেয়া তালিকা (${toBn(dueCount)} জন)`);
         setTxt('dynDueReminderSubtext', `নভেম্বর ২০২৬ কিস্তির বকেয়া ${toBn(dueCount)} জন সদস্য (${formatBnTaka(dueTotal)}/- ৳) কে এক ক্লিকে সতর্কবার্তা পাঠান।`);
         setTxt('dynDueWhatsAppBtnText', `সকল ${toBn(dueCount)} জন বকেয়া সদস্যকে তাগাদা পাঠান`);
-        setTxt('dynDueKhataBadge', `${toBn(dueCount)} জন বাকি`);
+        setTxt('dynDueKhataBadge', `${toBn(dueCount)} জন বকেয়া`);
+        setTxt('dynReceiptsSubBreakdown', `${toBn(paidCount)} জন আদায়কৃত • ${toBn(dueCount)} জন বকেয়া (মোট ${toBn(totalMembers)} জন)`);
+        setTxt('dashTargetCollectedSub', `${toBn(paidCount)} জন সদস্য`);
+        setTxt('dashTargetDueSub', `${toBn(dueCount)} জন সদস্য`);
+        setTxt('dashTargetTotalSub', `${toBn(totalMembers)} জন সদস্য`);
 
         const trendLbl = document.getElementById('dynNovTrendLabel');
         if (trendLbl) trendLbl.innerText = paidLakhStr;
@@ -16661,12 +16819,19 @@
       reader.readAsText(file);
     }
 
-    function executeDatabaseRestore() {
+    async function executeDatabaseRestore() {
       if (!parsedBackupToRestore) {
-        alert("অনুগ্রহ করে একটি সঠিক ব্যাকআপ ফাইল নির্বাচন করুন");
+        showAppToast("অনুগ্রহ করে একটি সঠিক ব্যাকআপ ফাইল নির্বাচন করুন", "warning");
         return;
       }
-      const ok = confirm("⚠️ সতর্কবার্তা!\n\nআপনি কি নিশ্চিত যে এই ব্যাকআপ ফাইলটি থেকে ডাটাবেস রিস্টোর করতে চান?\nবর্তমানের ডাটা প্রতিস্থাপিত হবে।");
+      const ok = await showAppConfirm({
+        title: "ডাটাবেস রিস্টোর সতর্কবার্তা",
+        message: "⚠️ আপনি কি নিশ্চিত যে এই ব্যাকআপ ফাইলটি থেকে ডাটাবেস রিস্টোর করতে চান?\n\nবর্তমানে থাকা সকল তথ্য এই ব্যাকআপ ফাইলের ডাটা দিয়ে প্রতিস্থাপিত হবে!",
+        confirmText: "হ্যাঁ, রিস্টোর করুন",
+        cancelText: "বাতিল",
+        type: "danger",
+        icon: "⚠️"
+      });
       if (!ok) return;
 
       try {
@@ -17037,6 +17202,17 @@
       if (targetPctBadge) targetPctBadge.innerText = (isBalanceHidden ? "•••%" : pct + "%") + " সংগৃহীত";
       if (targetCollectedEl) targetCollectedEl.innerText = formatCurrencyBD(currentCollected);
       if (targetDueEl) targetDueEl.innerText = formatCurrencyBD(dueAmt);
+
+      const targetColSub = document.getElementById("dashTargetCollectedSub");
+      const targetDueSub = document.getElementById("dashTargetDueSub");
+      const targetTotSub = document.getElementById("dashTargetTotalSub");
+      const numPaid = Math.round(currentCollected / 10000);
+      const numTotal = isSwapno ? 27 : (membersData.length > 0 ? membersData.length : 0);
+      const numDue = Math.max(0, numTotal - numPaid);
+      const toBnStr = n => String(n).replace(/[0-9]/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+      if (targetColSub) targetColSub.innerText = `${toBnStr(numPaid)} জন সদস্য`;
+      if (targetDueSub) targetDueSub.innerText = `${toBnStr(numDue)} জন সদস্য`;
+      if (targetTotSub) targetTotSub.innerText = `${toBnStr(numTotal)} জন সদস্য`;
     }
 
     function updateDropdown() {
@@ -17463,7 +17639,14 @@
           window.NativeAuthBridge.postMessage('google_sign_in');
           return;
         }
-        const confirmLogin = confirm("Google Drive-এ সরাসরি রসিদ ও এটাচমেন্ট সেভ করে শেয়ারেবল লিংক তৈরির জন্য গুগল ড্রাইভ অ্যাক্সেস প্রয়োজন। আপনি কি গুগল দিয়ে লগইন করবেন?");
+        const confirmLogin = await showAppConfirm({
+          title: "গুগল ড্রাইভ সংযোগ",
+          message: "Google Drive-এ সরাসরি রসিদ ও এটাচমেন্ট সেভ করে শেয়ারেবল লিংক তৈরির জন্য গুগল ড্রাইভ অ্যাক্সেস প্রয়োজন। আপনি কি গুগল দিয়ে লগইন করবেন?",
+          confirmText: "গুগল লগইন",
+          cancelText: "পরে করব",
+          type: "primary",
+          icon: "☁️"
+        });
         if (!confirmLogin) return;
 
         try {
@@ -19172,9 +19355,15 @@
       const amt = activeReceiptData.amount || 0;
       const memId = activeReceiptData.memberId;
 
-      if (!confirm(`⚠️ আপনি কি নিশ্চিতভাবে রসিদ নং "${rctNo}" (${memName} - ৳${amt}) চিরতরে ডিলিট করতে চান?\n\nএটি করলে মূল অ্যাপ এবং অনলাইন ভেরিফিকেশন পোর্টাল (verify.html) উভয় স্থান থেকেই এটি পুরোপুরি মুছে যাবে!`)) {
-        return;
-      }
+      const ok = await showAppConfirm({
+        title: "রসিদ ডিলিট নিশ্চিতকরণ",
+        message: `⚠️ আপনি কি নিশ্চিতভাবে রসিদ নং "${rctNo}" (${memName} - ৳${amt}) চিরতরে ডিলিট করতে চান?\n\nএটি করলে মূল অ্যাপ এবং অনলাইন ভেরিফিকেশন পোর্টাল (verify.html) উভয় স্থান থেকেই এটি পুরোপুরি মুছে যাবে!`,
+        confirmText: "হ্যাঁ, ডিলিট করুন",
+        cancelText: "বাতিল",
+        type: "danger",
+        icon: "🗑️"
+      });
+      if (!ok) return;
 
       try {
         // 1. Remove from Firestore if doc id exists
@@ -19222,9 +19411,15 @@
 
     async function deleteDepositById(id, receiptNo, memberName, amount, memberId) {
       const rctNo = receiptNo || ("RCT-" + (id ? id.substring(0, 6).toUpperCase() : ''));
-      if (!confirm(`⚠️ আপনি কি নিশ্চিতভাবে "${memberName}"-এর রসিদ নং "${rctNo}" (৳${amount}) চিরতরে ডিলিট করতে চান?\n\nএটি করলে মূল অ্যাপ এবং অনলাইন ভেরিফিকেশন পোর্টাল উভয় স্থান থেকেই এটি পুরোপুরি মুছে যাবে!`)) {
-        return;
-      }
+      const ok = await showAppConfirm({
+        title: "রসিদ ডিলিট নিশ্চিতকরণ",
+        message: `⚠️ আপনি কি নিশ্চিতভাবে "${memberName}"-এর রসিদ নং "${rctNo}" (৳${amount}) চিরতরে ডিলিট করতে চান?\n\nএটি করলে মূল অ্যাপ এবং অনলাইন ভেরিফিকেশন পোর্টাল উভয় স্থান থেকেই এটি পুরোপুরি মুছে যাবে!`,
+        confirmText: "হ্যাঁ, ডিলিট করুন",
+        cancelText: "বাতিল",
+        type: "danger",
+        icon: "🗑️"
+      });
+      if (!ok) return;
       try {
         if (id && getSomitiDocRef()) {
           try {
@@ -20203,7 +20398,14 @@
           window.NativeAuthBridge.postMessage('google_sign_in');
           return;
         }
-        const confirmLogin = confirm("Google Drive-এ সরাসরি নোটিশ সংরক্ষণ ও লিংক তৈরির জন্য গুগল ড্রাইভ অ্যাক্সেস প্রয়োজন। আপনি কি গুগল দিয়ে লগইন করবেন?");
+        const confirmLogin = await showAppConfirm({
+          title: "গুগল ড্রাইভ নোটিশ সংরক্ষণ",
+          message: "Google Drive-এ সরাসরি নোটিশ সংরক্ষণ ও লিংক তৈরির জন্য গুগল ড্রাইভ অ্যাক্সেস প্রয়োজন। আপনি কি গুগল দিয়ে লগইন করবেন?",
+          confirmText: "গুগল লগইন",
+          cancelText: "পরে করব",
+          type: "primary",
+          icon: "☁️"
+        });
         if (!confirmLogin) return;
 
         try {
@@ -23590,8 +23792,16 @@
       }).join("");
     }
 
-    function revokeSessionDirectly(sessionId) {
-      if (!confirm("আপনি কি নিশ্চিতভাবে এই ডিভাইসের সেশনটি তাৎক্ষণিক বাতিল করতে চান? ব্যবহারকারী সরাসরি লগআউট হয়ে যাবে।")) return;
+    async function revokeSessionDirectly(sessionId) {
+      const ok = await showAppConfirm({
+        title: "সেশন বাতিল নিশ্চিতকরণ",
+        message: "আপনি কি নিশ্চিতভাবে এই ডিভাইসের সেশনটি তাৎক্ষণিক বাতিল করতে চান? ব্যবহারকারী সরাসরি লগআউট হয়ে যাবে।",
+        confirmText: "হ্যাঁ, বাতিল করুন",
+        cancelText: "ফিরে যান",
+        type: "danger",
+        icon: "🔒"
+      });
+      if (!ok) return;
 
       const s = activeUserSessionsData.find(x => x.sessionId === sessionId);
       if (s) {
@@ -23602,8 +23812,16 @@
       }
     }
 
-    function revokeAllSessionsDirectly() {
-      if (!confirm("⚠️ জরুরি নিরাপত্তা পদক্ষেপ: আপনি কি সকল সচল ডিভাইস ও সেশন তাৎক্ষণিক বাতিল করতে চান?")) return;
+    async function revokeAllSessionsDirectly() {
+      const ok = await showAppConfirm({
+        title: "সকল সেশন বাতিল",
+        message: "⚠️ জরুরি নিরাপত্তা পদক্ষেপ: আপনি কি সকল সচল ডিভাইস ও সেশন তাৎক্ষণিক বাতিল করতে চান?",
+        confirmText: "হ্যাঁ, সকল সেশন বাতিল",
+        cancelText: "বাতিল",
+        type: "danger",
+        icon: "🚨"
+      });
+      if (!ok) return;
 
       activeUserSessionsData.forEach(s => s.isRevoked = true);
       localStorage.setItem("somiti_user_sessions", JSON.stringify(activeUserSessionsData));
@@ -24034,7 +24252,7 @@
       }
     }
 
-    function toggleSocietySuspension(societyId) {
+    async function toggleSocietySuspension(societyId) {
       const s = societySubscriptionsData.find(x => x.societyId === societyId);
       if (!s) return;
       if (s.status === 'suspended') {
@@ -24042,7 +24260,15 @@
         s.statusBn = 'সক্রিয়';
         alert(`✓ "${s.societyName}" এর সাবস্ক্রিপশন সফলভাবে পুনঃসক্রিয় করা হয়েছে!`);
       } else {
-        if (!confirm(`আপনি কি "${s.societyName}" এর একাউন্ট সাময়িকভাবে স্থগিত করতে চান? (সব ডাটা সম্পূর্ণ সংরক্ষিত থাকবে)`)) return;
+        const ok = await showAppConfirm({
+          title: "একাউন্ট স্থগিতকরণ",
+          message: `আপনি কি "${s.societyName}" এর একাউন্ট সাময়িকভাবে স্থগিত করতে চান? (সব ডাটা সম্পূর্ণ সংরক্ষিত থাকবে)`,
+          confirmText: "স্থগিত করুন",
+          cancelText: "বাতিল",
+          type: "warning",
+          icon: "⏸️"
+        });
+        if (!ok) return;
         s.status = 'suspended';
         s.statusBn = 'স্থগিত (Suspended)';
         alert(`⚠️ "${s.societyName}" সফলভাবে স্থগিত করা হয়েছে। ঐতিহাসিক রেকর্ড সংরক্ষিত আছে।`);
@@ -24628,10 +24854,18 @@
       alert(`🎉 "${name}" সফলভাবে CRM লিড হিসেবে নিবন্ধিত হয়েছে!`);
     }
 
-    function convertLeadToMember(leadId) {
+    async function convertLeadToMember(leadId) {
       const l = opsLeadsData.find(x => x.id === leadId);
       if (!l) return;
-      if (!confirm(`আপনি কি "${l.fullName}" কে আনুষ্ঠানিকভাবে সমিতির সক্রিয় সদস্য হিসেবে রূপান্তর করতে চান?`)) return;
+      const ok = await showAppConfirm({
+        title: "সদস্য রূপান্তর নিশ্চিতকরণ",
+        message: `আপনি কি "${l.fullName}" কে আনুষ্ঠানিকভাবে সমিতির সক্রিয় সদস্য হিসেবে রূপান্তর করতে চান?`,
+        confirmText: "হ্যাঁ, রূপান্তর করুন",
+        cancelText: "বাতিল",
+        type: "primary",
+        icon: "👤"
+      });
+      if (!ok) return;
 
       l.status = 'converted';
       l.statusBn = 'সদস্যে রূপান্তরিত';
@@ -24822,13 +25056,21 @@
       alert(`✓ কর্মকর্তা "${e.name}" এর আজকের উপস্থিতি সফলভাবে রেকর্ড করা হয়েছে!`);
     }
 
-    function openPayrollRunModal() {
+    async function openPayrollRunModal() {
       let totalGross = 0;
       opsEmployeesData.forEach(e => totalGross += e.baseSalary);
       const deductions = Math.round(totalGross * 0.05); // 5% PF
       const net = totalGross - deductions;
 
-      if (!confirm(`নভেম্বর ২০২৬ পে-রোল অনুমোদন করতে চান?\n\nমোট কর্মকর্তা: ${opsEmployeesData.length} জন\nমোট বেতন: ৳${totalGross}\nপিএফ কর্তন (৫%): ৳${deductions}\nসর্বমোট প্রদেয় নেট: ৳${net}\n\nলেজারে স্বয়ংক্রিয় জার্নাল ভাউচার (JV-PAY-202611-002) তৈরি হবে।`)) return;
+      const ok = await showAppConfirm({
+        title: "পে-রোল অনুমোদন নিশ্চিতকরণ",
+        message: `নভেম্বর ২০২৬ পে-রোল অনুমোদন করতে চান?\n\nমোট কর্মকর্তা: ${opsEmployeesData.length} জন\nমোট বেতন: ৳${totalGross.toLocaleString('bn-BD')}\nপিএফ কর্তন (৫%): ৳${deductions.toLocaleString('bn-BD')}\nসর্বমোট প্রদেয় নেট: ৳${net.toLocaleString('bn-BD')}\n\nলেজারে স্বয়ংক্রিয় জার্নাল ভাউচার (JV-PAY-202611-002) তৈরি হবে।`,
+        confirmText: "অনুমোদন করুন",
+        cancelText: "বাতিল",
+        type: "primary",
+        icon: "💼"
+      });
+      if (!ok) return;
 
       const newRun = {
         id: "pay_run_nov",
@@ -26464,8 +26706,15 @@
       alert(`✓ অপারেশন ${opId} সার্ভারের সাথে সফলভাবে সিঙ্ক হয়েছে!`);
     }
 
-    function resolveConflictPrompt(opId) {
-      const choice = confirm(`কনফ্লিক্ট অপারেশন ${opId} রিভিউ:\nসমস্যা: অনলাইন সার্ভারে পূর্বেই এই কিস্তি পরিশোধ করা হয়েছিল।\n\nআপনি কি এই এন্ট্রিটিকে 'অগ্রিম সঞ্চয় জমা' হিসেবে স্থানান্তর করতে চান?`);
+    async function resolveConflictPrompt(opId) {
+      const choice = await showAppConfirm({
+        title: "কনফ্লিক্ট অপারেশন রিভিউ",
+        message: `কনফ্লিক্ট অপারেশন ${opId} রিভিউ:\nসমস্যা: অনলাইন সার্ভারে পূর্বেই এই কিস্তি পরিশোধ করা হয়েছিল।\n\nআপনি কি এই এন্ট্রিটিকে 'অগ্রিম সঞ্চয় জমা' হিসেবে স্থানান্তর করতে চান?`,
+        confirmText: "হ্যাঁ, স্থানান্তর করুন",
+        cancelText: "কোনো পরিবর্তন নয়",
+        type: "warning",
+        icon: "⚖️"
+      });
       if (choice) {
         const item = offlineSyncQueue.find(q => q.opId === opId);
         if (item) {
@@ -26692,11 +26941,18 @@
       `;
     }
 
-    function toggleDeviceAuthorization(deviceId) {
+    async function toggleDeviceAuthorization(deviceId) {
       const dev = registeredDevicesFleet.find(d => d.deviceId === deviceId);
       if (!dev) return;
       if (dev.isAuthorized) {
-        const confirmRevoke = confirm(`সতর্কবার্তা: আপনি কি নিশ্চিতভাবে ডিভাইস ${deviceId} এর অনুমোদন বাতিল (Revoke) ও রিমোট ওয়াইপ করতে চান?\nএটি কার্যকর হলে এই ডিভাইস থেকে আর কোনো কালেকশন বা সিঙ্ক সম্ভব হবে না।`);
+        const confirmRevoke = await showAppConfirm({
+          title: "ডিভাইস অনুমোদন প্রত্যাহার",
+          message: `সতর্কবার্তা: আপনি কি নিশ্চিতভাবে ডিভাইস ${deviceId} এর অনুমোদন বাতিল (Revoke) ও রিমোট ওয়াইপ করতে চান?\nএটি কার্যকর হলে এই ডিভাইস থেকে আর কোনো কালেকশন বা সিঙ্ক সম্ভব হবে না।`,
+          confirmText: "লক ও বাতিল করুন",
+          cancelText: "বাতিল",
+          type: "danger",
+          icon: "📱"
+        });
         if (confirmRevoke) {
           dev.isAuthorized = false;
           dev.status = 'REVOKED';
@@ -27077,8 +27333,15 @@
       alert(`✓ অন-ডিমান্ড ক্লাউড ব্যাকআপ সফল!\nব্যাকআপ ID: ${backupId}\nআয়তন: 49.1 MB\nফায়ারস্টোর ডাটাবেস ও ক্লাউড স্টোরেজের সমস্ত মেটাডাটা ব্যাকআপ বাকেটে সংরক্ষিত হয়েছে।`);
     }
 
-    function executeSandboxRestoreTest() {
-      const confirmTest = confirm("স্যান্ডবক্স রিস্টোরেশন মহড়া নিশ্চিতকরণ:\nটার্গেট এনভায়রনমেন্ট: staging-somiti-sandbox\nপ্রোডাকশন ডেটা অবিকৃত থাকবে। আপনি কি টেস্ট রান করতে চান?");
+    async function executeSandboxRestoreTest() {
+      const confirmTest = await showAppConfirm({
+        title: "স্যান্ডবক্স মহড়া নিশ্চিতকরণ",
+        message: "স্যান্ডবক্স রিস্টোরেশন মহড়া নিশ্চিতকরণ:\nটার্গেট এনভায়রনমেন্ট: staging-somiti-sandbox\nপ্রোডাকশন ডেটা অবিকৃত থাকবে। আপনি কি টেস্ট রান করতে চান?",
+        confirmText: "মহড়া রান করুন",
+        cancelText: "বাতিল",
+        type: "primary",
+        icon: "🧪"
+      });
       if (confirmTest) {
         devopsLogs.unshift({
           id: 'LOG-' + Math.floor(1000 + Math.random()*9000),
@@ -27131,8 +27394,15 @@
       `;
     }
 
-    function triggerRollbackPrompt() {
-      const confirmRollback = confirm("সতর্কবার্তা: আপনি কি পূর্ববর্তী স্টেবল রিলিজ v2.7.3-p9 এ ইনস্ট্যান্ট রোলব্যাক করতে চান?\nএটি কার্যকর হলে বর্তমান কোডবেস তাৎক্ষণিকভাবে পূর্ববর্তী বিল্ডে স্থানান্তরিত হবে।");
+    async function triggerRollbackPrompt() {
+      const confirmRollback = await showAppConfirm({
+        title: "জরুরি রোলব্যাক সতর্কতা",
+        message: "সতর্কবার্তা: আপনি কি পূর্ববর্তী স্টেবল রিলিজ v2.7.3-p9 এ ইনস্ট্যান্ট রোলব্যাক করতে চান?\nএটি কার্যকর হলে বর্তমান কোডবেস তাৎক্ষণিকভাবে পূর্ববর্তী বিল্ডে স্থানান্তরিত হবে।",
+        confirmText: "ইনস্ট্যান্ট রোলব্যাক",
+        cancelText: "বাতিল",
+        type: "danger",
+        icon: "⏪"
+      });
       if (confirmRollback) {
         devopsDeployments.unshift({
           id: 'DEP-' + Date.now(),
@@ -28399,14 +28669,21 @@
       alert(`🎉 সাপোর্ট টিকেট সফলভাবে তৈরি হয়েছে!\n\nটিকেট নম্বর: ${newTkt.ticketNumber}\nদায়িত্বপ্রাপ্ত এজেন্ট: ${newTkt.agent}\nএসএলএ ফার্স্ট রেসপন্স টার্গেট: ৪ ঘণ্টা।`);
     }
 
-    function openSubmitComplaintModal() {
+    async function openSubmitComplaintModal() {
       const title = prompt("অভিযোগের বিষয় লিখুন (গোপনীয় সেল):");
       if (!title) return;
 
       const desc = prompt("অভিযোগের বিস্তারিত বিবরণ লিখুন (সাক্ষ্য ও তারিখ সহ):");
       if (!desc) return;
 
-      const isAnon = confirm("আপনি কি নিজের পরিচয় সম্পূর্ণ গোপন রাখতে চান? (OK = বেনামী / Cancel = নাম সহ)");
+      const isAnon = await showAppConfirm({
+        title: "পরিচয় গোপনীয়তা বিকল্প",
+        message: "আপনি কি নিজের পরিচয় সম্পূর্ণ গোপন রাখতে চান?\n\n'বেনামী রাখুন' নির্বাচন করলে আপনার নাম গোপন থাকবে।",
+        confirmText: "বেনামী রাখুন",
+        cancelText: "নাম সহ জমা দিন",
+        type: "primary",
+        icon: "🕶️"
+      });
 
       const newCmp = {
         id: 'CMP-' + Math.floor(1400 + Math.random() * 900),
@@ -28750,11 +29027,18 @@
       `).join('');
     }
 
-    function generateNewApiKeyPrompt() {
+    async function generateNewApiKeyPrompt() {
       const name = prompt("নতুন এপিআই কি অথবা অ্যাপ্লিকেশনের নাম লিখুন:", "ERP ইন্টিগ্রেশন কি");
       if (!name) return;
 
-      const isProd = confirm("এটি কি 'PRODUCTION' পরিবেশের জন্য হবে?\n(Cancel চাপলে এটি 'SANDBOX' পরিবেশের জন্য তৈরি হবে)");
+      const isProd = await showAppConfirm({
+        title: "এপিআই পরিবেশ নির্বাচন",
+        message: "এটি কি 'PRODUCTION' পরিবেশের জন্য তৈরি করবেন?\n\n'না' নির্বাচন করলে এটি 'SANDBOX' পরিবেশের জন্য তৈরি হবে।",
+        confirmText: "Production",
+        cancelText: "Sandbox",
+        type: "primary",
+        icon: "🔑"
+      });
       const env = isProd ? 'PRODUCTION' : 'SANDBOX';
       const randomHex = Math.random().toString(36).substring(2, 10);
 
@@ -28777,10 +29061,18 @@
       alert(`✅ নতুন এপিআই কি সফলভাবে জেনারেট করা হয়েছে!\n\nClient ID: ${newKey.clientId}\nSecret: ${newKey.maskedSecret}\nপরিবেশ: ${newKey.env}`);
     }
 
-    function revokeApiKeyAction(keyId) {
+    async function revokeApiKeyAction(keyId) {
       const target = apiKeysData.find(k => k.id === keyId);
       if (!target) return;
-      if (!confirm(`⚠️ আপনি কি নিশ্চিতভাবে '${target.name}' এপিআই কি-টি বাতিল (Revoke) করতে চান? এটি সাথে সাথে সব রিকোয়েস্ট ব্লক করে দেবে।`)) return;
+      const ok = await showAppConfirm({
+        title: "এপিআই কি বাতিল",
+        message: `⚠️ আপনি কি নিশ্চিতভাবে '${target.name}' এপিআই কি-টি বাতিল (Revoke) করতে চান? এটি সাথে সাথে সব রিকোয়েস্ট ব্লক করে দেবে।`,
+        confirmText: "বাতিল (Revoke)",
+        cancelText: "ফিরে যান",
+        type: "danger",
+        icon: "🚫"
+      });
+      if (!ok) return;
 
       target.status = 'REVOKED';
       target.statusBn = 'বাতিলকৃত';
@@ -28788,10 +29080,18 @@
       alert("🚫 এপিআই কি সফলভাবে বাতিল করা হয়েছে।");
     }
 
-    function rotateApiKeyAction(keyId) {
+    async function rotateApiKeyAction(keyId) {
       const target = apiKeysData.find(k => k.id === keyId);
       if (!target) return;
-      if (!confirm(`🔄 আপনি কি '${target.name}' কি-এর জন্য নতুন সিক্রেট ক্রেডেনশিয়াল রোটেট করতে চান? পুরানো কি ৭২ ঘণ্টা পর্যন্ত গ্রেস পিরিয়ডে কাজ করবে।`)) return;
+      const ok = await showAppConfirm({
+        title: "সিক্রেট কি রোটেশন",
+        message: `🔄 আপনি কি '${target.name}' কি-এর জন্য নতুন সিক্রেট ক্রেডেনশিয়াল রোটেট করতে চান? পুরানো কি ৭২ ঘণ্টা পর্যন্ত গ্রেস পিরিয়ডে কাজ করবে।`,
+        confirmText: "রোটেট করুন",
+        cancelText: "বাতিল",
+        type: "warning",
+        icon: "🔄"
+      });
+      if (!ok) return;
 
       const randomHex = Math.random().toString(36).substring(2, 6);
       target.maskedSecret = target.maskedSecret.substring(0, 16) + '••••' + randomHex;
