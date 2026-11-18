@@ -12575,8 +12575,7 @@
     </div>
   </div>
 
-  <!-- Firebase & Google Identity Scripts -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -12754,43 +12753,9 @@
       } else {
         if (!currentUser) {
           showScreen('login');
-          initWebGoogleOneTap();
         }
       }
     });
-
-    function initWebGoogleOneTap() {
-      if (window.NativeAuthBridge) return; // Handled natively in Android app
-      if (currentUser) return;
-      if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
-        try {
-          google.accounts.id.initialize({
-            client_id: "122717224216-somitiappweb.apps.googleusercontent.com",
-            auto_select: false,
-            cancel_on_tap_outside: true,
-            callback: async (response) => {
-              if (response && response.credential) {
-                const credential = firebase.auth.GoogleAuthProvider.credential(response.credential);
-                try {
-                  const res = await auth.signInWithCredential(credential);
-                  if (res && res.user) {
-                    currentUser = res.user;
-                    await checkAndRouteUser(res.user);
-                  }
-                } catch(err) {
-                  console.warn("One tap signin notice:", err);
-                }
-              }
-            }
-          });
-          google.accounts.id.prompt();
-        } catch(e) {
-          console.warn("Google One-Tap notice:", e);
-        }
-      } else {
-        setTimeout(initWebGoogleOneTap, 1500);
-      }
-    }
 
     function showScreen(screen) {
       document.getElementById("loginScreen").style.display = screen === 'login' ? 'flex' : 'none';
