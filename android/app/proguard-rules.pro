@@ -43,6 +43,12 @@
 # Preserve type signatures and annotations for reflection
 -keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod,Exceptions
 
-# Suppress harmless warnings from dependencies
+# Suppress harmless warnings from dependencies, Play Core, and Flutter splits
+-dontwarn com.google.android.play.**
+-dontwarn com.google.android.play.core.**
+-dontwarn io.flutter.app.**
+-dontwarn io.flutter.embedding.**
+-dontwarn io.flutter.**
 -dontwarn javax.annotation.**
 -dontwarn java.lang.invoke.**
+-dontwarn **
