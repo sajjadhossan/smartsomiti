@@ -1,10 +1,16 @@
-// Smart Somiti Service Worker - PWA Offline Caching Engine v2.7.0
-const CACHE_NAME = 'smart-somiti-cache-v2.7.0';
+// Smart Somiti Service Worker - PWA Offline Caching Engine v2.8.13
+const CACHE_NAME = 'smart-somiti-cache-v2.8.13';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/verify.html',
+  '/logo.webp',
   '/logo.jpg',
+  '/swapno_chowa_logo.webp',
+  '/swapno_chowa_logo.jpg',
+  '/smart_somiti_logo.webp',
+  '/smart_somiti_logo.jpg',
+  '/pad_header.webp',
   '/pad_header.jpg',
   '/manifest.json',
   '/version.json'
@@ -46,6 +52,24 @@ self.addEventListener('fetch', (event) => {
     url.hostname.includes('googleapis.com') ||
     url.hostname.includes('identitytoolkit.googleapis.com')
   ) {
+    return;
+  }
+
+  // Cache-First strategy for images to eliminate redundant mobile data downloads
+  const isImage = /\.(webp|jpg|jpeg|png|ico|svg)$/i.test(url.pathname);
+  if (isImage) {
+    event.respondWith(
+      caches.match(req).then((cached) => {
+        if (cached) return cached;
+        return fetch(req).then((res) => {
+          if (res && res.status === 200) {
+            const clone = res.clone();
+            caches.open(CACHE_NAME).then(c => c.put(req, clone));
+          }
+          return res;
+        });
+      })
+    );
     return;
   }
 

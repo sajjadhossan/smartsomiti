@@ -31,8 +31,12 @@ flutter:
   uses-material-design: true
   assets:
     - assets/index.html
+    - assets/logo.webp
     - assets/logo.jpg
+    - assets/smart_somiti_logo.webp
     - assets/smart_somiti_logo.jpg
+    - assets/swapno_chowa_logo.webp
     - assets/swapno_chowa_logo.jpg
+    - assets/pad_header.webp
     - assets/pad_header.jpg
     - version.json
