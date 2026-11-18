@@ -60,11 +60,11 @@
           <span class="text-emerald-300 hidden sm:inline">•</span>
           <span class="font-semibold text-emerald-100" id="hdrAddr">📍 শ্রীনগর, মুন্সীগঞ্জ</span>
           <span class="text-emerald-300 hidden sm:inline">•</span>
-          <span class="font-semibold text-emerald-100" id="hdrBank">🏦 সিটি ব্যাংক পিএলসি • হিসাব: ২৩১৫১৫৮০৪৫০০১</span>
+          <span class="font-semibold text-emerald-100" id="hdrBank">🏦 সিটি ব্যাংক পিএলসি • হিসাব: ২৩০৫১৫৮০৪৫০০১</span>
           <span class="text-emerald-300 hidden sm:inline">•</span>
           <span class="font-semibold text-emerald-100" id="hdrRouting">🌐 রাউটিং: ২২৫২৬০৪১৫</span>
           <span class="text-emerald-300 hidden sm:inline">•</span>
-          <span class="font-semibold text-amber-200" id="hdrBkash">📱 বিকাশ: ০১৭১২-৩৪৫৬৭৮</span>
+          <span class="font-semibold text-amber-200" id="hdrBkash">📱 বিকাশ: ০১৮৮১২১০৪৪৪</span>
         </div>
         <div class="flex flex-wrap items-center justify-center gap-2 text-xs shrink-0">
           <button type="button" onclick="openPadEditModal()"
@@ -426,7 +426,7 @@
         </div>
         <div>
           <label class="font-bold text-slate-700 block mb-1">🏦 ব্যাংক নাম ও হিসাব বিবরণ:</label>
-          <input type="text" id="editBank" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: সিটি ব্যাংক পিএলসি • হিসাব: ২৩১৫১৫৮০৪৫০০১" />
+          <input type="text" id="editBank" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: সিটি ব্যাংক পিএলসি • হিসাব: ২৩০৫১৫৮০৪৫০০১" />
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div>
@@ -435,7 +435,7 @@
           </div>
           <div>
             <label class="font-bold text-slate-700 block mb-1">📱 বিকাশ / নগদ নম্বর:</label>
-            <input type="text" id="editBkash" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: ০১৭১২-৩৪৫৬৭৮" />
+            <input type="text" id="editBkash" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: ০১৮৮১২১০৪৪৪" />
           </div>
         </div>
         <div class="grid grid-cols-2 gap-2">
@@ -505,9 +505,9 @@
     const DEFAULT_PAD_CONFIG = {
       reg: "🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬",
       addr: "📍 শ্রীনগর, মুন্সীগঞ্জ",
-      bank: "🏦 সিটি ব্যাংক পিএলসি • হিসাব: ২৩১৫১৫৮০৪৫০০১",
+      bank: "🏦 সিটি ব্যাংক পিএলসি • হিসাব: ২৩০৫১৫৮০৪৫০০১",
       routing: "🌐 রাউটিং: ২২৫২৬০৪১৫",
-      bkash: "📱 বিকাশ: ০১৭১২-৩৪৫৬৭৮",
+      bkash: "📱 বিকাশ: ০১৮৮১২১০৪৪৪",
       cashier: "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)"
     };
 
@@ -668,9 +668,27 @@
         localStorage.setItem('somiti_pad_custom_settings', JSON.stringify(padConfig));
       } catch (_) {}
 
+      // Two-Way Sync: Update master Somiti profile in Firestore (swapnochowa)
+      if (typeof db !== 'undefined' && db) {
+        try {
+          db.collection("somitis").doc("swapnochowa").set({
+            address: addr || DEFAULT_PAD_CONFIG.addr.replace(/^📍\s*/, ''),
+            bankName: bank || DEFAULT_PAD_CONFIG.bank.replace(/^🏦\s*/, ''),
+            bankAccount: bank ? (bank.match(/\d{9,}/) ? bank.match(/\d{9,}/)[0] : "2305158045001") : "2305158045001",
+            routingNo: routing || "২২৫২৬০৪১৫",
+            bkashNumber: bkash || "০১৮৮১২১০৪৪৪",
+            regNo: reg ? (reg.startsWith("সমবায়") ? reg : ("সমবায় রেজিঃ নং-" + reg)) : "সমবায় রেজিঃ নং-৭৮৯০/২০২৬",
+            cashierName: cashier || DEFAULT_PAD_CONFIG.cashier,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true }).catch(err => console.warn("Firestore profile sync warning:", err));
+        } catch(stErr) {
+          console.warn("Firestore save notice:", stErr);
+        }
+      }
+
       applyPadConfig();
       closePadEditModal();
-      showToast("প্যাডের তথ্য সফলভাবে সংরক্ষিত ও লাইভ আপডেট হয়েছে!", "success");
+      showToast("প্যাডের তথ্য সফলভাবে সংরক্ষিত ও ক্লাউডে লাইভ সিঙ্ক হয়েছে!", "success");
     }
 
     function resetPadDefaults() {
@@ -682,9 +700,26 @@
       try {
         localStorage.removeItem('somiti_pad_custom_settings');
       } catch (_) {}
+
+      // Two-Way Sync: Reset master Somiti profile in Firestore
+      if (typeof db !== 'undefined' && db) {
+        try {
+          db.collection("somitis").doc("swapnochowa").set({
+            address: DEFAULT_PAD_CONFIG.addr.replace(/^📍\s*/, ''),
+            bankName: DEFAULT_PAD_CONFIG.bank.replace(/^🏦\s*/, ''),
+            bankAccount: "2305158045001",
+            routingNo: "২২৫২৬০৪১৫",
+            bkashNumber: "০১৮৮১২১০৪৪৪",
+            regNo: "সমবায় রেজিঃ নং-৭৮৯০/২০২৬",
+            cashierName: DEFAULT_PAD_CONFIG.cashier,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true }).catch(() => {});
+        } catch(_) {}
+      }
+
       applyPadConfig();
       closePadEditModal();
-      showToast("ডিফল্ট তথ্য সফলভাবে রিস্টোর হয়েছে!", "success");
+      showToast("ডিফল্ট তথ্য সফলভাবে রিস্টোর ও ক্লাউডে সিঙ্ক হয়েছে!", "success");
     }
 
     const RECORDS = [
@@ -1619,6 +1654,45 @@
       if (!db) return;
       try {
         const somitiRef = db.collection("somitis").doc("swapnochowa");
+
+        // 1. Live Somiti Profile Listener (Keeps Pad, Bank, Bkash & Reg in 100% real-time sync with main app)
+        somitiRef.onSnapshot((doc) => {
+          if (doc && doc.exists) {
+            const data = doc.data();
+            let changed = false;
+            if (data.regNo) {
+              const rStr = data.regNo.startsWith('🏛️') ? data.regNo : `🏛️ ${data.regNo}`;
+              if (padConfig.reg !== rStr) { padConfig.reg = rStr; changed = true; }
+            }
+            if (data.address) {
+              const aStr = data.address.startsWith('📍') ? data.address : `📍 ${data.address}`;
+              if (padConfig.addr !== aStr) { padConfig.addr = aStr; changed = true; }
+            }
+            if (data.bankName || data.bankAccount) {
+              let bStr = data.bankName || `সিটি ব্যাংক পিএলসি • হিসাব: ${data.bankAccount}`;
+              if (!bStr.startsWith('🏦')) bStr = `🏦 ${bStr}`;
+              if (padConfig.bank !== bStr) { padConfig.bank = bStr; changed = true; }
+            }
+            if (data.routingNo) {
+              const rtStr = data.routingNo.startsWith('🌐') ? data.routingNo : `🌐 রাউটিং: ${data.routingNo}`;
+              if (padConfig.routing !== rtStr) { padConfig.routing = rtStr; changed = true; }
+            }
+            if (data.bkashNumber) {
+              const bkStr = data.bkashNumber.startsWith('📱') ? data.bkashNumber : `📱 বিকাশ: ${data.bkashNumber}`;
+              if (padConfig.bkash !== bkStr) { padConfig.bkash = bkStr; changed = true; }
+            }
+            if (data.cashierName && padConfig.cashier !== data.cashierName) {
+              padConfig.cashier = data.cashierName;
+              changed = true;
+            }
+            if (changed) {
+              try {
+                localStorage.setItem('somiti_pad_custom_settings', JSON.stringify(padConfig));
+              } catch (_) {}
+              applyPadConfig();
+            }
+          }
+        }, (err) => console.warn("Firestore somiti profile listener warning:", err));
 
         somitiRef.collection("members").orderBy("memberNumber")
           .onSnapshot((snapshot) => {
