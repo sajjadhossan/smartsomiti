@@ -3472,7 +3472,7 @@
             <div class="society-switch-pill" onclick="openSocietySwitcher()" title="সমিতি পরিবর্তন করতে ক্লিক করুন">
               <span id="dashSomitiName" style="font-size: 13.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 135px; display: inline-block; vertical-align: middle;">স্মার্ট সমিতি</span>
               <span id="dashSomitiCode" style="font-size: 10px; font-weight: 700; color: var(--primary);">SMT-7890</span>
-              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.8.14</span>
+              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.8.16</span>
               <span style="font-size: 10px; opacity: 0.7;">▾</span>
             </div>
             <div id="headerActiveViewTitle" class="header-active-view-badge" onclick="openSomitiPanelSelector(currentSomiti ? currentSomiti.id : 'swapnochowa')" style="cursor: pointer;" title="প্যানেল বা ভূমিকা পরিবর্তন করতে ক্লিক করুন">📊 এডমিন ড্যাশবোর্ড ▾</div>
@@ -3598,7 +3598,7 @@
           <div>
             <h3 id="sideSomitiName" style="font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.2;">স্মার্ট সমিতি</h3>
             <span id="sideSomitiCode" style="font-size: 10px; background: var(--primary-light); color: var(--primary); font-weight: 700; padding: 1px 6px; border-radius: 4px;">SMT-7890</span>
-            <span style="font-size: 10px; background: #059669; color: white; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 3px;">v2.8.14</span>
+            <span style="font-size: 10px; background: #059669; color: white; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 3px;">v2.8.16</span>
           </div>
         </div>
         <button onclick="closeSidebar()" style="background: none; border: none; font-size: 22px; color: var(--text-muted); cursor: pointer; padding: 4px;">✕</button>
@@ -4162,7 +4162,7 @@
             <span style="font-size: 20px;">📢</span>
             <div>
               <div style="font-size: 14px; font-weight: 800; color: #92400E;">বকেয়া সদস্য হোয়াটসঅ্যাপ রিমাইন্ডার সেন্টার</div>
-              <div id="dueReminderSubHeader" style="font-size: 11px; color: #B45309;">নভেম্বর ২০২৬: বকেয়া ৪ জন সদস্য (৪০,০০০/- ৳)</div>
+              <div id="dueReminderSubHeader" style="font-size: 11px; color: #B45309;">নভেম্বর ২০২৬: বকেয়া ৩ জন সদস্য (৩০,০০০/- ৳)</div>
             </div>
           </div>
           <button type="button" onclick="closeDueReminderModal()" class="touch-scale-btn" style="background: white; border: 1px solid #FCD34D; border-radius: 50%; width: 30px; height: 30px; font-size: 13px; font-weight: 800; color: #92400E; cursor: pointer; display: flex; align-items: center; justify-content: center;">✕</button>
@@ -4179,22 +4179,8 @@
           </button>
         </div>
 
-        <!-- 4 Verified Due Members List (Official Memos Sync) -->
+        <!-- 3 Verified Due Members List (Official Memos Sync) -->
         <div id="dueReminderModalList" style="max-height: 60vh; overflow-y: auto; padding: 12px 16px; display: flex; flex-direction: column; gap: 8px;">
-          <!-- Member ০৯: আওলাদ খান -->
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: var(--card-bg); border: 1px solid var(--border);">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <div style="width: 32px; height: 32px; border-radius: 8px; background: #FEF2F2; color: #DC2626; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center;">০৯</div>
-              <div>
-                <div style="font-size: 13px; font-weight: 800; color: var(--text);">আওলাদ খান</div>
-                <div style="font-size: 11px; color: var(--text-muted);">📱 +39 3273830227 • বকেয়া: ১০,০০০ ৳</div>
-              </div>
-            </div>
-            <a href="https://api.whatsapp.com/send?phone=393273830227&text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%20%E0%A6%86%E0%A6%93%E0%A6%B2%E0%A6%BE%E0%A6%A6%20%E0%A6%96%E0%A6%BE%E0%A6%A8%20%E0%A6%AD%E0%A6%BE%E0%A6%87%E0%A7%8F%20%E0%A6%B8%E0%A7%8D%E0%A6%AC%E0%A6%AA%E0%A7%8D%E0%A6%A8%20%E0%A6%9B%E0%A7%8B%E0%A6%81%E0%A6%AF%E0%A6%BC%E0%A6%BE%20%E0%A6%90%E0%A6%95%E0%A7%8D%E0%A6%AF%20%E0%A6%B8%E0%A6%AE%E0%A6%BF%E0%A6%A4%E0%A6%BF-%E0%A6%8F%E0%A6%B0%20%E0%A6%A8%E0%A6%AD%E0%A7%87%E0%A6%AE%E0%A7%8D%E0%A6%AC%E0%A6%B0%20%E0%A7%A8%E0%A7%A6%E0%A7%A8%E0%A7%AC%20%E0%A6%AE%E0%A6%BE%E0%A6%B8%E0%A7%87%E0%A6%B0%20%E0%A6%B8%E0%A6%9E%E0%A7%8D%E0%A6%9A%E0%A6%AF%E0%A6%BC%E0%A7%80%20%E0%A6%95%E0%A6%BF%E0%A6%B8%E0%A7%8D%E0%A6%A4%E0%A6%BF%20%E0%A7%A7%E0%A7%A6%2C%E0%A7%A6%E0%A7%A6%E0%A7%A6%2F-%20%E0%A6%9F%E0%A6%BE%E0%A6%95%E0%A6%BE%20%E0%A6%B8%E0%A6%BF%E0%A6%9F%E0%A6%BF%20%E0%A6%AC%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%82%E0%A6%95%20(A%2FC%3A%202305158045001)%20%E0%A6%85%E0%A6%A5%E0%A6%AC%E0%A6%BE%20%E0%A6%AC%E0%A6%BF%E0%A6%95%E0%A6%BE%E0%A6%B6%20(01881210444)-%E0%A6%8F%20%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%B6%E0%A7%8B%E0%A6%A7%20%E0%A6%95%E0%A6%B0%E0%A7%87%20%E0%A6%B0%E0%A6%B8%E0%A6%BF%E0%A6%A6%20%E0%A6%A8%E0%A6%BF%E0%A6%B6%E0%A7%8D%E0%A6%9A%E0%A6%BF%E0%A6%A4%20%E0%A6%95%E0%A6%B0%E0%A6%BE%E0%A6%B0%20%E0%A6%85%E0%A6%A8%E0%A7%81%E0%A6%B0%E0%A7%8B%E0%A6%A7%20%E0%A6%9C%E0%A6%BE%E0%A6%A8%E0%A6%BE%E0%A6%A8%E0%A7%8B%20%E0%A6%AF%E0%A6%BE%E0%A6%9A%E0%A7%8D%E0%A6%9B%E0%A7%87%E0%A7%A4%20%E0%A6%A7%E0%A6%A8%E0%A7%8D%E0%A6%AF%E0%A6%AC%E0%A6%BE%E0%A6%A6%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%A4%E0%A7%87%2C%20%E0%A6%AA%E0%A6%B0%E0%A6%BF%E0%A6%9A%E0%A6%BE%E0%A6%B2%E0%A6%A8%E0%A6%BE%20%E0%A6%AA%E0%A6%B0%E0%A7%8D%E0%A6%B7%E0%A6%A6" target="_blank" class="touch-scale-btn" style="background: #25D366; color: white; text-decoration: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 4px;">
-              <span>💬</span> WhatsApp
-            </a>
-          </div>
-
           <!-- Member ১২: মোঃ নোমান হাওলাদার -->
           <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: var(--card-bg); border: 1px solid var(--border);">
             <div style="display: flex; align-items: center; gap: 10px;">
@@ -4240,7 +4226,7 @@
 
         <!-- Footer -->
         <div style="padding: 10px 16px; background: var(--bg); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-          <a href="https://drive.google.com/file/d/1ScYKdibY7di1Xe-MPADBm54Vz_FrFLXR/view?usp=drivesdk" target="_blank" style="font-size: 11.5px; font-weight: 700; color: #0284C7; text-decoration: none;">
+          <a href="https://drive.google.com/file/d/1lMfTEiZKr5BXFnAqm9NWfJ0eDPjFsmD3/view?usp=drivesdk" target="_blank" style="font-size: 11.5px; font-weight: 700; color: #0284C7; text-decoration: none;">
             📄 বকেয়া মেমো প্যাড (স্মারক-০২) ↗
           </a>
           <button type="button" onclick="closeDueReminderModal()" class="touch-scale-btn" style="padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); font-size: 11.5px; font-weight: 700; cursor: pointer;">
@@ -4317,12 +4303,12 @@
           <!-- 4-Row Accounting Ledger Grid -->
           <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px;">
             <div style="display: flex; justify-content: space-between; padding: 10px 12px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border);">
-              <span id="auditPaidLabel" style="font-size: 12px; font-weight: 700; color: var(--text);">১. মোট সংগৃহীত সঞ্চয়ী কিস্তি (২৩ জন)</span>
-              <span id="auditPaidAmt1" style="font-size: 12.5px; font-weight: 800; color: #047857;">+ ২,৩০,০০০/- ৳</span>
+              <span id="auditPaidLabel" style="font-size: 12px; font-weight: 700; color: var(--text);">১. মোট সংগৃহীত সঞ্চয়ী কিস্তি (২৪ জন)</span>
+              <span id="auditPaidAmt1" style="font-size: 12.5px; font-weight: 800; color: #047857;">+ ২,৪০,০০০/- ৳</span>
             </div>
             <div style="display: flex; justify-content: space-between; padding: 10px 12px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border);">
               <span style="font-size: 12px; font-weight: 700; color: var(--text);">২. সিটি ব্যাংক PLC ডিপোজিট ব্যালেন্স (A/C: 2305158045001)</span>
-              <span id="auditPaidAmt2" style="font-size: 12.5px; font-weight: 800; color: #1D4ED8;">২,৩০,০০০/- ৳</span>
+              <span id="auditPaidAmt2" style="font-size: 12.5px; font-weight: 800; color: #1D4ED8;">২,৪০,০০০/- ৳</span>
             </div>
             <div style="display: flex; justify-content: space-between; padding: 10px 12px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border);">
               <span style="font-size: 12px; font-weight: 700; color: var(--text);">৩. কোষাধ্যক্ষের ক্যাশ ড্রয়ার / হাতে নগদ</span>
@@ -4334,14 +4320,14 @@
             </div>
             <div style="display: flex; justify-content: space-between; padding: 10px 12px; border-radius: 10px; background: #ECFDF5; border: 1.5px solid #A7F3D0;">
               <span style="font-size: 12.5px; font-weight: 800; color: #064E3B;">📊 নিট বর্তমান ব্যালেন্স (Net Liquid Reserve)</span>
-              <span id="auditPaidAmt3" style="font-size: 14px; font-weight: 800; color: #047857;">২,৩০,০০০/- ৳</span>
+              <span id="auditPaidAmt3" style="font-size: 14px; font-weight: 800; color: #047857;">২,৪০,০০০/- ৳</span>
             </div>
           </div>
 
           <!-- Signatories & Audit Certification -->
-          <div style="padding: 12px; border-radius: 12px; border: 1px dashed var(--border); background: var(--bg); font-size: 11px; color: var(--text-muted); line-height: 1.6;">
+          <div style="padding: 12px 18px; border-radius: 12px; border: 1px dashed var(--border); background: var(--bg); font-size: 11px; color: var(--text-muted); line-height: 1.6;">
             <div>✍️ <strong>অডিট প্রত্যয়নকারী:</strong> সাজ্জাদ হোসেন (কোষাধ্যক্ষ), স্বপ্ন ছোঁয়া ঐক্য সমিতি।</div>
-            <div>📅 <strong>অডিট তারিখ:</strong> ১৫ নভেম্বর ২০২৬ ইং • <strong>রেফারেন্স:</strong> স্মারক-০১/২০২৬</div>
+            <div>📅 <strong>অডিট তারিখ:</strong> ১৮ নভেম্বর ২০২৬ ইং • <strong>রেফারেন্স:</strong> স্মারক-০১/২০২৬</div>
           </div>
         </div>
 
@@ -4442,7 +4428,7 @@
               </div>
               <div class="backup-stat-chip">
                 <div style="font-size: 10px; color: var(--text-muted);">মোট জমার কিস্তি</div>
-                <div id="bkStatDeposits" style="font-size: 14px; font-weight: 800; color: #047857;">২৩ টি (২,৩০,০০০ ৳)</div>
+                <div id="bkStatDeposits" style="font-size: 14px; font-weight: 800; color: #047857;">২৪ টি (২,৪০,০০০ ৳)</div>
               </div>
               <div class="backup-stat-chip">
                 <div style="font-size: 10px; color: var(--text-muted);">খরচ ভাউচার</div>
@@ -4793,8 +4779,8 @@
             <!-- Nov 2026 (Current Active Month) -->
             <div style="flex: 1.15; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; position: relative;">
               <span style="position: absolute; top: -6px; background: #059669; color: white; font-size: 8.5px; font-weight: 800; padding: 1px 5px; border-radius: 6px; box-shadow: 0 1px 4px rgba(5,150,105,0.4);">চলতি</span>
-              <div id="dynNovTrendLabel" style="font-size: 9.5px; font-weight: 800; color: #047857; margin-bottom: 4px;">২.৩০লাখ</div>
-              <div id="dynNovTrendBar" class="touch-scale-btn" style="width: 86%; max-width: 44px; height: 115px; background: linear-gradient(180deg, #10B981, #047857); border-radius: 8px 8px 0 0; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35); border: 1.5px solid #A7F3D0; border-bottom: none;" title="নভেম্বর ২০২৬: ২,৩০,০০০ ৳ (২৩ জন আদায়, ৪ জন বাকি)"></div>
+              <div id="dynNovTrendLabel" style="font-size: 9.5px; font-weight: 800; color: #047857; margin-bottom: 4px;">২.৪০লাখ</div>
+              <div id="dynNovTrendBar" class="touch-scale-btn" style="width: 86%; max-width: 44px; height: 115px; background: linear-gradient(180deg, #10B981, #047857); border-radius: 8px 8px 0 0; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35); border: 1.5px solid #A7F3D0; border-bottom: none;" title="নভেম্বর ২০২৬: ২,৪০,০০০ ৳ (২৪ জন আদায়, ৩ জন বাকি)"></div>
               <div style="font-size: 10px; font-weight: 800; color: #047857; margin-top: 6px;">নভেম্বর</div>
             </div>
             <!-- Dec 2026 (Target Projected) -->
@@ -4819,7 +4805,7 @@
               </span>
             </div>
             <div id="dynCurrentMonthDeposit" style="font-size: 10.5px; color: #047857; font-weight: 700;">
-              চলতি মাস: ২,৩০,০০০/- ৳ (২৩ জন)
+              চলতি মাস: ২,৪০,০০০/- ৳ (২৪ জন)
             </div>
           </div>
         </div>
@@ -4831,11 +4817,11 @@
               <span style="font-size: 18px;">🍩</span>
               <div>
                 <div style="font-size: 13.5px; font-weight: 800; color: var(--text);">পেমেন্ট চ্যানেল ও মাধ্যম বিশ্লেষণ</div>
-                <div style="font-size: 10.5px; color: var(--text-muted);">নভেম্বর ২০২৬: সংগৃহীত ২৩টি রসিদের চ্যানেল ভিত্তিক অনুপাত</div>
+                <div id="dynDonutSubtitle" style="font-size: 10.5px; color: var(--text-muted);">নভেম্বর ২০২৬: সংগৃহীত ২৪টি রসিদের চ্যানেল ভিত্তিক অনুপাত</div>
               </div>
             </div>
             <span id="dynPaymentSummaryBadge" style="background: #ECFDF5; color: #047857; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 8px; border: 1px solid #A7F3D0;">
-              ২৩ জন • ২,৩০,০০০ ৳
+              ২৪ জন • ২,৪০,০০০ ৳
             </span>
           </div>
 
@@ -4845,17 +4831,17 @@
               <svg width="140" height="140" viewBox="0 0 100 100" style="transform: rotate(-90deg);">
                 <!-- Track -->
                 <circle cx="50" cy="50" r="40" fill="transparent" stroke="#F1F5F9" stroke-width="14" />
-                <!-- Segment 1: City Bank Cash (56.5% = 142) -->
-                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#059669" stroke-width="14" stroke-dasharray="142 251.32" stroke-dashoffset="0" />
-                <!-- Segment 2: Remittance (21.7% = 54.5) -->
-                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#F59E0B" stroke-width="14" stroke-dasharray="54.5 251.32" stroke-dashoffset="-142" />
-                <!-- Segment 3: Other Bank/NPSB (21.7% = 54.5) -->
-                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#0284C7" stroke-width="14" stroke-dasharray="54.5 251.32" stroke-dashoffset="-196.5" />
+                <!-- Segment 1: City Bank Cash (50.0% = 125.66) -->
+                <circle id="donutSegCityBank" cx="50" cy="50" r="40" fill="transparent" stroke="#059669" stroke-width="14" stroke-dasharray="125.66 251.32" stroke-dashoffset="0" />
+                <!-- Segment 2: Remittance (29.2% = 73.30) -->
+                <circle id="donutSegRemit" cx="50" cy="50" r="40" fill="transparent" stroke="#F59E0B" stroke-width="14" stroke-dasharray="73.30 251.32" stroke-dashoffset="-125.66" />
+                <!-- Segment 3: Other Bank/NPSB (20.8% = 52.36) -->
+                <circle id="donutSegOnline" cx="50" cy="50" r="40" fill="transparent" stroke="#0284C7" stroke-width="14" stroke-dasharray="52.36 251.32" stroke-dashoffset="-198.96" />
               </svg>
               <!-- Center Text -->
               <div style="position: absolute; text-align: center; pointer-events: none;">
-                <div id="dynDonutPaidCount" style="font-size: 15px; font-weight: 800; color: var(--text);">২৩ জন</div>
-                <div id="dynDonutPaidAmount" style="font-size: 9.5px; font-weight: 700; color: #047857;">২.৩০ লাখ ৳</div>
+                <div id="dynDonutPaidCount" style="font-size: 15px; font-weight: 800; color: var(--text);">২৪ জন</div>
+                <div id="dynDonutPaidAmount" style="font-size: 9.5px; font-weight: 700; color: #047857;">২.৪০ লাখ ৳</div>
               </div>
             </div>
 
@@ -4867,10 +4853,10 @@
                   <span style="width: 10px; height: 10px; border-radius: 50%; background: #059669;"></span>
                   <div>
                     <div style="font-size: 11.5px; font-weight: 800; color: #064E3B;">সিটি ব্যাংক সরাসরি ক্যাশ / এজেন্ট</div>
-                    <div style="font-size: 10px; color: #047857;">১০ জন সদস্য (৫৫.৬%)</div>
+                    <div id="dynChanCityBankSub" style="font-size: 10px; color: #047857;">১২ জন সদস্য (৫০.০%)</div>
                   </div>
                 </div>
-                <div style="font-size: 12px; font-weight: 800; color: #047857;">১,০০,০০০ ৳</div>
+                <div id="dynChanCityBankAmt" style="font-size: 12px; font-weight: 800; color: #047857;">১,২০,০০০ ৳</div>
               </div>
 
               <!-- Remittance -->
@@ -4879,10 +4865,10 @@
                   <span style="width: 10px; height: 10px; border-radius: 50%; background: #F59E0B;"></span>
                   <div>
                     <div style="font-size: 11.5px; font-weight: 800; color: #78350F;">প্রবাসী রেমিট্যান্স (Al Mulla/WU/Taptap)</div>
-                    <div style="font-size: 10px; color: #B45309;">৪ জন সদস্য (২২.২%)</div>
+                    <div id="dynChanRemitSub" style="font-size: 10px; color: #B45309;">৭ জন সদস্য (২৯.২%)</div>
                   </div>
                 </div>
-                <div style="font-size: 12px; font-weight: 800; color: #B45309;">৪০,০০০ ৳</div>
+                <div id="dynChanRemitAmt" style="font-size: 12px; font-weight: 800; color: #B45309;">৭০,০০০ ৳</div>
               </div>
 
               <!-- Other Bank / NPSB -->
@@ -4891,10 +4877,10 @@
                   <span style="width: 10px; height: 10px; border-radius: 50%; background: #0284C7;"></span>
                   <div>
                     <div style="font-size: 11.5px; font-weight: 800; color: #0C4A6E;">অনলাইন ব্যাংক ট্রান্সফার / NPSB</div>
-                    <div style="font-size: 10px; color: #0284C7;">৪ জন সদস্য (২২.২%)</div>
+                    <div id="dynChanOnlineBankSub" style="font-size: 10px; color: #0284C7;">৫ জন সদস্য (২০.৮%)</div>
                   </div>
                 </div>
-                <div style="font-size: 12px; font-weight: 800; color: #0284C7;">৪০,০০০ ৳</div>
+                <div id="dynChanOnlineBankAmt" style="font-size: 12px; font-weight: 800; color: #0284C7;">৫০,০০০ ৳</div>
               </div>
             </div>
           </div>
@@ -4944,7 +4930,7 @@
               <div style="width: 100%; height: 6px; background: #FEF3C7; border-radius: 99px; overflow: hidden; margin-bottom: 6px;">
                 <div style="width: 12%; height: 100%; background: #F59E0B; border-radius: 99px;"></div>
               </div>
-              <div id="dynDueControlText" style="font-size: 10px; color: #B45309; font-weight: 600;">⚠️ স্বাভাবিক নিয়ন্ত্রণে (৪ জন বকেয়া)</div>
+              <div id="dynDueControlText" style="font-size: 10px; color: #B45309; font-weight: 600;">⚠️ স্বাভাবিক নিয়ন্ত্রণে (৩ জন বকেয়া)</div>
             </div>
           </div>
         </div>
@@ -5017,13 +5003,13 @@
               </div>
               <div>
                 <div style="font-size: 13.5px; font-weight: 800; color: #92400E;">বকেয়া সদস্য হোয়াটসঅ্যাপ রিমাইন্ডার সেন্টার</div>
-                <div id="dynDueReminderSubtext" style="font-size: 11px; color: #B45309;">নভেম্বর ২০২৬: ৪ জন সদস্যের ৪০,০০০/- ৳ বকেয়া কিস্তির নোটিশ</div>
+                <div id="dynDueReminderSubtext" style="font-size: 11px; color: #B45309;">নভেম্বর ২০২৬: ৩ জন সদস্যের ৩০,০০০/- ৳ বকেয়া কিস্তির নোটিশ</div>
               </div>
             </div>
             <div style="display: flex; gap: 6px;">
               <button type="button" onclick="openDueReminderModal()" class="touch-scale-btn" style="background: #25D366; color: white; border: none; padding: 8px 14px; border-radius: 10px; font-size: 11.5px; font-weight: 800; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(37,211,102,0.35);">
                 <span>💬</span>
-                <span id="dynDueWhatsAppBtnText">৪ জনকে WhatsApp পাঠান</span>
+                <span id="dynDueWhatsAppBtnText">৩ জনকে WhatsApp পাঠান</span>
               </button>
               <button type="button" onclick="copyAllDueWhatsAppNotice()" class="touch-scale-btn" style="background: white; color: #92400E; border: 1px solid #FCD34D; padding: 8px 12px; border-radius: 10px; font-size: 11.5px; font-weight: 700; display: flex; align-items: center; gap: 4px;">
                 <span>📋</span>
@@ -5060,26 +5046,26 @@
               <span style="font-size: 13.5px; font-weight: 800; color: var(--text);">নভেম্বর ২০২৬ কিস্তি কালেকশন অগ্রগতি</span>
             </div>
             <span id="targetPercentBadge" style="background: #059669; color: white; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 12px; box-shadow: 0 2px 6px rgba(5, 150, 105, 0.25);">
-              ৮৫.২% সংগৃহীত
+              ৮৮.৯% সংগৃহীত
             </span>
           </div>
 
           <!-- Animated Progress Track -->
           <div style="width: 100%; height: 10px; background: #E2E8F0; border-radius: 99px; overflow: hidden; margin-bottom: 12px; position: relative;">
-            <div id="targetProgressBar" style="width: 85.2%; height: 100%; background: linear-gradient(90deg, #10B981, #059669); border-radius: 99px; transition: width 0.6s ease;"></div>
+            <div id="targetProgressBar" style="width: 88.9%; height: 100%; background: linear-gradient(90deg, #10B981, #059669); border-radius: 99px; transition: width 0.6s ease;"></div>
           </div>
 
           <!-- 3-Col Target Mini Summary (Mathematically Synchronized) -->
           <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center;">
             <div style="background: #F0FDF4; border: 1px solid #BBF7D0; padding: 8px; border-radius: 10px;">
               <div style="font-size: 10px; color: #166534; font-weight: 600;">সংগৃহীত তহবিল</div>
-              <div id="dashTargetCollected" style="font-size: 13px; font-weight: 800; color: #047857; margin-top: 2px;">২,৩০,০০০ ৳</div>
-              <div id="dashTargetCollectedSub" style="font-size: 9.5px; color: #15803D; font-weight: 700;">২৩ জন সদস্য</div>
+              <div id="dashTargetCollected" style="font-size: 13px; font-weight: 800; color: #047857; margin-top: 2px;">২,৪০,০০০ ৳</div>
+              <div id="dashTargetCollectedSub" style="font-size: 9.5px; color: #15803D; font-weight: 700;">২৪ জন সদস্য</div>
             </div>
             <div style="background: #FEF2F2; border: 1px solid #FECDD3; padding: 8px; border-radius: 10px;">
               <div style="font-size: 10px; color: #991B1B; font-weight: 600;">চলতি বকেয়া</div>
-              <div id="dashTargetDue" style="font-size: 13px; font-weight: 800; color: #B91C1C; margin-top: 2px;">৪০,০০০ ৳</div>
-              <div id="dashTargetDueSub" style="font-size: 9.5px; color: #DC2626; font-weight: 700;">৪ জন সদস্য</div>
+              <div id="dashTargetDue" style="font-size: 13px; font-weight: 800; color: #B91C1C; margin-top: 2px;">৩০,০০০ ৳</div>
+              <div id="dashTargetDueSub" style="font-size: 9.5px; color: #DC2626; font-weight: 700;">৩ জন সদস্য</div>
             </div>
             <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 8px; border-radius: 10px;">
               <div style="font-size: 10px; color: #475569; font-weight: 600;">মোট টার্গেট</div>
@@ -5114,7 +5100,7 @@
             <button type="button" onclick="navTo('due')" style="background: var(--card-bg); border: 1.5px solid #FDE68A; border-radius: 14px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: all 0.15s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
               <div style="width: 36px; height: 36px; border-radius: 10px; background: #FEF3C7; color: #D97706; display: flex; align-items: center; justify-content: center; font-size: 18px;">⏳</div>
               <span style="font-size: 12px; font-weight: 800; color: var(--text);">বকেয়া খাতা</span>
-              <span id="dynDueKhataBadge" style="font-size: 10px; color: #D97706; font-weight: 600;">৪ জন বাকি</span>
+              <span id="dynDueKhataBadge" style="font-size: 10px; color: #D97706; font-weight: 600;">৩ জন বাকি</span>
             </button>
           </div>
         </div>
@@ -5146,15 +5132,31 @@
                 <span>সাম্প্রতিক ভেরিফাইড লেনদেন রসিদ</span>
               </div>
               <div id="dynReceiptsSubBreakdown" style="font-size: 10.5px; color: var(--subtext, #64748B); font-weight: 600; margin-top: 2px;">
-                ২৩ জন আদায়কৃত • ৪ জন বকেয়া (মোট ২৭ জন)
+                ২৪ জন আদায়কৃত • ৩ জন বকেয়া (মোট ২৭ জন)
               </div>
             </div>
             <a id="dynAllReceiptsLink" href="verify.html" target="_blank" style="font-size: 11px; color: var(--primary); font-weight: 700; text-decoration: none; white-space: nowrap;">
-              সকল রসিদ (২৩টি) ↗
+              সকল রসিদ (২৪টি) ↗
             </a>
           </div>
 
           <div id="dashRecentTransList" style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: #F8FAFC; border: 1px solid #E2E8F0; cursor: pointer;" onclick="triggerVerifySearch('RCT-24')">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; color: #047857; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center;">
+                  ০৯
+                </div>
+                <div>
+                  <div style="font-size: 12.5px; font-weight: 800; color: #1E293B;">আওলাদ খান (RCT-24)</div>
+                  <div style="font-size: 10.5px; color: #64748B;">১৮ নভেম্বর ২০২৬ • City Bank PLC (Sreenagar Sub Branch) — Cash</div>
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 13px; font-weight: 800; color: #047857;">+ ১০,০০০ ৳</div>
+                <div style="font-size: 9.5px; color: #059669; font-weight: 700;">✅ ভেরিফাইড</div>
+              </div>
+            </div>
+
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: #F8FAFC; border: 1px solid #E2E8F0; cursor: pointer;" onclick="triggerVerifySearch('RCT-23')">
               <div style="display: flex; align-items: center; gap: 10px;">
                 <div style="width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; color: #047857; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center;">
@@ -5178,7 +5180,7 @@
                 </div>
                 <div>
                   <div style="font-size: 12.5px; font-weight: 800; color: #1E293B;">মেহেদী হাসান (RCT-22)</div>
-                  <div style="font-size: 10.5px; color: #64748B;">১৬ নভেম্বর ২০২৬ • City Bank PLC (Sreenagar Sub Branch)</div>
+                  <div style="font-size: 10.5px; color: #64748B;">১৬ নভেম্বর ২০২৬ • City Bank PLC (Sreenagar Sub Branch) — Cash</div>
                 </div>
               </div>
               <div style="text-align: right;">
@@ -5186,8 +5188,6 @@
                 <div style="font-size: 9.5px; color: #059669; font-weight: 700;">✅ ভেরিফাইড</div>
               </div>
             </div>
-
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 12px; background: #F8FAFC; border: 1px solid #E2E8F0; cursor: pointer;" onclick="triggerVerifySearch('RCT-21')">
               <div style="display: flex; align-items: center; gap: 10px;">
                 <div style="width: 32px; height: 32px; border-radius: 8px; background: #ECFDF5; color: #047857; font-weight: 800; font-size: 11px; display: flex; align-items: center; justify-content: center;">
                   ১১
@@ -5999,11 +5999,11 @@
             </div>
             <div style="background: #F0FDF4; border: 1px solid #BBF7D0; padding: 6px; border-radius: 8px;">
               <div style="font-size: 10px; color: #166534; font-weight: 600;">পরিশোধিত</div>
-              <div id="dynPaidMemberCount" style="font-size: 14px; font-weight: 800; color: #047857;">২৩ জন</div>
+              <div id="dynPaidMemberCount" style="font-size: 14px; font-weight: 800; color: #047857;">২৪ জন</div>
             </div>
             <div style="background: #FEF2F2; border: 1px solid #FECDD3; padding: 6px; border-radius: 8px;">
               <div style="font-size: 10px; color: #991B1B; font-weight: 600;">বকেয়া</div>
-              <div id="dynDueMemberCount" style="font-size: 14px; font-weight: 800; color: #B91C1C;">৪ জন</div>
+              <div id="dynDueMemberCount" style="font-size: 14px; font-weight: 800; color: #B91C1C;">৩ জন</div>
             </div>
             <div style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 6px; border-radius: 8px;">
               <div style="font-size: 10px; color: #1E40AF; font-weight: 600;">প্রবাসী</div>
@@ -6132,8 +6132,8 @@
           <!-- Status Filter Tabs -->
           <div style="display: flex; gap: 4px; overflow-x: auto; padding-bottom: 4px;">
             <button type="button" class="phase2-tab-btn active" id="memTabAll" onclick="filterMembersDirectory('all', this)">সবাই (২৭)</button>
-            <button type="button" class="phase2-tab-btn" id="memTabPaid" onclick="filterMembersDirectory('paid', this)">✅ পরিশোধিত (২৩)</button>
-            <button type="button" class="phase2-tab-btn" id="memTabDue" onclick="filterMembersDirectory('due', this)">⏳ বকেয়া (৪)</button>
+            <button type="button" class="phase2-tab-btn" id="memTabPaid" onclick="filterMembersDirectory('paid', this)">✅ পরিশোধিত (২৪)</button>
+            <button type="button" class="phase2-tab-btn" id="memTabDue" onclick="filterMembersDirectory('due', this)">⏳ বকেয়া (৩)</button>
             <button type="button" class="phase2-tab-btn" id="memTabExpat" onclick="filterMembersDirectory('expat', this)">✈️ প্রবাসী (১২)</button>
           </div>
         </div>
@@ -14998,9 +14998,9 @@
 
     function copyAllDueWhatsAppNotice() {
       const noticeText = `*স্বপ্ন ছোঁয়া ঐক্য সমিতি — বকেয়া কিস্তি পরিশোধের নোটিশ*\n` +
-        `তারিখ: ১৫ নভেম্বর ২০২৬ ইং\n\n` +
+        `তারিখ: ১৮ নভেম্বর ২০২৬ ইং\n\n` +
         `সম্মানিত সদস্যবৃন্দ,\n` +
-        `আসসালামু আলাইকুম। আপনারা অবগত আছেন যে সমিতি নিয়মানুযায়ী প্রতি মাসের ১০ তারিখের মধ্যে মাসিক সঞ্চয়ী কিস্তি জমা দিতে হয়। নভেম্বর ২০২৬ মাসের জন্য বকেয়া ৪ জন সদস্যের (মোট ৪০,০০০/- ৳) বকেয়া কিস্তি অবিলম্বে পরিশোধ করার জন্য পরিচালনা পর্ষদের পক্ষ থেকে বিশেষভাবে অনুরোধ জানানো হচ্ছে।\n\n` +
+        `আসসালামু আলাইকুম। আপনারা অবগত আছেন যে সমিতি নিয়মানুযায়ী প্রতি মাসের ১০ তারিখের মধ্যে মাসিক সঞ্চয়ী কিস্তি জমা দিতে হয়। নভেম্বর ২০২৬ মাসের জন্য বকেয়া ৩ জন সদস্যের (মোট ৩০,০০০/- ৳) বকেয়া কিস্তি অবিলম্বে পরিশোধ করার জন্য পরিচালনা পর্ষদের পক্ষ থেকে বিশেষভাবে অনুরোধ জানানো হচ্ছে।\n\n` +
         `💳 *ব্যাংক অ্যাকাউন্ট:* সিটি ব্যাংক পিএলসি (City Bank PLC)\n` +
         `হিসাব নম্বর: 2305158045001 (স্বপ্ন ছোঁয়া ঐক্য সমিতি)\n` +
         `শাখা: রেকাবী বাজার সাব-ব্রাঞ্চ\n` +
@@ -15058,8 +15058,8 @@
           </div>
           <div style="flex: 1.2; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; position: relative;">
             <span style="position: absolute; top: -6px; background: #059669; color: white; font-size: 8.5px; font-weight: 800; padding: 1px 5px; border-radius: 6px; box-shadow: 0 1px 4px rgba(5,150,105,0.4);">চলতি</span>
-            <div style="font-size: 9.5px; font-weight: 800; color: #047857; margin-bottom: 4px;">২.৩০লাখ</div>
-            <div class="touch-scale-btn" style="width: 88%; max-width: 48px; height: 115px; background: linear-gradient(180deg, #10B981, #047857); border-radius: 8px 8px 0 0; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35); border: 1.5px solid #A7F3D0; border-bottom: none;" title="নভেম্বর ২০২৬: ২,৩০,০০০ ৳ সংগৃহীত"></div>
+            <div style="font-size: 9.5px; font-weight: 800; color: #047857; margin-bottom: 4px;">২.৪০লাখ</div>
+            <div class="touch-scale-btn" style="width: 88%; max-width: 48px; height: 115px; background: linear-gradient(180deg, #10B981, #047857); border-radius: 8px 8px 0 0; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35); border: 1.5px solid #A7F3D0; border-bottom: none;" title="নভেম্বর ২০২৬: ২,৪০,০০০ ৳ সংগৃহীত (২৪ জন আদায়, ৩ জন বাকি)"></div>
             <div style="font-size: 10px; font-weight: 800; color: #047857; margin-top: 6px;">নভেম্বর</div>
           </div>
         `;
@@ -15092,8 +15092,8 @@
           </div>
           <div style="flex: 1.15; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; position: relative;">
             <span style="position: absolute; top: -6px; background: #059669; color: white; font-size: 8.5px; font-weight: 800; padding: 1px 5px; border-radius: 6px; box-shadow: 0 1px 4px rgba(5,150,105,0.4);">চলতি</span>
-            <div style="font-size: 9.5px; font-weight: 800; color: #047857; margin-bottom: 4px;">২.৩০লাখ</div>
-            <div class="touch-scale-btn" style="width: 86%; max-width: 44px; height: 115px; background: linear-gradient(180deg, #10B981, #047857); border-radius: 8px 8px 0 0; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35); border: 1.5px solid #A7F3D0; border-bottom: none;" title="নভেম্বর ২০২৬: ২,৩০,০০০ ৳ সংগৃহীত"></div>
+            <div style="font-size: 9.5px; font-weight: 800; color: #047857; margin-bottom: 4px;">২.৪০লাখ</div>
+            <div class="touch-scale-btn" style="width: 86%; max-width: 44px; height: 115px; background: linear-gradient(180deg, #10B981, #047857); border-radius: 8px 8px 0 0; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35); border: 1.5px solid #A7F3D0; border-bottom: none;" title="নভেম্বর ২০২৬: ২,৪০,০০০ ৳ সংগৃহীত (২৪ জন আদায়, ৩ জন বাকি)"></div>
             <div style="font-size: 10px; font-weight: 800; color: #047857; margin-top: 6px;">নভেম্বর</div>
           </div>
           <div style="flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end;">
@@ -23148,7 +23148,7 @@
         const backupPayload = {
           meta: {
             app: "স্মার্ট সমিতি",
-            version: "2.8.14",
+            version: "2.8.16",
             schema: "somiti_backup_v2",
             timestamp: new Date().toISOString(),
             platform: platform,
@@ -23179,7 +23179,7 @@
           try {
             await getSomitiDocRef().collection("system_backups").doc("latest_auto_backup").set({
               meta: {
-                version: "2.8.14",
+                version: "2.8.16",
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
                 devicePlatform: platform,
                 userEmail: currentUser?.email || "anonymous",
