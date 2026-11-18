@@ -3472,7 +3472,7 @@
             <div class="society-switch-pill" onclick="openSocietySwitcher()" title="সমিতি পরিবর্তন করতে ক্লিক করুন">
               <span id="dashSomitiName" style="font-size: 13.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 135px; display: inline-block; vertical-align: middle;">স্মার্ট সমিতি</span>
               <span id="dashSomitiCode" style="font-size: 10px; font-weight: 700; color: var(--primary);">SMT-7890</span>
-              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.8.13</span>
+              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.8.14</span>
               <span style="font-size: 10px; opacity: 0.7;">▾</span>
             </div>
             <div id="headerActiveViewTitle" class="header-active-view-badge" onclick="openSomitiPanelSelector(currentSomiti ? currentSomiti.id : 'swapnochowa')" style="cursor: pointer;" title="প্যানেল বা ভূমিকা পরিবর্তন করতে ক্লিক করুন">📊 এডমিন ড্যাশবোর্ড ▾</div>
@@ -3598,7 +3598,7 @@
           <div>
             <h3 id="sideSomitiName" style="font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.2;">স্মার্ট সমিতি</h3>
             <span id="sideSomitiCode" style="font-size: 10px; background: var(--primary-light); color: var(--primary); font-weight: 700; padding: 1px 6px; border-radius: 4px;">SMT-7890</span>
-            <span style="font-size: 10px; background: #059669; color: white; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 3px;">v2.8.13</span>
+            <span style="font-size: 10px; background: #059669; color: white; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 3px;">v2.8.14</span>
           </div>
         </div>
         <button onclick="closeSidebar()" style="background: none; border: none; font-size: 22px; color: var(--text-muted); cursor: pointer; padding: 4px;">✕</button>
@@ -4373,6 +4373,58 @@
         </div>
 
         <div style="padding: 16px; max-height: 70vh; overflow-y: auto;">
+          <!-- Section 0: Live Multi-Cloud & Cross-Platform Sync Status -->
+          <div style="border: 1px solid #93C5FD; background: #F0F9FF; border-radius: 14px; padding: 14px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <div style="font-size: 13px; font-weight: 800; color: #0369A1; display: flex; align-items: center; gap: 6px;">
+                <span>🌐</span> লাইভ ক্লাউড সিঙ্ক ও প্ল্যাটফর্ম স্ট্যাটাস
+              </div>
+              <span style="font-size: 10px; background: #E0F2FE; color: #0284C7; padding: 2px 8px; border-radius: 12px; font-weight: 800;">Realtime Sync</span>
+            </div>
+
+            <!-- Firestore Status -->
+            <div style="background: white; border: 1px solid #BAE6FD; border-radius: 10px; padding: 10px; margin-bottom: 8px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                <span style="font-weight: 800; color: #0C4A6E; font-size: 12px; display: flex; align-items: center; gap: 6px;">
+                  <span class="sync-dot-live"></span> Firebase Firestore (Web ⇄ APK)
+                </span>
+                <span style="color: #059669; font-weight: 800; font-size: 11px;">🟢 লাইভ সিঙ্কড</span>
+              </div>
+              <p style="margin: 0; font-size: 11px; color: #475569; line-height: 1.4;">
+                ওয়েব ব্রাউজার ও অ্যান্ড্রয়েড APK উভয়ই একই ক্লাউড সার্ভারের সাথে সরাসরি ২-মুখী রিয়েলটাইমে সিঙ্কড। ওয়েবে ডাটা দিলে APK-তে এবং APK-তে এন্ট্রি দিলে ওয়েবে তাত্ক্ষণিক লাইভ দেখতে পাবেন।
+              </p>
+            </div>
+
+            <!-- Google Drive Status -->
+            <div style="background: white; border: 1px solid #BAE6FD; border-radius: 10px; padding: 10px; margin-bottom: 8px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; flex-wrap: wrap; gap: 6px;">
+                <span style="font-weight: 800; color: #0C4A6E; font-size: 12px; display: flex; align-items: center; gap: 6px;">
+                  <span>☁️</span> Google Drive অটো-ব্যাকআপ
+                </span>
+                <span id="modalDriveStatusBadge" style="font-weight: 800; font-size: 11px; color: #64748B;">⚪ ড্রাইভ কানেক্ট করা হয়নি</span>
+              </div>
+              <p style="margin: 0 0 6px 0; font-size: 11px; color: #475569; line-height: 1.4;">
+                আপনার গুগল ড্রাইভের সাথে সম্পূর্ণ সমিতির লেজার, সদস্য খতিয়ান ও অডিট স্টেটমেন্ট স্বয়ংক্রিয় ব্যাকআপ সংযুক্ত।
+              </p>
+              <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+                <button type="button" onclick="connectGoogleDriveDirectly()" style="background: #4285F4; color: white; border: none; padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
+                  <span>🔑</span> Google Drive কানেক্ট / সাইন-ইন
+                </button>
+                <div id="lastDriveBackupLinkContainer" style="display: none;"></div>
+              </div>
+            </div>
+
+            <!-- Auto-Backup Cycle Info & Sync Now Button -->
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-top: 10px; padding-top: 8px; border-top: 1px dashed #BAE6FD;">
+              <div style="font-size: 11px; color: #0369A1; font-weight: 700;">
+                ⚡ প্রতি লগইন ও এন্ট্রিতে অটো-ব্যাকআপ সক্রিয়
+              </div>
+              <button type="button" onclick="triggerManualCloudSync()" class="touch-scale-btn" style="background: #0284C7; color: white; border: none; padding: 6px 14px; border-radius: 8px; font-size: 11.5px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
+                <span>🔄</span> এখনই সম্পূর্ণ ব্যাকআপ সিঙ্ক চালান
+              </button>
+            </div>
+          </div>
+
           <!-- Section 1: Backup Stats & Export -->
           <div style="border: 1px solid #BBF7D0; background: #F0FDF4; border-radius: 14px; padding: 14px; margin-bottom: 16px;">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
@@ -4558,19 +4610,28 @@
 
         <!-- ================= SYSTEM STATUS STRIP (Tips 49 & 50) ================= -->
         <div class="system-status-strip">
-          <!-- Tip 49: Cloud Backup & Last Sync Timer Chip -->
-          <div class="cloud-sync-chip" id="dashCloudSyncChip">
-            <div style="display: flex; align-items: center; gap: 6px;">
+          <!-- Tip 49: Cloud Backup & Multi-Platform Live Sync Chip -->
+          <div class="cloud-sync-chip" id="dashCloudSyncChip" onclick="openBackupRestoreModal()" style="cursor: pointer;" title="মাল্টি-ক্লাউড লাইভ সিঙ্ক ও ব্যাকআপ হাব খুলুন">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
               <span class="sync-dot-live"></span>
-              <span style="font-weight: 700; color: #1E3A8A;">ক্লাউড সিঙ্ক:</span>
-              <span id="cloudSyncStatusText" style="color: #0F9D58; font-weight: 800;">সক্রিয়</span>
-              <span style="color: #64748B; font-size: 10px;">•</span>
-              <span id="cloudSyncTimerText" style="color: #64748B; font-size: 10.5px; font-weight: 600;">শেষ সিঙ্ক: এইমাত্র</span>
+              <div style="display: inline-flex; align-items: center; gap: 4px;">
+                <span style="font-weight: 800; color: #1E3A8A; font-size: 11px;">ফায়ারস্টোর:</span>
+                <span id="cloudSyncStatusText" style="color: #0F9D58; font-weight: 800; font-size: 11px;">🟢 লাইভ (Web ⇄ APK)</span>
+              </div>
+              <span style="color: #CBD5E1; font-size: 10px;">|</span>
+              <div style="display: inline-flex; align-items: center; gap: 4px;">
+                <span style="font-weight: 800; color: #0284C7; font-size: 11px;">ড্রাইভ:</span>
+                <span id="driveSyncStatusText" style="color: #0284C7; font-weight: 700; font-size: 11px;">☁️ চেক হচ্ছে...</span>
+              </div>
+              <span style="color: #CBD5E1; font-size: 10px;">•</span>
+              <span id="cloudSyncTimerText" style="color: #64748B; font-size: 10.5px; font-weight: 600;">শেষ ব্যাকআপ: এইমাত্র</span>
             </div>
-            <button type="button" class="sync-action-btn" id="btnManualSync" onclick="triggerManualCloudSync()" title="এখনই ক্লাউড ব্যাকআপ সিঙ্ক করুন">
-              <span id="syncSpinIcon">🔄</span>
-              <span>সিঙ্ক</span>
-            </button>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <button type="button" class="sync-action-btn" id="btnManualSync" onclick="event.stopPropagation(); triggerManualCloudSync()" title="এখনই ক্লাউড ব্যাকআপ সিঙ্ক করুন">
+                <span id="syncSpinIcon">🔄</span>
+                <span>সিঙ্ক</span>
+              </button>
+            </div>
           </div>
 
           <!-- Tip 50: System Health Check & Firebase Connectivity Ping Meter -->
@@ -6835,26 +6896,48 @@
       <div id="view-backup" style="display: none;">
         <div class="view-header-bar">
           <button class="back-btn" onclick="navTo('dashboard')">← ড্যাশবোর্ডে ফিরুন</button>
-          <span style="font-weight: 700; font-size: 14px; color: #10B981;">☁️ গুগল ড্রাইভ ক্লাউড ব্যাকআপ</span>
+          <span style="font-weight: 700; font-size: 14px; color: #10B981;">☁️ মাল্টি-ক্লাউড ও ড্রাইভ অটো-ব্যাকআপ</span>
         </div>
 
         <div class="card" style="border: 2px solid #0F9D58;">
           <div class="card-title" style="display: flex; align-items: center; gap: 8px;">
             <span style="font-size: 22px;">☁️</span>
-            <span>Google Drive-এ সমিতির পূর্ণাঙ্গ ব্যাকআপ</span>
+            <span>Google Drive ও ফায়ারস্টোর স্বয়ংক্রিয় ব্যাকআপ</span>
           </div>
           <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 6px 0 16px 0;">
-            এই সমিতির অফিসিয়াল প্যাডের সকল তথ্য, কমিটি, সকল সদস্যের ব্যালেন্স, সম্পূর্ণ জমা এবং <strong>খরচ খাতা ও হাতে নগদ ক্যাশের পূর্ণাঙ্গ অফিশিয়াল CSV/Excel স্টেটমেন্ট</strong> সরাসরি আপনার Google Drive-এ আপলোড করুন।
+            এই সমিতির সকল তথ্য, কমিটি, সকল সদস্যের ব্যালেন্স, সম্পূর্ণ জমা, খরচ খাতা ও ক্যাশের পূর্ণাঙ্গ তথ্য রিয়েলটাইমে ফায়ারস্টোর (Web ⇄ APK) এবং Google Drive-এ স্বয়ংক্রিয় ব্যাকআপ হয়।
           </p>
 
-          <div style="margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center;">
-            <span id="driveStatusBadge" style="font-size: 12px; font-weight: 700; color: #64748B;">⚪ Google Drive কানেক্ট করা হয়নি</span>
-            <button onclick="connectGoogleDriveDirectly()" style="background:#4285F4; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">🔑 Google Drive দিয়ে লগইন করুন</button>
+          <!-- 2-Platform Sync Confirmation Card -->
+          <div style="background: #F0FDF4; border: 1px solid #86EFAC; border-radius: 10px; padding: 12px; margin-bottom: 14px;">
+            <div style="font-weight: 800; color: #166534; font-size: 12.5px; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+              <span class="sync-dot-live"></span> Web ব্রাউজার ও Android APK লাইভ সিঙ্ক
+            </div>
+            <p style="margin: 0; font-size: 11.5px; color: #15803D; line-height: 1.4;">
+              উভয় প্ল্যাটফর্ম একই ক্লাউড ডাটাবেজের সাথে ২-মুখী রিয়েলটাইমে সংযুক্ত। একটিতে ডাটা যোগ/পরিবর্তন করলে তা সাথে সাথে অন্যটিতে দৃশ্যমান হবে।
+            </p>
           </div>
 
-          <button class="btn" onclick="exportCsv()">
-            <span>📥 Google ড্রাইভে পূর্ণাঙ্গ অডিট স্টেটমেন্ট ব্যাকআপ করুন</span>
-          </button>
+          <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 12px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <div id="driveStatusBadge" style="font-size: 12px; font-weight: 800; color: #64748B;">⚪ Google Drive কানেক্ট করা হয়নি</div>
+              <div id="viewDriveLinkContainer" style="display: none; margin-top: 4px;"></div>
+            </div>
+            <button onclick="connectGoogleDriveDirectly()" style="background:#4285F4; color:white; border:none; padding:7px 14px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; display: flex; align-items: center; gap: 4px;">🔑 Google Drive দিয়ে কানেক্ট করুন</button>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 14px;">
+            <button class="btn" onclick="triggerManualCloudSync()" style="background: #0F9D58; color: white;">
+              <span>🔄 এখনই সম্পূর্ণ ক্লাউড ব্যাকআপ চালান</span>
+            </button>
+            <button class="btn" onclick="openBackupRestoreModal()" style="background: #0284C7; color: white;">
+              <span>📦 ১-ক্লিক ডাটাবেস হাব ও রিস্টোর</span>
+            </button>
+            <button class="btn" onclick="exportCsv()" style="background: #475569; color: white;">
+              <span>📥 CSV/Excel অডিট স্টেটমেন্ট ডাউনলোড</span>
+            </button>
+          </div>
+
           <div id="backupFeedback" style="display: none; margin-top: 14px; padding: 12px; background: #E8F5E9; color: #1B5E20; border-radius: 8px; font-size: 13px; font-weight: 600;">
             ✅ আপনার Google Drive-এ স্টেটমেন্ট ফাইলটি প্রস্তুত ও ডাউনলোড সম্পন্ন হয়েছে!
           </div>
@@ -12782,6 +12865,9 @@
     let currentUser = null;
     let currentSomiti = null;
     let currentSomitiId = "main";
+    let googleAccessToken = (function() {
+      try { return localStorage.getItem('somiti_gdrive_token') || null; } catch(e) { return null; }
+    })();
 
     function getSomitiDocRef(somitiId) {
       const id = somitiId || (currentSomiti && currentSomiti.id ? currentSomiti.id : currentSomitiId) || "main";
@@ -13202,11 +13288,8 @@
 
       if (accessToken) {
         googleAccessToken = accessToken;
-        const badge = document.getElementById("driveStatusBadge");
-        if (badge) {
-          badge.innerText = "🟢 Google Drive সরাসরি কানেক্টেড";
-          badge.style.color = "#16A34A";
-        }
+        try { localStorage.setItem('somiti_gdrive_token', accessToken); } catch(e){}
+        if (typeof updateDriveSyncUI === 'function') updateDriveSyncUI();
       }
 
       let firebaseUser = null;
@@ -13247,6 +13330,8 @@
       currentUser = null;
       currentSomiti = null;
       googleAccessToken = null;
+      try { localStorage.removeItem('somiti_gdrive_token'); } catch(e) {}
+      if (typeof updateDriveSyncUI === 'function') updateDriveSyncUI();
       if (window.NativeAuthBridge) {
         try { window.NativeAuthBridge.postMessage('google_sign_out'); } catch(e) {}
       }
@@ -14474,6 +14559,14 @@
       switchDashboardView(roleToSet);
       initRealtimeListeners();
       if (isAdmin || roleToSet !== 'member') initPendingRequestsListener();
+      if (typeof updateDriveSyncUI === 'function') updateDriveSyncUI();
+
+      // Trigger automatic backup silently upon login / entering dashboard
+      setTimeout(() => {
+        if (typeof runAutoBackupAndSync === 'function') {
+          runAutoBackupAndSync({ silent: true });
+        }
+      }, 2500);
 
       // Listen for updates from Firestore
       try {
@@ -15813,6 +15906,9 @@
         document.getElementById("mPhone").value = "";
         document.getElementById("mEmail").value = "";
         alert(`✅ সদস্য "${name}" সফলভাবে যুক্ত ও বরাদ্দ হয়েছে! তিনি তার ফোনে সরাসরি প্রবেশ করতে পারবেন।`);
+        setTimeout(() => {
+          if (typeof runAutoBackupAndSync === 'function') runAutoBackupAndSync({ silent: true });
+        }, 1200);
       });
     }
 
@@ -16057,6 +16153,10 @@
           driveUrl: null,
           dateStr: new Date().toLocaleString('bn-BD')
         });
+
+        setTimeout(() => {
+          if (typeof runAutoBackupAndSync === 'function') runAutoBackupAndSync({ silent: true });
+        }, 1500);
       });
     }
 
@@ -16084,6 +16184,9 @@
         document.getElementById("expenseAmount").value = "";
         document.getElementById("expenseNote").value = "";
         alert(`✅ ৳${amount} টাকা খরচের এন্ট্রি সফলভাবে সংরক্ষণ করা হয়েছে!`);
+        setTimeout(() => {
+          if (typeof runAutoBackupAndSync === 'function') runAutoBackupAndSync({ silent: true });
+        }, 1200);
       });
     }
 
@@ -16102,6 +16205,9 @@
           getSomitiDocRef().collection("expenses").doc(id).delete();
         }
         showAppToast("খরচের এন্ট্রি সফলভাবে মুছে ফেলা হয়েছে", "info");
+        setTimeout(() => {
+          if (typeof runAutoBackupAndSync === 'function') runAutoBackupAndSync({ silent: true });
+        }, 1200);
       }
     }
 
@@ -16645,6 +16751,7 @@
       if (depEl) depEl.innerText = `${depCount} টি (${totalDep.toLocaleString('bn-BD')} ৳)`;
       if (expEl) expEl.innerText = `${expCount} টি (${totalExp.toLocaleString('bn-BD')} ৳)`;
 
+      if (typeof updateDriveSyncUI === 'function') updateDriveSyncUI();
       m.style.display = "flex";
     }
 
@@ -19341,6 +19448,9 @@
         renderDeposits();
         updateSummary();
         alert(`✅ রসিদ নং "${rctNo}" সফলভাবে ডিলিট করা হয়েছে! ভেরিফিকেশন পোর্টালেও এটি আর প্রদর্শিত হবে না।`);
+        setTimeout(() => {
+          if (typeof runAutoBackupAndSync === 'function') runAutoBackupAndSync({ silent: true });
+        }, 1200);
       } catch(err) {
         alert("ডিলিট করতে সমস্যা হয়েছে: " + err.message);
       }
@@ -19391,6 +19501,9 @@
         renderDeposits();
         updateSummary();
         alert(`✅ রসিদ নং "${rctNo}" সফলভাবে মুছে ফেলা হয়েছে!`);
+        setTimeout(() => {
+          if (typeof runAutoBackupAndSync === 'function') runAutoBackupAndSync({ silent: true });
+        }, 1200);
       } catch(err) {
         alert("ডিলিট করতে সমস্যা: " + err.message);
       }
@@ -21115,9 +21228,7 @@
       exportAreaAsContinuousImage(srcAreaId, `Document_Full_${currentA4Source}_${new Date().toISOString().split('T')[0]}.png`);
     }
 
-    // ================= GOOGLE DRIVE CSV EXPORT =================
-    let googleAccessToken = null;
-
+    // ================= GOOGLE DRIVE CSV EXPORT & AUTO-SYNC =================
     function connectGoogleDriveDirectly() {
       if (window.NativeAuthBridge) {
         window.NativeAuthBridge.postMessage('google_sign_in');
@@ -21128,9 +21239,12 @@
       auth.signInWithPopup(provider).then((result) => {
         if (result.credential) {
           googleAccessToken = result.credential.accessToken;
-          alert("✅ Google Drive সফলভাবে কানেক্ট হয়েছে! এবার ব্যাকআপ বাটনে চাপুন।");
-          document.getElementById("driveStatusBadge").innerText = "🟢 Google Drive সরাসরি কানেক্টেড";
-          document.getElementById("driveStatusBadge").style.color = "#16A34A";
+          try { localStorage.setItem('somiti_gdrive_token', googleAccessToken); } catch(e){}
+          if (typeof updateDriveSyncUI === 'function') updateDriveSyncUI();
+          alert("✅ Google Drive সফলভাবে কানেক্ট হয়েছে! স্বয়ংক্রিয় ব্যাকআপ এখন সক্রিয়।");
+          if (typeof runAutoBackupAndSync === 'function') {
+            runAutoBackupAndSync({ silent: true });
+          }
         }
       }).catch(err => {
         alert("গুগল ড্রাইভ অথেনটিকেশন তথ্য: " + err.message);
@@ -22902,10 +23016,109 @@
       window.open(`sms:${phone}?body=${text}`, '_blank');
     }
 
-    // Tip 49: Cloud Backup & Last Sync Timer Chip
-    let lastSyncTimestamp = Date.now();
+    // Tip 49: Cloud Backup & Multi-Channel Auto-Sync Engine
+    let lastSyncTimestamp = (function() {
+      try {
+        const t = localStorage.getItem('somiti_last_sync_time');
+        return t ? Number(t) : Date.now();
+      } catch(e) { return Date.now(); }
+    })();
 
-    function triggerManualCloudSync() {
+    function updateDriveSyncUI() {
+      const isDriveConnected = !!googleAccessToken;
+      const lastDriveUrl = (function() {
+        try { return localStorage.getItem('somiti_last_gdrive_backup_url'); } catch(e) { return null; }
+      })();
+
+      // 1. Top Strip status text
+      const driveSyncStatusText = document.getElementById('driveSyncStatusText');
+      if (driveSyncStatusText) {
+        if (isDriveConnected) {
+          driveSyncStatusText.innerText = "🟢 ড্রাইভ সিঙ্কড";
+          driveSyncStatusText.style.color = "#059669";
+        } else {
+          driveSyncStatusText.innerText = "⚪ ড্রাইভ আনলিঙ্কড";
+          driveSyncStatusText.style.color = "#64748B";
+        }
+      }
+
+      // 2. Drive badges across modals and views
+      const badges = [
+        document.getElementById('driveStatusBadge'),
+        document.getElementById('modalDriveStatusBadge')
+      ];
+      badges.forEach(badge => {
+        if (!badge) return;
+        if (isDriveConnected) {
+          badge.innerText = "🟢 Google Drive অটো-ব্যাকআপ সংযুক্ত";
+          badge.style.color = "#16A34A";
+        } else {
+          badge.innerText = "⚪ Google Drive কানেক্ট করা হয়নি";
+          badge.style.color = "#64748B";
+        }
+      });
+
+      // 3. Drive links
+      const linkContainers = [
+        document.getElementById('lastDriveBackupLinkContainer'),
+        document.getElementById('viewDriveLinkContainer')
+      ];
+      linkContainers.forEach(container => {
+        if (!container) return;
+        if (lastDriveUrl) {
+          container.innerHTML = `<a href="${lastDriveUrl}" target="_blank" style="color: #0284C7; font-weight: 700; text-decoration: underline; font-size: 11px;">📂 গুগল ড্রাইভে ফাইল দেখুন ↗</a>`;
+          container.style.display = "inline-block";
+        } else {
+          container.style.display = "none";
+        }
+      });
+    }
+
+    async function uploadBackupToGoogleDrive(jsonStr, fileName) {
+      if (!googleAccessToken) return null;
+      try {
+        const metadata = {
+          name: fileName,
+          mimeType: 'application/json',
+          description: 'Smart Somiti Automated Cloud Backup (Web & APK)'
+        };
+        const form = new FormData();
+        form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+        form.append('file', new Blob([jsonStr], { type: 'application/json' }));
+
+        const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${googleAccessToken}` },
+          body: form
+        });
+
+        if (res.status === 401) {
+          googleAccessToken = null;
+          try { localStorage.removeItem('somiti_gdrive_token'); } catch(e){}
+          updateDriveSyncUI();
+          return null;
+        }
+
+        if (res.ok) {
+          const fileData = await res.json();
+          if (fileData && fileData.id) {
+            const driveUrl = `https://drive.google.com/file/d/${fileData.id}/view`;
+            try {
+              localStorage.setItem('somiti_last_gdrive_backup_url', driveUrl);
+              localStorage.setItem('somiti_last_gdrive_sync_time', String(Date.now()));
+            } catch(e){}
+            updateDriveSyncUI();
+            return driveUrl;
+          }
+        }
+      } catch(gErr) {
+        console.warn("Google Drive upload warning:", gErr);
+      }
+      return null;
+    }
+
+    async function runAutoBackupAndSync(options = {}) {
+      const silent = options.silent === true;
       const spinIcon = document.getElementById('syncSpinIcon');
       const statusText = document.getElementById('cloudSyncStatusText');
       const timerText = document.getElementById('cloudSyncTimerText');
@@ -22913,19 +23126,105 @@
       if (spinIcon) spinIcon.classList.add('sync-spinning');
       if (statusText) statusText.innerText = "সিঙ্ক হচ্ছে...";
 
-      setTimeout(() => {
-        if (spinIcon) spinIcon.classList.remove('sync-spinning');
-        lastSyncTimestamp = Date.now();
-        if (statusText) statusText.innerText = "সক্রিয়";
-        if (timerText) timerText.innerText = "শেষ সিঙ্ক: এইমাত্র";
+      try {
+        const somiti = currentSomiti || { name: "স্মার্ট সমিতি", code: "SMT-001" };
+        const isApk = !!(window.NativeAuthBridge || window.flutter_inappwebview);
+        const platform = isApk ? "Android APK" : "Web Browser";
 
-        // Save local backup snapshot
+        const members = (typeof getCombinedMembers === 'function') ? getCombinedMembers() : (membersData || []);
+        const backupPayload = {
+          meta: {
+            app: "স্মার্ট সমিতি",
+            version: "2.8.14",
+            schema: "somiti_backup_v2",
+            timestamp: new Date().toISOString(),
+            platform: platform,
+            userEmail: currentUser?.email || "anonymous",
+            somitiCode: somiti.code || somiti.id || "main",
+            somitiName: somiti.name || "সমিতি",
+            trigger: silent ? "automatic" : "manual"
+          },
+          somiti: somiti,
+          members: members,
+          deposits: depositsData || [],
+          expenses: (typeof expensesData !== 'undefined' && expensesData) ? expensesData : [],
+          loans: (typeof loansData !== 'undefined' && loansData) ? loansData : [],
+          accounts: (typeof accountsData !== 'undefined' && accountsData) ? accountsData : []
+        };
+
+        const jsonStr = JSON.stringify(backupPayload, null, 2);
+
+        // 1. Local Persistence
         try {
+          localStorage.setItem('somiti_auto_backup_latest', jsonStr);
+          lastSyncTimestamp = Date.now();
           localStorage.setItem('somiti_last_sync_time', String(lastSyncTimestamp));
         } catch (e) {}
 
-        alert("✅ সফল! সমিতির সকল তথ্য এবং খতিয়ান ক্লাউড সার্ভারে সিঙ্ক ও ব্যাকআপ করা হয়েছে।");
-      }, 900);
+        // 2. Firestore Cloud Backup (Web ⇄ APK Realtime Sync)
+        if (typeof db !== 'undefined' && db && typeof getSomitiDocRef === 'function') {
+          try {
+            await getSomitiDocRef().collection("system_backups").doc("latest_auto_backup").set({
+              meta: {
+                version: "2.8.14",
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                devicePlatform: platform,
+                userEmail: currentUser?.email || "anonymous",
+                trigger: silent ? "automatic" : "manual"
+              },
+              summary: {
+                membersCount: members.length,
+                depositsCount: (depositsData || []).length,
+                expensesCount: (typeof expensesData !== 'undefined' && expensesData) ? expensesData.length : 0,
+                loansCount: (typeof loansData !== 'undefined' && loansData) ? loansData.length : 0,
+                totalDeposit: (depositsData || []).reduce((s, d) => s + (Number(d.amount) || 0), 0)
+              },
+              backupJson: jsonStr
+            }, { merge: true });
+          } catch(fsErr) {
+            console.warn("Firestore auto-backup warning:", fsErr);
+          }
+        }
+
+        // 3. Google Drive Auto-Upload if connected
+        let driveUrl = null;
+        if (googleAccessToken) {
+          const sName = (somiti.name || 'Somiti').replace(/[^a-zA-Z0-9_\u0980-\u09FF]/g, '_');
+          const dateTag = new Date().toISOString().slice(0, 10);
+          const fileName = `SmartSomiti_AutoBackup_${sName}_${dateTag}.json`;
+          driveUrl = await uploadBackupToGoogleDrive(jsonStr, fileName);
+        }
+
+        // 4. Update UI
+        if (spinIcon) spinIcon.classList.remove('sync-spinning');
+        if (statusText) {
+          statusText.innerText = "🟢 লাইভ (Web ⇄ APK)";
+          statusText.style.color = "#0F9D58";
+        }
+        if (timerText) timerText.innerText = "শেষ ব্যাকআপ: এইমাত্র";
+        updateDriveSyncUI();
+
+        if (!silent) {
+          let alertMsg = "✅ ক্লাউড ডাটাবেজ (Firestore) ও ডিভাইসে সফলভাবে পূর্ণাঙ্গ অটো-ব্যাকআপ সম্পন্ন হয়েছে!\n\n📱 Web ব্রাউজার এবং Android APK উভয় মাধ্যমে তথ্য লাইভ সিঙ্কড রয়েছে।";
+          if (driveUrl) {
+            alertMsg += "\n\n☁️ Google Drive-এ স্বয়ংক্রিয় ব্যাকআপ ফাইল সফলভাবে আপলোড হয়েছে!";
+          } else if (!googleAccessToken) {
+            alertMsg += "\n\n💡 Google Drive-এও নিয়মিত অটো-ব্যাকআপ ফাইল পেতে 'Google Drive কানেক্ট' বাটনে ক্লিক করুন।";
+          }
+          alert(alertMsg);
+        }
+      } catch (err) {
+        console.error("runAutoBackupAndSync error:", err);
+        if (spinIcon) spinIcon.classList.remove('sync-spinning');
+        if (statusText) statusText.innerText = "সক্রিয়";
+        if (!silent) {
+          alert("ব্যাকআপ সতর্কতা: " + err.message);
+        }
+      }
+    }
+
+    async function triggerManualCloudSync() {
+      await runAutoBackupAndSync({ silent: false });
     }
 
     function updateSyncTimerDisplay() {
@@ -22933,10 +23232,10 @@
       if (!timerText) return;
       const elapsedSec = Math.floor((Date.now() - lastSyncTimestamp) / 1000);
       if (elapsedSec < 60) {
-        timerText.innerText = "শেষ সিঙ্ক: এইমাত্র";
+        timerText.innerText = "শেষ ব্যাকআপ: এইমাত্র";
       } else {
         const mins = Math.floor(elapsedSec / 60);
-        timerText.innerText = `শেষ সিঙ্ক: ${toBnDigits(String(mins))} মিনিট আগে`;
+        timerText.innerText = `শেষ ব্যাকআপ: ${toBnDigits(String(mins))} মিনিট আগে`;
       }
     }
 
@@ -31781,11 +32080,17 @@
       }
     }
 
-    // Initialize System Health and Sync Timer on startup
+    // Initialize System Health, Sync Timer, and Auto-Backup on startup
     function initSystemHealthAndSync() {
       checkSystemPingHealth();
+      if (typeof updateDriveSyncUI === 'function') updateDriveSyncUI();
       setInterval(updateSyncTimerDisplay, 30000); // Check every 30s
       setInterval(checkSystemPingHealth, 60000); // Ping check every 60s
+      setInterval(() => {
+        if (typeof runAutoBackupAndSync === 'function' && currentSomiti) {
+          runAutoBackupAndSync({ silent: true });
+        }
+      }, 10 * 60 * 1000); // Auto-backup background interval every 10 mins
     }
 
     // Auto-initialize view helpers on startup

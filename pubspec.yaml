@@ -1,7 +1,7 @@
 name: cloud_sync_drive
 description: "Cross-device real-time sync with Google Sign-in and Google Drive backup"
 publish_to: "none"
-version: 2.8.13+47
+version: 2.8.14+48
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -32,11 +32,7 @@ flutter:
   assets:
     - assets/index.html
     - assets/logo.webp
-    - assets/logo.jpg
     - assets/smart_somiti_logo.webp
-    - assets/smart_somiti_logo.jpg
     - assets/swapno_chowa_logo.webp
-    - assets/swapno_chowa_logo.jpg
     - assets/pad_header.webp
-    - assets/pad_header.jpg
     - version.json

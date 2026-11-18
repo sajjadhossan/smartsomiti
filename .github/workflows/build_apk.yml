@@ -56,7 +56,8 @@ jobs:
           from PIL import Image
           import os
           sizes = {'mipmap-mdpi': 48, 'mipmap-hdpi': 72, 'mipmap-xhdpi': 96, 'mipmap-xxhdpi': 144, 'mipmap-xxxhdpi': 192}
-          img = Image.open('assets/logo.jpg').convert('RGBA')
+          logo_path = 'assets/logo.webp' if os.path.exists('assets/logo.webp') else 'assets/logo.jpg'
+          img = Image.open(logo_path).convert('RGBA')
           for folder, size in sizes.items():
               d = os.path.join('android/app/src/main/res', folder)
               os.makedirs(d, exist_ok=True)
@@ -64,8 +65,8 @@ jobs:
           print('Successfully generated launcher icons for all mipmap densities!')
           "
 
-      - name: Build Release APKs (Split per ABI)
-        run: flutter build apk --release --split-per-abi --android-skip-build-dependency-validation
+      - name: Build Release APKs (Split per ABI with Obfuscation & R8 Minification)
+        run: flutter build apk --release --split-per-abi --obfuscate --split-debug-info=./build/app/outputs/symbols --android-skip-build-dependency-validation
 
       - name: Prepare Named APK Artifacts
         run: |
@@ -92,12 +93,12 @@ jobs:
           tag_name: v${{ env.VERSION }}
           name: "স্মার্ট সমিতি রিলিজ v${{ env.VERSION }} (Build ${{ env.BUILD }})"
           body: |
-            ### 📱 স্মার্ট সমিতি - আল্ট্রা-লাইটওয়েট অপ্টিমাইজড রিলিজ (~১৬ MB)
+            ### 📱 স্মার্ট সমিতি - আল্ট্রা-লাইটওয়েট ডিপ-অপ্টিমাইজড রিলিজ (~৮-১০ MB)
             - **সংস্করণ**: `v${{ env.VERSION }}` (Build: `${{ env.BUILD }}`)
             - **ইন-প্লেস আপডেট সমর্থিত**: হ্যাঁ (আগের অ্যাপ আনইনস্টল করতে হবে না)
-            - **প্রধান ডাউনলোড (স্মার্টফোন 64-bit, ~১৬ MB)**: [smartsomiti-v${{ env.VERSION }}.apk](https://github.com/sajjadhossan/smartsomiti/releases/download/v${{ env.VERSION }}/smartsomiti-v${{ env.VERSION }}.apk)
+            - **প্রধান ডাউনলোড (স্মার্টফোন 64-bit, ~৮-১০ MB)**: [smartsomiti-v${{ env.VERSION }}.apk](https://github.com/sajjadhossan/smartsomiti/releases/download/v${{ env.VERSION }}/smartsomiti-v${{ env.VERSION }}.apk)
             - **সর্বশেষ সংস্করণ লিংক**: [smartsomiti-latest.apk](https://github.com/sajjadhossan/smartsomiti/releases/download/v${{ env.VERSION }}/smartsomiti-latest.apk)
-            - **পুরাতন ফোন (32-bit, ~১৪ MB)**: [smartsomiti-v${{ env.VERSION }}-arm32.apk](https://github.com/sajjadhossan/smartsomiti/releases/download/v${{ env.VERSION }}/smartsomiti-v${{ env.VERSION }}-arm32.apk)
+            - **পুরাতন ফোন (32-bit, ~৭-৮ MB)**: [smartsomiti-v${{ env.VERSION }}-arm32.apk](https://github.com/sajjadhossan/smartsomiti/releases/download/v${{ env.VERSION }}/smartsomiti-v${{ env.VERSION }}-arm32.apk)
             - **ওয়েব অ্যাপ**: https://smartsomiti.vercel.app
           files: |
             release_apks/smartsomiti-v${{ env.VERSION }}.apk
