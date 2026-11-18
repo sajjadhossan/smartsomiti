@@ -3183,6 +3183,94 @@
       </div>
 
     </div>
+  <!-- ================= SOMITI ROLE & PANEL SELECTOR MODAL ================= -->
+  <div id="somitiPanelSelectorModal" class="modal-overlay" style="display: none; z-index: 2600; align-items: center; justify-content: center; padding: 16px; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(5px);" onclick="if(event.target === this) closeSomitiPanelSelector()">
+    <div class="modal-box" style="max-width: 580px; width: 100%; border-radius: 24px; box-shadow: 0 25px 60px rgba(0,0,0,0.3); background: white; border: 1.5px solid #CBD5E1; overflow: hidden; padding: 22px; animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);">
+      
+      <!-- Modal Header -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1.5px solid #F1F5F9; padding-bottom: 14px; margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 50px; height: 50px; border-radius: 16px; background: #ECFDF5; border: 1.5px solid #10B981; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; box-shadow: 0 4px 10px rgba(16,185,129,0.2); overflow: hidden;">
+            <img id="panelModalSomitiLogo" src="swapno_chowa_logo.jpg" alt="সমিতি লোগো" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.src='logo.jpg';">
+          </div>
+          <div>
+            <h3 id="panelModalSomitiName" style="font-size: 17px; font-weight: 800; color: #0F172A; margin: 0;">স্বপ্ন ছোঁয়া ঐক্য সমিতি</h3>
+            <p style="font-size: 11.5px; color: #64748B; margin: 3px 0 0 0;">প্রবেশের জন্য আপনার নির্ধারিত প্যানেলটি বেছে নিন</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeSomitiPanelSelector()" class="touch-scale-btn" style="background: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 50%; width: 34px; height: 34px; font-size: 15px; font-weight: 800; color: #64748B; cursor: pointer; display: flex; align-items: center; justify-content: center;">✕</button>
+      </div>
+
+      <!-- 4 Role / Panel Selection Cards Grid -->
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;">
+        
+        <!-- Panel 1: Super Admin Panel -->
+        <div onclick="enterSomitiWithRole('admin')" class="touch-scale-btn" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-radius: 16px; background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%); border: 1.5px solid #86EFAC; cursor: pointer; box-shadow: 0 2px 6px rgba(16,185,129,0.08); transition: all 0.2s ease;">
+          <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+            <div style="width: 44px; height: 44px; border-radius: 12px; background: #059669; color: white; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 10px rgba(5,150,105,0.3); flex-shrink: 0;">
+              👑
+            </div>
+            <div style="min-width: 0;">
+              <div style="font-size: 14.5px; font-weight: 800; color: #064E3B;">সুপার এডমিন প্যানেল</div>
+              <div style="font-size: 11px; color: #047857; margin-top: 2px;">সমিতির পূর্ণ নিয়ন্ত্রণ, ব্যাকআপ, অডিট ও সকল ক্লাউড কনফিগারেশন</div>
+            </div>
+          </div>
+          <span style="font-size: 12px; font-weight: 800; color: #059669; background: white; padding: 6px 12px; border-radius: 10px; border: 1px solid #86EFAC; white-space: nowrap; flex-shrink: 0; margin-left: 8px;">প্রবেশ ➔</span>
+        </div>
+
+        <!-- Panel 2: Cashier Panel -->
+        <div onclick="enterSomitiWithRole('cashier')" class="touch-scale-btn" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-radius: 16px; background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); border: 1.5px solid #93C5FD; cursor: pointer; box-shadow: 0 2px 6px rgba(59,130,246,0.08); transition: all 0.2s ease;">
+          <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+            <div style="width: 44px; height: 44px; border-radius: 12px; background: #2563EB; color: white; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 10px rgba(37,99,235,0.3); flex-shrink: 0;">
+              💼
+            </div>
+            <div style="min-width: 0;">
+              <div style="font-size: 14.5px; font-weight: 800; color: #1E3A8A;">কোষাধ্যক্ষ প্যানেল</div>
+              <div style="font-size: 11px; color: #1D4ED8; margin-top: 2px;">কিস্তি আদায়, ডিজিটাল রসিদ তৈরি, ক্যাশ বুক ও বকেয়া খতিয়ান</div>
+            </div>
+          </div>
+          <span style="font-size: 12px; font-weight: 800; color: #1D4ED8; background: white; padding: 6px 12px; border-radius: 10px; border: 1px solid #93C5FD; white-space: nowrap; flex-shrink: 0; margin-left: 8px;">প্রবেশ ➔</span>
+        </div>
+
+        <!-- Panel 3: General Admin Panel -->
+        <div onclick="enterSomitiWithRole('general_admin')" class="touch-scale-btn" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-radius: 16px; background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); border: 1.5px solid #FCD34D; cursor: pointer; box-shadow: 0 2px 6px rgba(245,158,11,0.08); transition: all 0.2s ease;">
+          <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+            <div style="width: 44px; height: 44px; border-radius: 12px; background: #D97706; color: white; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 10px rgba(217,119,6,0.3); flex-shrink: 0;">
+              🛡️
+            </div>
+            <div style="min-width: 0;">
+              <div style="font-size: 14.5px; font-weight: 800; color: #78350F;">সাধারণ এডমিন প্যানেল</div>
+              <div style="font-size: 11px; color: #B45309; margin-top: 2px;">সদস্য ডিরেক্টরি তদারকি, নোটিশ বোর্ড প্রকাশ ও সাংগঠনিক মিটিং</div>
+            </div>
+          </div>
+          <span style="font-size: 12px; font-weight: 800; color: #B45309; background: white; padding: 6px 12px; border-radius: 10px; border: 1px solid #FCD34D; white-space: nowrap; flex-shrink: 0; margin-left: 8px;">প্রবেশ ➔</span>
+        </div>
+
+        <!-- Panel 4: General Member Panel -->
+        <div onclick="enterSomitiWithRole('member')" class="touch-scale-btn" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-radius: 16px; background: linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%); border: 1.5px solid #D8B4FE; cursor: pointer; box-shadow: 0 2px 6px rgba(168,85,247,0.08); transition: all 0.2s ease;">
+          <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+            <div style="width: 44px; height: 44px; border-radius: 12px; background: #7C3AED; color: white; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 10px rgba(124,58,237,0.3); flex-shrink: 0;">
+              👤
+            </div>
+            <div style="min-width: 0;">
+              <div style="font-size: 14.5px; font-weight: 800; color: #4C1D95;">সাধারণ সদস্য প্যানেল</div>
+              <div style="font-size: 11px; color: #6D28D9; margin-top: 2px;">ব্যক্তিগত সঞ্চয় বই (পাসবুক), জমার ইতিহাস ও ডিজিটাল রসিদ ডাউনলোড</div>
+            </div>
+          </div>
+          <span style="font-size: 12px; font-weight: 800; color: #6D28D9; background: white; padding: 6px 12px; border-radius: 10px; border: 1px solid #D8B4FE; white-space: nowrap; flex-shrink: 0; margin-left: 8px;">প্রবেশ ➔</span>
+        </div>
+
+      </div>
+
+      <!-- Footer Buttons -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px dashed #CBD5E1;">
+        <button type="button" onclick="closeSomitiPanelSelector()" class="touch-scale-btn" style="background: none; border: none; font-size: 12.5px; font-weight: 700; color: #64748B; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+          ← সমিতি তালিকায় ফিরে যান
+        </button>
+        <span style="font-size: 11px; color: #0F9D58; font-weight: 700; background: #E8F5E9; padding: 3px 8px; border-radius: 6px;">🔒 নিরাপদ এনক্রিপ্টেড সেশন</span>
+      </div>
+
+    </div>
   </div>
 
   <!-- ================= CREATE NEW SOMITI MODAL ================= -->
@@ -14240,13 +14328,14 @@
       showSomitiHubScreen(isAdmin);
     }
 
-    function openSomitiDashboard(s, isAdmin = true) {
+    function openSomitiDashboard(s, isAdmin = true, targetRole = null) {
       currentSomiti = s;
       renderPad(s);
       showScreen('dashboard');
-      switchDashboardView(isAdmin ? 'admin' : 'member');
+      const roleToSet = targetRole || (isAdmin ? 'admin' : 'member');
+      switchDashboardView(roleToSet);
       initRealtimeListeners();
-      if (isAdmin) initPendingRequestsListener();
+      if (isAdmin || roleToSet !== 'member') initPendingRequestsListener();
 
       // Listen for updates from Firestore
       try {
@@ -14837,7 +14926,7 @@
       if (badge) badge.innerText = `মোট ${toBnNum(societies.length)}টি সক্রিয় সমিতি`;
 
       let cardsHtml = societies.map(s => `
-        <div style="background: white; border-radius: 20px; border: 2px solid ${s.active ? '#0F9D58' : '#E2E8F0'}; box-shadow: 0 10px 25px rgba(0,0,0,0.06); padding: 20px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; transition: all 0.25s ease;" onmouseenter="this.style.transform='translateY(-3px)'" onmouseleave="this.style.transform='translateY(0)'">
+        <div onclick="openSomitiPanelSelector('${s.id}')" style="background: white; border-radius: 20px; border: 2px solid ${s.active ? '#0F9D58' : '#E2E8F0'}; box-shadow: 0 10px 25px rgba(0,0,0,0.06); padding: 20px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; cursor: pointer; transition: all 0.25s ease;" onmouseenter="this.style.transform='translateY(-3px)'" onmouseleave="this.style.transform='translateY(0)'">
           ${s.active ? '<div style="position: absolute; top: 12px; right: 12px; background: #DCFCE7; color: #166534; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 20px; border: 1px solid #86EFAC;">✓ সক্রিয় প্রোফাইল</div>' : ''}
           <div>
             <!-- Header Row -->
@@ -14888,15 +14977,15 @@
 
           <!-- Bottom Action Buttons -->
           <div style="display: flex; flex-direction: column; gap: 8px;">
-            <button type="button" onclick="selectSomitiAndOpen('${s.id}', ${isAdmin})" style="width: 100%; background: linear-gradient(135deg, #0F9D58 0%, #0B8043 100%); color: white; border: none; padding: 12px; border-radius: 12px; font-size: 13.5px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(15, 157, 88, 0.3); transition: all 0.2s;">
-              <span>🚀</span> <span>সমিতির ড্যাশবোর্ডে প্রবেশ করুন</span>
+            <button type="button" onclick="event.stopPropagation(); openSomitiPanelSelector('${s.id}')" style="width: 100%; background: linear-gradient(135deg, #0F9D58 0%, #0B8043 100%); color: white; border: none; padding: 12px; border-radius: 12px; font-size: 13.5px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(15, 157, 88, 0.3); transition: all 0.2s;">
+              <span>🚀</span> <span>প্যানেল নির্বাচন ও প্রবেশ করুন</span>
             </button>
             <div style="display: flex; gap: 8px;">
-              <a href="${s.verifyUrl || 'verify.html'}" target="_blank" rel="noopener" style="flex: 1; text-align: center; background: #FFFBEB; color: #92400E; border: 1px solid #FCD34D; padding: 8px; border-radius: 10px; font-size: 11.5px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 5px;">
+              <a href="${s.verifyUrl || 'verify.html'}" onclick="event.stopPropagation()" target="_blank" rel="noopener" style="flex: 1; text-align: center; background: #FFFBEB; color: #92400E; border: 1px solid #FCD34D; padding: 8px; border-radius: 10px; font-size: 11.5px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 5px;">
                 <span>🛡️</span> <span>ভেরিফিকেশন পোর্টাল ↗</span>
               </a>
               ${s.id !== 'swapnochowa' ? `
-                <button type="button" onclick="deleteCustomSomiti('${s.id}')" style="background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; padding: 8px 12px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer;" title="সমিতি মুছুন">
+                <button type="button" onclick="event.stopPropagation(); deleteCustomSomiti('${s.id}')" style="background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; padding: 8px 12px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer;" title="সমিতি মুছুন">
                   🗑️
                 </button>
               ` : ''}
@@ -14924,7 +15013,38 @@
       grid.innerHTML = cardsHtml;
     }
 
-    function selectSomitiAndOpen(somitiId, isAdmin = true) {
+    let selectedSomitiForPanels = null;
+
+    function openSomitiPanelSelector(somitiId) {
+      const societies = getRegisteredSocieties();
+      selectedSomitiForPanels = societies.find(s => s.id === somitiId) || societies[0];
+      const modal = document.getElementById("somitiPanelSelectorModal");
+      const nameEl = document.getElementById("panelModalSomitiName");
+      const logoEl = document.getElementById("panelModalSomitiLogo");
+      if (nameEl && selectedSomitiForPanels) nameEl.innerText = selectedSomitiForPanels.name;
+      if (logoEl && selectedSomitiForPanels) {
+        logoEl.src = selectedSomitiForPanels.logo || 'swapno_chowa_logo.jpg';
+      }
+      if (modal) {
+        modal.style.display = "flex";
+      }
+    }
+
+    function closeSomitiPanelSelector() {
+      const modal = document.getElementById("somitiPanelSelectorModal");
+      if (modal) {
+        modal.style.display = "none";
+      }
+    }
+
+    function enterSomitiWithRole(role) {
+      closeSomitiPanelSelector();
+      const sId = (selectedSomitiForPanels && selectedSomitiForPanels.id) ? selectedSomitiForPanels.id : 'swapnochowa';
+      const isStaffOrAdmin = (role === 'admin' || role === 'cashier' || role === 'general_admin');
+      selectSomitiAndOpen(sId, isStaffOrAdmin, role);
+    }
+
+    function selectSomitiAndOpen(somitiId, isAdmin = true, role = null) {
       let societies = getRegisteredSocieties();
       societies = societies.map(s => ({ ...s, active: s.id === somitiId }));
       localStorage.setItem(USER_SOCIETIES_KEY, JSON.stringify(societies));
@@ -14960,7 +15080,7 @@
       };
 
       currentSomiti = defaultSomiti;
-      openSomitiDashboard(defaultSomiti, isAdmin);
+      openSomitiDashboard(defaultSomiti, isAdmin, role);
     }
 
     function goToSomitiHub() {
@@ -15229,35 +15349,79 @@
     }
 
     function toggleRoleView() {
-      const newRole = (currentRole === 'admin') ? 'member' : 'admin';
-      switchDashboardView(newRole);
+      const somitiId = (currentSomiti && currentSomiti.id) ? currentSomiti.id : 'swapnochowa';
+      openSomitiPanelSelector(somitiId);
       closeSidebar();
     }
 
     function switchDashboardView(role) {
       currentRole = role;
-      const isAdm = (role === 'admin');
+      const isSuperAdmin = (role === 'admin');
+      const isCashier = (role === 'cashier');
+      const isGeneralAdmin = (role === 'general_admin');
+      const isMember = (role === 'member');
 
       const roleBadge = document.getElementById("sideUserRoleBadge");
       if (roleBadge) {
-        roleBadge.innerText = isAdm ? "👑 সুপার এডমিন" : "👤 সাধারণ সদস্য";
+        if (isSuperAdmin) {
+          roleBadge.innerText = "👑 সুপার এডমিন";
+          roleBadge.style.color = "#059669";
+        } else if (isCashier) {
+          roleBadge.innerText = "💼 কোষাধ্যক্ষ";
+          roleBadge.style.color = "#2563EB";
+        } else if (isGeneralAdmin) {
+          roleBadge.innerText = "🛡️ সাধারণ এডমিন";
+          roleBadge.style.color = "#D97706";
+        } else {
+          roleBadge.innerText = "👤 সাধারণ সদস্য";
+          roleBadge.style.color = "#7C3AED";
+        }
       }
 
       const toggleText = document.getElementById("sideRoleToggleText");
       if (toggleText) {
-        toggleText.innerText = isAdm ? "👤 মেম্বার সুপার অ্যাপে যান" : "👑 এডমিন ড্যাশবোর্ডে ফিরুন";
+        toggleText.innerText = "🔄 প্যানেল পরিবর্তন / নির্বাচন";
       }
 
       // Hide or show admin-only views in sidebar
-      const adminNavs = ['deposits', 'expenses', 'audit', 'backup', 'pending'];
-      adminNavs.forEach(v => {
-        const btn = document.getElementById('navItem-' + v);
-        if (btn) btn.style.display = isAdm ? 'flex' : 'none';
-      });
+      const allRestrictedNavs = ['deposits', 'expenses', 'audit', 'backup', 'pending', 'masterAdmin', 'security', 'saas', 'workflow', 'devopsOps', 'qaAudit'];
 
-      if (!isAdm) {
+      if (isMember) {
+        allRestrictedNavs.forEach(v => {
+          const btn = document.getElementById('navItem-' + v);
+          if (btn) btn.style.display = 'none';
+        });
         navTo('memberSuperApp');
+      } else if (isCashier) {
+        allRestrictedNavs.forEach(v => {
+          const btn = document.getElementById('navItem-' + v);
+          if (btn) {
+            if (['masterAdmin', 'security', 'saas', 'backup', 'devopsOps', 'qaAudit'].includes(v)) {
+              btn.style.display = 'none';
+            } else {
+              btn.style.display = 'flex';
+            }
+          }
+        });
+        navTo('deposits');
+      } else if (isGeneralAdmin) {
+        allRestrictedNavs.forEach(v => {
+          const btn = document.getElementById('navItem-' + v);
+          if (btn) {
+            if (['masterAdmin', 'security', 'saas', 'backup', 'audit', 'devopsOps'].includes(v)) {
+              btn.style.display = 'none';
+            } else {
+              btn.style.display = 'flex';
+            }
+          }
+        });
+        navTo('members');
       } else {
+        // Super admin has full access to all panels and navs
+        allRestrictedNavs.forEach(v => {
+          const btn = document.getElementById('navItem-' + v);
+          if (btn) btn.style.display = 'flex';
+        });
         navTo('dashboard');
       }
     }
