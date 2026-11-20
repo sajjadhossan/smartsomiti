@@ -3472,7 +3472,7 @@
             <div class="society-switch-pill" onclick="openSocietySwitcher()" title="সমিতি পরিবর্তন করতে ক্লিক করুন">
               <span id="dashSomitiName" style="font-size: 13.5px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 135px; display: inline-block; vertical-align: middle;">স্মার্ট সমিতি</span>
               <span id="dashSomitiCode" style="font-size: 10px; font-weight: 700; color: var(--primary);">SMT-7890</span>
-              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.8.17</span>
+              <span id="headerVersionBadge" style="font-size: 9px; font-weight: 800; background: #059669; color: white; padding: 1px 5px; border-radius: 4px; margin-left: 2px;">v2.8.18</span>
               <span style="font-size: 10px; opacity: 0.7;">▾</span>
             </div>
             <div id="headerActiveViewTitle" class="header-active-view-badge" onclick="openSomitiPanelSelector(currentSomiti ? currentSomiti.id : 'swapnochowa')" style="cursor: pointer;" title="প্যানেল বা ভূমিকা পরিবর্তন করতে ক্লিক করুন">📊 এডমিন ড্যাশবোর্ড ▾</div>
@@ -3598,7 +3598,7 @@
           <div>
             <h3 id="sideSomitiName" style="font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.2;">স্মার্ট সমিতি</h3>
             <span id="sideSomitiCode" style="font-size: 10px; background: var(--primary-light); color: var(--primary); font-weight: 700; padding: 1px 6px; border-radius: 4px;">SMT-7890</span>
-            <span style="font-size: 10px; background: #059669; color: white; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 3px;">v2.8.17</span>
+            <span style="font-size: 10px; background: #059669; color: white; font-weight: 800; padding: 1px 6px; border-radius: 4px; margin-left: 3px;">v2.8.18</span>
           </div>
         </div>
         <button onclick="closeSidebar()" style="background: none; border: none; font-size: 22px; color: var(--text-muted); cursor: pointer; padding: 4px;">✕</button>
@@ -14576,6 +14576,11 @@
       if (isAdmin || roleToSet !== 'member') initPendingRequestsListener();
       if (typeof updateDriveSyncUI === 'function') updateDriveSyncUI();
 
+      // Trigger Google Sheet live auto-sync for Swapnochowa
+      if (typeof syncFromGoogleSheetForSomiti === 'function') {
+        syncFromGoogleSheetForSomiti({ silent: true });
+      }
+
       // Trigger automatic backup silently upon login / entering dashboard
       setTimeout(() => {
         if (typeof runAutoBackupAndSync === 'function') {
@@ -16277,16 +16282,223 @@
     let activeMemberStatusFilter = 'all';
     let currentMemberSearchQuery = '';
 
+    // ================= PHASE 3: MASTER SOCIETY MEMBERS & GOOGLE SHEET SYNC ENGINE =================
+    const SOMITI_GOOGLE_SHEET_ID = '1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0';
+    const SOMITI_GOOGLE_SHEET_URL = `https://docs.google.com/spreadsheets/d/${SOMITI_GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&sheet=Sheet1`;
+
+    // Local / Memory cache for verified deposits and member records synced from Google Sheet
+    window.somitiSheetDeposits = (function() {
+      try { return JSON.parse(localStorage.getItem('somiti_google_sheet_records_v1') || '[]'); } catch(e) { return []; }
+    })();
+    window.somitiSheetMembers = (function() {
+      try { return JSON.parse(localStorage.getItem('somiti_google_sheet_members_v1') || '[]'); } catch(e) { return []; }
+    })();
+
+    // Apply any cached member updates to MASTER_SOCIETY_MEMBERS immediately on load
+    if (window.somitiSheetMembers && window.somitiSheetMembers.length > 0) {
+      window.somitiSheetMembers.forEach(sm => {
+        const idx = MASTER_SOCIETY_MEMBERS.findIndex(m => m.name === sm.name || m.id === sm.id);
+        if (idx !== -1) {
+          MASTER_SOCIETY_MEMBERS[idx] = { ...MASTER_SOCIETY_MEMBERS[idx], ...sm };
+        } else {
+          MASTER_SOCIETY_MEMBERS.push(sm);
+        }
+      });
+    }
+
+    async function syncFromGoogleSheetForSomiti(options = { silent: true }) {
+      const isSwapno = (currentSomiti && currentSomiti.id === 'swapnochowa') || (!currentSomiti);
+      if (!isSwapno) return;
+
+      try {
+        const res = await fetch(SOMITI_GOOGLE_SHEET_URL);
+        if (!res.ok) return;
+        const text = await res.text();
+        if (!text.includes('(')) return;
+        const jsonStr = text.substring(text.indexOf('(') + 1, text.lastIndexOf(')'));
+        const data = JSON.parse(jsonStr);
+        const rows = (data && data.table && data.table.rows) || [];
+        if (!rows.length) return;
+
+        const toBn = n => String(n).replace(/[0-9]/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+        const formatBnTaka = n => toBn(Number(n || 0).toLocaleString('en-IN'));
+
+        const parsedDeposits = [];
+        const parsedMembers = [];
+        const deleted = window.somitiDeletedCodes || (function() {
+          try { return JSON.parse(localStorage.getItem('somiti_deleted_codes_v1') || '[]'); } catch(e) { return []; }
+        })();
+
+        let totalCollectedAmount = 0;
+        let rctCounter = 1;
+
+        rows.forEach((r) => {
+          const c = r.c || [];
+          if (!c.length) return;
+          const serialRaw = c[0] && (c[0].v !== null && c[0].v !== undefined) ? String(c[0].v).trim() : '';
+          const name = c[1] && c[1].v ? String(c[1].v).trim() : '';
+
+          // Skip title row, summary row ("মোট জমা"), or non-numeric serial
+          if (!name || name === 'মোট জমা' || !serialRaw || isNaN(Number(serialRaw))) return;
+
+          const serialNum = Number(serialRaw);
+          const padSerial = String(serialNum).padStart(2, '0');
+          const bnSerial = toBn(padSerial);
+          const sCode = 'S-' + padSerial;
+          const phone = c[2] && (c[2].f || c[2].v) ? String(c[2].f || c[2].v).trim() : '';
+          const depositor = c[3] && c[3].v ? String(c[3].v).trim() : 'নিজ';
+          const isRep = (depositor && depositor !== name && !depositor.includes('নিজ'));
+
+          // Format Date
+          let dateVal = c[4] && (c[4].f || c[4].v) ? String(c[4].f || c[4].v).trim() : '১০ নভেম্বর ২০২৬';
+          if (dateVal.startsWith('Date(')) {
+            const parts = dateVal.match(/\d+/g);
+            if (parts && parts.length >= 3) {
+              const y = parts[0], m = Number(parts[1]) + 1, d = parts[2];
+              dateVal = `${d}-${m}-${y}`;
+            }
+          }
+
+          const methodDetail = c[5] && c[5].v ? String(c[5].v).trim() : '';
+          const bankName = c[6] && c[6].v ? String(c[6].v).trim() : 'সিটি ব্যাংক পিএলসি';
+          const description = c[7] && c[7].v ? String(c[7].v).trim() : '';
+
+          const rawAmount = c[8] && (c[8].v !== null && c[8].v !== undefined) ? Number(String(c[8].v).replace(/[^0-9.]/g, '')) : 0;
+          const isPaid = (rawAmount > 0);
+          const amount = isPaid ? rawAmount : 0;
+          if (isPaid) totalCollectedAmount += amount;
+
+          // Drive URL
+          const slipCell = c[9] && c[9].f ? String(c[9].f) : (c[9] && c[9].v ? String(c[9].v) : '');
+          const urlMatch = slipCell.match(/https:\/\/[^"\s)]+/);
+
+          const existingOfficial = (typeof OFFICIAL_VERIFIED_REGISTRY !== 'undefined' ? OFFICIAL_VERIFIED_REGISTRY : []).find(o => o.member === name);
+          const slipUrl = urlMatch ? urlMatch[0] : (existingOfficial && existingOfficial.slip_url ? existingOfficial.slip_url : 'https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-');
+          const padUrl = existingOfficial && existingOfficial.pad_url ? existingOfficial.pad_url : '';
+
+          const rctCode = existingOfficial ? existingOfficial.code : ('RCT-' + String(rctCounter).padStart(2, '0'));
+          const altCode = existingOfficial ? existingOfficial.alt_code : (`সছঐস/রিসিট/২০২৬-` + String(rctCounter).padStart(2, '0'));
+
+          const isExpat = phone.startsWith('+') || depositor.includes('প্রবাসী') || description.includes('প্রবাসী') || (existingOfficial && existingOfficial.sender && existingOfficial.sender.includes('প্রবাসী'));
+          let country = 'বাংলাদেশ 🇧🇩';
+          if (phone.startsWith('+39')) country = 'ইতালি 🇮🇹';
+          else if (phone.startsWith('+966')) country = 'সৌদি আরব 🇸🇦';
+          else if (phone.startsWith('+385')) country = 'ক্রোয়েশিয়া 🇭🇷';
+          else if (phone.startsWith('+965')) country = 'কুয়েত 🇰🇼';
+          else if (phone.startsWith('+34')) country = 'স্পেন 🇪🇸';
+          else if (phone.startsWith('+60')) country = 'মালয়েশিয়া 🇲🇾';
+          else if (phone.startsWith('+974')) country = 'কাতার 🇶🇦';
+          else if (phone.startsWith('+1')) country = 'যুক্তরাষ্ট্র 🇺🇸';
+          else if (phone.startsWith('+65')) country = 'সিঙ্গাপুর 🇸🇬';
+
+          parsedMembers.push({
+            id: sCode,
+            serial: bnSerial,
+            memberNumber: padSerial,
+            name: name,
+            phone: phone || (existingOfficial ? '' : '017xxxxxxxx'),
+            status: isPaid ? 'paid' : 'due',
+            amount: isPaid ? amount : 0,
+            totalDeposit: isPaid ? amount : 0,
+            dueAmount: isPaid ? 0 : 10000,
+            method: isPaid ? (bankName + (methodDetail ? ` (${methodDetail})` : '')) : 'বকেয়া',
+            rct: isPaid ? rctCode : '',
+            role: name === 'সাজ্জাদ হোসেন' ? 'কোষাধ্যক্ষ 👑' : 'সাধারণ সদস্য',
+            expat: isExpat,
+            country: country,
+            slip_url: isPaid ? slipUrl : '',
+            pad_url: padUrl,
+            sender: depositor
+          });
+
+          if (isPaid && !deleted.includes(rctCode) && !deleted.includes(sCode)) {
+            parsedDeposits.push({
+              id: rctCode,
+              receiptNo: rctCode,
+              memberId: sCode,
+              memberNumber: padSerial,
+              memberName: name,
+              amount: amount,
+              type: "মাসিক সঞ্চয় কিস্তি (নভেম্বর ২০২৬)",
+              method: bankName + (methodDetail ? ` — ${methodDetail}` : ''),
+              note: altCode + (description ? ` • ${description}` : ''),
+              depositorName: depositor || name,
+              depositorType: isRep ? "representative" : "self",
+              bankSlipNo: description.includes("Slip #") ? (description.match(/Slip #(\d+)/) || [])[1] : "",
+              driveUrl: slipUrl,
+              padUrl: padUrl,
+              dateStr: dateVal,
+              isOfficialVerified: true,
+              source: 'google_sheet'
+            });
+            rctCounter++;
+          }
+        });
+
+        if (parsedMembers.length > 0) {
+          window.somitiSheetMembers = parsedMembers;
+          localStorage.setItem('somiti_google_sheet_members_v1', JSON.stringify(parsedMembers));
+
+          parsedMembers.forEach(pm => {
+            const idx = MASTER_SOCIETY_MEMBERS.findIndex(m => m.name === pm.name || m.id === pm.id);
+            if (idx !== -1) {
+              MASTER_SOCIETY_MEMBERS[idx] = { ...MASTER_SOCIETY_MEMBERS[idx], ...pm };
+            } else {
+              MASTER_SOCIETY_MEMBERS.push(pm);
+            }
+          });
+        }
+
+        if (parsedDeposits.length > 0) {
+          window.somitiSheetDeposits = parsedDeposits;
+          localStorage.setItem('somiti_google_sheet_records_v1', JSON.stringify(parsedDeposits));
+        }
+
+        // Keep financialAccountsData City Bank account synchronized with live deposits
+        if (typeof financialAccountsData !== 'undefined' && Array.isArray(financialAccountsData)) {
+          const cityBankAcc = financialAccountsData.find(a => a.accountNumber === '2305158045001' || a.id === 'acc-citybank');
+          if (cityBankAcc && totalCollectedAmount > 0) {
+            cityBankAcc.currentBalance = totalCollectedAmount;
+            localStorage.setItem("somiti_fin_accounts", JSON.stringify(financialAccountsData));
+          }
+        }
+
+        // Live UI update
+        if (typeof renderMembers === 'function') renderMembers();
+        if (typeof renderDeposits === 'function') renderDeposits();
+        if (typeof updateSummary === 'function') updateSummary();
+        if (typeof renderDueInstallments === 'function') renderDueInstallments();
+        if (typeof syncDynamicDashboardCounters === 'function') syncDynamicDashboardCounters();
+        if (typeof renderAccountingView === 'function' && currentActiveView === 'accounting') renderAccountingView();
+
+        const syncEl = document.getElementById('cloudSyncStatusText');
+        if (syncEl) {
+          syncEl.innerText = `🟢 লাইভ সিঙ্ক: শিট (${toBn(parsedDeposits.length)} আদায়, ${toBn(parsedMembers.length - parsedDeposits.length)} বকেয়া)`;
+        }
+
+        if (!options.silent) {
+          alert(`✅ গুগল শিট ও ক্লাউড ডাটাবেজ সফলভাবে ১:১ সিঙ্ক হয়েছে!\n\nমোট সদস্য: ${toBn(parsedMembers.length)} জন\nআদায়কৃত কিস্তি: ${toBn(parsedDeposits.length)} জন (${formatBnTaka(totalCollectedAmount)}/- ৳)\nবকেয়া কিস্তি: ${toBn(parsedMembers.length - parsedDeposits.length)} জন`);
+        }
+      } catch (err) {
+        console.warn("syncFromGoogleSheetForSomiti warning:", err);
+      }
+    }
+    window.syncFromGoogleSheetForSomiti = syncFromGoogleSheetForSomiti;
+
     function getCombinedMembers() {
       if (membersData && membersData.length > 0) {
         return membersData;
       }
-      const isSwapno = (currentSomiti && currentSomiti.id === 'swapnochowa');
-      return isSwapno ? MASTER_SOCIETY_MEMBERS : [];
+      const isSwapno = (currentSomiti && currentSomiti.id === 'swapnochowa') || (!currentSomiti);
+      if (!isSwapno) return [];
+      if (window.somitiSheetMembers && window.somitiSheetMembers.length > 0) {
+        return window.somitiSheetMembers;
+      }
+      return MASTER_SOCIETY_MEMBERS;
     }
 
     function getCombinedDeposits() {
-      const isSwapno = (currentSomiti && currentSomiti.id === 'swapnochowa');
+      const isSwapno = (currentSomiti && currentSomiti.id === 'swapnochowa') || (!currentSomiti);
       if (!isSwapno) return depositsData || [];
 
       const deleted = window.somitiDeletedCodes || (function() {
@@ -16319,18 +16531,33 @@
           };
         });
 
-      if (!depositsData || depositsData.length === 0) {
-        return officialDeposits;
+      let combined = [...officialDeposits];
+
+      // Merge dynamic deposits synced from Google Sheet
+      if (window.somitiSheetDeposits && window.somitiSheetDeposits.length > 0) {
+        const existingCodes = new Set(combined.map(d => (d.receiptNo || d.id || '').toUpperCase()));
+        window.somitiSheetDeposits.forEach(sd => {
+          const codeKey = (sd.receiptNo || sd.id || '').toUpperCase();
+          if (!existingCodes.has(codeKey) && !deleted.includes(codeKey)) {
+            combined.push(sd);
+            existingCodes.add(codeKey);
+          }
+        });
       }
 
-      const firestoreCodes = new Set(depositsData.map(d => (d.receiptNo || d.id || '').toUpperCase()));
-      const merged = [...depositsData];
-      officialDeposits.forEach(od => {
-        if (!firestoreCodes.has(od.receiptNo.toUpperCase())) {
-          merged.push(od);
-        }
-      });
-      return merged.filter(d => !deleted.includes(d.receiptNo || d.id));
+      // Merge dynamic deposits from Firestore
+      if (depositsData && depositsData.length > 0) {
+        const existingCodes = new Set(combined.map(d => (d.receiptNo || d.id || '').toUpperCase()));
+        depositsData.forEach(fd => {
+          const codeKey = (fd.receiptNo || fd.id || '').toUpperCase();
+          if (!existingCodes.has(codeKey) && !deleted.includes(codeKey)) {
+            combined.push(fd);
+            existingCodes.add(codeKey);
+          }
+        });
+      }
+
+      return combined.filter(d => !deleted.includes(d.receiptNo || d.id));
     }
 
     function renderMembers(customList) {
@@ -18711,6 +18938,38 @@
           somitiName: 'স্বপ্ন ছোঁয়া ঐক্য সমিতি',
           isOfficialRegistry: true
         };
+      }
+
+      // 0b. Search synced Google Sheet deposits cache
+      if (window.somitiSheetDeposits && window.somitiSheetDeposits.length > 0) {
+        const sheetMatch = window.somitiSheetDeposits.find(d => {
+          const rNo = (d.receiptNo || "").toUpperCase();
+          const id = (d.id || "").toUpperCase();
+          const mem = (d.memberName || "").toLowerCase();
+          const qLow = raw.toLowerCase();
+          return rNo === upper || id === upper || id === stripped || rNo === ("RCT-" + upper) || mem.includes(qLow);
+        });
+        if (sheetMatch) {
+          return {
+            id: sheetMatch.id,
+            receiptNo: sheetMatch.receiptNo,
+            altCode: sheetMatch.note,
+            memberName: sheetMatch.memberName,
+            memberNumber: sheetMatch.memberNumber,
+            amount: sheetMatch.amount,
+            amountText: `${sheetMatch.amount.toLocaleString('en-IN')}/- টাকা`,
+            type: sheetMatch.type,
+            method: sheetMatch.method,
+            depositorName: sheetMatch.depositorName,
+            dateStr: sheetMatch.dateStr,
+            recordedBy: 'সাজ্জাদ হোসেন (কোষাধ্যক্ষ)',
+            driveUrl: sheetMatch.driveUrl,
+            slip_url: sheetMatch.driveUrl,
+            padUrl: sheetMatch.padUrl,
+            somitiName: 'স্বপ্ন ছোঁয়া ঐক্য সমিতি',
+            isOfficialRegistry: true
+          };
+        }
       }
 
       // 1. Search local memory depositsData
@@ -23237,7 +23496,7 @@
         const backupPayload = {
           meta: {
             app: "স্মার্ট সমিতি",
-            version: "2.8.17",
+            version: "2.8.18",
             schema: "somiti_backup_v2",
             timestamp: new Date().toISOString(),
             platform: platform,
@@ -23268,7 +23527,7 @@
           try {
             await getSomitiDocRef().collection("system_backups").doc("latest_auto_backup").set({
               meta: {
-                version: "2.8.17",
+                version: "2.8.18",
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
                 devicePlatform: platform,
                 userEmail: currentUser?.email || "anonymous",
@@ -23326,7 +23585,10 @@
     }
 
     async function triggerManualCloudSync() {
-      await runAutoBackupAndSync({ silent: false });
+      if (typeof syncFromGoogleSheetForSomiti === 'function') {
+        await syncFromGoogleSheetForSomiti({ silent: false });
+      }
+      await runAutoBackupAndSync({ silent: true });
     }
 
     function updateSyncTimerDisplay() {
@@ -32189,6 +32451,11 @@
       setInterval(updateSyncTimerDisplay, 30000); // Check every 30s
       setInterval(checkSystemPingHealth, 60000); // Ping check every 60s
       setInterval(() => {
+        if (typeof syncFromGoogleSheetForSomiti === 'function') {
+          syncFromGoogleSheetForSomiti({ silent: true });
+        }
+      }, 60000); // Live Google Sheet sync every 60s
+      setInterval(() => {
         if (typeof runAutoBackupAndSync === 'function' && currentSomiti) {
           runAutoBackupAndSync({ silent: true });
         }
@@ -32201,6 +32468,9 @@
       initSystemHealthAndSync();
       if (typeof syncDynamicDashboardCounters === 'function') {
         syncDynamicDashboardCounters();
+      }
+      if (typeof syncFromGoogleSheetForSomiti === 'function') {
+        syncFromGoogleSheetForSomiti({ silent: true });
       }
     });
   </script>
