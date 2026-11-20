@@ -1,12 +1,12 @@
 {
   "appName": "স্মার্ট সমিতি",
   "projectSlug": "smartsomiti",
-  "version": "2.8.17",
-  "buildNumber": 51,
-  "releaseDate": "2026-11-19",
-  "releaseName": "স্মার্ট সমিতি এন্টারপ্রাইজ প্ল্যাটফর্ম (RCT-25 তাজুল ইসলাম ও স্মারক-০২ রিফ্রেশ)",
+  "version": "2.8.18",
+  "buildNumber": 52,
+  "releaseDate": "2026-11-20",
+  "releaseName": "স্মার্ট সমিতি এন্টারপ্রাইজ প্ল্যাটফর্ম (ড্যাশবোর্ড ও ভেরিফিকেশন পোর্টাল পূর্ণাঙ্গ লাইভ সিঙ্ক)",
   "vercelUrl": "https://smartsomiti.vercel.app",
   "minSupportedVersion": "1.0.0",
   "downloadUrl": "https://github.com/sajjadhossan/smartsomiti/releases/latest/download/smartsomiti-latest.apk",
-  "changelogBn": "তাজুল ইসলামের RCT-25 রসিদ এন্ট্রি, ২৫ জন সদস্য আদায় (২,৫০,০০০ ৳), ২ জন বকেয়া এবং স্মারক-০২ ড্রাইভ নোটিশ আপডেট (v2.8.17)।"
+  "changelogBn": "verify.html-এর সাথে মূল অ্যাপের ড্যাশবোর্ড, ২৫টি রসিদ (২,৫০,০০০ ৳), ২ জন বকেয়া, সিটি ব্যাংক ব্যালেন্স ও রিয়েল-টাইম ফায়ারস্টোর সিঙ্ক সম্পূর্ণ সংযুক্ত (v2.8.18)।"
 }

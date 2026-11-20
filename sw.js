@@ -1,5 +1,5 @@
-// Smart Somiti Service Worker - PWA Offline Caching Engine v2.8.17
-const CACHE_NAME = 'smart-somiti-cache-v2.8.17';
+// Smart Somiti Service Worker - PWA Offline Caching Engine v2.8.18
+const CACHE_NAME = 'smart-somiti-cache-v2.8.18';
 const STATIC_ASSETS = [
   '/',
   '/index.html',

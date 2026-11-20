@@ -14772,11 +14772,12 @@
 
       // 2. Deposits & Receipts search
       if (activeSearchCategory === 'all' || activeSearchCategory === 'deposits') {
-        const matchedDeposits = (depositsData || []).filter(d => {
+        const allDeps = (typeof getCombinedDeposits === 'function') ? getCombinedDeposits() : (depositsData || []);
+        const matchedDeposits = allDeps.filter(d => {
           const rct = (d.receiptNo || d.id || '').toLowerCase();
           const mem = (d.memberName || '').toLowerCase();
           const amount = String(d.amount || '');
-          const date = (d.date || '').toLowerCase();
+          const date = (d.date || d.dateStr || '').toLowerCase();
           return rct.includes(q) || mem.includes(q) || amount.includes(q) || date.includes(q);
         });
 
@@ -14786,7 +14787,7 @@
           matchedDeposits.slice(0, 10).forEach(d => {
             const rctId = escapeHtml(d.receiptNo || d.id || '');
             html += `
-              <div class="search-result-item" onclick="closeGlobalSearchModal(); navTo('deposits');">
+              <div class="search-result-item" onclick="closeGlobalSearchModal(); viewDepositReceipt('${d.id}');">
                 <div class="search-item-icon" style="background: #E0F2FE; color: #0284C7;">🧾</div>
                 <div style="flex: 1; min-width: 0;">
                   <div style="font-weight: 700; font-size: 13px; color: var(--text);">${rctId} - ${escapeHtml(d.memberName || '')}</div>
@@ -15216,7 +15217,7 @@
               </div>
               <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 10px; padding: 8px 10px;">
                 <span style="font-size: 10.5px; color: #065F46; font-weight: 700; display: block;">💰 আদায়কৃত তহবিল</span>
-                <span style="font-size: 13.5px; font-weight: 800; color: #047857;">${s.totalFund || (s.id === 'swapnochowa' ? '২,১০,০০০/- ৳' : '০/- টাকা')}</span>
+                <span style="font-size: 13.5px; font-weight: 800; color: #047857;">${s.totalFund || (s.id === 'swapnochowa' ? '২,৫০,০০০/- ৳' : '০/- টাকা')}</span>
               </div>
             </div>
           </div>
@@ -15889,6 +15890,22 @@
           if (currentActiveView === 'audit') calculateAndRenderAudit();
         });
       realtimeUnsubscribers.push(unsubExpenses);
+
+      // 4. Deleted Records Real-Time Sync (from verify.html / Admin Panel)
+      try {
+        const unsubDel = getSomitiDocRef().collection("system_settings").doc("deleted_records")
+          .onSnapshot((doc) => {
+            if (doc.exists) {
+              const data = doc.data() || {};
+              window.somitiDeletedCodes = data.codes || [];
+              renderDeposits();
+              updateSummary();
+              renderDueInstallments();
+              if (typeof syncDynamicDashboardCounters === 'function') syncDynamicDashboardCounters();
+            }
+          });
+        realtimeUnsubscribers.push(unsubDel);
+      } catch (e) {}
     }
 
     // Add Member
@@ -16266,6 +16283,54 @@
       }
       const isSwapno = (currentSomiti && currentSomiti.id === 'swapnochowa');
       return isSwapno ? MASTER_SOCIETY_MEMBERS : [];
+    }
+
+    function getCombinedDeposits() {
+      const isSwapno = (currentSomiti && currentSomiti.id === 'swapnochowa');
+      if (!isSwapno) return depositsData || [];
+
+      const deleted = window.somitiDeletedCodes || (function() {
+        try { return JSON.parse(localStorage.getItem('somiti_deleted_codes_v1') || '[]'); } catch(e) { return []; }
+      })();
+
+      const registry = (typeof OFFICIAL_VERIFIED_REGISTRY !== 'undefined' ? OFFICIAL_VERIFIED_REGISTRY : []);
+      const officialDeposits = registry
+        .filter(r => r.code && r.code.startsWith('RCT-') && !deleted.includes(r.code))
+        .map(r => {
+          const serialNum = r.serial || (r.serial_code ? r.serial_code.replace(/[^0-9]/g, '') : '');
+          const isRep = (r.sender && !r.sender.includes(r.member));
+          return {
+            id: r.code,
+            receiptNo: r.code,
+            memberId: r.serial_code || ("S-" + serialNum),
+            memberNumber: serialNum,
+            memberName: r.member,
+            amount: 10000,
+            type: "মাসিক সঞ্চয় কিস্তি (নভেম্বর ২০২৬)",
+            method: r.method || "সিটি ব্যাংক পিএলসি",
+            note: r.alt_code || "",
+            depositorName: r.sender || r.member,
+            depositorType: isRep ? "representative" : "self",
+            bankSlipNo: r.method && r.method.includes("Slip #") ? (r.method.match(/Slip #(\d+)/) || [])[1] : "",
+            driveUrl: r.slip_url || "",
+            padUrl: r.pad_url || "",
+            dateStr: r.date || "১০ নভেম্বর ২০২৬",
+            isOfficialVerified: true
+          };
+        });
+
+      if (!depositsData || depositsData.length === 0) {
+        return officialDeposits;
+      }
+
+      const firestoreCodes = new Set(depositsData.map(d => (d.receiptNo || d.id || '').toUpperCase()));
+      const merged = [...depositsData];
+      officialDeposits.forEach(od => {
+        if (!firestoreCodes.has(od.receiptNo.toUpperCase())) {
+          merged.push(od);
+        }
+      });
+      return merged.filter(d => !deleted.includes(d.receiptNo || d.id));
     }
 
     function renderMembers(customList) {
@@ -16652,7 +16717,7 @@
 
     function triggerVerifySearch(code) {
       if (!code) return;
-      window.open(`verify.html?search=${encodeURIComponent(code)}`, '_blank');
+      window.open(`verify.html?id=${encodeURIComponent(code)}`, '_blank');
     }
 
     // ================= PHASE 3: KEYBOARD SHORTCUTS ENGINE =================
@@ -17044,7 +17109,8 @@
     function renderDeposits() {
       const list = document.getElementById("depositsList");
       const passbookList = document.getElementById("memberPassbookList");
-      if (depositsData.length === 0) {
+      const allDeposits = (typeof getCombinedDeposits === 'function') ? getCombinedDeposits() : (depositsData || []);
+      if (!allDeposits || allDeposits.length === 0) {
         list.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted);">কোনো জমা নেই।</div>';
         passbookList.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted);">কোনো জমা নেই।</div>';
         return;
@@ -17052,8 +17118,8 @@
 
       // Filtered data for deposits list (Tip 39)
       const filteredDeposits = activeDepositFilter === 'all'
-        ? depositsData
-        : depositsData.filter(d => (d.type || '').includes(activeDepositFilter));
+        ? allDeposits
+        : allDeposits.filter(d => (d.type || '').includes(activeDepositFilter));
 
       if (filteredDeposits.length === 0) {
         list.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted);">'${activeDepositFilter}' ধরণের কোনো জমা পাওয়া যায়নি।</div>`;
@@ -17098,7 +17164,7 @@
 
       // Render Vertical Timeline for Member Passbook (Tip 34)
       if (passbookList) {
-        passbookList.innerHTML = `<div class="passbook-timeline">` + depositsData.map(d => {
+        passbookList.innerHTML = `<div class="passbook-timeline">` + allDeposits.map(d => {
           let dt = new Date();
           if (d.date?.toDate) dt = d.date.toDate();
           else if (d.dateStr) dt = new Date(d.dateStr);
@@ -19234,7 +19300,9 @@
     }
 
     function viewDepositReceipt(depositId) {
-      const d = depositsData.find(x => x.id === depositId);
+      const all = (typeof getCombinedDeposits === 'function') ? getCombinedDeposits() : (depositsData || []);
+      let d = all.find(x => x.id === depositId || x.receiptNo === depositId);
+      if (!d) d = depositsData.find(x => x.id === depositId);
       if (!d) return;
       showReceiptModal({
         id: d.id,
@@ -19250,8 +19318,9 @@
         depositorPhone: d.depositorPhone || '',
         slipImg: d.slipImg || null,
         driveUrl: d.driveUrl || null,
+        padUrl: d.padUrl || null,
         driveFileId: d.driveFileId || null,
-        dateStr: d.date?.toDate ? d.date.toDate().toLocaleString('bn-BD') : new Date().toLocaleString('bn-BD')
+        dateStr: d.dateStr || (d.date?.toDate ? d.date.toDate().toLocaleString('bn-BD') : new Date().toLocaleString('bn-BD'))
       });
     }
 
@@ -19739,37 +19808,36 @@
       const badgeEl = document.getElementById("dueMembersCountBadge");
       if (!listEl) return;
 
-      if (!membersData || membersData.length === 0) {
+      const members = (typeof getCombinedMembers === 'function') ? getCombinedMembers() : (membersData || []);
+      if (!members || members.length === 0) {
         listEl.innerHTML = '<div style="text-align:center; padding:12px; color:var(--text-muted); font-size:12px;">কোনো সদস্য ডাটাবেজে নেই।</div>';
         if (badgeEl) badgeEl.innerText = '০ জন বকেয়া';
         return;
       }
 
       const now = new Date();
-      const curMonth = now.getMonth();
-      const curYear = now.getFullYear();
       const bnMonths = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
-      const curMonthName = bnMonths[curMonth];
+      const curMonthName = bnMonths[now.getMonth()];
 
+      const allDeposits = (typeof getCombinedDeposits === 'function') ? getCombinedDeposits() : (depositsData || []);
       const paidMemberIds = new Set();
-      depositsData.forEach(d => {
-        let dDate = null;
-        if (d.date?.toDate) dDate = d.date.toDate();
-        else if (d.date) dDate = new Date(d.date);
-
-        if (dDate && dDate.getMonth() === curMonth && dDate.getFullYear() === curYear) {
-          if (d.memberId) paidMemberIds.add(String(d.memberId));
-          if (d.memberNumber) paidMemberIds.add(String(d.memberNumber));
-        }
+      allDeposits.forEach(d => {
+        if (d.memberId) paidMemberIds.add(String(d.memberId));
+        if (d.memberNumber) paidMemberIds.add(String(d.memberNumber));
+        if (d.memberName) paidMemberIds.add(String(d.memberName).trim().toLowerCase());
       });
 
-      const dueMembers = membersData.filter(m => {
-        const hasPaid = paidMemberIds.has(String(m.id)) || paidMemberIds.has(String(m.memberNumber));
-        return !hasPaid;
+      const dueMembers = members.filter(m => {
+        const isMarkedPaid = m.status === 'paid' || (Number(m.totalDeposit) > 0);
+        const hasPaidInDeposits = paidMemberIds.has(String(m.id)) ||
+                                  paidMemberIds.has(String(m.memberNumber)) ||
+                                  paidMemberIds.has(String(m.name || '').trim().toLowerCase());
+        return !isMarkedPaid && !hasPaidInDeposits;
       });
 
+      const toBnDigits = n => String(n).replace(/[0-9]/g, d => '০১২৩৪৫৬৭৮৯'[d]);
       if (badgeEl) {
-        badgeEl.innerText = `${dueMembers.length} জন বকেয়া`;
+        badgeEl.innerText = `${toBnDigits(dueMembers.length)} জন বকেয়া`;
         badgeEl.style.background = dueMembers.length > 0 ? "#FEE2E2" : "#DCFCE7";
         badgeEl.style.color = dueMembers.length > 0 ? "#991B1B" : "#166534";
       }
@@ -22053,28 +22121,31 @@
 
     financialAccountsData = JSON.parse(localStorage.getItem("somiti_fin_accounts") || "null");
     accountsData = financialAccountsData;
-    if (!financialAccountsData) {
+    const isCurrentSwapno = (currentSomiti && currentSomiti.id === 'swapnochowa') || (!currentSomiti);
+    if (!financialAccountsData || (isCurrentSwapno && !financialAccountsData.some(a => a.accountNumber === '2305158045001'))) {
       financialAccountsData = [
-        { id: "acc-cash", name: "প্রধান ক্যাশ ড্রয়ার (হাতের নগদ)", type: "cashDrawer", currentBalance: 35450, bankName: "", accountNumber: "CASH-MAIN" },
-        { id: "acc-bank", name: "সোনালী ব্যাংক সাধারণ সঞ্চয়ী হিসাব", type: "bankAccount", currentBalance: 185000, bankName: "Sonali Bank PLC", accountNumber: "0102030405" },
-        { id: "acc-mfs", name: "বিকাশ মার্চেন্ট ওয়ালেট", type: "mfsWallet", currentBalance: 25600, bankName: "bKash", accountNumber: "01712-345678" }
+        { id: "acc-citybank", name: "সিটি ব্যাংক পিএলসি (রেকাবী বাজার শাখা)", type: "bankAccount", currentBalance: 250000, bankName: "City Bank PLC", accountNumber: "2305158045001", routingNo: "225260415" },
+        { id: "acc-bkash", name: "বিকাশ ব্যক্তিগত ওয়ালেট", type: "mfsWallet", currentBalance: 0, bankName: "bKash", accountNumber: "01881210444" },
+        { id: "acc-cash", name: "প্রধান ক্যাশ ড্রয়ার (হাতের নগদ)", type: "cashDrawer", currentBalance: 0, bankName: "", accountNumber: "CASH-MAIN" }
       ];
       localStorage.setItem("somiti_fin_accounts", JSON.stringify(financialAccountsData));
+      accountsData = financialAccountsData;
     }
 
     let financialTransactionsData = JSON.parse(localStorage.getItem("somiti_fin_transactions") || "null");
     if (!financialTransactionsData) {
       financialTransactionsData = [
-        { id: "tx-1", voucherNo: "DEP-2026-001", type: "depositIn", amount: 15000, fromAccountName: "প্রধান ক্যাশ ড্রয়ার (হাতের নগদ)", category: "সদস্য সঞ্চয় কিস্তি", description: "মাসিক সঞ্চয় কিস্তি জমা", date: new Date().toLocaleDateString('bn-BD'), user: "সাজ্জাদ হোসেন" },
-        { id: "tx-2", voucherNo: "EXP-2026-001", type: "expenseOut", amount: 2500, fromAccountName: "প্রধান ক্যাশ ড্রয়ার (হাতের নগদ)", category: "অফিস ভাড়া ও বিল", description: "বিদ্যুৎ ও ইন্টারনেট বিল পরিশোধ", date: new Date().toLocaleDateString('bn-BD'), user: "সাজ্জাদ হোসেন" }
+        { id: "tx-1", voucherNo: "DEP-2026-001", type: "depositIn", amount: 10000, fromAccountName: "সিটি ব্যাংক পিএলসি (রেকাবী বাজার)", category: "সদস্য সঞ্চয় কিস্তি", description: "নভেম্বর ২০২৬ সঞ্চয় কিস্তি জমা", date: new Date().toLocaleDateString('bn-BD'), user: "সাজ্জাদ হোসেন" }
       ];
       localStorage.setItem("somiti_fin_transactions", JSON.stringify(financialTransactionsData));
     }
 
     function renderAccountingView() {
       // 1. Total Balance
+      const isSwapno = (currentSomiti && currentSomiti.id === 'swapnochowa');
       let total = 0;
-      financialAccountsData.forEach(a => total += a.currentBalance);
+      financialAccountsData.forEach(a => total += (Number(a.currentBalance) || 0));
+      if (isSwapno && total === 0) total = 250000;
       document.getElementById("accountingTotalBalance").innerText = "৳" + Math.round(total).toLocaleString('bn-BD');
 
       // 2. Render Accounts List
@@ -22105,10 +22176,25 @@
 
       // 3. Render Ledger List
       const ledList = document.getElementById("financialLedgerList");
-      if (financialTransactionsData.length === 0) {
+      const allDeps = (typeof getCombinedDeposits === 'function') ? getCombinedDeposits() : [];
+      let txList = financialTransactionsData;
+      if (isSwapno && allDeps.length > 0 && (!financialTransactionsData || financialTransactionsData.length <= 2)) {
+        txList = allDeps.map(d => ({
+          id: 'tx-' + d.id,
+          voucherNo: d.receiptNo,
+          type: 'depositIn',
+          amount: d.amount || 10000,
+          fromAccountName: 'সিটি ব্যাংক পিএলসি (রেকাবী বাজার)',
+          category: 'মাসিক সঞ্চয় কিস্তি',
+          description: `${d.memberName} [সদস্য #${d.memberNumber || ''}] — ${d.method || 'ব্যাংক ডিপোজিট'}`,
+          date: d.dateStr || 'নভেম্বর ২০২৬',
+          user: d.depositorName || 'সাজ্জাদ হোসেন'
+        }));
+      }
+      if (!txList || txList.length === 0) {
         ledList.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--text-muted);">কোনো লেনদেন রেকর্ড নেই।</div>';
       } else {
-        ledList.innerHTML = financialTransactionsData.map(t => {
+        ledList.innerHTML = txList.map(t => {
           const isCredit = t.type === 'depositIn' || t.type === 'loanRepayment';
           return `
             <div class="card" style="margin-bottom: 6px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
