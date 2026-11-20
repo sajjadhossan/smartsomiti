@@ -34,13 +34,14 @@
     body.dark-mode .bg-slate-50, body.dark-mode .bg-slate-50\/70 { background-color: #0f172a !important; border-color: #334155 !important; }
     body.dark-mode .text-slate-800, body.dark-mode .text-slate-900, body.dark-mode .text-slate-700 { color: #f1f5f9 !important; }
     body.dark-mode .text-slate-500, body.dark-mode .text-slate-600 { color: #94a3b8 !important; }
-    body.dark-mode input { background-color: #0f172a !important; color: #f8fafc !important; border-color: #475569 !important; }
+    body.dark-mode input, body.dark-mode textarea { background-color: #0f172a !important; color: #f8fafc !important; border-color: #475569 !important; }
   </style>
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 <body class="min-h-screen text-slate-800 pb-16">
 
@@ -60,11 +61,11 @@
           <span class="text-emerald-300 hidden sm:inline">•</span>
           <span class="font-semibold text-emerald-100" id="hdrAddr">📍 শ্রীনগর, মুন্সীগঞ্জ</span>
           <span class="text-emerald-300 hidden sm:inline">•</span>
-          <span class="font-semibold text-emerald-100" id="hdrBank">🏦 সিটি ব্যাংক পিএলসি • হিসাব: ২৩১৫১৫৮০৪৫০০১</span>
+          <span class="font-semibold text-emerald-100" id="hdrBank">🏦 সিটি ব্যাংক পিএলসি • হিসাব: ২৩০৫১৫৮০৪৫০০১</span>
           <span class="text-emerald-300 hidden sm:inline">•</span>
           <span class="font-semibold text-emerald-100" id="hdrRouting">🌐 রাউটিং: ২২৫২৬০৪১৫</span>
           <span class="text-emerald-300 hidden sm:inline">•</span>
-          <span class="font-semibold text-amber-200" id="hdrBkash">📱 বিকাশ: ০১৭১২-৩৪৫৬৭৮</span>
+          <span class="font-semibold text-amber-200" id="hdrBkash">📱 বিকাশ: ০১৮৮১২১০৪৪৪</span>
         </div>
         <div class="flex flex-wrap items-center justify-center gap-2 text-xs shrink-0">
           <button type="button" onclick="openPadEditModal()"
@@ -137,7 +138,9 @@
         <!-- Quick Demo Pills -->
         <div class="flex flex-wrap items-center justify-center gap-1.5 pt-2 text-xs">
           <span class="text-slate-400 mr-1">দ্রুত পরীক্ষা করুন:</span>
-          <button type="button" data-code="RCT-14" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-14 (আওলাদ)</button>
+          <button type="button" data-code="RCT-25" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-25 (তাজুল)</button>
+          <button type="button" data-code="RCT-24" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-24 (আওলাদ)</button>
+          <button type="button" data-code="RCT-14" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-14 (আওলাদ হোসেন)</button>
           <button type="button" data-code="RCT-15" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-15 (ইয়াছিন)</button>
           <button type="button" data-code="RCT-13" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-13 (সজীব)</button>
           <button type="button" data-code="স্মারক-০১/২০২৬" class="quick-pill bg-amber-50 hover:bg-amber-100 text-amber-800 px-2.5 py-1 rounded-lg border border-amber-200 font-semibold transition">স্মারক-০১/২০২৬ (পেইড)</button>
@@ -149,19 +152,19 @@
     <section class="grid grid-cols-2 sm:grid-cols-4 gap-3">
       <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
         <p class="text-xs text-slate-500">সর্বমোট সংগৃহীত তহবিল</p>
-        <p id="kpiTotalFund" class="text-xl font-bold text-emerald-700 mt-1">২,৪০,০০০ ৳</p>
+        <p id="kpiTotalFund" class="text-xl font-bold text-emerald-700 mt-1">২,৫০,০০০ ৳</p>
       </div>
       <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
         <p class="text-xs text-slate-500">যাচাইকৃত রিসিট (চলতি মাস)</p>
-        <p id="kpiPaidCount" class="text-xl font-bold text-slate-800 mt-1">২৪ টি</p>
+        <p id="kpiPaidCount" class="text-xl font-bold text-slate-800 mt-1">২৫ টি</p>
       </div>
       <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
         <p class="text-xs text-slate-500">বকেয়া সদস্য (চলতি মাস)</p>
-        <p id="kpiDueCount" class="text-xl font-bold text-amber-600 mt-1">৩ জন</p>
+        <p id="kpiDueCount" class="text-xl font-bold text-amber-600 mt-1">২ জন</p>
       </div>
       <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
         <p class="text-xs text-slate-500">অনুমোদনকারী</p>
-        <p class="text-sm font-bold text-slate-800 mt-2">সাজ্জাদ হোসেন (কোষাধ্যক্ষ)</p>
+        <p class="text-sm font-bold text-slate-800 mt-2" id="kpiCashierText">সাজ্জাদ হোসেন (কোষাধ্যক্ষ)</p>
       </div>
     </section>
 
@@ -173,26 +176,26 @@
           <p class="text-xs text-slate-500">গুগল শিট থেকে সরাসরি আপডেটকৃত প্রতিটি মাসের জমার বিবরণ</p>
         </div>
         <span id="grandTotalBadge" class="bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-sm">
-          সর্বমোট তহবিল: ২,৪০,০০০/- ৳
+          সর্বমোট তহবিল: ২,৫০,০০০/- ৳
         </span>
       </div>
       <div class="px-5 pt-4">
         <div class="flex items-center justify-between text-xs mb-1.5">
           <span class="font-semibold text-slate-600">চলতি মাসের লক্ষ্যমাত্রা অগ্রগতি (২,৭০,০০০/- ৳)</span>
-          <span id="progressPctText" class="font-bold text-emerald-700">৮৮.৯% (২৪/২৭ জন)</span>
+          <span id="progressPctText" class="font-bold text-emerald-700">৯২.৬% (২৫/২৭ জন)</span>
         </div>
         <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
-          <div id="progressBarFill" class="h-full bg-gradient-to-r from-emerald-600 to-teal-500 rounded-full transition-all duration-500" style="width: 88.9%"></div>
+          <div id="progressBarFill" class="h-full bg-gradient-to-r from-emerald-600 to-teal-500 rounded-full transition-all duration-500" style="width: 92.6%"></div>
         </div>
       </div>
       <div id="monthlySummaryGrid" class="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50/40">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">নভেম্বর ২০২৬</span>
-            <span class="text-xs font-semibold text-slate-500">২৪ / ২৭ জন</span>
+            <span class="text-xs font-semibold text-slate-500">${toBn(25)} / ${toBn(27)} জন</span>
           </div>
-          <p class="text-lg font-bold text-emerald-700 mt-2">২,৪০,০০০/- টাকা</p>
-          <p class="text-xs text-amber-700 mt-0.5">বকেয়া: ৩০,০০০/- টাকা (৩ জন)</p>
+          <p class="text-lg font-bold text-emerald-700 mt-2">২,৫০,০০০/- টাকা</p>
+          <p class="text-xs text-amber-700 mt-0.5">বকেয়া: ২০,০০০/- টাকা (২ জন)</p>
         </div>
       </div>
     </section>
@@ -250,14 +253,14 @@
           </div>
           <p class="text-slate-700"><strong>একাউন্ট নং:</strong> <span class="font-mono font-bold">2305158045001</span></p>
           <p class="text-slate-700"><strong>একাউন্ট নাম:</strong> MD RAHIM, SUMAYA AKTER AND DELWARA BEGUM</p>
-          <p class="text-slate-700"><strong>রাউটিং নং:</strong> <span class="font-mono font-bold">225591215</span></p>
+          <p class="text-slate-700"><strong>রাউটিং নং:</strong> <span class="font-mono font-bold" id="guideRouting">225260415</span></p>
         </div>
         <div class="p-4 rounded-xl bg-rose-50/50 border border-rose-200 space-y-2">
           <div class="flex items-center justify-between">
             <span class="font-bold text-rose-800 text-sm">📱 বিকাশ পার্সোনাল (Send Money)</span>
             <button type="button" onclick="copyText('01881210444', this)" class="bg-rose-600 text-white px-2.5 py-1 rounded-lg font-bold hover:bg-rose-700 transition">📋 নম্বর কপি</button>
           </div>
-          <p class="text-slate-700"><strong>নম্বর:</strong> <span class="font-mono font-bold text-sm">01881210444</span> (সাজ্জাদ হোসেন — কোষাধ্যক্ষ)</p>
+          <p class="text-slate-700"><strong>নম্বর:</strong> <span class="font-mono font-bold text-sm" id="guideBkash">01881210444</span> (<span id="guideCashier">সাজ্জাদ হোসেন — কোষাধ্যক্ষ</span>)</p>
           <p class="text-slate-600">• বিকাশে টাকা পাঠালে অনুগ্রহ করে <strong>ক্যাশ-আউট চার্জসহ</strong> 'Send Money' করবেন।</p>
           <p class="text-slate-600">• টাকা পাঠানোর পর ব্যাংকে জমা হওয়ার রিসিটটি অবশ্যই গ্রুপে পোস্ট করবেন।</p>
         </div>
@@ -291,33 +294,20 @@
   </main>
 
   <!-- World-Class Verification Popup Modal -->
-  <div id="verifyModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden overflow-y-auto">
-    <div id="modalCard" class="bg-white rounded-3xl max-w-lg w-full shadow-2xl overflow-hidden border-2 border-emerald-700 animate-pop my-auto relative">
-      <!-- Floating Close Button on Top-Right -->
-      <button id="closeModalBtn" class="absolute top-3 right-3 z-30 w-8 h-8 rounded-full bg-slate-900/75 hover:bg-slate-950 text-white flex items-center justify-center text-sm font-bold shadow-lg transition" title="বন্ধ করুন">✕</button>
-
-      <!-- Official Pad Header (শীর্ষে অফিশিয়াল প্যাড হেডার) -->
-      <div class="relative bg-white border-b-2 border-emerald-700 select-none">
-        <img src="pad_header.webp" alt="স্বপ্ন ছোঁয়া ঐক্য সমিতি অফিসিয়াল প্যাড হেডার"
-          class="w-full h-auto object-contain block select-none" onerror="this.onerror=null; this.src='pad_header.jpg';" />
-        <div class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-900 text-white px-3 sm:px-4 py-1.5 text-[10.5px] sm:text-xs flex flex-wrap items-center justify-between gap-1 border-t-2 border-amber-400">
-          <span class="font-semibold text-emerald-100" id="mPadReg">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬</span>
-          <span class="font-semibold text-emerald-100" id="mPadAddr">📍 শ্রীনগর, মুন্সীগঞ্জ</span>
-          <span class="font-semibold text-amber-300" id="mPadBank">🏦 সিটি ব্যাংক পিএলসি • হিসাব: ২৩০৫১৫৮০৪৫০০১</span>
-        </div>
-      </div>
-
-      <!-- Modal Top Status Banner (প্যাডের ঠিক নিচে ভেরিফাইড ব্যানার) -->
-      <div id="modalBanner" class="bg-gradient-to-r from-emerald-700 to-teal-700 px-5 sm:px-6 py-4 text-white relative border-b border-emerald-800">
+  <div id="verifyModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div id="modalCard" class="bg-white rounded-3xl max-w-lg w-full shadow-2xl overflow-hidden border border-emerald-200 animate-pop">
+      <!-- Modal Top Status Banner -->
+      <div id="modalBanner" class="bg-gradient-to-r from-emerald-700 to-teal-700 px-6 py-5 text-white relative">
+        <button id="closeModalBtn" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-sm font-bold transition">✕</button>
         <div class="flex items-center space-x-3">
-          <div id="statusIcon" class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-white text-emerald-700 flex items-center justify-center text-2xl shadow-lg shrink-0">
+          <div id="statusIcon" class="w-12 h-12 rounded-2xl bg-white text-emerald-700 flex items-center justify-center text-2xl shadow-lg">
             ✅
           </div>
           <div>
-            <span id="statusBadge" class="inline-block bg-emerald-500/30 border border-emerald-300/50 text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+            <span id="statusBadge" class="inline-block bg-emerald-500/30 border border-emerald-300/50 text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
               Verified &amp; Approved
             </span>
-            <h3 id="modalTitle" class="text-base sm:text-lg font-bold mt-0.5 leading-snug">মানি রিসিটটি অনুমোদিত ও বৈধ</h3>
+            <h3 id="modalTitle" class="text-lg font-bold mt-1 leading-snug">মানি রিসিটটি অনুমোদিত ও বৈধ</h3>
           </div>
         </div>
       </div>
@@ -426,7 +416,7 @@
         </div>
         <div>
           <label class="font-bold text-slate-700 block mb-1">🏦 ব্যাংক নাম ও হিসাব বিবরণ:</label>
-          <input type="text" id="editBank" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: সিটি ব্যাংক পিএলসি • হিসাব: ২৩১৫১৫৮০৪৫০০১" />
+          <input type="text" id="editBank" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: সিটি ব্যাংক পিএলসি • হিসাব: ২৩০৫১৫৮০৪৫০০১" />
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div>
@@ -435,7 +425,7 @@
           </div>
           <div>
             <label class="font-bold text-slate-700 block mb-1">📱 বিকাশ / নগদ নম্বর:</label>
-            <input type="text" id="editBkash" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: ০১৭১২-৩৪৫৬৭৮" />
+            <input type="text" id="editBkash" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: ০১৮৮১২১০৪৪৪" />
           </div>
         </div>
         <div class="grid grid-cols-2 gap-2">
@@ -458,184 +448,193 @@
             বাতিল
           </button>
           <button type="button" onclick="savePadCustomDetails()" class="px-5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold shadow">
-            💾 তথ্য সেভ করুন
+            💾 সংরক্ষণ করুন
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ================= ADMIN PIN VERIFICATION MODAL ================= -->
-  <div id="adminPinModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl border-2 border-emerald-500 animate-pop space-y-4">
-      <div class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl mx-auto shadow-inner">
-        🔐
-      </div>
-      <div>
-        <h3 class="text-base font-bold text-slate-900">কোষাধ্যক্ষ / এডমিন ভেরিফিকেশন</h3>
-        <p class="text-xs text-slate-500 mt-1">প্যাডের তথ্য ও হিসাব বিবরণী পরিবর্তনের জন্য আপনার অনুমোদিত গোপন পিন কোড প্রদান করুন।</p>
-      </div>
-
-      <div class="space-y-2">
-        <div class="relative">
-          <input type="password" id="adminPinInput" placeholder="গোপন পিন কোড দিন..."
-            class="w-full text-center px-4 py-2.5 text-base font-bold tracking-widest bg-slate-50 border-2 border-slate-300 rounded-xl focus:border-emerald-600 focus:outline-none transition shadow-inner font-mono"
-            onkeydown="if(event.key==='Enter') submitAdminPin();" />
-          <button type="button" onclick="togglePinVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">👁️</button>
+  <!-- Unified Admin Control Panel Modal -->
+  <div id="adminPanelModal" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden border border-emerald-200 animate-pop">
+      <div class="bg-gradient-to-r from-slate-900 via-emerald-900 to-teal-900 px-5 py-4 text-white flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <span class="inline-block bg-amber-400 text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Admin Control Center • Firebase Sync</span>
+          <h3 class="text-lg font-bold mt-0.5">🔓 অ্যাডমিন কন্ট্রোল প্যানেল (মেইন অ্যাপের সাথে লাইভ সিঙ্ক)</h3>
         </div>
-        <p id="adminPinError" class="text-rose-600 text-xs font-semibold hidden">❌ ভুল পিন নম্বর! অনুগ্রহ করে সঠিক পিন কোড দিন।</p>
+        <div class="flex items-center gap-2">
+          <button type="button" id="fbAuthBtn" onclick="signInFirebaseGoogle()" class="bg-amber-400 hover:bg-amber-300 text-slate-900 text-xs font-bold px-3 py-1.5 rounded-xl transition">🔥 Firebase কানেক্ট</button>
+          <button type="button" onclick="adminLogout()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition">লগআউট</button>
+          <button type="button" onclick="closeAdminPanel()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-sm font-bold transition">✕</button>
+        </div>
       </div>
 
-      <div class="flex gap-2 pt-1">
-        <button type="button" onclick="closeAdminPinModal()" class="flex-1 py-2.5 border rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50">
-          বাতিল
-        </button>
-        <button type="button" onclick="submitAdminPin()" class="flex-1 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs shadow-md shadow-emerald-700/20 transition">
-          🔓 আনলক করুন
-        </button>
+      <!-- Firebase Sync Status Strip -->
+      <div id="fbSyncBanner" class="px-5 py-2 bg-emerald-50 border-b border-emerald-200 text-[11px] font-semibold text-emerald-900 flex flex-wrap items-center justify-between gap-2">
+        <span id="fbStatusText">🔄 মেইন অ্যাপ (Firebase: somitiapp-1f0a2)-এর সাথে সংযোগ হচ্ছে...</span>
+        <span class="text-emerald-700">এখানে ভেরিফাই/ডিলিট করলে মেইন অ্যাপের প্রোফাইলেও সেম টু সেম আপডেট হবে</span>
+      </div>
+
+      <!-- Admin Sub-Tabs -->
+      <div class="px-5 py-2.5 bg-slate-50 border-b border-slate-200 flex flex-wrap gap-1.5 text-xs">
+        <button type="button" data-atab="manage" onclick="switchAdminTab('manage')" class="admin-tab-btn bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold">🗑️ ভেরিফাই ও রিসিট ডিলিট/এডিট</button>
+        <button type="button" data-atab="add" onclick="switchAdminTab('add')" class="admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold">➕ নতুন পেমেন্ট যোগ (মেইন অ্যাপেও যাবে)</button>
+        <button type="button" data-atab="settings" onclick="switchAdminTab('settings')" class="admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold">⚙️ নোটিশ, পাসওয়ার্ড ও এক্সপোর্ট</button>
+      </div>
+
+      <!-- Admin Content Body -->
+      <div class="p-5 overflow-y-auto space-y-4 flex-1 text-xs">
+        <!-- Tab 1: Manage / Delete / Restore -->
+        <div id="adminTab_manage" class="space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2 bg-amber-50 border border-amber-200 p-3 rounded-xl">
+            <span class="text-amber-900 font-semibold">যেকোনো ভেরিফাইড রিসিট ডিলিট করলে এখান থেকে এবং মেইন অ্যাপের ডিপোজিট লিস্ট থেকেও মুছে যাবে।</span>
+            <div class="flex flex-wrap gap-1.5">
+              <button type="button" onclick="deleteAllReceipts()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 rounded-lg transition">🗑️ সব ডিলিট করুন</button>
+              <button type="button" onclick="restoreAllDeleted()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-3 py-1.5 rounded-lg transition">♻️ সব রিস্টোর করুন</button>
+            </div>
+          </div>
+          <input type="text" id="adminSearchInput" oninput="renderAdminList()" placeholder="নাম বা রিসিট কোড দিয়ে খুঁজুন (যেমন: তাজুল বা RCT-25)..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600" />
+          <div id="adminRecordsList" class="space-y-2 max-h-[45vh] overflow-y-auto pr-1"></div>
+        </div>
+
+        <!-- Tab 2: Add New Payment / Mark Paid -->
+        <div id="adminTab_add" class="hidden space-y-3">
+          <form id="adminAddForm" onsubmit="handleAdminAdd(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">রিসিট কোড</label>
+              <input type="text" id="addCode" required placeholder="যেমন: RCT-26" class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white" />
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">সদস্যের ক্রমিক নং (০১-২৭)</label>
+              <input type="text" id="addSerial" required placeholder="যেমন: ১২" class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white" />
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">সদস্যের নাম</label>
+              <input type="text" id="addMember" required placeholder="যেমন: মোঃ নোমান হাওলাদার" class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white" />
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">পরিমাণ (টাকা)</label>
+              <input type="number" id="addAmount" value="10000" required class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white" />
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">তারিখ (YYYY-MM-DD)</label>
+              <input type="date" id="addDate" required class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white" />
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">ব্যাংক / মাধ্যম</label>
+              <input type="text" id="addMethod" value="City Bank PLC" required class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white" />
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">জমাদানকারী / প্রেরক</label>
+              <input type="text" id="addSender" value="নিজ" class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white" />
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">মূল স্লিপ লিংক (Google Drive)</label>
+              <input type="url" id="addSlipUrl" placeholder="https://drive.google.com/..." class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white" />
+            </div>
+            <div class="sm:col-span-2">
+              <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-xl transition shadow">✅ ভেরিফাই করুন ও মেইন অ্যাপে পাঠান</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Tab 3: Notice, Password & Export -->
+        <div id="adminTab_settings" class="hidden space-y-4">
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2.5">
+            <label class="block font-bold text-slate-800">📢 উপরের জরুরি বিজ্ঞপ্তি পরিবর্তন করুন</label>
+            <textarea id="adminNoticeInput" rows="2" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white"></textarea>
+            <button type="button" onclick="saveNoticeText()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-4 py-2 rounded-lg transition">💾 বিজ্ঞপ্তি সেভ করুন</button>
+          </div>
+
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2.5">
+            <label class="block font-bold text-slate-800">🔑 অ্যাডমিন পাসওয়ার্ড পরিবর্তন করুন</label>
+            <div class="flex gap-2">
+              <input type="password" id="newAdminPassInput" placeholder="নতুন পাসওয়ার্ড লিখুন..." class="flex-1 px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+              <button type="button" onclick="changeAdminPassword()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-4 py-2 rounded-lg transition">পাসওয়ার্ড আপডেট</button>
+            </div>
+          </div>
+
+          <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-200 space-y-2.5">
+            <p class="font-bold text-emerald-900">🚀 দ্রুত অ্যাকশন ও স্থায়ী ব্যাকআপ</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <button type="button" onclick="manualSync()" class="bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold py-2.5 px-3 rounded-xl transition">🔄 গুগল শিট ও Firebase সিঙ্ক</button>
+              <a href="https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit" target="_blank" rel="noopener" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold py-2.5 px-3 rounded-xl text-center transition">📊 গুগল শিট খুলুন ↗</a>
+              <button type="button" onclick="exportCSV()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 px-3 rounded-xl transition">📥 Excel/CSV ডাউনলোড</button>
+              <button type="button" onclick="exportUpdatedHtml()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-3 rounded-xl transition">💾 আপডেটেড verify.html ডাউনলোড</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Floating Toast Container -->
-  <div id="toastContainer" class="fixed top-5 left-1/2 -translate-x-1/2 z-[100] flex flex-col items-center gap-2 pointer-events-none w-full max-w-md px-4"></div>
-
   <script>
-    // ================= PAD CONFIGURATION & ADMIN AUTH =================
+    // Firebase Config (Same as Main App: somitiapp-1f0a2)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCg4XAdBGbZOLzrWnRmIh9QItthL9IAEGc",
+      authDomain: "somitiapp-1f0a2.firebaseapp.com",
+      projectId: "somitiapp-1f0a2",
+      storageBucket: "somitiapp-1f0a2.firebasestorage.app",
+      messagingSenderId: "122717224216",
+      appId: "1:122717224216:web:9f108416895741b190726d"
+    };
+
+    let fbApp = null, fbDb = null, fbAuth = null;
+    try {
+      if (typeof firebase !== 'undefined') {
+        fbApp = firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig);
+        fbDb = firebase.firestore();
+        fbAuth = firebase.auth();
+      }
+    } catch (e) {
+      console.warn('Firebase init skipped:', e);
+    }
+
+    function getSomitiDocRef() {
+      if (!fbDb) return null;
+      return fbDb.collection('somitis').doc('swapnochowa');
+    }
+
+    // Default Pad Configuration
     const DEFAULT_PAD_CONFIG = {
-      reg: "🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬",
-      addr: "📍 শ্রীনগর, মুন্সীগঞ্জ",
-      bank: "🏦 সিটি ব্যাংক পিএলসি • হিসাব: ২৩১৫১৫৮০৪৫০০১",
-      routing: "🌐 রাউটিং: ২২৫২৬০৪১৫",
-      bkash: "📱 বিকাশ: ০১৭১২-৩৪৫৬৭৮",
+      reg: "সমবায় রেজিঃ নং-৭৮৯০/২০২৬",
+      addr: "শ্রীনগর, মুন্সীগঞ্জ",
+      bank: "সিটি ব্যাংক পিএলসি • হিসাব: ২৩০৫১৫৮০৪৫০০১",
+      routing: "২২৫২৬০৪১৫",
+      bkash: "০১৮৮১২১০৪৪৪",
       cashier: "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)"
     };
 
-    const VALID_ADMIN_PINS = ["01721298969", "2026"];
-    let isAdminUnlocked = false;
-    let adminPinTargetAction = 'admin'; // 'admin' or 'pad'
-
-    function loadPadConfig() {
-      try {
-        const saved = localStorage.getItem('somiti_pad_custom_settings');
-        if (saved) return { ...DEFAULT_PAD_CONFIG, ...JSON.parse(saved) };
-      } catch (_) {}
-      return { ...DEFAULT_PAD_CONFIG };
-    }
-
-    let padConfig = loadPadConfig();
+    let padConfig = { ...DEFAULT_PAD_CONFIG };
+    try {
+      const stored = localStorage.getItem('somiti_pad_custom_settings');
+      if (stored) {
+        padConfig = { ...DEFAULT_PAD_CONFIG, ...JSON.parse(stored) };
+      }
+    } catch (_) {}
 
     function applyPadConfig() {
-      const elReg = document.getElementById('hdrReg');
-      const elAddr = document.getElementById('hdrAddr');
-      const elBank = document.getElementById('hdrBank');
-      const elRouting = document.getElementById('hdrRouting');
-      const elBkash = document.getElementById('hdrBkash');
-      const elCashier = document.getElementById('mCashierSignName');
-
-      if (elReg) elReg.innerText = padConfig.reg;
-      if (elAddr) elAddr.innerText = padConfig.addr;
-      if (elBank) elBank.innerText = padConfig.bank;
-      if (elRouting) elRouting.innerText = padConfig.routing;
-      if (elBkash) elBkash.innerText = padConfig.bkash;
-      if (elCashier) elCashier.innerText = padConfig.cashier;
-
-      const elMReg = document.getElementById('mPadReg');
-      const elMAddr = document.getElementById('mPadAddr');
-      const elMBank = document.getElementById('mPadBank');
-      if (elMReg) elMReg.innerText = padConfig.reg;
-      if (elMAddr) elMAddr.innerText = padConfig.addr;
-      if (elMBank) elMBank.innerText = padConfig.bank;
-    }
-
-    function showToast(msg, type = "info") {
-      const c = document.getElementById('toastContainer');
-      if (!c) return;
-      const t = document.createElement('div');
-      const bg = type === 'success' ? 'bg-emerald-800 text-white border-emerald-500' :
-                 type === 'error' ? 'bg-rose-800 text-white border-rose-500' :
-                 type === 'warning' ? 'bg-amber-800 text-white border-amber-500' :
-                 'bg-slate-800 text-white border-slate-600';
-      t.className = `${bg} border px-4 py-2.5 rounded-xl shadow-xl text-xs font-semibold pointer-events-auto transition-all duration-300 transform translate-y-0 opacity-100 flex items-center space-x-2`;
-      t.innerHTML = `<span>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span><span>${msg}</span>`;
-      c.appendChild(t);
-      setTimeout(() => {
-        t.style.opacity = '0';
-        t.style.transform = 'translateY(-10px)';
-        setTimeout(() => t.remove(), 300);
-      }, 3000);
-    }
-
-    function openAdminPinModal(target = 'admin') {
-      adminPinTargetAction = target;
-      const modal = document.getElementById('adminPinModal');
-      const pinInput = document.getElementById('adminPinInput');
-      const pinErr = document.getElementById('adminPinError');
-      if (pinErr) pinErr.classList.add('hidden');
-      if (pinInput) {
-        pinInput.value = '';
-        pinInput.type = 'password';
-      }
-      modal.classList.remove('hidden');
-      setTimeout(() => pinInput && pinInput.focus(), 150);
-    }
-
-    function closeAdminPinModal() {
-      const modal = document.getElementById('adminPinModal');
-      if (modal) modal.classList.add('hidden');
-    }
-
-    function togglePinVisibility() {
-      const pinInput = document.getElementById('adminPinInput');
-      if (pinInput) {
-        pinInput.type = pinInput.type === 'password' ? 'text' : 'password';
-      }
-    }
-
-    function submitAdminPin() {
-      const pinInput = document.getElementById('adminPinInput');
-      const pinErr = document.getElementById('adminPinError');
-      const val = (pinInput ? pinInput.value : '').trim();
-
-      if (VALID_ADMIN_PINS.includes(val)) {
-        isAdmin = true;
-        isAdminUnlocked = true;
-        closeAdminPinModal();
-        const aBtn = document.getElementById('adminBtn');
-        if (aBtn) aBtn.innerText = '🔓 অ্যাডমিন (সক্রিয়)';
-        renderGrid(liveRecords);
-
-        if (adminPinTargetAction === 'pad') {
-          showActualPadEditModal();
-          showToast("অ্যাডমিন পিন ভেরিফাইড! প্যাড এডিট মোড ওপেন হয়েছে।", "success");
-        } else {
-          showToast("অ্যাডমিন মোড সফলভাবে সক্রিয় হয়েছে!", "success");
-        }
-      } else {
-        if (pinErr) pinErr.classList.remove('hidden');
-        showToast("ভুল পিন নম্বর! অনুগ্রহ করে সঠিক পিন কোড দিন।", "error");
-        if (pinInput) {
-          pinInput.value = '';
-          pinInput.focus();
-        }
-      }
+      const r = id => document.getElementById(id);
+      if (r('hdrReg')) r('hdrReg').innerText = '🏛️ ' + (padConfig.reg || DEFAULT_PAD_CONFIG.reg);
+      if (r('hdrAddr')) r('hdrAddr').innerText = '📍 ' + (padConfig.addr || DEFAULT_PAD_CONFIG.addr);
+      if (r('hdrBank')) r('hdrBank').innerText = '🏦 ' + (padConfig.bank || DEFAULT_PAD_CONFIG.bank);
+      if (r('hdrRouting')) r('hdrRouting').innerText = '🌐 রাউটিং: ' + (padConfig.routing || DEFAULT_PAD_CONFIG.routing);
+      if (r('hdrBkash')) r('hdrBkash').innerText = '📱 বিকাশ: ' + (padConfig.bkash || DEFAULT_PAD_CONFIG.bkash);
+      if (r('guideRouting')) r('guideRouting').innerText = padConfig.routing || DEFAULT_PAD_CONFIG.routing;
+      if (r('guideBkash')) r('guideBkash').innerText = padConfig.bkash || DEFAULT_PAD_CONFIG.bkash;
+      if (r('guideCashier')) r('guideCashier').innerText = (padConfig.cashier || DEFAULT_PAD_CONFIG.cashier) + " — কোষাধ্যক্ষ";
+      if (r('kpiCashierText')) r('kpiCashierText').innerText = padConfig.cashier || DEFAULT_PAD_CONFIG.cashier;
+      if (r('mCashierSignName')) r('mCashierSignName').innerText = padConfig.cashier || DEFAULT_PAD_CONFIG.cashier;
     }
 
     function openPadEditModal() {
-      if (isAdminUnlocked) {
-        showActualPadEditModal();
-      } else {
-        openAdminPinModal('pad');
-      }
-    }
-
-    function showActualPadEditModal() {
-      document.getElementById('editAddr').value = padConfig.addr.replace(/^📍\s*/, '');
-      document.getElementById('editBank').value = padConfig.bank.replace(/^🏦\s*/, '');
-      document.getElementById('editRouting').value = padConfig.routing.replace(/^🌐\s*রাউটিং:\s*/, '');
-      document.getElementById('editBkash').value = padConfig.bkash.replace(/^📱\s*বিকাশ:\s*/, '');
-      document.getElementById('editReg').value = padConfig.reg.replace(/^🏛️\s*সমবায়\s*রেজিঃ\s*নং-?/, '');
-      document.getElementById('editCashier').value = padConfig.cashier;
+      document.getElementById('editAddr').value = padConfig.addr || '';
+      document.getElementById('editBank').value = padConfig.bank || '';
+      document.getElementById('editRouting').value = padConfig.routing || '';
+      document.getElementById('editBkash').value = padConfig.bkash || '';
+      document.getElementById('editReg').value = (padConfig.reg || '').replace(/^সমবায় রেজিঃ নং-/, '');
+      document.getElementById('editCashier').value = padConfig.cashier || '';
       document.getElementById('padEditModal').classList.remove('hidden');
     }
 
@@ -644,10 +643,6 @@
     }
 
     function savePadCustomDetails() {
-      if (!isAdminUnlocked) {
-        showToast("শুধুমাত্র অনুমোদিত কোষাধ্যক্ষ পিন আনলক করে তথ্য সংরক্ষণ করতে পারবেন!", "warning");
-        return;
-      }
       const addr = document.getElementById('editAddr').value.trim();
       const bank = document.getElementById('editBank').value.trim();
       const routing = document.getElementById('editRouting').value.trim();
@@ -656,11 +651,11 @@
       const cashier = document.getElementById('editCashier').value.trim();
 
       padConfig = {
-        addr: addr ? ("📍 " + addr) : DEFAULT_PAD_CONFIG.addr,
-        bank: bank ? ("🏦 " + bank) : DEFAULT_PAD_CONFIG.bank,
-        routing: routing ? ("🌐 রাউটিং: " + routing) : DEFAULT_PAD_CONFIG.routing,
-        bkash: bkash ? ("📱 বিকাশ: " + bkash) : DEFAULT_PAD_CONFIG.bkash,
-        reg: reg ? ("🏛️ সমবায় রেজিঃ নং-" + reg) : DEFAULT_PAD_CONFIG.reg,
+        addr: addr || DEFAULT_PAD_CONFIG.addr,
+        bank: bank || DEFAULT_PAD_CONFIG.bank,
+        routing: routing || DEFAULT_PAD_CONFIG.routing,
+        bkash: bkash || DEFAULT_PAD_CONFIG.bkash,
+        reg: reg ? (reg.startsWith("সমবায়") ? reg : ("সমবায় রেজিঃ নং-" + reg)) : DEFAULT_PAD_CONFIG.reg,
         cashier: cashier || DEFAULT_PAD_CONFIG.cashier
       };
 
@@ -668,26 +663,59 @@
         localStorage.setItem('somiti_pad_custom_settings', JSON.stringify(padConfig));
       } catch (_) {}
 
+      // Two-Way Sync: Update master Somiti profile in Firestore (swapnochowa)
+      const docRef = getSomitiDocRef();
+      if (docRef) {
+        try {
+          docRef.set({
+            address: addr || DEFAULT_PAD_CONFIG.addr,
+            bankName: bank || DEFAULT_PAD_CONFIG.bank,
+            bankAccount: bank ? (bank.match(/\\d{9,}/) ? bank.match(/\\d{9,}/)[0] : "2305158045001") : "2305158045001",
+            routingNo: routing || "২২৫২৬০৪১৫",
+            bkashNumber: bkash || "০১৮৮১২১০৪৪৪",
+            regNo: padConfig.reg,
+            cashierName: cashier || DEFAULT_PAD_CONFIG.cashier,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true }).catch(err => console.warn("Firestore profile sync warning:", err));
+        } catch(stErr) {
+          console.warn("Firestore save notice:", stErr);
+        }
+      }
+
       applyPadConfig();
       closePadEditModal();
-      showToast("প্যাডের তথ্য সফলভাবে সংরক্ষিত ও লাইভ আপডেট হয়েছে!", "success");
+      alert("✅ প্যাডের তথ্য সফলভাবে সংরক্ষিত ও ক্লাউডে লাইভ সিঙ্ক হয়েছে!");
     }
 
     function resetPadDefaults() {
-      if (!isAdminUnlocked) {
-        showToast("শুধুমাত্র অনুমোদিত কোষাধ্যক্ষ পিন আনলক করে ডিফল্ট তথ্য রিস্টোর করতে পারবেন!", "warning");
-        return;
-      }
+      if (!confirm("আপনি কি নিশ্চিতভাবে ডিফল্ট প্যাড তথ্য রিস্টোর করতে চান?")) return;
       padConfig = { ...DEFAULT_PAD_CONFIG };
       try {
         localStorage.removeItem('somiti_pad_custom_settings');
       } catch (_) {}
+
+      const docRef = getSomitiDocRef();
+      if (docRef) {
+        try {
+          docRef.set({
+            address: DEFAULT_PAD_CONFIG.addr,
+            bankName: DEFAULT_PAD_CONFIG.bank,
+            bankAccount: "2305158045001",
+            routingNo: "২২৫২৬০৪১৫",
+            bkashNumber: "০১৮৮১২১০৪৪৪",
+            regNo: DEFAULT_PAD_CONFIG.reg,
+            cashierName: DEFAULT_PAD_CONFIG.cashier,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true }).catch(() => {});
+        } catch(_) {}
+      }
+
       applyPadConfig();
       closePadEditModal();
-      showToast("ডিফল্ট তথ্য সফলভাবে রিস্টোর হয়েছে!", "success");
+      alert("✅ ডিফল্ট তথ্য সফলভাবে রিস্টোর ও ক্লাউডে সিঙ্ক হয়েছে!");
     }
 
-    const RECORDS = [
+    const DEFAULT_RECORDS = [
       {"code": "RCT-01", "alt_code": "সছঐস/রিসিট/২০২৬-০১", "member": "কাওসার আহমেদ রিফাত", "serial": "০২", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "সিটি ব্যাংক (শ্রীনগর শাখা) — যৌথ ক্যাশ ডিপোজিট", "sender": "যৌথ ডিপোজিট (সাজ্জাদ, রিফাত ও রাকিব)", "slip_url": "https://drive.google.com/file/d/1VXTQa7sSZBvtds1mGXdINkc3LoyFW7Ix/view?usp=drivesdk", "pad_url": ""},
       {"code": "RCT-02", "alt_code": "সছঐস/রিসিট/২০২৬-০২", "member": "মনিরুজ্জামান", "serial": "০৮", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা (১০,০৭৫.৮৯ ৳)", "method": "Al Mulla Exchange -> City Bank PLC (Txn: 2026/67179693)", "sender": "MANIRUZZAMAN MD MOTIUR RAHMAN (কুয়েত প্রবাসী)", "slip_url": "https://drive.google.com/file/d/1mCL4YxhBqHE4V_mYFBGmrPx7Y93tdpec/view?usp=drivesdk", "pad_url": ""},
       {"code": "RCT-03", "alt_code": "সছঐস/রিসিট/২০২৬-০৩", "member": "সাজ্জাদ হোসেন", "serial": "১৫", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "সিটি ব্যাংক (শ্রীনগর শাখা) — যৌথ ক্যাশ ডিপোজিট", "sender": "সাজ্জাদ হোসেন (যৌথ স্লিপ: ৩০,০০০/-)", "slip_url": "https://drive.google.com/file/d/1VXTQa7sSZBvtds1mGXdINkc3LoyFW7Ix/view?usp=drivesdk", "pad_url": ""},
@@ -712,59 +740,61 @@
       {"code": "RCT-22", "serial_code": "S-20", "alt_code": "সছঐস/রিসিট/২০২৬-২২", "member": "মেহেদী হাসান", "serial": "২০", "date": "১৬ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash (Slip #52824)", "sender": "MEHEDI HASAN (মত্তগ্রাম, শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1uQqbEO8IYbX6jsma8ZjojzwyczGFUhgw/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1EDufXkc_Yu15NDvTovOAYLWBySgnotEj/view?usp=drivesdk"},
       {"code": "RCT-23", "serial_code": "S-14", "alt_code": "সছঐস/রিসিট/২০২৬-২৩", "member": "রাজু আহমেদ খান", "serial": "১৪", "date": "১৭ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Trust Money NPSB -> City Bank PLC (Ref: OWS100716910256)", "sender": "Trust Money A/C: 0071-0310015289", "slip_url": "https://drive.google.com/file/d/1r_yqW5kA9LarJlvE7GV0VgFrm70EOybb/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1YTponCBffimFVHDlXba1EAxHs8W4ArkS/view?usp=drivesdk"},
       {"code": "RCT-24", "serial_code": "S-09", "alt_code": "সছঐস/রিসিট/২০২৬-২৪", "member": "আওলাদ খান", "serial": "০৯", "date": "১৮ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash (Slip #2914)", "sender": "Jihad Hasan (বাঘবাড়ী, শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1E-UOGXj0bWbwB1bSFpzPgOa7fnJv5Qyj/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1lnM3Twj_vURkd6eqlhcxHwMOa6Cs2SQ8/view?usp=drivesdk"},
-      {"code": "PAID-LIST", "alt_code": "স্মারক-০১/২০২৬", "member": "মাসিক সঞ্চয় ও কিস্তি জমার বিবরণী তালিকা (২৪ জন)", "serial": "অফিসিয়াল তালিকা", "date": "১৮ নভেম্বর ২০২৬", "amount": "২,৪০,০০০/- টাকা (২৪ জন)", "method": "CITY BANK PLC (REKABI BAZAR) — A/C: 2305158045001", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1jnX3xpBdSOW6L9OcfC5_Yksd1plVH4AZ/view?usp=drivesdk"},
-      {"code": "DUE-LIST", "alt_code": "স্মারক-০২/২০২৬", "member": "বকেয়া মাসিক কিস্তি জমার তালিকা ও জরুরি বিজ্ঞপ্তি (৩ জন)", "serial": "অফিসিয়াল বিজ্ঞপ্তি", "date": "১৮ নভেম্বর ২০২৬", "amount": "বকেয়া: ৩০,০০০/- টাকা (৩ জন)", "method": "সিটি ব্যাংক (২৩০৫১৫৮০৪৫০০১) / বিকাশ: ০১৮৮১২১০৪৪৪", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1lMfTEiZKr5BXFnAqm9NWfJ0eDPjFsmD3/view?usp=drivesdk"}
+      {"code": "RCT-25", "serial_code": "S-21", "alt_code": "সছঐস/রিসিট/২০২৬-২৫", "member": "তাজুল ইসলাম", "serial": "২১", "date": "১৯ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash (Slip #1273)", "sender": "ফাতেমা আক্তার / Fatema Akter (শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1oiEA8lecAdqwcSven7qGX5xAFFFYebWK/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1ljosdxEoXk5tlMjtqFj4OC98gFgrmjAy/view?usp=drivesdk"},
+      {"code": "PAID-LIST", "alt_code": "স্মারক-০১/২০২৬", "member": "মাসিক সঞ্চয় ও কিস্তি জমার বিবরণী তালিকা (২৫ জন)", "serial": "অফিসিয়াল তালিকা", "date": "১৯ নভেম্বর ২০২৬", "amount": "২,৫০,০০০/- টাকা (২৫ জন)", "method": "CITY BANK PLC (REKABI BAZAR) — A/C: 2305158045001", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1G0fRm1LBtmIV89zePGnS4ciqZYwmY_SI/view?usp=drivesdk"},
+      {"code": "DUE-LIST", "alt_code": "স্মারক-০২/২০২৬", "member": "বকেয়া মাসিক কিস্তি জমার তালিকা ও জরুরি বিজ্ঞপ্তি (২ জন)", "serial": "অফিসিয়াল বিজ্ঞপ্তি", "date": "১৯ নভেম্বর ২০২৬", "amount": "বকেয়া: ২০,০০০/- টাকা (২ জন)", "method": "সিটি ব্যাংক (২৩০৫১৫৮০৪৫০০১) / বিকাশ: ০১৮৮১২১০৪৪৪", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1MlObD7PgNV1RTVCEpnHyLHvDmogPa9IO/view?usp=drivesdk"}
     ];
+    const STORAGE_DELETED_KEY = 'somiti_deleted_codes_v1';
+    const STORAGE_CUSTOM_KEY = 'somiti_custom_records_v1';
+    const STORAGE_PASS_KEY = 'somiti_admin_pass_v1';
+    const STORAGE_NOTICE_KEY = 'somiti_notice_text_v1';
+
+    let deletedCodes = JSON.parse(localStorage.getItem(STORAGE_DELETED_KEY) || '[]');
+    let customRecords = JSON.parse(localStorage.getItem(STORAGE_CUSTOM_KEY) || '[]');
+    let firestoreDeposits = [];
+    let firestoreMembers = [];
+    let liveRecords = [];
+    let dueMembers = [
+      { serial: '12', name: 'মোঃ নোমান হাওলাদার' },
+      { serial: '13', name: 'মাহফুজ হাসান' }
+    ];
+    let allMembersMap = {};
+    let currentFilter = 'paid';
+    let isAdmin = false;
+    let activeModalRec = null;
 
     const recordsGrid = document.getElementById('recordsGrid');
     const verifyModal = document.getElementById('verifyModal');
     const errorModal = document.getElementById('errorModal');
-
     const memberTotals = {};
     const memberMonths = {};
 
     const toBn = n => String(n).replace(/[0-9]/g, d => '০১২৩৪৫৬৭৮৯'[d]);
     const formatBnTaka = n => toBn(Number(n || 0).toLocaleString('en-IN'));
 
-    let activeModalRec = null;
+    function rebuildLiveRecords() {
+      const base = [...DEFAULT_RECORDS, ...customRecords];
+      liveRecords = base.filter(r => !deletedCodes.includes(r.code));
+    }
+    rebuildLiveRecords();
 
-    function getMemberTotalAndMonths(memberName) {
-      if (!memberName) return { total: 10000, months: 1 };
+    const savedNotice = localStorage.getItem(STORAGE_NOTICE_KEY);
+    if (savedNotice) {
+      const noticeSpan = document.querySelector('main > div strong')?.parentElement;
+      if (noticeSpan) noticeSpan.innerHTML = savedNotice;
+    }
 
-      // 1. Direct check in live firestoreMembers
-      if (typeof firestoreMembers !== 'undefined' && Array.isArray(firestoreMembers) && firestoreMembers.length > 0) {
-        const fsMem = firestoreMembers.find(m => m.name === memberName || m.name?.trim() === memberName?.trim());
-        if (fsMem && fsMem.totalDeposit !== undefined && fsMem.totalDeposit !== null) {
-          const amt = Number(fsMem.totalDeposit);
-          if (amt > 0) {
-            const months = Math.max(1, Math.round(amt / 10000));
-            return { total: amt, months: months };
-          }
-        }
-      }
-
-      // 2. Count actual verified receipts for this member in liveRecords
-      if (typeof liveRecords !== 'undefined' && Array.isArray(liveRecords)) {
-        const memRecs = liveRecords.filter(r => (r.member === memberName || r.member?.trim() === memberName?.trim()) && !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-'));
-        if (memRecs.length > 0) {
-          let sum = 0;
-          memRecs.forEach(r => {
-            const numMatch = (r.amount || '').replace(/,/g, '').match(/\d+/);
-            const parsed = numMatch ? Number(numMatch[0]) : 10000;
-            sum += (parsed > 0 ? parsed : 10000);
-          });
-          const months = Math.max(1, memRecs.length);
-          return { total: sum, months: months };
-        }
-      }
-
-      // 3. Fallback
-      return { total: 10000, months: 1 };
+    function copyText(txt, btn) {
+      navigator.clipboard.writeText(txt).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = '✅ কপি হয়েছে';
+        setTimeout(() => btn.innerText = orig, 1500);
+      });
     }
 
     function openVerifiedModal(rec) {
       activeModalRec = rec;
-      document.getElementById('mCode').innerText = `${rec.code} (${rec.alt_code})`;
+      document.getElementById('mCode').innerText = `${rec.code} (${rec.alt_code || rec.code})`;
       document.getElementById('mMember').innerText = rec.member;
       document.getElementById('mAmount').innerText = rec.amount;
       const totRow = document.getElementById('mMemberTotalRow');
@@ -772,7 +802,8 @@
         totRow.classList.add('hidden');
       } else {
         totRow.classList.remove('hidden');
-        const { total: totAmt, months: totMo } = getMemberTotalAndMonths(rec.member);
+        const totAmt = memberTotals[rec.member] || 10000;
+        const totMo = memberMonths[rec.member] || 1;
         document.getElementById('mMemberTotal').innerText = `${formatBnTaka(totAmt)}/- টাকা (${toBn(totMo)} মাস)`;
       }
       document.getElementById('mDate').innerText = rec.date;
@@ -780,7 +811,7 @@
       document.getElementById('mSender').innerText = rec.sender;
 
       const slipBtn = document.getElementById('mSlipBtn');
-      slipBtn.href = rec.slip_url;
+      slipBtn.href = rec.slip_url || '#';
 
       const padBtn = document.getElementById('mPadBtn');
       if (rec.pad_url) {
@@ -791,85 +822,32 @@
       }
 
       const qBox = document.getElementById('modalQrBox');
-      if (qBox) {
-        qBox.innerHTML = '';
-        if (typeof QRCode !== 'undefined') {
-          const vUrl = `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(rec.code)}`;
-          new QRCode(qBox, { text: vUrl, width: 58, height: 58, colorDark: '#0a5c36', colorLight: '#ffffff' });
-        }
+      qBox.innerHTML = '';
+      if (typeof QRCode !== 'undefined') {
+        const vUrl = `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(rec.code)}`;
+        new QRCode(qBox, { text: vUrl, width: 58, height: 58, colorDark: '#0a5c36', colorLight: '#ffffff' });
       }
-
-      applyPadConfig();
       verifyModal.classList.remove('hidden');
     }
 
-    async function verifyQuery(query, silentIfMissing = false) {
+    function verifyQuery(query, silentIfMissing = false) {
       const q = (query || '').trim().toLowerCase();
       if (!q) return false;
-
-      const findMatch = () => (liveRecords || []).find(r =>
-        (r.code && r.code.toLowerCase() === q) ||
+      const match = liveRecords.find(r =>
+        r.code.toLowerCase() === q ||
         (r.alt_code && r.alt_code.toLowerCase() === q) ||
         (r.serial_code && r.serial_code.toLowerCase() === q) ||
-        (r.serial_code && r.serial_code.toLowerCase().replace('-', '') === q.replace('-', '')) ||
-        (r.serial && ('s-' + r.serial).toLowerCase() === q) ||
-        (r.member && r.member.toLowerCase().includes(q)) ||
-        (r.code && r.code.toLowerCase().includes(q))
+        r.member.toLowerCase().includes(q) ||
+        r.code.toLowerCase().includes(q)
       );
-
-      let match = findMatch();
       if (match) {
         openVerifiedModal(match);
         return true;
+      } else {
+        if (!silentIfMissing) errorModal.classList.remove('hidden');
+        return false;
       }
-
-      // If not found in liveRecords, await syncFromGoogleSheet() before showing Not Found error
-      if (typeof syncFromGoogleSheet === 'function') {
-        try {
-          await syncFromGoogleSheet();
-          match = findMatch();
-          if (match) {
-            openVerifiedModal(match);
-            return true;
-          }
-        } catch (e) {
-          console.warn('Sync in verifyQuery failed:', e);
-        }
-      }
-
-      if (!silentIfMissing) errorModal.classList.remove('hidden');
-      return false;
     }
-
-    function getCombinedLiveRecords() {
-      const customKey = 'somiti_custom_verified_records';
-      const delKey = 'somiti_deleted_receipt_codes';
-      let deletedCodes = [];
-      let customRecords = [];
-      try {
-        deletedCodes = JSON.parse(localStorage.getItem(delKey) || '[]');
-        customRecords = JSON.parse(localStorage.getItem(customKey) || '[]');
-      } catch(_) {}
-
-      // Filter out deleted codes from default static RECORDS
-      let base = RECORDS.filter(r => !deletedCodes.includes(r.code) && !deletedCodes.includes(r.alt_code));
-
-      // Append custom records that are not deleted
-      customRecords.forEach(c => {
-        if (!deletedCodes.includes(c.code) && !deletedCodes.includes(c.alt_code)) {
-          if (!base.some(b => b.code === c.code)) {
-            base.unshift(c);
-          }
-        }
-      });
-      return base;
-    }
-
-    let liveRecords = getCombinedLiveRecords();
-    let currentFilter = 'paid';
-    let dueMembers = [];
-    let allMembersMap = {};
-    let isAdmin = false;
 
     function renderBreakdowns() {
       const mGrid = document.getElementById('methodBreakdownGrid');
@@ -895,7 +873,6 @@
           catTotals['সিটি ব্যাংক (সরাসরি ক্যাশ / এজেন্ট)'].count++;
           catTotals['সিটি ব্যাংক (সরাসরি ক্যাশ / এজেন্ট)'].amt += 10000;
         }
-
         const dt = (r.date || 'তারিখ অনির্ধারিত').trim();
         if (!dateTotals[dt]) dateTotals[dt] = { count: 0, amt: 0 };
         dateTotals[dt].count++;
@@ -913,7 +890,6 @@
           </div>
         `).join('');
       }
-
       if (dGrid) {
         dGrid.innerHTML = Object.entries(dateTotals).map(([dt, v]) => `
           <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-200">
@@ -929,7 +905,7 @@
       const cGrid = document.getElementById('countryGrid');
       if (cGrid) {
         const countries = [
-          { flag: '🇮🇹', name: 'ইতালি', cnt: '৬+ জন' },
+          { flag: '🇮🇹', name: 'ইতালি', cnt: '৭+ জন' },
           { flag: '🇸🇦', name: 'সৌদি আরব', cnt: '২ জন' },
           { flag: '🇰🇼', name: 'কুয়েত', cnt: '১ জন' },
           { flag: '🇪🇸', name: 'স্পেন', cnt: '১ জন' },
@@ -938,24 +914,57 @@
           { flag: '🇶🇦', name: 'কাতার', cnt: '১ জন' },
           { flag: '🇺🇸', name: 'আমেরিকা', cnt: '১ জন' },
           { flag: '🇭🇷', name: 'ক্রোয়েশিয়া', cnt: '১ জন' },
-          { flag: '🇧🇩', name: 'বাংলাদেশ', cnt: '২+ জন' }
+          { flag: '🇧🇩', name: 'বাংলাদেশ', cnt: '৩+ জন' }
         ];
         cGrid.innerHTML = countries.map(c => `<span class="px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 font-semibold text-emerald-900">${c.flag} ${c.name} <span class="text-emerald-700 font-bold">(${c.cnt})</span></span>`).join('');
       }
-      const syncEl = document.getElementById('lastSyncText');
-      if (syncEl) syncEl.innerText = '🟢 লাইভ সিঙ্ক: ' + new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function updateKPIs() {
+      const paidOnly = liveRecords.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-'));
+      const paidCnt = paidOnly.length;
+      const totalAmt = paidCnt * 10000;
+      const totalMem = Math.max(27, paidCnt + dueMembers.length);
+      const dueCnt = Math.max(0, totalMem - paidCnt);
+      const dueAmt = dueCnt * 10000;
+      const pct = ((paidCnt / totalMem) * 100).toFixed(1);
+
+      document.getElementById('kpiTotalFund').innerText = `${formatBnTaka(totalAmt)} ৳`;
+      document.getElementById('kpiPaidCount').innerText = `${toBn(paidCnt)} টি`;
+      document.getElementById('kpiDueCount').innerText = `${toBn(dueCnt)} জন`;
+      document.getElementById('grandTotalBadge').innerText = `সর্বমোট তহবিল: ${formatBnTaka(totalAmt)}/- ৳`;
+      const pTxt = document.getElementById('progressPctText');
+      const pBar = document.getElementById('progressBarFill');
+      if (pTxt) pTxt.innerText = `${toBn(pct)}% (${toBn(paidCnt)}/${toBn(totalMem)} জন)`;
+      if (pBar) pBar.style.width = `${Math.min(100, pct)}%`;
+
+      const mGrid = document.getElementById('monthlySummaryGrid');
+      if (mGrid) {
+        mGrid.innerHTML = `
+          <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50/40">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">নভেম্বর ২০২৬</span>
+              <span class="text-xs font-semibold text-slate-500">${toBn(paidCnt)} / ${toBn(totalMem)} জন</span>
+            </div>
+            <p class="text-lg font-bold text-emerald-700 mt-2">${formatBnTaka(totalAmt)}/- টাকা</p>
+            <p class="text-xs text-amber-700 mt-0.5">বকেয়া: ${formatBnTaka(dueAmt)}/- টাকা (${toBn(dueCnt)} জন)</p>
+          </div>
+        `;
+      }
     }
 
     function renderGridWithData(list) {
       recordsGrid.innerHTML = '';
       list.forEach(rec => {
         const isNotice = rec.code.startsWith('PAID-') || rec.code.startsWith('DUE-') || rec.code.startsWith('স্মারক');
-        const card = document.createElement('button');
-        card.type = 'button';
-        card.className = `text-left p-3.5 rounded-xl border transition hover:shadow-md active:scale-[0.99] ${
+        const wrap = document.createElement('div');
+        wrap.className = `p-3.5 rounded-xl border transition hover:shadow-md flex flex-col justify-between ${
           isNotice ? 'bg-amber-50/50 border-amber-200 hover:border-amber-400' : 'bg-white border-slate-200 hover:border-emerald-400'
         }`;
-        card.innerHTML = `
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'text-left w-full';
+        btn.innerHTML = `
           <div class="flex items-center justify-between">
             <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md ${
               isNotice ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'
@@ -965,35 +974,39 @@
           <h4 class="text-sm font-bold text-slate-800 mt-2">${rec.member}</h4>
           <p class="text-xs text-slate-500 mt-0.5">${rec.date} • <span class="font-semibold text-emerald-700">${rec.amount}</span></p>
         `;
-        card.addEventListener('click', () => openVerifiedModal(rec));
-        recordsGrid.appendChild(card);
+        btn.addEventListener('click', () => openVerifiedModal(rec));
+        wrap.appendChild(btn);
+
+        if (isAdmin) {
+          const delBtn = document.createElement('button');
+          delBtn.type = 'button';
+          delBtn.className = 'mt-2.5 w-full bg-rose-50 hover:bg-rose-600 text-rose-700 hover:text-white border border-rose-200 font-bold py-1.5 rounded-lg text-[11px] transition';
+          delBtn.innerText = '🗑️ ভেরিফাই ডিলিট (মেইন অ্যাপ সহ)';
+          delBtn.onclick = () => deleteReceiptByCode(rec.code, rec.member, rec.fbId);
+          wrap.appendChild(delBtn);
+        }
+        recordsGrid.appendChild(wrap);
       });
     }
 
     function renderGrid(list = liveRecords) {
+      updateKPIs();
       renderBreakdowns();
-
-      const paidCnt = list.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-')).length;
-      const totalMem = Math.max(27, paidCnt + dueMembers.length);
-      const pct = ((paidCnt / totalMem) * 100).toFixed(1);
-      const pTxt = document.getElementById('progressPctText');
-      const pBar = document.getElementById('progressBarFill');
-      if (pTxt) pTxt.innerText = `${toBn(pct)}% (${toBn(paidCnt)}/${toBn(totalMem)} জন)`;
-      if (pBar) pBar.style.width = `${Math.min(100, pct)}%`;
-
       if (currentFilter === 'notices') {
-        const noticesList = list.filter(r => r.code.startsWith('DUE-') || r.code.startsWith('PAID-') || r.code.startsWith('স্মারক'));
+        const noticesList = list.filter(r => r.code.startsWith('DUE-') || r.code.startsWith('PAID-'));
         renderGridWithData(noticesList);
         return;
       }
-
       if (currentFilter === 'money') {
         const moneyCards = list.filter(r => r.code.startsWith('PAID-'));
         renderGridWithData(moneyCards);
         let mList = Object.values(allMembersMap).sort((a, b) => a.serial - b.serial);
         if (mList.length === 0) {
-          liveRecords.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-')).forEach(r => {
+          list.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-')).forEach(r => {
             mList.push({ serial: r.serial, name: r.member, paidTotal: 10000, paidMonths: 1, dueTotal: 0 });
+          });
+          dueMembers.forEach(d => {
+            mList.push({ serial: d.serial, name: d.name, paidTotal: 0, paidMonths: 0, dueTotal: 10000 });
           });
         }
         const tblWrap = document.createElement('div');
@@ -1030,14 +1043,13 @@
         recordsGrid.appendChild(tblWrap);
         return;
       }
-
       if (currentFilter === 'due') {
         recordsGrid.innerHTML = '';
         if (dueMembers.length === 0) {
           recordsGrid.innerHTML = '<p class="col-span-full text-center text-sm text-emerald-700 py-6 font-bold">🎉 সকল সদস্যের কিস্তি পরিশোধিত!</p>';
           return;
         }
-        dueMembers.forEach((dm, i) => {
+        dueMembers.forEach(dm => {
           const card = document.createElement('div');
           card.className = 'p-3.5 rounded-xl border border-rose-200 bg-rose-50/40';
           card.innerHTML = `
@@ -1049,15 +1061,15 @@
             <p class="text-xs text-rose-700 font-semibold mt-0.5">বকেয়া: ১০,০০০/- টাকা</p>
           `;
           if (isAdmin) {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'mt-2 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 px-2 rounded-lg text-[11px] transition';
-            btn.innerText = '📲 WhatsApp রিমাইন্ডার';
-            btn.onclick = () => {
-              const msg = `আসসালামু আলাইকুম ${dm.name} ভাই, স্বপ্ন ছোঁয়া ঐক্য সমিতির চলতি মাসের কিস্তি (১০,০০০/- টাকা) পরিশোধের জন্য বিনীত অনুরোধ রইলো।\nবকেয়া তালিকা দেখুন: ${window.location.origin}${window.location.pathname}?filter=due`;
+            const waBtn = document.createElement('button');
+            waBtn.type = 'button';
+            waBtn.className = 'mt-2 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 px-2 rounded-lg text-[11px] transition';
+            waBtn.innerText = '📲 WhatsApp রিমাইন্ডার';
+            waBtn.onclick = () => {
+              const msg = `আসসালামু আলাইকুম ${dm.name} ভাই, স্বপ্ন ছোঁয়া ঐক্য সমিতির চলতি মাসের কিস্তি (১০,০০০/- টাকা) পরিশোধের জন্য বিনীত অনুরোধ রইলো।\\nবকেয়া তালিকা দেখুন: ${window.location.origin}${window.location.pathname}?filter=due`;
               window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
             };
-            card.appendChild(btn);
+            card.appendChild(waBtn);
           }
           recordsGrid.appendChild(card);
         });
@@ -1069,255 +1081,6 @@
         : list;
       renderGridWithData(filtered);
     }
-
-    const SHEET_TABS = [
-      { tab: 'Sheet1', label: 'নভেম্বর ২০২৬' },
-      { tab: 'ডিসেম্বর ২০২৬', label: 'ডিসেম্বর ২০২৬' }
-    ];
-
-    async function syncFromGoogleSheet() {
-      // If Firestore live database is active or connecting, skip Google Sheet to prevent race condition double-accumulation
-      if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
-        return;
-      }
-      const sheetId = '1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0';
-      let grandTotal = 0;
-      dueMembers = [];
-      allMembersMap = {};
-      const monthlyCards = [];
-      for (let k in memberTotals) delete memberTotals[k];
-      for (let k in memberMonths) delete memberMonths[k];
-
-      for (let tIdx = 0; tIdx < SHEET_TABS.length; tIdx++) {
-        const mInfo = SHEET_TABS[tIdx];
-        const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(mInfo.tab)}`;
-        try {
-          const res = await fetch(url);
-          if (!res.ok) continue;
-          const text = await res.text();
-          if (!text.includes('(')) continue;
-          const jsonStr = text.substring(text.indexOf('(') + 1, text.lastIndexOf(')'));
-          const data = JSON.parse(jsonStr);
-          const rows = data.table.rows || [];
-
-          let monthPaid = 0;
-          let monthPaidCount = 0;
-          let totalMembers = 0;
-
-          rows.forEach(r => {
-            const c = r.c || [];
-            const serial = c[0] && c[0].v ? String(c[0].v).trim() : '';
-            const name = c[1] && c[1].v ? String(c[1].v).trim() : '';
-            if (!name || !serial || isNaN(Number(serial))) return;
-            totalMembers++;
-
-            if (!allMembersMap[name]) allMembersMap[name] = { serial: Number(serial), name, paidTotal: 0, paidMonths: 0, dueTotal: 0, history: [] };
-            const amount = (c[8] && c[8].v != null) ? (Number(String(c[8].v).replace(/[^0-9.]/g, '')) || 0) : 0;
-            if (amount <= 0) {
-              allMembersMap[name].dueTotal += 10000;
-              if (tIdx === 0) dueMembers.push({ serial, name });
-              return;
-            }
-            allMembersMap[name].paidTotal += amount;
-            allMembersMap[name].paidMonths += 1;
-            allMembersMap[name].history.push({ month: mInfo.label, amount });
-
-            monthPaid += amount;
-            monthPaidCount++;
-            memberTotals[name] = (memberTotals[name] || 0) + amount;
-            memberMonths[name] = (memberMonths[name] || 0) + 1;
-
-            const sCode = 'S-' + String(Number(serial)).padStart(2, '0');
-            const depositor = c[3] && c[3].v ? String(c[3].v) : 'নিজ';
-            const dateVal = c[4] && (c[4].f || c[4].v) ? String(c[4].f || c[4].v) : '';
-            const bank = c[6] && c[6].v ? String(c[6].v) : 'City Bank PLC';
-            const slipCell = c[9] && c[9].f ? String(c[9].f) : (c[9] && c[9].v ? String(c[9].v) : '');
-            const urlMatch = slipCell.match(/https:\/\/[^"\s)]+/);
-            const slipUrl = urlMatch ? urlMatch[0] : 'https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-';
-
-            if (tIdx === 0) {
-              const delKey = 'somiti_deleted_receipt_codes';
-              let deletedCodes = [];
-              try { deletedCodes = JSON.parse(localStorage.getItem(delKey) || '[]'); } catch(_) {}
-
-              const existing = liveRecords.find(rec => rec.member === name);
-              if (!existing) {
-                const nextNum = liveRecords.filter(rec => rec.code.startsWith('RCT-')).length + 1;
-                const codeNum = String(nextNum).padStart(2, '0');
-                const candCode = `RCT-${codeNum}`;
-                if (!deletedCodes.includes(candCode) && !deletedCodes.includes(sCode) && !deletedCodes.includes(name)) {
-                  liveRecords.push({
-                    code: candCode,
-                    serial_code: sCode,
-                    alt_code: `সছঐস/রিসিট/২০২৬-${codeNum}`,
-                    member: name,
-                    serial: toBn(serial),
-                    date: dateVal,
-                    amount: `${formatBnTaka(amount)}/- টাকা`,
-                    method: bank,
-                    sender: depositor,
-                    slip_url: slipUrl,
-                    pad_url: ''
-                  });
-                }
-              } else {
-                existing.serial_code = sCode;
-                if (urlMatch && urlMatch[0]) existing.slip_url = urlMatch[0];
-              }
-            }
-          });
-
-          const dueCount = Math.max(0, totalMembers - monthPaidCount);
-          const dueAmount = dueCount * 10000;
-          grandTotal += monthPaid;
-
-          monthlyCards.push({
-            label: mInfo.label,
-            paidCount: monthPaidCount,
-            totalMembers: totalMembers || 27,
-            paidAmount: monthPaid,
-            dueCount,
-            dueAmount
-          });
-
-          if (tIdx === 0 && totalMembers > 0) {
-            document.getElementById('kpiPaidCount').innerText = `${toBn(monthPaidCount)} টি`;
-            document.getElementById('kpiDueCount').innerText = `${toBn(dueCount)} জন`;
-            const paidRec = liveRecords.find(r => r.code === 'PAID-LIST');
-            if (paidRec) {
-              paidRec.member = `মাসিক সঞ্চয় ও কিস্তি জমার বিবরণী তালিকা (${toBn(monthPaidCount)} জন)`;
-              paidRec.amount = `${formatBnTaka(monthPaid)}/- টাকা (${toBn(monthPaidCount)} জন)`;
-            }
-            const dueRec = liveRecords.find(r => r.code === 'DUE-LIST');
-            if (dueRec) {
-              dueRec.member = `বকেয়া মাসিক কিস্তি জমার তালিকা (${toBn(dueCount)} জন)`;
-              dueRec.amount = `বকেয়া: ${formatBnTaka(dueAmount)}/- টাকা (${toBn(dueCount)} জন)`;
-            }
-          }
-        } catch (err) {
-          // Fallback silently
-        }
-      }
-
-      if (monthlyCards.length > 0) {
-        document.getElementById('kpiTotalFund').innerText = `${formatBnTaka(grandTotal)} ৳`;
-        document.getElementById('grandTotalBadge').innerText = `সর্বমোট তহবিল: ${formatBnTaka(grandTotal)}/- ৳`;
-        const mGrid = document.getElementById('monthlySummaryGrid');
-        if (mGrid) {
-          mGrid.innerHTML = monthlyCards.map(m => `
-            <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50/40">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">${m.label}</span>
-                <span class="text-xs font-semibold text-slate-500">${toBn(m.paidCount)} / ${toBn(m.totalMembers)} জন</span>
-              </div>
-              <p class="text-lg font-bold text-emerald-700 mt-2">${formatBnTaka(m.paidAmount)}/- টাকা</p>
-              <p class="text-xs text-amber-700 mt-0.5">বকেয়া: ${formatBnTaka(m.dueAmount)}/- টাকা (${toBn(m.dueCount)} জন)</p>
-            </div>
-          `).join('');
-        }
-      }
-
-      renderGrid(liveRecords);
-    }
-
-    function copyText(txt, btn) {
-      navigator.clipboard.writeText(txt).then(() => {
-        const orig = btn.innerText;
-        btn.innerText = '✅ কপি হয়েছে';
-        setTimeout(() => btn.innerText = orig, 1500);
-      });
-    }
-
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
-      const isDark = document.body.classList.contains('dark-mode');
-      localStorage.setItem('somiti_dark', isDark ? '1' : '0');
-      document.getElementById('darkModeBtn').innerText = isDark ? '☀️ লাইট' : '🌙 ডার্ক';
-    }
-    if (localStorage.getItem('somiti_dark') === '1') toggleDarkMode();
-
-    function toggleAdminMode() {
-      if (isAdmin) {
-        isAdmin = false;
-        isAdminUnlocked = false;
-        document.getElementById('adminBtn').innerText = '🔐 অ্যাডমিন';
-        renderGrid(liveRecords);
-        showToast("অ্যাডমিন মোড লক করা হয়েছে।", "info");
-      } else {
-        openAdminPinModal('admin');
-      }
-    }
-
-    async function manualSync() {
-      const btn = document.getElementById('refreshBtn');
-      btn.innerText = '⏳ আপডেট হচ্ছে...';
-      await syncFromGoogleSheet();
-      btn.innerText = '✅ আপডেটেড';
-      setTimeout(() => btn.innerText = '🔄 লাইভ আপডেট', 1500);
-    }
-
-    function exportCSV() {
-      const rows = [['Code', 'Member', 'Date', 'Amount', 'Method', 'Status']];
-      liveRecords.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-')).forEach(r => {
-        rows.push([r.code, r.member, r.date, r.amount, r.method, 'Paid']);
-      });
-      dueMembers.forEach(d => {
-        rows.push([`S-${String(d.serial).padStart(2,'0')}`, d.name, '-', '10000', '-', 'Pending']);
-      });
-      const csv = '\uFEFF' + rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'swapnochowa_somity_report.csv';
-      a.click();
-    }
-
-    // Filter Buttons Click
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        currentFilter = e.currentTarget.getAttribute('data-filter');
-        document.querySelectorAll('.filter-btn').forEach(b => {
-          b.className = 'filter-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold transition';
-        });
-        e.currentTarget.className = 'filter-btn bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold transition';
-        renderGrid(liveRecords);
-      });
-    });
-
-    // Form Submit
-    document.getElementById('verifyForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      await verifyQuery(document.getElementById('verifyInput').value);
-    });
-
-    // Instant Typing Search Filter
-    document.getElementById('verifyInput').addEventListener('input', (e) => {
-      const q = e.target.value.trim().toLowerCase();
-      if (!q) { renderGrid(liveRecords); return; }
-      const matched = liveRecords.filter(r =>
-        r.code.toLowerCase().includes(q) ||
-        r.alt_code.toLowerCase().includes(q) ||
-        (r.serial_code && r.serial_code.toLowerCase().includes(q)) ||
-        r.member.toLowerCase().includes(q)
-      );
-      renderGridWithData(matched);
-    });
-
-    // Quick demo pills
-    document.querySelectorAll('.quick-pill').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-        const code = e.currentTarget.getAttribute('data-code');
-        document.getElementById('verifyInput').value = code;
-        await verifyQuery(code);
-      });
-    });
-
-    // Modal Copy Link & WhatsApp Share
-    document.getElementById('mCopyLinkBtn').addEventListener('click', (e) => {
-      if (!activeModalRec) return;
-      const shareUrl = `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(activeModalRec.code)}`;
-      copyText(shareUrl, e.currentTarget);
-    });
 
     // Helper function to capture clean receipt image as Canvas
     async function captureReceiptCanvas() {
@@ -1348,58 +1111,485 @@
       }
     }
 
+    // Firebase Auth & Realtime Sync with Main App
+    function signInFirebaseGoogle() {
+      if (!fbAuth) { alert('Firebase লোড হয়নি।'); return; }
+      const provider = new firebase.auth.GoogleAuthProvider();
+      fbAuth.signInWithPopup(provider).then(res => {
+        document.getElementById('fbStatusText').innerText = `🟢 Firebase কানেক্টেড: ${res.user.email}`;
+        document.getElementById('fbAuthBtn').innerText = '✅ কানেক্টেড';
+      }).catch(err => {
+        alert('Firebase লগইন ত্রুটি: ' + err.message);
+      });
+    }
+
+    function initFirebaseRealtime() {
+      const docRef = getSomitiDocRef();
+      if (!docRef) return;
+      if (fbAuth) {
+        fbAuth.onAuthStateChanged(user => {
+          const st = document.getElementById('fbStatusText');
+          const btn = document.getElementById('fbAuthBtn');
+          if (user && st) {
+            st.innerText = `🟢 Firebase কানেক্টেড: ${user.email}`;
+            if (btn) btn.innerText = '✅ কানেক্টেড';
+          }
+        });
+      }
+      docRef.collection('members').orderBy('memberNumber').onSnapshot(snap => {
+        firestoreMembers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        const st = document.getElementById('fbStatusText');
+        if (st && (!fbAuth || !fbAuth.currentUser)) {
+          st.innerText = `🟢 মেইন অ্যাপ সিঙ্ক সক্রিয় (${firestoreMembers.length} জন সদস্য)`;
+        }
+      }, () => {});
+
+      docRef.collection('deposits').orderBy('date', 'desc').onSnapshot(snap => {
+        firestoreDeposits = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        // Attach Firestore document IDs to matching records for 1-click delete sync
+        liveRecords.forEach(r => {
+          const match = firestoreDeposits.find(fd =>
+            (fd.memberName && fd.memberName === r.member) ||
+            (fd.receiptCode && fd.receiptCode === r.code)
+          );
+          if (match) r.fbId = match.id;
+        });
+        if (document.getElementById('adminPanelModal') && !document.getElementById('adminPanelModal').classList.contains('hidden')) {
+          renderAdminList();
+        }
+      }, () => {});
+    }
+
+    // Admin Control Panel Functions
+    function getAdminPass() {
+      return localStorage.getItem(STORAGE_PASS_KEY) || '2026';
+    }
+
+    function toggleAdminMode() {
+      if (isAdmin) {
+        openAdminPanel();
+        return;
+      }
+      const pin = prompt('অ্যাডমিন পাসওয়ার্ড দিন (ডিফল্ট: 2026):');
+      if (pin === getAdminPass()) {
+        isAdmin = true;
+        document.getElementById('adminBtn').innerText = '🔓 অ্যাডমিন প্যানেল';
+        renderGrid(liveRecords);
+        openAdminPanel();
+      } else if (pin !== null) {
+        alert('ভুল পাসওয়ার্ড!');
+      }
+    }
+
+    function openAdminPanel() {
+      document.getElementById('adminPanelModal').classList.remove('hidden');
+      const noticeEl = document.querySelector('main > div strong')?.parentElement;
+      if (noticeEl) document.getElementById('adminNoticeInput').value = noticeEl.innerText;
+      renderAdminList();
+    }
+
+    function closeAdminPanel() {
+      document.getElementById('adminPanelModal').classList.add('hidden');
+    }
+
+    function adminLogout() {
+      isAdmin = false;
+      document.getElementById('adminBtn').innerText = '🔐 অ্যাডমিন';
+      closeAdminPanel();
+      renderGrid(liveRecords);
+    }
+
+    function switchAdminTab(tab) {
+      ['manage', 'add', 'settings'].forEach(t => {
+        document.getElementById('adminTab_' + t).classList.toggle('hidden', t !== tab);
+      });
+      document.querySelectorAll('.admin-tab-btn').forEach(b => {
+        const active = b.getAttribute('data-atab') === tab;
+        b.className = active
+          ? 'admin-tab-btn bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold'
+          : 'admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold';
+      });
+    }
+
+    function renderAdminList() {
+      const listEl = document.getElementById('adminRecordsList');
+      const q = (document.getElementById('adminSearchInput')?.value || '').trim().toLowerCase();
+      const all = [...DEFAULT_RECORDS, ...customRecords].filter(r =>
+        !q || r.code.toLowerCase().includes(q) || r.member.toLowerCase().includes(q)
+      );
+      listEl.innerHTML = all.map(r => {
+        const isDel = deletedCodes.includes(r.code);
+        const fbMatch = firestoreDeposits.find(fd => fd.memberName === r.member || fd.receiptCode === r.code);
+        return `
+          <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-xl border ${isDel ? 'bg-rose-50/70 border-rose-200 opacity-75' : 'bg-white border-slate-200'}">
+            <div>
+              <span class="font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">${r.code}</span>
+              <span class="font-bold text-slate-800 ml-1">${r.member}</span>
+              ${fbMatch ? '<span class="ml-1 text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold">🔥 মেইন অ্যাপে সিঙ্কড</span>' : ''}
+              <p class="text-[11px] text-slate-500 mt-0.5">${r.date} • ${r.amount}</p>
+            </div>
+            <div class="flex gap-1.5">
+              ${isDel
+                ? `<button type="button" onclick="restoreReceiptByCode('${r.code}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2.5 py-1 rounded-lg">♻️ রিস্টোর</button>`
+                : `<button type="button" onclick="deleteReceiptByCode('${r.code}', '${r.member.replace(/'/g, "\\\\'")}', '${fbMatch ? fbMatch.id : ''}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-2.5 py-1 rounded-lg">🗑️ ডিলিট</button>`
+              }
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function deleteReceiptByCode(code, memberName = '', fbId = '') {
+      if (!confirm(`আপনি কি নিশ্চিতভাবে "${code}" ভেরিফাই/রিসিটটি ডিলিট করতে চান?`)) return;
+      if (!deletedCodes.includes(code)) deletedCodes.push(code);
+      localStorage.setItem(STORAGE_DELETED_KEY, JSON.stringify(deletedCodes));
+      customRecords = customRecords.filter(r => r.code !== code);
+      localStorage.setItem(STORAGE_CUSTOM_KEY, JSON.stringify(customRecords));
+
+      // Also delete from Main App Firebase Firestore (somitis/swapnochowa/deposits)
+      const docRef = getSomitiDocRef();
+      if (docRef) {
+        try {
+          if (fbId) {
+            await docRef.collection('deposits').doc(fbId).delete();
+          } else if (memberName) {
+            const snap = await docRef.collection('deposits').where('memberName', '==', memberName).get();
+            for (const d of snap.docs) await d.ref.delete();
+          }
+        } catch (err) {
+          console.warn('Firestore delete skipped/auth needed:', err.message);
+        }
+      }
+
+      rebuildLiveRecords();
+      renderGrid(liveRecords);
+      renderAdminList();
+    }
+
+    function restoreReceiptByCode(code) {
+      deletedCodes = deletedCodes.filter(c => c !== code);
+      localStorage.setItem(STORAGE_DELETED_KEY, JSON.stringify(deletedCodes));
+      rebuildLiveRecords();
+      renderGrid(liveRecords);
+      renderAdminList();
+    }
+
+    async function deleteAllReceipts() {
+      if (!confirm('সতর্কতা! আপনি কি সবগুলো ভেরিফাইড রিসিট ও তালিকা ডিলিট করতে চান?')) return;
+      deletedCodes = [...DEFAULT_RECORDS, ...customRecords].map(r => r.code);
+      localStorage.setItem(STORAGE_DELETED_KEY, JSON.stringify(deletedCodes));
+      const docRef = getSomitiDocRef();
+      if (docRef && firestoreDeposits.length > 0) {
+        try {
+          for (const d of firestoreDeposits) await docRef.collection('deposits').doc(d.id).delete();
+        } catch (e) {}
+      }
+      rebuildLiveRecords();
+      renderGrid(liveRecords);
+      renderAdminList();
+    }
+
+    function restoreAllDeleted() {
+      deletedCodes = [];
+      localStorage.setItem(STORAGE_DELETED_KEY, JSON.stringify(deletedCodes));
+      rebuildLiveRecords();
+      renderGrid(liveRecords);
+      renderAdminList();
+    }
+
+    async function handleAdminAdd(e) {
+      e.preventDefault();
+      const amtNum = Number(document.getElementById('addAmount').value || 10000);
+      const dateStr = document.getElementById('addDate').value;
+      const memberName = document.getElementById('addMember').value.trim();
+      const serialStr = document.getElementById('addSerial').value.trim();
+      const codeStr = document.getElementById('addCode').value.trim();
+      const methodStr = document.getElementById('addMethod').value.trim();
+      const senderStr = document.getElementById('addSender').value.trim() || 'নিজ';
+      const slipUrl = document.getElementById('addSlipUrl').value.trim() || 'https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-';
+
+      const rec = {
+        code: codeStr,
+        serial_code: 'S-' + serialStr.padStart(2, '0'),
+        alt_code: 'সছঐস/রিসিট/২০২৬-' + serialStr,
+        member: memberName,
+        serial: serialStr,
+        date: dateStr,
+        amount: `${formatBnTaka(amtNum)}/- টাকা`,
+        method: methodStr,
+        sender: senderStr,
+        slip_url: slipUrl,
+        pad_url: ''
+      };
+
+      // Also write directly to Main App Firebase Firestore (somitis/swapnochowa/deposits)
+      const docRef = getSomitiDocRef();
+      if (docRef) {
+        try {
+          const mMatch = firestoreMembers.find(m => m.name === memberName || String(m.memberNumber) === String(Number(serialStr)));
+          await docRef.collection('deposits').add({
+            memberId: mMatch ? mMatch.id : '',
+            memberNumber: Number(serialStr) || 0,
+            memberName: memberName,
+            amount: amtNum,
+            date: dateStr,
+            month: 'নভেম্বর ২০২৬',
+            method: methodStr,
+            depositor: senderStr,
+            receiptCode: codeStr,
+            slipUrl: slipUrl,
+            verified: true,
+            createdAt: new Date().toISOString()
+          });
+        } catch (err) {
+          alert('নোট: Firebase-এ সেভ করতে অ্যাডমিন প্যানেলের "🔥 Firebase কানেক্ট" দিয়ে লগইন করুন। (' + err.message + ')');
+        }
+      }
+
+      customRecords.push(rec);
+      localStorage.setItem(STORAGE_CUSTOM_KEY, JSON.stringify(customRecords));
+      dueMembers = dueMembers.filter(d => d.name !== rec.member);
+      rebuildLiveRecords();
+      renderGrid(liveRecords);
+      renderAdminList();
+      e.target.reset();
+      alert('✅ ভেরিফাইড রিসিট যোগ হয়েছে ও মেইন অ্যাপে সিঙ্ক হয়েছে!');
+      switchAdminTab('manage');
+    }
+
+    function saveNoticeText() {
+      const txt = document.getElementById('adminNoticeInput').value.trim();
+      if (!txt) return;
+      const htmlNotice = `<strong>জরুরি বিজ্ঞপ্তি:</strong> ${txt.replace(/^জরুরি বিজ্ঞপ্তি:\s*/, '')}`;
+      localStorage.setItem(STORAGE_NOTICE_KEY, htmlNotice);
+      const noticeEl = document.querySelector('main > div strong')?.parentElement;
+      if (noticeEl) noticeEl.innerHTML = htmlNotice;
+      alert('✅ বিজ্ঞপ্তি আপডেট হয়েছে!');
+    }
+
+    function changeAdminPassword() {
+      const np = document.getElementById('newAdminPassInput').value.trim();
+      if (np.length < 4) { alert('পাসওয়ার্ড কমপক্ষে ৪ অক্ষরের দিন।'); return; }
+      localStorage.setItem(STORAGE_PASS_KEY, np);
+      document.getElementById('newAdminPassInput').value = '';
+      alert('✅ অ্যাডমিন পাসওয়ার্ড পরিবর্তন হয়েছে!');
+    }
+
+    function exportUpdatedHtml() {
+      const updatedJson = JSON.stringify(liveRecords, null, 0);
+      const fullHtml = document.documentElement.outerHTML.replace(
+        /const DEFAULT_RECORDS = \[.*?\];/,
+        'const DEFAULT_RECORDS = ' + updatedJson + ';'
+      );
+      const blob = new Blob(['<!DOCTYPE html>\n' + fullHtml], { type: 'text/html;charset=utf-8;' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'verify.html';
+      a.click();
+    }
+
+    // Live sync from Public Google Sheet
+    async function syncFromGoogleSheet() {
+      const sheetId = '1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0';
+      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Sheet1`;
+      try {
+        const res = await fetch(url);
+        if (!res.ok) return;
+        const text = await res.text();
+        if (!text.includes('(')) return;
+        const jsonStr = text.substring(text.indexOf('(') + 1, text.lastIndexOf(')'));
+        const data = JSON.parse(jsonStr);
+        const rows = data.table.rows || [];
+        dueMembers = [];
+        allMembersMap = {};
+
+        rows.forEach(r => {
+          const c = r.c || [];
+          const serial = c[0] && c[0].v ? String(c[0].v).trim() : '';
+          const name = c[1] && c[1].v ? String(c[1].v).trim() : '';
+          if (!name || !serial || isNaN(Number(serial))) return;
+          if (!allMembersMap[name]) allMembersMap[name] = { serial: Number(serial), name, paidTotal: 0, paidMonths: 0, dueTotal: 0 };
+          const amount = c[8] && c[8].v ? Number(String(c[8].v).replace(/[^0-9.]/g, '')) : 0;
+          if (amount <= 0) {
+            allMembersMap[name].dueTotal += 10000;
+            dueMembers.push({ serial, name });
+            return;
+          }
+          allMembersMap[name].paidTotal += amount;
+          allMembersMap[name].paidMonths += 1;
+          memberTotals[name] = (memberTotals[name] || 0) + amount;
+          memberMonths[name] = (memberMonths[name] || 0) + 1;
+
+          const sCode = 'S-' + String(Number(serial)).padStart(2, '0');
+          const depositor = c[3] && c[3].v ? String(c[3].v) : 'নিজ';
+          const dateVal = c[4] && (c[4].f || c[4].v) ? String(c[4].f || c[4].v) : '';
+          const bank = c[6] && c[6].v ? String(c[6].v) : 'City Bank PLC';
+          const slipCell = c[9] && c[9].f ? String(c[9].f) : (c[9] && c[9].v ? String(c[9].v) : '');
+          const urlMatch = slipCell.match(/https:\/\/[^"\s)]+/);
+          const slipUrl = urlMatch ? urlMatch[0] : 'https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-';
+
+          const existing = liveRecords.find(rec => rec.member === name);
+          if (!existing && !deletedCodes.some(dc => dc === sCode)) {
+            const nextNum = liveRecords.filter(rec => rec.code.startsWith('RCT-')).length + 1;
+            const codeNum = String(nextNum).padStart(2, '0');
+            if (!deletedCodes.includes(`RCT-${codeNum}`)) {
+              liveRecords.push({
+                code: `RCT-${codeNum}`,
+                serial_code: sCode,
+                alt_code: `সছঐস/রিসিট/২০২৬-${codeNum}`,
+                member: name,
+                serial: toBn(serial),
+                date: dateVal,
+                amount: `${formatBnTaka(amount)}/- টাকা`,
+                method: bank,
+                sender: depositor,
+                slip_url: slipUrl,
+                pad_url: ''
+              });
+            }
+          } else if (existing) {
+            existing.serial_code = sCode;
+            if (urlMatch && urlMatch[0]) existing.slip_url = urlMatch[0];
+          }
+        });
+
+        const syncEl = document.getElementById('lastSyncText');
+        if (syncEl) syncEl.innerText = '🟢 লাইভ সিঙ্ক: ' + new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+        renderGrid(liveRecords);
+      } catch (err) {}
+    }
+
+    async function manualSync() {
+      const btn = document.getElementById('refreshBtn');
+      btn.innerText = '⏳ আপডেট হচ্ছে...';
+      await syncFromGoogleSheet();
+      btn.innerText = '✅ আপডেটেড';
+      setTimeout(() => btn.innerText = '🔄 লাইভ আপডেট', 1500);
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      localStorage.setItem('somiti_dark', isDark ? '1' : '0');
+      document.getElementById('darkModeBtn').innerText = isDark ? '☀️ লাইট' : '🌙 ডার্ক';
+    }
+    if (localStorage.getItem('somiti_dark') === '1') toggleDarkMode();
+
+    function exportCSV() {
+      const rows = [['Code', 'Member', 'Date', 'Amount', 'Method', 'Status']];
+      liveRecords.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-')).forEach(r => {
+        rows.push([r.code, r.member, r.date, r.amount, r.method, 'Paid']);
+      });
+      dueMembers.forEach(d => {
+        rows.push([`S-${String(d.serial).padStart(2,'0')}`, d.name, '-', '10000', '-', 'Pending']);
+      });
+      const csv = '\uFEFF' + rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'swapnochowa_somity_report.csv';
+      a.click();
+    }
+
+    document.getElementById('verifyForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      verifyQuery(document.getElementById('verifyInput').value);
+    });
+
+    document.getElementById('verifyInput').addEventListener('input', (e) => {
+      const q = e.target.value.trim().toLowerCase();
+      if (!q) { renderGrid(liveRecords); return; }
+      const matched = liveRecords.filter(r =>
+        r.code.toLowerCase().includes(q) ||
+        (r.alt_code && r.alt_code.toLowerCase().includes(q)) ||
+        r.member.toLowerCase().includes(q)
+      );
+      renderGridWithData(matched);
+    });
+
+    document.querySelectorAll('.quick-pill').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const code = e.currentTarget.getAttribute('data-code');
+        document.getElementById('verifyInput').value = code;
+        verifyQuery(code);
+      });
+    });
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        currentFilter = e.currentTarget.getAttribute('data-filter');
+        document.querySelectorAll('.filter-btn').forEach(b => {
+          b.className = 'filter-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold transition';
+        });
+        e.currentTarget.className = 'filter-btn bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold transition';
+        renderGrid(liveRecords);
+      });
+    });
+
+    document.getElementById('closeModalBtn').addEventListener('click', () => verifyModal.classList.add('hidden'));
+    document.getElementById('closeErrorBtn').addEventListener('click', () => errorModal.classList.add('hidden'));
+    window.addEventListener('click', (e) => {
+      if (e.target === verifyModal) verifyModal.classList.add('hidden');
+      if (e.target === errorModal) errorModal.classList.add('hidden');
+    });
+
+    document.getElementById('mCopyLinkBtn').addEventListener('click', (e) => {
+      if (!activeModalRec) return;
+      const shareUrl = `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(activeModalRec.code)}`;
+      copyText(shareUrl, e.currentTarget);
+    });
+
     // Modal WhatsApp Share with Direct Image File (Web Share API Level 2)
     document.getElementById('mWaShareBtn').addEventListener('click', async () => {
       if (!activeModalRec) return;
       const btn = document.getElementById('mWaShareBtn');
-      const originalHtml = btn.innerHTML;
-      btn.innerHTML = '⏳ ছবি হচ্ছে...';
+      const originalText = btn.innerText;
+      btn.innerText = '⏳ ছবি হচ্ছে...';
       btn.disabled = true;
 
       const vUrl = `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(activeModalRec.code)}`;
       const caption = `✅ *স্বপ্ন ছোঁয়া ঐক্য সমিতি — ডিজিটাল রিসিট*\n👤 সদস্য: ${activeModalRec.member}\n🧾 রিসিট নং: ${activeModalRec.code}\n💰 পরিমাণ: ${activeModalRec.amount}\n📅 তারিখ: ${activeModalRec.date}\n🔍 অনলাইনে যাচাই করুন: ${vUrl}`;
 
       try {
-        const canvas = await captureReceiptCanvas();
-        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-        const fileName = `Receipt_${(activeModalRec.code || 'somiti').replace(/[^a-zA-Z0-9_-]/g, '_')}.png`;
-        const file = new File([blob], fileName, { type: 'image/png' });
+        if (typeof html2canvas !== 'undefined') {
+          const canvas = await captureReceiptCanvas();
+          const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+          const fileName = `Receipt_${(activeModalRec.code || 'somiti').replace(/[^a-zA-Z0-9_-]/g, '_')}.png`;
+          const file = new File([blob], fileName, { type: 'image/png' });
 
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            title: `রিসিট — ${activeModalRec.member}`,
-            text: caption,
-            files: [file]
-          });
-          showToast('✅ রিসিটের ছবি WhatsApp/শেয়ার তালিকায় পাঠানো হয়েছে!', 'success');
-        } else {
-          // Fallback: Auto download PNG and open WhatsApp
-          const a = document.createElement('a');
-          a.href = URL.createObjectURL(blob);
-          a.download = fileName;
-          a.click();
-          setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-
-          showToast('📥 রিসিটের ছবি ডাউনলোড হয়েছে! WhatsApp ওপেন হচ্ছে...', 'info');
-          window.open(`https://wa.me/?text=${encodeURIComponent(caption + '\n\n(ছবিটি ডাউনলোড হয়েছে, WhatsApp-এ সহজে অ্যাটাচ করতে পারবেন)')}`, '_blank');
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              title: `রিসিট — ${activeModalRec.member}`,
+              text: caption,
+              files: [file]
+            });
+            btn.innerText = '✅ শেয়ার হয়েছে';
+            setTimeout(() => { btn.innerText = originalText; btn.disabled = false; }, 2000);
+            return;
+          } else {
+            // Auto download image and open WhatsApp text
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = fileName;
+            a.click();
+            setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+          }
         }
+        window.open(`https://wa.me/?text=${encodeURIComponent(caption)}`, '_blank');
       } catch (err) {
-        if (err.name !== 'AbortError') {
-          console.warn('Image share fallback:', err);
-          window.open(`https://wa.me/?text=${encodeURIComponent(caption)}`, '_blank');
-        }
+        window.open(`https://wa.me/?text=${encodeURIComponent(caption)}`, '_blank');
       } finally {
-        btn.innerHTML = originalHtml;
+        btn.innerText = originalText;
         btn.disabled = false;
       }
     });
 
-    // Save Image Directly
+    // Save Image Button
     document.getElementById('mSaveImgBtn').addEventListener('click', async () => {
       if (!activeModalRec) return;
       const btn = document.getElementById('mSaveImgBtn');
-      const originalHtml = btn.innerHTML;
-      btn.innerHTML = '⏳ সেভ হচ্ছে...';
+      const originalText = btn.innerText;
+      btn.innerText = '⏳ সেভ হচ্ছে...';
       btn.disabled = true;
 
       try {
@@ -1411,28 +1601,14 @@
         a.download = fileName;
         a.click();
         setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-        showToast('✅ রিসিটটি হাই-কোয়ালিটি ছবি হিসেবে সেভ হয়েছে!', 'success');
+        btn.innerText = '✅ সেভ হয়েছে';
       } catch (err) {
-        showToast('ছবি সংরক্ষণে সমস্যা হয়েছে: ' + err.message, 'error');
+        alert('ছবি সেভ করতে সমস্যা হয়েছে: ' + err.message);
       } finally {
-        btn.innerHTML = originalHtml;
-        btn.disabled = false;
+        setTimeout(() => { btn.innerText = originalText; btn.disabled = false; }, 1800);
       }
     });
 
-    // Modal Closes
-    document.getElementById('closeModalBtn').addEventListener('click', () => verifyModal.classList.add('hidden'));
-    document.getElementById('closeErrorBtn').addEventListener('click', () => errorModal.classList.add('hidden'));
-    window.addEventListener('click', (e) => {
-      if (e.target === verifyModal) verifyModal.classList.add('hidden');
-      if (e.target === errorModal) errorModal.classList.add('hidden');
-      const padModal = document.getElementById('padEditModal');
-      const pinModal = document.getElementById('adminPinModal');
-      if (padModal && e.target === padModal) padModal.classList.add('hidden');
-      if (pinModal && e.target === pinModal) pinModal.classList.add('hidden');
-    });
-
-    // Camera QR Scanner
     let qrScanner = null;
     document.getElementById('openScannerBtn').addEventListener('click', () => {
       const box = document.getElementById('qrReaderBox');
@@ -1442,16 +1618,16 @@
         return;
       }
       qrScanner = new Html5Qrcode('qrReader');
-      qrScanner.start({ facingMode: 'environment' }, { fps: 10, qrbox: 200 }, async (decoded) => {
+      qrScanner.start({ facingMode: 'environment' }, { fps: 10, qrbox: 200 }, (decoded) => {
         qrScanner.stop().then(() => box.classList.add('hidden'));
         try {
           const u = new URL(decoded);
-          const qId = u.searchParams.get('id') || u.searchParams.get('code') || u.searchParams.get('search') || decoded;
+          const qId = u.searchParams.get('id') || u.searchParams.get('code') || decoded;
           document.getElementById('verifyInput').value = qId;
-          await verifyQuery(qId);
+          verifyQuery(qId);
         } catch {
           document.getElementById('verifyInput').value = decoded;
-          await verifyQuery(decoded);
+          verifyQuery(decoded);
         }
       }, () => {}).catch(() => {
         alert('ক্যামেরা চালু করা যায়নি। ব্রাউজার থেকে ক্যামেরা পারমিশন দিন।');
@@ -1464,188 +1640,9 @@
       if (qrScanner) qrScanner.stop().catch(() => {});
     });
 
-    // ================= REAL-TIME FIRESTORE DATABASE SYNC =================
-    const firebaseConfig = {
-      apiKey: "AIzaSyCg4XAdBGbZOLzrWnRmIh9QItthL9IAEGc",
-      authDomain: "somitiapp-1f0a2.firebaseapp.com",
-      projectId: "somitiapp-1f0a2",
-      storageBucket: "somitiapp-1f0a2.firebasestorage.app",
-      messagingSenderId: "122717224216",
-      appId: "1:122717224216:web:9f108416895741b190726d"
-    };
-
-    if (typeof firebase !== 'undefined' && !firebase.apps.length) {
-      try {
-        firebase.initializeApp(firebaseConfig);
-      } catch(e) {
-        console.warn("Firebase init notice:", e);
-      }
-    }
-    const db = (typeof firebase !== 'undefined' && firebase.firestore) ? firebase.firestore() : null;
-
-    let firestoreMembers = [];
-    let firestoreDeposits = [];
-
-    function syncFromFirestoreData() {
-      if (!firestoreMembers.length && !firestoreDeposits.length) return;
-
-      const delKey = 'somiti_deleted_receipt_codes';
-      let deletedCodes = [];
-      try { deletedCodes = JSON.parse(localStorage.getItem(delKey) || '[]'); } catch(_) {}
-
-      dueMembers = [];
-      allMembersMap = {};
-      let totalFundAmount = 0;
-      let paidMembersCount = 0;
-      for (let k in memberTotals) delete memberTotals[k];
-      for (let k in memberMonths) delete memberMonths[k];
-
-      firestoreMembers.forEach(m => {
-        const memNum = m.memberNumber || m.serial || '0';
-        const name = m.name;
-        const totalDep = Number(m.totalDeposit || 0);
-        // Auto-reconciliation: If member has an official verified receipt in RECORDS, mark as paid
-        const hasVerifiedReceipt = RECORDS.some(r =>
-          (r.member === name || r.member?.trim() === name?.trim()) &&
-          !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-') &&
-          !deletedCodes.includes(r.code)
-        );
-        const isPaid = totalDep > 0 || m.status === 'paid' || hasVerifiedReceipt;
-        const calcAmt = isPaid ? Math.max(totalDep, 10000) : 0;
-
-        allMembersMap[name] = {
-          serial: Number(memNum),
-          name: name,
-          paidTotal: calcAmt,
-          paidMonths: isPaid ? 1 : 0,
-          dueTotal: isPaid ? 0 : 10000,
-          history: []
-        };
-        memberTotals[name] = calcAmt;
-        memberMonths[name] = calcAmt > 0 ? Math.max(1, Math.round(calcAmt / 10000)) : 0;
-
-        if (isPaid) {
-          paidMembersCount++;
-          totalFundAmount += calcAmt;
-        } else {
-          dueMembers.push({ serial: memNum, name: name });
-        }
-      });
-
-      const dueCount = dueMembers.length;
-      const dueAmount = dueCount * 10000;
-
-      // Build live receipt records from Firestore deposits
-      let newLiveRecords = [];
-
-      firestoreDeposits.forEach((d, idx) => {
-        const rNo = d.receiptNo || (`RCT-${String(idx + 1).padStart(2, '0')}`);
-        if (deletedCodes.includes(rNo)) return;
-
-        const memNum = d.memberNumber || '';
-        const sCode = memNum ? ('S-' + String(memNum).padStart(2, '0')) : '';
-        const dateVal = d.date?.toDate ? d.date.toDate().toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' }) : (d.date || '১৫ নভেম্বর ২০২৬');
-        const amt = Number(d.amount || 10000);
-
-        newLiveRecords.push({
-          code: rNo,
-          serial_code: sCode,
-          alt_code: `সছঐস/রিসিট/২০২৬-${rNo.replace(/^RCT-/, '')}`,
-          member: d.memberName || '',
-          serial: toBn(memNum),
-          date: dateVal,
-          amount: `${formatBnTaka(amt)}/- টাকা`,
-          method: d.method || 'City Bank PLC',
-          sender: d.depositor || d.memberName || 'নিজ',
-          slip_url: d.slipUrl || 'https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-',
-          pad_url: d.padUrl || ''
-        });
-      });
-
-      // Smart Merge: Ensure all base verified RECORDS are merged so newly added receipts are NEVER dropped even if Firestore deposit doc isn't created yet
-      RECORDS.forEach(baseRec => {
-        if (baseRec.code.startsWith('PAID-') || baseRec.code.startsWith('DUE-') || deletedCodes.includes(baseRec.code)) return;
-        const existsInFs = newLiveRecords.some(r => r.code === baseRec.code || (r.member && r.member.trim() === baseRec.member.trim()));
-        if (!existsInFs) {
-          newLiveRecords.push({ ...baseRec });
-        }
-      });
-
-      // Add Official Paid & Due Notice Cards
-      newLiveRecords.push({
-        code: 'PAID-LIST',
-        alt_code: 'স্মারক-০১/২০২৬',
-        member: `মাসিক সঞ্চয় ও কিস্তি জমার বিবরণী তালিকা (${toBn(paidMembersCount)} জন)`,
-        serial: 'অফিসিয়াল তালিকা',
-        date: '১৮ নভেম্বর ২০২৬',
-        amount: `${formatBnTaka(totalFundAmount)}/- টাকা (${toBn(paidMembersCount)} জন)`,
-        method: 'CITY BANK PLC (REKABI BAZAR) — A/C: 2305158045001',
-        sender: 'প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)',
-        slip_url: 'https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit',
-        pad_url: 'https://drive.google.com/file/d/1jnX3xpBdSOW6L9OcfC5_Yksd1plVH4AZ/view?usp=drivesdk'
-      });
-
-      newLiveRecords.push({
-        code: 'DUE-LIST',
-        alt_code: 'স্মারক-০২/২০২৬',
-        member: `বকেয়া মাসিক কিস্তি জমার তালিকা ও জরুরি বিজ্ঞপ্তি (${toBn(dueCount)} জন)`,
-        serial: 'অফিসিয়াল বিজ্ঞপ্তি',
-        date: '১৮ নভেম্বর ২০২৬',
-        amount: `বকেয়া: ${formatBnTaka(dueAmount)}/- টাকা (${toBn(dueCount)} জন)`,
-        method: 'সিটি ব্যাংক (২৩০৫১৫৮০৪৫০০১) / বিকাশ: ০১৮৮১২১০৪৪৪',
-        sender: 'প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)',
-        slip_url: 'https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit',
-        pad_url: 'https://drive.google.com/file/d/1lMfTEiZKr5BXFnAqm9NWfJ0eDPjFsmD3/view?usp=drivesdk'
-      });
-
-      liveRecords = newLiveRecords;
-
-      // Update KPI Badges
-      const kpiPaid = document.getElementById('kpiPaidCount');
-      const kpiDue = document.getElementById('kpiDueCount');
-      const kpiFund = document.getElementById('kpiTotalFund');
-      if (kpiPaid) kpiPaid.innerText = `${toBn(paidMembersCount)} টি`;
-      if (kpiDue) kpiDue.innerText = `${toBn(dueCount)} জন`;
-      if (kpiFund) kpiFund.innerText = `৳ ${formatBnTaka(totalFundAmount)}/-`;
-
-      renderGrid(liveRecords);
-      renderBreakdowns();
-      if (verifyModal && !verifyModal.classList.contains('hidden') && activeModalRec) {
-        openVerifiedModal(activeModalRec);
-      }
-    }
-
-    function initFirestoreVerifySync() {
-      if (!db) return;
-      try {
-        const somitiRef = db.collection("somitis").doc("swapnochowa");
-
-        somitiRef.collection("members").orderBy("memberNumber")
-          .onSnapshot((snapshot) => {
-            if (!snapshot.empty) {
-              firestoreMembers = [];
-              snapshot.forEach(doc => firestoreMembers.push({ id: doc.id, ...doc.data() }));
-              syncFromFirestoreData();
-            }
-          }, (err) => console.warn("Firestore members listener:", err));
-
-        somitiRef.collection("deposits")
-          .onSnapshot((snapshot) => {
-            if (!snapshot.empty) {
-              firestoreDeposits = [];
-              snapshot.forEach(doc => firestoreDeposits.push({ id: doc.id, ...doc.data() }));
-              syncFromFirestoreData();
-            }
-          }, (err) => console.warn("Firestore deposits listener:", err));
-      } catch(e) {
-        console.warn("Firestore init notice:", e);
-      }
-    }
-
-    // Initial render and URL query handling
     applyPadConfig();
     renderGrid(liveRecords);
-    initFirestoreVerifySync();
+    initFirebaseRealtime();
 
     (async () => {
       const params = new URLSearchParams(window.location.search);
@@ -1654,15 +1651,15 @@
         const fBtn = document.querySelector(`.filter-btn[data-filter="${urlFilter}"]`);
         if (fBtn) fBtn.click();
       }
-      const urlId = params.get('id') || params.get('code') || params.get('member') || params.get('search') || params.get('verify');
+      const urlId = params.get('id') || params.get('code') || params.get('member');
       let opened = false;
       if (urlId) {
         document.getElementById('verifyInput').value = urlId;
-        opened = await verifyQuery(urlId, true);
+        opened = verifyQuery(urlId, true);
       }
       await syncFromGoogleSheet();
       if (urlId && !opened) {
-        await verifyQuery(urlId, false);
+        verifyQuery(urlId, false);
       }
     })();
   </script>
