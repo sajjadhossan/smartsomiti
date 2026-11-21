@@ -208,6 +208,125 @@
       </div>
     </section>
 
+    <!-- ================= 🏛️ ৩টি অফিশিয়াল প্যাড হাব (1-Click Official Pads Hub) ================= -->
+    <section id="officialPadHub" class="bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 text-white rounded-3xl p-5 sm:p-7 shadow-2xl border border-emerald-800/50 relative overflow-hidden">
+      <!-- Ambient Glow -->
+      <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-20 -top-20 w-80 h-80 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 space-y-5">
+        <!-- Hub Header -->
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-emerald-800/60 pb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-2xl shadow-lg shadow-emerald-900/40">
+              🏛️
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-lg sm:text-xl font-extrabold tracking-wide text-white">স্বপ্ন ছোঁয়া অফিশিয়াল প্যাড হাব</h3>
+                <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-400/30">৩টি অফিসিয়াল ফরম্যাট</span>
+              </div>
+              <p class="text-xs text-emerald-200/80 mt-0.5">হাই-রেজোলিউশন অফিশিয়াল প্যাড ভিউ, PNG ছবি ও A4 PDF ডাউনলোড এবং WhatsApp শেয়ার</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="openManualDuePaidModal()" class="bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-extrabold text-xs px-3.5 py-2 rounded-xl transition shadow flex items-center gap-1.5">
+              <span>⚙️</span>
+              <span>কে বাকি / কে পেইড এডিট করুন</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3 Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          
+          <!-- Card 1: মানি রিসিট -->
+          <div class="bg-slate-800/80 hover:bg-slate-800 border border-emerald-700/40 rounded-2xl p-4 flex flex-col justify-between transition group hover:border-emerald-500/60 shadow-lg">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded-lg border border-emerald-700/50">১. মানি রিসিট</span>
+                <span class="text-[11px] font-mono text-slate-400">1654 × 1450 px</span>
+              </div>
+              <h4 class="text-base font-bold text-white group-hover:text-emerald-300 transition">ব্যক্তিগত অফিসিয়াল মানি রিসিট</h4>
+              <p class="text-xs text-slate-300 mt-1">প্রতিটি সদস্যের জন্য স্বয়ংক্রিয় QR কোডযুক্ত অফিসিয়াল জমা রশিদ।</p>
+              
+              <!-- Member Selector -->
+              <div class="mt-3.5 space-y-1">
+                <label class="text-[11px] font-semibold text-slate-300">সদস্য নির্বাচন করুন (০১-২৭):</label>
+                <select id="hubMemberSelect" onchange="previewHubMemberReceipt(this.value)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                  <!-- Loaded via JS -->
+                </select>
+              </div>
+            </div>
+
+            <div class="pt-4 mt-3 border-t border-slate-700/60 flex items-center gap-2">
+              <button type="button" onclick="openSelectedMemberReceipt()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold py-2 px-3 rounded-xl text-xs transition shadow flex items-center justify-center gap-1.5">
+                <span>👁️</span> <span>রিসিট প্যাড দেখুন</span>
+              </button>
+              <button type="button" onclick="quickDownloadReceiptPng()" title="সরাসরি PNG ডাউনলোড" class="bg-slate-700 hover:bg-slate-600 text-emerald-300 font-bold p-2 rounded-xl text-xs transition">
+                🖼️
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 2: পরিশোধিত তালিকা -->
+          <div class="bg-slate-800/80 hover:bg-slate-800 border border-teal-700/40 rounded-2xl p-4 flex flex-col justify-between transition group hover:border-teal-500/60 shadow-lg">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-teal-400 bg-teal-950/80 px-2.5 py-1 rounded-lg border border-teal-700/50">২. পরিশোধিত তালিকা</span>
+                <span class="text-[11px] font-mono text-slate-400">A4 • 1654 × 2339 px</span>
+              </div>
+              <h4 class="text-base font-bold text-white group-hover:text-teal-300 transition">পরিশোধিত সদস্যদের পূর্ণাঙ্গ তালিকা</h4>
+              <p class="text-xs text-slate-300 mt-1">চলতি মাসে যারা কিস্তি পরিশোধ করেছেন তাদের টেবিলসহ অফিসিয়াল প্যাড।</p>
+              
+              <!-- Stats Badge -->
+              <div class="mt-3.5 bg-slate-900/90 border border-teal-800/40 rounded-xl p-2.5 text-xs flex items-center justify-between">
+                <span class="text-slate-300">পরিশোধ করেছেন:</span>
+                <span id="hubPaidStatText" class="font-extrabold text-teal-300">২৫ জন (২,৫০,০০০ ৳)</span>
+              </div>
+            </div>
+
+            <div class="pt-4 mt-3 border-t border-slate-700/60 flex items-center gap-2">
+              <button type="button" onclick="openOfficialPadModal(null, 'paid')" class="flex-1 bg-teal-600 hover:bg-teal-500 active:scale-95 text-white font-bold py-2 px-3 rounded-xl text-xs transition shadow flex items-center justify-center gap-1.5">
+                <span>👁️</span> <span>পেইড লিস্ট প্যাড দেখুন</span>
+              </button>
+              <button type="button" onclick="quickDownloadPaidPng()" title="সরাসরি PNG ডাউনলোড" class="bg-slate-700 hover:bg-slate-600 text-teal-300 font-bold p-2 rounded-xl text-xs transition">
+                🖼️
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 3: বকেয়া তালিকা -->
+          <div class="bg-slate-800/80 hover:bg-slate-800 border border-rose-700/40 rounded-2xl p-4 flex flex-col justify-between transition group hover:border-rose-500/60 shadow-lg">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-rose-400 bg-rose-950/80 px-2.5 py-1 rounded-lg border border-rose-700/50">৩. বকেয়া তালিকা</span>
+                <span class="text-[11px] font-mono text-slate-400">A4 • 1654 × 2339 px</span>
+              </div>
+              <h4 class="text-base font-bold text-white group-hover:text-rose-300 transition">বকেয়া কিস্তির অফিশিয়াল তাগিদপত্র</h4>
+              <p class="text-xs text-slate-300 mt-1">চলতি মাসের যাদের কিস্তি বকেয়া আছে তাদের সতর্কবার্তা ও অফিশিয়াল নোটিশ।</p>
+              
+              <!-- Stats Badge -->
+              <div class="mt-3.5 bg-slate-900/90 border border-rose-800/40 rounded-xl p-2.5 text-xs flex items-center justify-between">
+                <span class="text-slate-300">বর্তমান বকেয়া:</span>
+                <span id="hubDueStatText" class="font-extrabold text-rose-300">২ জন (২০,০০০ ৳)</span>
+              </div>
+            </div>
+
+            <div class="pt-4 mt-3 border-t border-slate-700/60 flex items-center gap-2">
+              <button type="button" onclick="openOfficialPadModal(null, 'due')" class="flex-1 bg-rose-700 hover:bg-rose-600 active:scale-95 text-white font-bold py-2 px-3 rounded-xl text-xs transition shadow flex items-center justify-center gap-1.5">
+                <span>👁️</span> <span>বকেয়া লিস্ট প্যাড দেখুন</span>
+              </button>
+              <button type="button" onclick="quickDownloadDuePng()" title="সরাসরি PNG ডাউনলোড" class="bg-slate-700 hover:bg-slate-600 text-rose-300 font-bold p-2 rounded-xl text-xs transition">
+                🖼️
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
     <!-- Summary KPI Strip (Live from Google Sheet) -->
     <section class="grid grid-cols-2 sm:grid-cols-4 gap-3">
       <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
@@ -534,6 +653,19 @@
         <button type="button" id="tabPadDueBtn" onclick="switchOfficialPadTab('due')" class="pad-tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white transition">⏳ ৩. বকেয়া তালিকা (A4)</button>
       </div>
 
+      <!-- In-Modal Member Switcher & Due Edit Button -->
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <div id="modalPadMemberSelectWrap" class="flex items-center gap-1.5 bg-slate-800 border border-slate-700 px-2.5 py-1.5 rounded-xl">
+          <span class="text-slate-400">👤 সদস্য:</span>
+          <select id="modalPadMemberSelect" onchange="onModalPadMemberChange(this.value)" class="bg-slate-900 text-white font-semibold text-xs rounded-lg px-2 py-1 border border-slate-700 focus:outline-none focus:ring-1 focus:ring-emerald-500 max-w-[170px] truncate">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+        <button type="button" onclick="openManualDuePaidModal()" class="bg-amber-600 hover:bg-amber-500 active:scale-95 text-white font-bold px-3 py-2 rounded-xl transition flex items-center gap-1 shadow">
+          <span>⚙️</span> <span>বকেয়া/পেইড এডিট</span>
+        </button>
+      </div>
+
       <!-- Action Buttons -->
       <div class="flex flex-wrap items-center gap-2 text-xs">
         <button type="button" onclick="downloadCurrentPadPng()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3.5 py-2 rounded-xl shadow transition flex items-center gap-1.5 active:scale-95">
@@ -835,6 +967,63 @@
         </div>
 
       </div>
+    </div>
+  </div>
+
+  <!-- ================= MANUAL DUE/PAID MEMBERS CUSTOMIZER MODAL ================= -->
+  <div id="manualDuePaidModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[75] flex items-center justify-center p-3 sm:p-5 hidden">
+    <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Modal Header -->
+      <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold border border-amber-500/30">
+            ⚙️
+          </div>
+          <div>
+            <h3 class="font-bold text-base sm:text-lg">ম্যানুয়াল সদস্য স্ট্যাটাস এডিটর (কে বাকি / কে পেইড)</h3>
+            <p class="text-xs text-slate-400">টিক দিয়ে সহজে নির্ধারণ করুন কে কিস্তি পরিশোধ করেছেন এবং কার বকেয়া আছে</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeManualDuePaidModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center font-bold text-sm transition">
+          ✕
+        </button>
+      </div>
+
+      <!-- Quick Summary Counter Strip -->
+      <div class="bg-slate-50 px-6 py-3 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div class="flex items-center gap-3 sm:gap-4">
+          <span class="font-bold text-slate-700">মোট: <span class="font-extrabold text-slate-900">২৭ জন</span></span>
+          <span class="font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-lg">পরিশোধিত: <span id="manualPaidCountText" class="font-extrabold">২৫</span> জন</span>
+          <span class="font-bold text-rose-700 bg-rose-100 px-2.5 py-1 rounded-lg">বকেয়া: <span id="manualDueCountText" class="font-extrabold">২</span> জন</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="setAllMembersStatus(true)" class="text-[11px] font-bold text-emerald-700 hover:bg-emerald-50 border border-emerald-300 px-2.5 py-1 rounded-lg transition active:scale-95">সবাইকে পরিশোধিত করুন</button>
+          <button type="button" onclick="resetToInitialDueStatus()" class="text-[11px] font-bold text-slate-600 hover:bg-slate-200 border border-slate-300 px-2.5 py-1 rounded-lg transition active:scale-95">🔄 রিসেট</button>
+        </div>
+      </div>
+
+      <!-- Scrollable Members List Grid -->
+      <div class="p-4 sm:p-6 overflow-y-auto flex-1 bg-slate-50/50">
+        <div id="manualMembersChecklistGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
+        <span class="text-xs text-slate-500">সংরক্ষণ করার সাথে সাথে পেইড ও বকেয়া প্যাড রিয়েল-টাইমে আপডেট হবে।</span>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="closeManualDuePaidModal()" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 font-bold text-xs hover:bg-slate-100 transition">
+            বাতিল
+          </button>
+          <button type="button" onclick="saveManualDuePaidChanges()" class="px-5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-lg shadow-emerald-700/20 active:scale-95 transition flex items-center gap-1.5">
+            <span>💾</span>
+            <span>পরিবর্তন সংরক্ষণ ও প্যাড দেখুন</span>
+          </button>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1267,47 +1456,36 @@
 
     function openVerifiedModal(rec) {
       activeModalRec = rec;
-      document.getElementById('mCode').innerText = `${rec.code} (${rec.alt_code || rec.code})`;
-      document.getElementById('mMember').innerText = rec.member;
-      document.getElementById('mAmount').innerText = rec.amount;
-      const totRow = document.getElementById('mMemberTotalRow');
-      if (rec.code === 'PAID-LIST' || rec.code === 'DUE-LIST') {
-        totRow.classList.add('hidden');
-      } else {
-        totRow.classList.remove('hidden');
-        const totAmt = memberTotals[rec.member] || 10000;
-        const totMo = memberMonths[rec.member] || 1;
-        document.getElementById('mMemberTotal').innerText = `${formatBnTaka(totAmt)}/- টাকা (${toBn(totMo)} মাস)`;
-      }
-      document.getElementById('mDate').innerText = rec.date;
-      document.getElementById('mMethod').innerText = rec.method;
-      document.getElementById('mSender').innerText = rec.sender;
-
-      const slipBtn = document.getElementById('mSlipBtn');
-      slipBtn.href = rec.slip_url || '#';
-
-      const padBtn = document.getElementById('mPadBtn');
-      if (padBtn) {
-        padBtn.classList.remove('hidden');
-        padBtn.onclick = (e) => {
-          e.preventDefault();
-          const targetTab = rec.code === 'PAID-LIST' ? 'paid' : (rec.code === 'DUE-LIST' ? 'due' : 'receipt');
-          openOfficialPadModal(rec, targetTab);
-        };
-      }
-
-      const qBox = document.getElementById('modalQrBox');
-      qBox.innerHTML = '';
-      if (typeof QRCode !== 'undefined') {
-        const vUrl = `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(rec.code)}`;
-        new QRCode(qBox, { text: vUrl, width: 58, height: 58, colorDark: '#0a5c36', colorLight: '#ffffff' });
-      }
-      verifyModal.classList.remove('hidden');
+      const targetTab = rec.code === 'PAID-LIST' ? 'paid' : (rec.code === 'DUE-LIST' ? 'due' : 'receipt');
+      openOfficialPadModal(rec, targetTab);
     }
 
     function verifyQuery(query, silentIfMissing = false) {
       const q = (query || '').trim().toLowerCase();
       if (!q) return false;
+
+      // 1. Direct shortcuts for Paid / Due Lists
+      if (q === 'paid-list' || q === 'paid' || q === 'স্মারক-০১/২০২৬' || q === 'পরিশোধিত') {
+        openOfficialPadModal(null, 'paid');
+        return true;
+      }
+      if (q === 'due-list' || q === 'due' || q === 'স্মারক-০২/২০২৬' || q === 'বকেয়া' || q === 'বকেয়া') {
+        openOfficialPadModal(null, 'due');
+        return true;
+      }
+
+      // 2. Direct S-XX or serial number lookup (e.g., S-01 to S-27)
+      const sMatch = q.match(/^s-(\d{1,2})$/i);
+      if (sMatch) {
+        const serNum = String(parseInt(sMatch[1], 10)).padStart(2, '0');
+        const synthRec = getOrSynthesizeRecordForMember(serNum);
+        if (synthRec) {
+          openOfficialPadModal(synthRec, 'receipt');
+          return true;
+        }
+      }
+
+      // 3. Search in live verified records
       const match = liveRecords.find(r =>
         r.code.toLowerCase() === q ||
         (r.alt_code && r.alt_code.toLowerCase() === q) ||
@@ -1316,9 +1494,21 @@
         r.code.toLowerCase().includes(q)
       );
       if (match) {
-        openVerifiedModal(match);
+        const targetTab = match.code === 'PAID-LIST' ? 'paid' : (match.code === 'DUE-LIST' ? 'due' : 'receipt');
+        openOfficialPadModal(match, targetTab);
         return true;
       } else {
+        // 4. Fallback search in master 27 members
+        const memberMatch = MASTER_MEMBERS_LIST.find(m =>
+          m.name.toLowerCase().includes(q) ||
+          m.serial === q ||
+          m.serialBn === q
+        );
+        if (memberMatch) {
+          const synthRec = getOrSynthesizeRecordForMember(memberMatch.serial);
+          openOfficialPadModal(synthRec, 'receipt');
+          return true;
+        }
         if (!silentIfMissing) errorModal.classList.remove('hidden');
         return false;
       }
@@ -1526,14 +1716,18 @@
         }
         dueMembers.forEach(dm => {
           const card = document.createElement('div');
-          card.className = 'p-3.5 rounded-xl border border-rose-200 bg-rose-50/40';
+          card.className = 'p-3.5 rounded-xl border border-rose-200 bg-rose-50/40 cursor-pointer hover:border-rose-400 hover:shadow-md transition';
+          card.onclick = (e) => {
+            if (e.target.tagName.toLowerCase() === 'button') return;
+            openOfficialPadModal(null, 'due');
+          };
           card.innerHTML = `
             <div class="flex items-center justify-between">
               <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md bg-rose-100 text-rose-800">ক্রমিক: ${toBn(dm.serial)}</span>
-              <span class="text-[11px] font-bold text-rose-700">⏳ বকেয়া</span>
+              <span class="text-[11px] font-bold text-rose-700">⏳ বকেয়া • প্যাড দেখুন 👁️</span>
             </div>
             <h4 class="text-sm font-bold text-slate-800 mt-2">${dm.name}</h4>
-            <p class="text-xs text-rose-700 font-semibold mt-0.5">বকেয়া: ১০,০০০/- টাকা</p>
+            <p class="text-xs text-rose-700 font-semibold mt-0.5">বকেয়া: ১০,০০০/- টাকা (অফিসিয়াল নোটিশ)</p>
           `;
           if (isAdmin) {
             const waBtn = document.createElement('button');
@@ -1989,6 +2183,15 @@
       renderPadPaidList();
       renderPadDueList();
 
+      // Sync member selector dropdowns to currentPadRec
+      if (currentPadRec && currentPadRec.serial) {
+        const serStr = String(currentPadRec.serial).padStart(2, '0');
+        const modalSel = document.getElementById('modalPadMemberSelect');
+        const hubSel = document.getElementById('hubMemberSelect');
+        if (modalSel) modalSel.value = serStr;
+        if (hubSel) hubSel.value = serStr;
+      }
+
       switchOfficialPadTab(targetTab || 'receipt');
 
       const modal = document.getElementById('officialPadModal');
@@ -2011,6 +2214,9 @@
       const receiptNode = document.getElementById('padReceiptNode');
       const paidNode = document.getElementById('padPaidListNode');
       const dueNode = document.getElementById('padDueListNode');
+
+      const memSelWrap = document.getElementById('modalPadMemberSelectWrap');
+      if (memSelWrap) memSelWrap.style.display = tabName === 'receipt' ? 'flex' : 'none';
 
       const activeBtnClass = 'pad-tab-btn px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-bold transition shadow';
       const inactiveBtnClass = 'pad-tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white font-medium transition';
@@ -2043,8 +2249,9 @@
 
     function renderPadReceipt(rec) {
       if (!rec) return;
-      const sCode = rec.serial_code || ('S-' + String(rec.serial || '01').padStart(2, '0'));
-      const fullCode = (rec.alt_code || rec.code) + ` (${sCode})`;
+      const sNum = String(rec.serial || '01').padStart(2, '0');
+      const sCode = rec.serial_code || ('S-' + sNum);
+      const fullCode = (rec.alt_code || `সছঐস/রিসিট/২০২৬-${sNum}`) + ` (${sCode})`;
       
       const elCode = document.getElementById('prCode');
       const elDate = document.getElementById('prDate');
@@ -2057,8 +2264,8 @@
 
       if (elCode) elCode.innerText = fullCode;
       if (elDate) elDate.innerText = (rec.date || getBengaliCurrentDate()) + ' ইং';
-      if (elMember) elMember.innerText = `${rec.member} (ক্রমিক নং: ${toBn(rec.serial)})`;
-      if (elSender) elSender.innerText = rec.sender || 'নিজ';
+      if (elMember) elMember.innerText = `${rec.member} (ক্রমিক নং: ${toBn(sNum)})`;
+      if (elSender) elSender.innerText = rec.sender || 'নিজ / সদস্য';
       if (elAmount) elAmount.innerText = `${rec.amount || '১০,০০০/- টাকা'} (কথায়: দশ হাজার টাকা মাত্র)`;
       if (elDateRow) elDateRow.innerText = (rec.date || getBengaliCurrentDate()) + ' ইং';
       if (elBank) elBank.innerText = rec.method && rec.method.includes('City') ? 'CITY BANK PLC (Sreenagar Sub Branch)' : (rec.method || 'City Bank PLC');
@@ -2089,7 +2296,18 @@
       const tbody = document.getElementById('plTableBody');
       if (!tbody) return;
 
-      const paidList = liveRecords.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-'));
+      const dueNames = new Set((dueMembers || []).map(d => d.name));
+      const paidList = MASTER_MEMBERS_LIST
+        .filter(m => !dueNames.has(m.name))
+        .map((m, idx) => {
+          const rec = liveRecords.find(r => r.member === m.name && !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-'));
+          return {
+            serial: m.serial,
+            member: m.name,
+            date: rec ? rec.date : '১০ নভেম্বর ২০২৬',
+            amount: '১০,০০০/- ৳'
+          };
+        });
       
       tbody.innerHTML = paidList.map((r, idx) => {
         const bg = idx % 2 === 0 ? '#ffffff' : '#f8fafc';
@@ -2138,24 +2356,31 @@
       const tbody = document.getElementById('dlTableBody');
       if (!tbody) return;
 
-      const dueList = dueMembers && dueMembers.length > 0 ? dueMembers : [
-        { serial: '12', name: 'মোঃ নোমান হাওলাদার' },
-        { serial: '13', name: 'মাহফুজ হাসান' }
-      ];
+      const dueList = dueMembers || [];
 
-      tbody.innerHTML = dueList.map((d, idx) => {
-        const bg = idx % 2 === 0 ? '#ffffff' : '#fef2f2';
-        return `
-          <tr style="background: ${bg}; border-bottom: 1px solid #fecaca;">
-            <td style="padding: 14px 16px; text-align: center; font-weight: 800; color: #991b1b; border-right: 1px solid #fecaca;">${toBn(d.serial)}</td>
-            <td style="padding: 14px 24px; font-weight: 800; color: #0f172a; border-right: 1px solid #fecaca;">${d.name}</td>
-            <td style="padding: 14px 24px; text-align: right; font-weight: 800; color: #dc2626;">১০,০০০/- ৳</td>
+      if (dueList.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="3" style="padding: 30px; text-align: center; font-weight: 800; color: #0f5132; font-size: 26px;">
+              🎉 আলহামদুলিল্লাহ, সকল সদস্যের চলতি মাসের কিস্তি পরিশোধ সম্পন্ন হয়েছে! বর্তমানে কোনো বকেয়া নেই।
+            </td>
           </tr>
         `;
-      }).join('');
+      } else {
+        tbody.innerHTML = dueList.map((d, idx) => {
+          const bg = idx % 2 === 0 ? '#ffffff' : '#fef2f2';
+          return `
+            <tr style="background: ${bg}; border-bottom: 1px solid #fecaca;">
+              <td style="padding: 14px 16px; text-align: center; font-weight: 800; color: #991b1b; border-right: 1px solid #fecaca;">${toBn(d.serial)}</td>
+              <td style="padding: 14px 24px; font-weight: 800; color: #0f172a; border-right: 1px solid #fecaca;">${d.name}</td>
+              <td style="padding: 14px 24px; text-align: right; font-weight: 800; color: #dc2626;">১০,০০০/- ৳</td>
+            </tr>
+          `;
+        }).join('');
+      }
 
-      const paidCnt = liveRecords.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-')).length;
       const dueCnt = dueList.length;
+      const paidCnt = 27 - dueCnt;
       const dueAmt = dueCnt * 10000;
 
       const elCountText = document.getElementById('dlCountText');
@@ -2183,6 +2408,216 @@
           });
         }
       }
+    }
+
+    // Helper: Find or synthesize record for any of the 27 members
+    function getOrSynthesizeRecordForMember(serialOrName) {
+      if (!serialOrName) return currentPadRec || DEFAULT_RECORDS[0];
+      const sPad = String(serialOrName).padStart(2, '0');
+      const mem = MASTER_MEMBERS_LIST.find(m => 
+        m.serial === sPad || 
+        m.serial === String(serialOrName) || 
+        m.name === serialOrName || 
+        m.serialBn === serialOrName
+      );
+      if (!mem) return currentPadRec;
+
+      const found = liveRecords.find(r => 
+        r.member === mem.name && !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-')
+      );
+      if (found) {
+        if (!found.serial_code) found.serial_code = `S-${mem.serial}`;
+        if (!found.serial) found.serial = mem.serial;
+        return found;
+      }
+
+      return {
+        code: `RCT-${mem.serial}`,
+        alt_code: `সছঐস/রিসিট/২০২৬-${mem.serial}`,
+        serial_code: `S-${mem.serial}`,
+        serial: mem.serial,
+        member: mem.name,
+        date: getBengaliCurrentDate(),
+        amount: "১০,০০০/- টাকা",
+        method: "CITY BANK PLC (REKABI BAZAR)",
+        sender: "নিজ / সদস্য",
+        slip_url: "#"
+      };
+    }
+
+    // Populate Member Dropdowns (Hub and Modal)
+    function populateHubAndModalMemberDropdowns() {
+      const hubSel = document.getElementById('hubMemberSelect');
+      const modalSel = document.getElementById('modalPadMemberSelect');
+
+      const buildOptions = () => {
+        let html = '';
+        MASTER_MEMBERS_LIST.forEach(m => {
+          const isDue = (dueMembers || []).some(d => String(d.serial).padStart(2, '0') === m.serial || d.name === m.name);
+          const badge = isDue ? '⏳ বকেয়া' : '✅ পেইড';
+          html += `<option value="${m.serial}">[${m.serialBn}] ${m.name} (${badge})</option>`;
+        });
+        return html;
+      };
+
+      const optsHtml = buildOptions();
+      if (hubSel) {
+        const curVal = hubSel.value;
+        hubSel.innerHTML = optsHtml;
+        if (curVal) hubSel.value = curVal;
+      }
+      if (modalSel) {
+        const curVal = modalSel.value;
+        modalSel.innerHTML = optsHtml;
+        if (curVal) modalSel.value = curVal;
+      }
+    }
+
+    function openSelectedMemberReceipt() {
+      const sel = document.getElementById('hubMemberSelect');
+      const val = sel ? sel.value : '01';
+      const rec = getOrSynthesizeRecordForMember(val);
+      openOfficialPadModal(rec, 'receipt');
+    }
+
+    function previewHubMemberReceipt(val) {
+      if (!val) return;
+      const rec = getOrSynthesizeRecordForMember(val);
+      openOfficialPadModal(rec, 'receipt');
+    }
+
+    function onModalPadMemberChange(val) {
+      if (!val) return;
+      const rec = getOrSynthesizeRecordForMember(val);
+      currentPadRec = rec;
+      renderPadReceipt(rec);
+      const hubSel = document.getElementById('hubMemberSelect');
+      if (hubSel) hubSel.value = val;
+    }
+
+    async function quickDownloadReceiptPng() {
+      const sel = document.getElementById('hubMemberSelect');
+      const val = sel ? sel.value : '01';
+      const rec = getOrSynthesizeRecordForMember(val);
+      openOfficialPadModal(rec, 'receipt');
+      await downloadCurrentPadPng();
+    }
+
+    async function quickDownloadPaidPng() {
+      openOfficialPadModal(null, 'paid');
+      await downloadCurrentPadPng();
+    }
+
+    async function quickDownloadDuePng() {
+      openOfficialPadModal(null, 'due');
+      await downloadCurrentPadPng();
+    }
+
+    function updateHubStats() {
+      const dueCnt = dueMembers ? dueMembers.length : 0;
+      const paidCnt = 27 - dueCnt;
+      const hubPaid = document.getElementById('hubPaidStatText');
+      const hubDue = document.getElementById('hubDueStatText');
+      if (hubPaid) hubPaid.innerText = `${toBn(paidCnt)} জন (${formatBnTaka(paidCnt * 10000)} ৳)`;
+      if (hubDue) hubDue.innerText = `${toBn(dueCnt)} জন (${formatBnTaka(dueCnt * 10000)} ৳)`;
+    }
+
+    // ================= MANUAL DUE/PAID CUSTOMIZER LOGIC =================
+    let tempDueSerials = new Set(['12', '13']);
+
+    function openManualDuePaidModal() {
+      tempDueSerials = new Set((dueMembers || []).map(d => String(d.serial).padStart(2, '0')));
+      renderManualMembersGrid();
+      const modal = document.getElementById('manualDuePaidModal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeManualDuePaidModal() {
+      const modal = document.getElementById('manualDuePaidModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function renderManualMembersGrid() {
+      const grid = document.getElementById('manualMembersChecklistGrid');
+      if (!grid) return;
+
+      const dueCnt = tempDueSerials.size;
+      const paidCnt = 27 - dueCnt;
+      const paidTxt = document.getElementById('manualPaidCountText');
+      const dueTxt = document.getElementById('manualDueCountText');
+      if (paidTxt) paidTxt.innerText = toBn(paidCnt);
+      if (dueTxt) dueTxt.innerText = toBn(dueCnt);
+
+      grid.innerHTML = MASTER_MEMBERS_LIST.map(m => {
+        const isDue = tempDueSerials.has(m.serial);
+        return `
+          <div class="p-3 rounded-2xl border transition ${
+            isDue ? 'border-rose-300 bg-rose-50/80 shadow-sm' : 'border-emerald-200 bg-emerald-50/50 hover:bg-emerald-50'
+          } flex items-center justify-between gap-2">
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-1.5">
+                <span class="font-mono text-[11px] font-bold px-1.5 py-0.5 rounded ${
+                  isDue ? 'bg-rose-200 text-rose-800' : 'bg-emerald-200 text-emerald-800'
+                }">${m.serialBn}</span>
+                <h4 class="text-xs font-bold text-slate-800 truncate" title="${m.name}">${m.name}</h4>
+              </div>
+              <p class="text-[11px] font-semibold mt-1 ${isDue ? 'text-rose-700 font-bold' : 'text-emerald-700'}">
+                ${isDue ? '⏳ বকেয়া (১০,০০০ ৳)' : '✅ পরিশোধিত (১০,০০০ ৳)'}
+              </p>
+            </div>
+            <button type="button" onclick="toggleMemberDueTemp('${m.serial}')" class="shrink-0 text-[11px] font-bold px-2.5 py-1.5 rounded-xl transition shadow-sm active:scale-95 ${
+              isDue ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'bg-rose-600 hover:bg-rose-700 text-white'
+            }">
+              ${isDue ? 'পরিশোধিত করুন' : 'বকেয়া করুন'}
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleMemberDueTemp(serial) {
+      const sPad = String(serial).padStart(2, '0');
+      if (tempDueSerials.has(sPad)) {
+        tempDueSerials.delete(sPad);
+      } else {
+        tempDueSerials.add(sPad);
+      }
+      renderManualMembersGrid();
+    }
+
+    function setAllMembersStatus(allPaid) {
+      if (allPaid) {
+        tempDueSerials.clear();
+      } else {
+        MASTER_MEMBERS_LIST.forEach(m => tempDueSerials.add(m.serial));
+      }
+      renderManualMembersGrid();
+    }
+
+    function resetToInitialDueStatus() {
+      tempDueSerials = new Set(['12', '13']);
+      renderManualMembersGrid();
+    }
+
+    function saveManualDuePaidChanges() {
+      dueMembers = MASTER_MEMBERS_LIST
+        .filter(m => tempDueSerials.has(m.serial))
+        .map(m => ({ serial: m.serial, name: m.name }));
+      
+      try {
+        localStorage.setItem('somiti_custom_due_serials', JSON.stringify([...tempDueSerials]));
+      } catch (_) {}
+
+      updateKPIs();
+      updateHubStats();
+      populateHubAndModalMemberDropdowns();
+      populateAdminMemberDropdown();
+      renderGrid(liveRecords);
+      renderPadPaidList();
+      renderPadDueList();
+
+      closeManualDuePaidModal();
+      openOfficialPadModal(null, dueMembers.length > 0 ? 'due' : 'paid');
     }
 
     function getCurrentActivePadNode() {
@@ -2432,6 +2867,8 @@
 
         const syncEl = document.getElementById('lastSyncText');
         if (syncEl) syncEl.innerText = '🟢 লাইভ সিঙ্ক: ' + new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+        updateHubStats();
+        populateHubAndModalMemberDropdowns();
         renderGrid(liveRecords);
       } catch (err) {}
     }
@@ -2619,7 +3056,25 @@
 
     applyPadConfig();
     populateAdminMemberDropdown();
+    populateHubAndModalMemberDropdowns();
+    updateHubStats();
+
+    // Restore saved custom due serials if any
+    try {
+      const savedCustomDue = localStorage.getItem('somiti_custom_due_serials');
+      if (savedCustomDue) {
+        const parsed = JSON.parse(savedCustomDue);
+        if (Array.isArray(parsed)) {
+          dueMembers = MASTER_MEMBERS_LIST
+            .filter(m => parsed.includes(m.serial))
+            .map(m => ({ serial: m.serial, name: m.name }));
+        }
+      }
+    } catch (_) {}
+
     renderGrid(liveRecords);
+    updateHubStats();
+    populateHubAndModalMemberDropdowns();
     initFirebaseRealtime();
 
     (async () => {
