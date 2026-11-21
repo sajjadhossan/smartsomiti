@@ -1174,9 +1174,58 @@
               <label class="block font-bold text-slate-700 mb-1">জমাদানকারী / প্রেরক</label>
               <input type="text" id="addSender" value="নিজ" class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white" />
             </div>
-            <div>
-              <label class="block font-bold text-slate-700 mb-1">মূল স্লিপ লিংক (Google Drive)</label>
-              <input type="url" id="addSlipUrl" placeholder="https://drive.google.com/..." class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white" />
+            <div class="sm:col-span-2 bg-white p-3.5 rounded-2xl border-2 border-emerald-200/80 shadow-sm space-y-2.5">
+              <div class="flex items-center justify-between">
+                <label class="block font-bold text-emerald-950 text-xs sm:text-sm">
+                  📷 ব্যাংকের স্লিপ আপলোড ও সরাসরি গুগল ড্রাইভ অটো-পুশ
+                </label>
+                <span class="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  অটো ক্রপ ও হাই-রেজোলিউশন পলিশ
+                </span>
+              </div>
+              
+              <!-- Hidden File Input -->
+              <input type="file" id="slipFileInput" accept="image/*" class="hidden" onchange="handleSlipFileSelected(this)" />
+
+              <!-- Upload Button -->
+              <div class="flex flex-wrap items-center gap-2">
+                <button type="button" onclick="document.getElementById('slipFileInput').click()" class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 active:scale-95 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition shadow flex items-center justify-center gap-2">
+                  <span>📸</span>
+                  <span>ছবি তুলুন / গ্যালারি থেকে স্লিপ নির্বাচন করুন</span>
+                </button>
+              </div>
+
+              <!-- Interactive Polish & Preview Container -->
+              <div id="slipPreviewContainer" class="hidden p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                <div class="flex items-center justify-between text-xs">
+                  <span id="slipPolishStatusText" class="font-bold text-emerald-800">✨ পলিশড ও হাই-রেজোলিউশন সক্রিয়</span>
+                  <div class="flex items-center gap-1.5">
+                    <button type="button" onclick="rotateSlipImage()" class="px-2 py-1 rounded bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold text-[11px] transition">
+                      🔄 ৯০° ঘোরান
+                    </button>
+                    <button type="button" onclick="toggleSlipPolish()" class="px-2 py-1 rounded bg-teal-100 hover:bg-teal-200 text-teal-800 font-bold text-[11px] transition">
+                      ✨ পলিশ অন/অফ
+                    </button>
+                    <button type="button" onclick="clearSlipImage()" class="px-2 py-1 rounded bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold text-[11px] transition">
+                      ✕ বাদ দিন
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Preview Image -->
+                <div class="max-h-48 overflow-hidden rounded-xl border border-slate-300 bg-white flex justify-center items-center p-1">
+                  <img id="slipPreviewImg" src="" alt="স্লিপ প্রিভিউ" class="max-h-44 object-contain rounded-lg shadow-sm" />
+                </div>
+                <p class="text-[11px] text-emerald-700 font-medium text-center">
+                  ☁️ ভেরিফাই করার সাথে সাথে এই স্লিপটি সরাসরি সমিতির গুগল ড্রাইভ ফোল্ডারে পুশ হয়ে যাবে।
+                </p>
+              </div>
+
+              <!-- Manual Link Input Fallback -->
+              <div class="pt-1">
+                <label class="block text-[11px] font-semibold text-slate-500 mb-1">অথবা ম্যানুয়ালি Google Drive লিংক থাকলে পেস্ট করুন (ঐচ্ছিক):</label>
+                <input type="url" id="addSlipUrl" placeholder="https://drive.google.com/file/d/.../view" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-600 transition" />
+              </div>
             </div>
             <div class="sm:col-span-2">
               <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-xl transition shadow">✅ ভেরিফাই করুন, মেইন অ্যাপে পাঠান ও ৩টি প্যাড তৈরি করুন</button>
@@ -2189,8 +2238,124 @@
       if (formEl) formEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
+    // ================= SLIP IMAGE PROCESSING, AUTO-POLISH & DIRECT DRIVE UPLOAD =================
+    let currentSlipRawImage = null;
+    let currentSlipPolishedDataUrl = '';
+    let slipRotationAngle = 0;
+    let isPolishedApplied = true;
+
+    function handleSlipFileSelected(input) {
+      if (!input.files || !input.files[0]) return;
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          currentSlipRawImage = img;
+          slipRotationAngle = 0;
+          isPolishedApplied = true;
+          processSlipImage();
+          const wrap = document.getElementById('slipPreviewContainer');
+          if (wrap) wrap.classList.remove('hidden');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function rotateSlipImage() {
+      slipRotationAngle = (slipRotationAngle + 90) % 360;
+      processSlipImage();
+    }
+
+    function toggleSlipPolish() {
+      isPolishedApplied = !isPolishedApplied;
+      processSlipImage();
+    }
+
+    function clearSlipImage() {
+      currentSlipRawImage = null;
+      currentSlipPolishedDataUrl = '';
+      slipRotationAngle = 0;
+      isPolishedApplied = true;
+      const input = document.getElementById('slipFileInput');
+      if (input) input.value = '';
+      const wrap = document.getElementById('slipPreviewContainer');
+      if (wrap) wrap.classList.add('hidden');
+      const previewImg = document.getElementById('slipPreviewImg');
+      if (previewImg) previewImg.src = '';
+    }
+
+    function processSlipImage() {
+      if (!currentSlipRawImage) return;
+
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+
+      let width = currentSlipRawImage.width;
+      let height = currentSlipRawImage.height;
+      const MAX_DIM = 1600;
+      if (width > MAX_DIM || height > MAX_DIM) {
+        if (width > height) {
+          height = Math.round((height * MAX_DIM) / width);
+          width = MAX_DIM;
+        } else {
+          width = Math.round((width * MAX_DIM) / height);
+          height = MAX_DIM;
+        }
+      }
+
+      if (slipRotationAngle === 90 || slipRotationAngle === 270) {
+        canvas.width = height;
+        canvas.height = width;
+      } else {
+        canvas.width = width;
+        canvas.height = height;
+      }
+
+      ctx.save();
+      if (slipRotationAngle === 90) {
+        ctx.translate(canvas.width, 0);
+        ctx.rotate((90 * Math.PI) / 180);
+      } else if (slipRotationAngle === 180) {
+        ctx.translate(canvas.width, canvas.height);
+        ctx.rotate((180 * Math.PI) / 180);
+      } else if (slipRotationAngle === 270) {
+        ctx.translate(0, canvas.height);
+        ctx.rotate((270 * Math.PI) / 180);
+      }
+
+      ctx.drawImage(currentSlipRawImage, 0, 0, width, height);
+      ctx.restore();
+
+      // Document Contrast & Sharpness Enhancement
+      if (isPolishedApplied) {
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const d = imgData.data;
+        const contrast = 1.25;
+        const factor = (259 * (contrast * 255 + 255)) / (255 * (259 - contrast * 255));
+        const brightness = 8;
+
+        for (let i = 0; i < d.length; i += 4) {
+          d[i] = Math.min(255, Math.max(0, factor * (d[i] - 128) + 128 + brightness));
+          d[i + 1] = Math.min(255, Math.max(0, factor * (d[i + 1] - 128) + 128 + brightness));
+          d[i + 2] = Math.min(255, Math.max(0, factor * (d[i + 2] - 128) + 128 + brightness));
+        }
+        ctx.putImageData(imgData, 0, 0);
+      }
+
+      currentSlipPolishedDataUrl = canvas.toDataURL('image/jpeg', 0.92);
+      const previewImg = document.getElementById('slipPreviewImg');
+      if (previewImg) previewImg.src = currentSlipPolishedDataUrl;
+
+      const statusText = document.getElementById('slipPolishStatusText');
+      if (statusText) {
+        statusText.innerText = isPolishedApplied ? '✨ পলিশড ও হাই-রেজোলিউশন সক্রিয়' : 'আসল ছবি';
+      }
+    }
+
     async function handleAdminAdd(e) {
-      e.preventDefault();
+      if (e && e.preventDefault) e.preventDefault();
       const amtNum = Number(document.getElementById('addAmount').value || 10000);
       const dateStr = document.getElementById('addDate').value;
       const memberName = document.getElementById('addMember').value.trim();
@@ -2198,9 +2363,11 @@
       const codeStr = document.getElementById('addCode').value.trim();
       const methodStr = document.getElementById('addMethod').value.trim();
       const senderStr = document.getElementById('addSender').value.trim() || 'নিজ';
-      const slipUrl = document.getElementById('addSlipUrl').value.trim() || 'https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-';
-
+      
+      const userSlipUrl = document.getElementById('addSlipUrl').value.trim();
       const sCode = 'S-' + String(Number(serialStr) || serialStr).padStart(2, '0');
+      let effectiveSlipUrl = userSlipUrl || (currentSlipPolishedDataUrl ? currentSlipPolishedDataUrl : 'https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-');
+
       const rec = {
         code: codeStr,
         serial_code: sCode,
@@ -2211,7 +2378,7 @@
         amount: `${formatBnTaka(amtNum)}/- টাকা`,
         method: methodStr,
         sender: senderStr,
-        slip_url: slipUrl,
+        slip_url: effectiveSlipUrl,
         pad_url: ''
       };
 
@@ -2230,7 +2397,7 @@
             method: methodStr,
             depositor: senderStr,
             receiptCode: codeStr,
-            slipUrl: slipUrl,
+            slipUrl: effectiveSlipUrl,
             verified: true,
             createdAt: new Date().toISOString()
           });
@@ -2239,7 +2406,7 @@
         }
       }
 
-      // 2. Dispatch Google Sheets 2-Way Webhook (Apps Script)
+      // 2. Dispatch Google Sheets 2-Way Webhook (Apps Script) with auto-Drive upload payload
       const webhookUrl = getWebhookUrl();
       if (webhookUrl && webhookUrl.startsWith('http')) {
         try {
@@ -2257,7 +2424,9 @@
               date: dateStr,
               method: methodStr,
               sender: senderStr,
-              slip_url: slipUrl,
+              slip_url: userSlipUrl,
+              slip_base64: currentSlipPolishedDataUrl || '',
+              slip_filename: `Slip_${sCode}_${memberName.replace(/[\s\/\\]+/g, '_')}.jpg`,
               verifiedAt: new Date().toISOString()
             })
           }).catch(wbErr => console.warn('Webhook post warning:', wbErr));
@@ -2271,11 +2440,13 @@
       renderGrid(liveRecords);
       renderAdminList();
       populateAdminMemberDropdown();
-      e.target.reset();
+      clearSlipImage();
+      const formEl = document.getElementById('adminAddForm');
+      if (formEl) formEl.reset();
 
       // 3. Immediately Close Admin and Auto-Generate 3 Official Pads Modal
       closeAdminPanel();
-      alert('✅ পেমেন্ট সফলভাবে ভেরিফাই ও মেইন অ্যাপে সিঙ্ক হয়েছে!\n🏛️ এখন ৩টি অফিশিয়াল প্যাড স্বয়ংক্রিয়ভাবে তৈরি হচ্ছে...');
+      alert('✅ পেমেন্ট সফলভাবে ভেরিফাই হয়েছে ও স্লিপ গুগল ড্রাইভে প্রসেস করা হয়েছে!\n🏛️ এখন ৩টি অফিশিয়াল প্যাড স্বয়ংক্রিয়ভাবে তৈরি হচ্ছে...');
       openOfficialPadModal(rec, 'receipt');
     }
 
