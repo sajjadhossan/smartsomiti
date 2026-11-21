@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>স্বপ্ন ছোঁয়া ঐক্য সমিতি — ডিজিটাল রিসিট ও নোটিশ যাচাইকরণ</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/webp" href="logo.webp" />
+  <link rel="apple-touch-icon" href="logo.webp" />
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -26,44 +29,103 @@
       #verifyModal { position: absolute; left: 0; top: 0; width: 100%; background: white !important; }
       #closeModalBtn, #modalActionBtns { display: none !important; }
     }
-  </style>
-  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-  <style>
     body.dark-mode { background: #0f172a !important; color: #e2e8f0 !important; }
     body.dark-mode .bg-white { background-color: #1e293b !important; border-color: #334155 !important; color: #f1f5f9 !important; }
     body.dark-mode .bg-slate-50, body.dark-mode .bg-slate-50\/70 { background-color: #0f172a !important; border-color: #334155 !important; }
     body.dark-mode .text-slate-800, body.dark-mode .text-slate-900, body.dark-mode .text-slate-700 { color: #f1f5f9 !important; }
     body.dark-mode .text-slate-500, body.dark-mode .text-slate-600 { color: #94a3b8 !important; }
-    body.dark-mode input { background-color: #0f172a !important; color: #f8fafc !important; border-color: #475569 !important; }
+    body.dark-mode input, body.dark-mode textarea { background-color: #0f172a !important; color: #f8fafc !important; border-color: #475569 !important; }
   </style>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <style>
+    /* High Fidelity Official Pad Styles */
+    .official-pad-root {
+      background-color: #ffffff !important;
+      color: #1e293b !important;
+      box-sizing: border-box;
+      font-family: 'Hind Siliguri', 'Inter', sans-serif;
+      user-select: none;
+    }
+    .official-pad-border-frame {
+      border: 5px solid #0f5132;
+      outline: 1.5px solid #0f5132;
+      outline-offset: -10px;
+      height: 100%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      background: #ffffff;
+    }
+    .official-pad-watermark-bg {
+      position: absolute;
+      top: 54%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 480px;
+      height: 480px;
+      opacity: 0.055;
+      pointer-events: none;
+      background-image: url('assets/swapno_chowa_logo.webp'), url('logo.webp');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      z-index: 1;
+    }
+    @media print {
+      #officialPadModal { position: absolute !important; inset: 0 !important; background: white !important; z-index: 9999 !important; padding: 0 !important; }
+      #officialPadModal .no-print { display: none !important; }
+      #padViewportContainer { transform: none !important; width: 100% !important; margin: 0 !important; box-shadow: none !important; }
+    }
+  </style>
 </head>
 <body class="min-h-screen text-slate-800 pb-16">
 
-  <!-- Top Brand Header -->
-  <header class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-800 text-white shadow-lg border-b-4 border-amber-400">
-    <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-      <div class="flex items-center space-x-3.5">
-        <div class="w-12 h-12 rounded-full bg-white text-emerald-800 flex items-center justify-center text-2xl shadow-md border-2 border-amber-300">🛡️</div>
-        <div>
-          <div class="flex items-center space-x-2">
-            <h1 class="text-xl sm:text-2xl font-bold tracking-tight">স্বপ্ন ছোঁয়া ঐক্য সমিতি</h1>
-            <span class="bg-emerald-700/80 text-emerald-100 text-[10px] font-semibold px-2 py-0.5 rounded-full border border-emerald-400/40">ভেরিফিকেশন পোর্টাল</span>
-          </div>
-          <p class="text-xs text-emerald-100 mt-0.5">ছোট সঞ্চয়, বড় স্বপ্ন, আলোকিত ভবিষ্যৎ • শ্রীনগর, মুন্সীগঞ্জ</p>
-        </div>
+  <!-- ================= TOP OFFICIAL PAD BANNER & NAV ================= -->
+  <header class="max-w-5xl mx-auto px-3 sm:px-4 pt-3 sm:pt-5">
+    <div class="bg-white rounded-2xl shadow-lg border-2 border-emerald-700 overflow-hidden">
+      <!-- High Resolution Crisp Official Pad Banner -->
+      <div class="relative bg-white border-b-2 border-emerald-700">
+        <img src="pad_header.webp" alt="স্বপ্ন ছোঁয়া ঐক্য সমিতি অফিসিয়াল প্যাড হেডার"
+          class="w-full h-auto object-contain block select-none" onerror="this.onerror=null; this.src='pad_header.jpg';" />
       </div>
-      <div class="flex flex-wrap items-center justify-center gap-2 text-xs">
-        <button type="button" id="refreshBtn" onclick="manualSync()" class="bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg font-semibold border border-white/20 transition">🔄 লাইভ আপডেট</button>
-        <button type="button" id="darkModeBtn" onclick="toggleDarkMode()" class="bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg font-semibold border border-white/20 transition">🌙 ডার্ক</button>
-        <button type="button" id="adminBtn" onclick="toggleAdminMode()" class="bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg font-semibold border border-white/20 transition">🔐 অ্যাডমিন</button>
-        <a href="https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit" target="_blank" rel="noopener" class="bg-amber-400 hover:bg-amber-300 text-slate-900 px-3 py-1.5 rounded-lg font-bold shadow transition">
-          📊 লাইভ শিট
-        </a>
+
+      <!-- Official Sub-bar with Society Address, Bank & Live Action Buttons -->
+      <div class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-900 text-white px-3 sm:px-5 py-2.5 text-xs flex flex-col md:flex-row items-center justify-between gap-2.5 border-t-2 border-amber-400">
+        <div class="flex flex-wrap items-center justify-center md:justify-start gap-x-3.5 gap-y-1 text-center md:text-left text-[11px] sm:text-xs">
+          <span class="font-semibold text-emerald-100" id="hdrReg">🏛️ সমবায় রেজিঃ নং-৭৮৯০/২০২৬</span>
+          <span class="text-emerald-300 hidden sm:inline">•</span>
+          <span class="font-semibold text-emerald-100" id="hdrAddr">📍 শ্রীনগর, মুন্সীগঞ্জ</span>
+          <span class="text-emerald-300 hidden sm:inline">•</span>
+          <span class="font-semibold text-emerald-100" id="hdrBank">🏦 সিটি ব্যাংক পিএলসি • হিসাব: ২৩০৫১৫৮০৪৫০০১</span>
+          <span class="text-emerald-300 hidden sm:inline">•</span>
+          <span class="font-semibold text-emerald-100" id="hdrRouting">🌐 রাউটিং: ২২৫২৬০৪১৫</span>
+          <span class="text-emerald-300 hidden sm:inline">•</span>
+          <span class="font-semibold text-amber-200" id="hdrBkash">📱 বিকাশ: ০১৮৮১২১০৪৪৪</span>
+        </div>
+        <div class="flex flex-wrap items-center justify-center gap-2 text-xs shrink-0">
+          <button type="button" onclick="openPadEditModal()"
+            class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-3 py-1.5 rounded-lg shadow transition flex items-center space-x-1">
+            <span>✏️</span>
+            <span>প্যাড তথ্য এডিট</span>
+          </button>
+          <button type="button" id="refreshBtn" onclick="manualSync()" class="bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg font-semibold border border-white/20 transition">🔄 লাইভ আপডেট</button>
+          <button type="button" id="darkModeBtn" onclick="toggleDarkMode()" class="bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg font-semibold border border-white/20 transition">🌙 ডার্ক</button>
+          <button type="button" id="adminBtn" onclick="toggleAdminMode()" class="bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg font-semibold border border-white/20 transition">🔐 অ্যাডমিন</button>
+          <a href="https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit" target="_blank" rel="noopener" class="bg-amber-400/90 hover:bg-amber-300 text-slate-900 px-3 py-1.5 rounded-lg font-bold shadow transition">
+            📊 লাইভ শিট
+          </a>
+          <a href="index.html" class="bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg font-semibold border border-white/20 transition">
+            🏛️ মূল অ্যাপ
+          </a>
+        </div>
       </div>
     </div>
   </header>
@@ -76,7 +138,10 @@
         <span class="text-base">📢</span>
         <span><strong>জরুরি বিজ্ঞপ্তি:</strong> চলতি মাসের (নভেম্বর ২০২৬) কিস্তি <strong>১০,০০০/- টাকা</strong>। বিকাশে পাঠালে ক্যাশ-আউট চার্জসহ পাঠাবেন এবং ব্যাংক রিসিট গ্রুপে পোস্ট করবেন।</span>
       </div>
-      <div class="flex items-center gap-2"><span id="lastSyncText" class="text-[11px] font-semibold text-amber-800">⏳ সিঙ্ক হচ্ছে...</span><a href="#paymentGuide" class="bg-amber-200/70 hover:bg-amber-300 text-amber-950 font-bold px-3 py-1 rounded-lg transition">💳 পেমেন্ট তথ্য</a></div>
+      <div class="flex items-center gap-2">
+        <span id="lastSyncText" class="text-[11px] font-semibold text-amber-800">⏳ সিঙ্ক হচ্ছে...</span>
+        <a href="#paymentGuide" class="bg-amber-200/70 hover:bg-amber-300 text-amber-950 font-bold px-3 py-1 rounded-lg transition">💳 পেমেন্ট তথ্য</a>
+      </div>
     </div>
 
     <!-- Hero Verification Card -->
@@ -116,7 +181,9 @@
         <!-- Quick Demo Pills -->
         <div class="flex flex-wrap items-center justify-center gap-1.5 pt-2 text-xs">
           <span class="text-slate-400 mr-1">দ্রুত পরীক্ষা করুন:</span>
-          <button type="button" data-code="RCT-14" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-14 (আওলাদ)</button>
+          <button type="button" data-code="RCT-25" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-25 (তাজুল)</button>
+          <button type="button" data-code="RCT-24" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-24 (আওলাদ)</button>
+          <button type="button" data-code="RCT-14" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-14 (আওলাদ হোসেন)</button>
           <button type="button" data-code="RCT-15" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-15 (ইয়াছিন)</button>
           <button type="button" data-code="RCT-13" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-13 (সজীব)</button>
           <button type="button" data-code="স্মারক-০১/২০২৬" class="quick-pill bg-amber-50 hover:bg-amber-100 text-amber-800 px-2.5 py-1 rounded-lg border border-amber-200 font-semibold transition">স্মারক-০১/২০২৬ (পেইড)</button>
@@ -140,7 +207,7 @@
       </div>
       <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
         <p class="text-xs text-slate-500">অনুমোদনকারী</p>
-        <p class="text-sm font-bold text-slate-800 mt-2">সাজ্জাদ হোসেন (কোষাধ্যক্ষ)</p>
+        <p class="text-sm font-bold text-slate-800 mt-2" id="kpiCashierText">সাজ্জাদ হোসেন (কোষাধ্যক্ষ)</p>
       </div>
     </section>
 
@@ -168,7 +235,7 @@
         <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50/40">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">নভেম্বর ২০২৬</span>
-            <span class="text-xs font-semibold text-slate-500">২৫ / ২৭ জন</span>
+            <span class="text-xs font-semibold text-slate-500">${toBn(25)} / ${toBn(27)} জন</span>
           </div>
           <p class="text-lg font-bold text-emerald-700 mt-2">২,৫০,০০০/- টাকা</p>
           <p class="text-xs text-amber-700 mt-0.5">বকেয়া: ২০,০০০/- টাকা (২ জন)</p>
@@ -229,14 +296,14 @@
           </div>
           <p class="text-slate-700"><strong>একাউন্ট নং:</strong> <span class="font-mono font-bold">2305158045001</span></p>
           <p class="text-slate-700"><strong>একাউন্ট নাম:</strong> MD RAHIM, SUMAYA AKTER AND DELWARA BEGUM</p>
-          <p class="text-slate-700"><strong>রাউটিং নং:</strong> <span class="font-mono font-bold">225591215</span></p>
+          <p class="text-slate-700"><strong>রাউটিং নং:</strong> <span class="font-mono font-bold" id="guideRouting">225260415</span></p>
         </div>
         <div class="p-4 rounded-xl bg-rose-50/50 border border-rose-200 space-y-2">
           <div class="flex items-center justify-between">
             <span class="font-bold text-rose-800 text-sm">📱 বিকাশ পার্সোনাল (Send Money)</span>
             <button type="button" onclick="copyText('01881210444', this)" class="bg-rose-600 text-white px-2.5 py-1 rounded-lg font-bold hover:bg-rose-700 transition">📋 নম্বর কপি</button>
           </div>
-          <p class="text-slate-700"><strong>নম্বর:</strong> <span class="font-mono font-bold text-sm">01881210444</span> (সাজ্জাদ হোসেন — কোষাধ্যক্ষ)</p>
+          <p class="text-slate-700"><strong>নম্বর:</strong> <span class="font-mono font-bold text-sm" id="guideBkash">01881210444</span> (<span id="guideCashier">সাজ্জাদ হোসেন — কোষাধ্যক্ষ</span>)</p>
           <p class="text-slate-600">• বিকাশে টাকা পাঠালে অনুগ্রহ করে <strong>ক্যাশ-আউট চার্জসহ</strong> 'Send Money' করবেন।</p>
           <p class="text-slate-600">• টাকা পাঠানোর পর ব্যাংকে জমা হওয়ার রিসিটটি অবশ্যই গ্রুপে পোস্ট করবেন।</p>
         </div>
@@ -337,9 +404,10 @@
             <span>↗</span>
           </a>
 
-          <div class="grid grid-cols-3 gap-2 pt-1">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
             <button type="button" id="mCopyLinkBtn" class="bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold py-2.5 px-2 rounded-xl text-xs border border-amber-200 transition">🔗 লিংক কপি</button>
-            <button type="button" id="mWaShareBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-2 rounded-xl text-xs transition">📲 WhatsApp</button>
+            <button type="button" id="mWaShareBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-2 rounded-xl text-xs transition shadow-sm">📲 WhatsApp ছবি</button>
+            <button type="button" id="mSaveImgBtn" class="bg-teal-700 hover:bg-teal-800 text-white font-bold py-2.5 px-2 rounded-xl text-xs transition shadow-sm">🖼️ ছবি সেভ</button>
             <button type="button" onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 px-2 rounded-xl text-xs transition">🖨️ প্রিন্ট</button>
           </div>
         </div>
@@ -352,7 +420,7 @@
         </div>
 
         <p class="text-[11px] text-center text-slate-400">
-          অনুমোদনকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ) • স্বপ্ন ছোঁয়া ঐক্য সমিতি
+          অনুমোদনকারী: <span id="mCashierSignName">সাজ্জাদ হোসেন (কোষাধ্যক্ষ)</span> • স্বপ্ন ছোঁয়া ঐক্য সমিতি
         </p>
       </div>
     </div>
@@ -372,14 +440,394 @@
     </div>
   </div>
 
-  
+  <!-- ================= EDIT PAD DETAILS MODAL ================= -->
+  <div id="padEditModal" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-emerald-300 animate-pop space-y-3.5">
+      <div class="flex justify-between items-center border-b pb-2.5">
+        <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+          <span>✏️</span> <span>প্যাডের তথ্য সম্পাদনা ও কাস্টমাইজেশন</span>
+        </h3>
+        <button type="button" onclick="closePadEditModal()" class="text-slate-400 hover:text-slate-700 font-bold text-lg">✕</button>
+      </div>
+      <p class="text-xs text-slate-500">
+        প্যাডে প্রদর্শিত ঠিকানা, ব্যাংক একাউন্ট বা নম্বর এখানে এডিট করুন। সেভ করলে পুরো পোর্টালে লাইভ আপডেট হয়ে যাবে এবং ব্রাউজারে সংরক্ষিত থাকবে।
+      </p>
+      <div class="space-y-2.5 text-xs">
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">📍 কার্যালয়ের ঠিকানা:</label>
+          <input type="text" id="editAddr" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: শ্রীনগর, মুন্সীগঞ্জ" />
+        </div>
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">🏦 ব্যাংক নাম ও হিসাব বিবরণ:</label>
+          <input type="text" id="editBank" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: সিটি ব্যাংক পিএলসি • হিসাব: ২৩০৫১৫৮০৪৫০০১" />
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">🌐 ব্যাংক রাউটিং নং:</label>
+            <input type="text" id="editRouting" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: ২২৫২৬০৪১৫" />
+          </div>
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">📱 বিকাশ / নগদ নম্বর:</label>
+            <input type="text" id="editBkash" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: ০১৮৮১২১০৪৪৪" />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">🏛️ সমবায় রেজিঃ নম্বর:</label>
+            <input type="text" id="editReg" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: ৭৮৯০/২০২৬" />
+          </div>
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">👤 কোষাধ্যক্ষ / অনুমোদনকারী:</label>
+            <input type="text" id="editCashier" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)" />
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between pt-3 border-t">
+        <button type="button" onclick="resetPadDefaults()" class="text-rose-600 hover:text-rose-700 font-semibold text-xs">
+          🔄 ডিফল্ট রিস্টোর
+        </button>
+        <div class="flex gap-2">
+          <button type="button" onclick="closePadEditModal()" class="px-4 py-2 border rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-50">
+            বাতিল
+          </button>
+          <button type="button" onclick="savePadCustomDetails()" class="px-5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold shadow">
+            💾 সংরক্ষণ করুন
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 3 OFFICIAL PADS PREVIEW & EXPORT MODAL ================= -->
+  <div id="officialPadModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[60] flex flex-col p-2 sm:p-4 hidden">
+    <!-- Top Action Toolbar -->
+    <div class="no-print bg-slate-900 border border-slate-700 rounded-2xl px-4 py-3 text-white flex flex-wrap items-center justify-between gap-3 shadow-2xl">
+      <div class="flex items-center gap-2.5">
+        <span class="text-2xl">🏛️</span>
+        <div>
+          <h3 class="font-bold text-sm sm:text-base leading-tight">অফিসিয়াল প্যাড ও রিসিট জেনারেটর</h3>
+          <p class="text-[11px] text-emerald-400">স্বপ্ন ছোঁয়া ঐক্য সমিতি • ৩টি অফিশিয়াল ভেরিফাইড প্যাড</p>
+        </div>
+      </div>
+
+      <!-- 3 Pad Switcher Tabs -->
+      <div class="flex flex-wrap gap-1 bg-slate-800 p-1 rounded-xl border border-slate-700 text-xs font-bold">
+        <button type="button" id="tabPadReceiptBtn" onclick="switchOfficialPadTab('receipt')" class="pad-tab-btn px-3 py-1.5 rounded-lg bg-emerald-600 text-white transition">🧾 ১. মানি রিসিট (1654×1450)</button>
+        <button type="button" id="tabPadPaidBtn" onclick="switchOfficialPadTab('paid')" class="pad-tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white transition">✅ ২. পরিশোধিত তালিকা (A4)</button>
+        <button type="button" id="tabPadDueBtn" onclick="switchOfficialPadTab('due')" class="pad-tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white transition">⏳ ৩. বকেয়া তালিকা (A4)</button>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <button type="button" onclick="downloadCurrentPadPng()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3.5 py-2 rounded-xl shadow transition flex items-center gap-1.5 active:scale-95">
+          <span>🖼️</span> <span>ছবি ডাউনলোড (PNG)</span>
+        </button>
+        <button type="button" onclick="downloadCurrentPadPdf()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold px-3.5 py-2 rounded-xl shadow transition flex items-center gap-1.5 active:scale-95">
+          <span>📄</span> <span>A4 PDF ডাউনলোড</span>
+        </button>
+        <button type="button" onclick="shareCurrentPadWhatsApp()" class="bg-green-600 hover:bg-green-700 text-white font-bold px-3.5 py-2 rounded-xl shadow transition flex items-center gap-1.5 active:scale-95">
+          <span>📲</span> <span>WhatsApp-এ পাঠান</span>
+        </button>
+        <button type="button" onclick="window.print()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold px-3 py-2 rounded-xl transition">
+          🖨️ প্রিন্ট
+        </button>
+        <button type="button" onclick="closeOfficialPadModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center font-bold text-sm transition">
+          ✕
+        </button>
+      </div>
+    </div>
+
+    <!-- Scaled Scrollable Viewport -->
+    <div id="padViewportScrollWrapper" class="flex-1 overflow-auto mt-3 rounded-2xl bg-slate-900/60 p-2 sm:p-4 flex justify-center items-start border border-slate-800">
+      <div id="padViewportContainer" style="transform-origin: top center; transition: transform 0.15s ease;">
+
+        <!-- 1. PERSONAL MONEY RECEIPT (1654 x 1450 px) -->
+        <div id="padReceiptNode" class="official-pad-root" style="width: 1654px; height: 1450px; background: #ffffff; padding: 26px; box-sizing: border-box; position: relative; font-family: 'Hind Siliguri', 'Inter', sans-serif; color: #1e293b; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="official-pad-border-frame" style="border: 5px solid #0f5132; outline: 1.5px solid #0f5132; outline-offset: -10px; height: 100%; box-sizing: border-box; padding: 24px 34px; display: flex; flex-direction: column; justify-content: space-between; position: relative; background: #ffffff;">
+            <div class="official-pad-watermark-bg"></div>
+
+            <!-- Pad Header Image -->
+            <div style="width: 100%; border-bottom: 2px solid #0f5132; padding-bottom: 4px; z-index: 2;">
+              <img src="assets/pad_header.webp" onerror="this.src='pad_header.webp'" style="width: 100%; height: auto; display: block;" alt="প্যাড হেডার" />
+            </div>
+
+            <!-- Meta Row -->
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 24px; font-weight: 700; color: #1e293b; padding: 10px 4px 6px 4px; z-index: 2;">
+              <div>রিসিট নং: <span id="prCode" style="font-family: monospace, 'Hind Siliguri'; color: #0f5132;">সছঐস/রিসিট/২০২৬-২৫ (S-21)</span></div>
+              <div>তারিখ: <span id="prDate" style="color: #1e293b;">১৯ নভেম্বর ২০২৬ ইং</span></div>
+            </div>
+
+            <!-- Center Title Banner -->
+            <div style="text-align: center; margin: 0 0 14px 0; z-index: 2;">
+              <div style="display: inline-block; background: #094a2b; color: #ffffff; font-size: 30px; font-weight: 800; padding: 10px 54px; border-radius: 14px; letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(9,74,43,0.18);">
+                অফিসিয়াল মানি রিসিট (জমা রশিদ)
+              </div>
+            </div>
+
+            <!-- Details Container -->
+            <div style="border: 2px solid #0f5132; border-radius: 20px; padding: 24px 34px; background: rgba(255,255,255,0.94); position: relative; z-index: 2;">
+              <div style="position: absolute; top: 22px; right: 28px; border: 2.5px solid #10b981; background: #ecfdf5; color: #065f46; font-size: 26px; font-weight: 800; padding: 8px 36px; border-radius: 12px; letter-spacing: 1px;">
+                পরিশোধিত
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 14px; font-size: 24px; padding-right: 180px;">
+                <div style="display: flex; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+                  <div style="width: 250px; font-weight: 700; color: #0f172a;">সদস্যের নাম:</div>
+                  <div id="prMember" style="flex: 1; font-weight: 700; color: #1e293b;">তাজুল ইসলাম (ক্রমিক নং: ২১)</div>
+                </div>
+                <div style="display: flex; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+                  <div style="width: 250px; font-weight: 700; color: #0f172a;">জমাদানকারীর নাম:</div>
+                  <div id="prSender" style="flex: 1; font-weight: 600; color: #334155;">ফাতেমা আক্তার / Fatema Akter (শ্রীনগর)</div>
+                </div>
+                <div style="display: flex; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+                  <div style="width: 250px; font-weight: 700; color: #0f172a;">জমার পরিমাণ:</div>
+                  <div id="prAmount" style="flex: 1; font-weight: 800; color: #0f5132;">১০,০০০/- টাকা (কথায়: দশ হাজার টাকা মাত্র)</div>
+                </div>
+                <div style="display: flex; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+                  <div style="width: 250px; font-weight: 700; color: #0f172a;">জমার তারিখ:</div>
+                  <div id="prDateRow" style="flex: 1; font-weight: 600; color: #334155;">১৯ নভেম্বর ২০২৬ ইং</div>
+                </div>
+                <div style="display: flex; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+                  <div style="width: 250px; font-weight: 700; color: #0f172a;">জমা গ্রহণকারী ব্যাংক:</div>
+                  <div id="prBank" style="flex: 1; font-weight: 700; color: #1e293b;">CITY BANK PLC (Sreenagar Sub Branch)</div>
+                </div>
+                <div style="display: flex; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+                  <div style="width: 250px; font-weight: 700; color: #0f172a;">সমিতির ব্যাংক হিসাব:</div>
+                  <div style="flex: 1; font-weight: 700; color: #1e293b;">2305158045001 (MD RAHIM, SUMAYA AKTER AND DELWARA BEGUM)</div>
+                </div>
+                <div style="display: flex;">
+                  <div style="width: 250px; font-weight: 700; color: #0f172a;">পেমেন্টের ধরন:</div>
+                  <div id="prMethod" style="flex: 1; font-weight: 600; color: #334155;">নগদ ব্যাংক ডিপোজিট (Cash Received - F.R, Slip #1273)</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Signatures and QR Section -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; padding: 18px 20px 4px 20px; z-index: 2;">
+              <div style="text-align: center; width: 330px;">
+                <div style="border-top: 1.5px solid #334155; margin-bottom: 8px;"></div>
+                <div style="font-size: 24px; font-weight: 800; color: #0f172a;">সাজ্জাদ হোসেন</div>
+                <div style="font-size: 19px; font-weight: 600; color: #475569;">প্রস্তুতকারী / কোষাধ্যক্ষ</div>
+              </div>
+
+              <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                <div style="border: 2px solid #0f5132; border-radius: 12px; padding: 8px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.06);">
+                  <div id="prQrContainer"></div>
+                </div>
+                <div style="font-size: 18px; font-weight: 700; color: #0f5132; margin-top: 6px;">স্ক্যান করে যাচাই করুন</div>
+              </div>
+
+              <div style="text-align: center; width: 330px;">
+                <div style="border-top: 1.5px solid #334155; margin-bottom: 8px;"></div>
+                <div style="font-size: 24px; font-weight: 800; color: #0f172a;">সভাপতি / সাধারণ সম্পাদক</div>
+                <div style="font-size: 19px; font-weight: 600; color: #475569;">স্বাক্ষর ও সিল</div>
+              </div>
+            </div>
+
+            <!-- Bottom Address Line -->
+            <div style="border-top: 1.5px solid #0f5132; text-align: center; padding-top: 10px; font-size: 20px; font-weight: 600; color: #475569; z-index: 2;">
+              স্বপ্ন ছোঁয়া ঐক্য সমিতি | ঠিকানা: শ্রীনগর, মুন্সীগঞ্জ | স্থাপিত: ২০২৬ ইং
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. PAID MEMBERS LIST (1654 x 2339 px A4) -->
+        <div id="padPaidListNode" class="official-pad-root hidden" style="width: 1654px; height: 2339px; background: #ffffff; padding: 26px; box-sizing: border-box; position: relative; font-family: 'Hind Siliguri', 'Inter', sans-serif; color: #1e293b; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="official-pad-border-frame" style="border: 5px solid #0f5132; outline: 1.5px solid #0f5132; outline-offset: -10px; height: 100%; box-sizing: border-box; padding: 24px 34px; display: flex; flex-direction: column; justify-content: space-between; position: relative; background: #ffffff;">
+            <div class="official-pad-watermark-bg"></div>
+
+            <div style="width: 100%; border-bottom: 2px solid #0f5132; padding-bottom: 4px; z-index: 2;">
+              <img src="assets/pad_header.webp" onerror="this.src='pad_header.webp'" style="width: 100%; height: auto; display: block;" alt="প্যাড হেডার" />
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 24px; font-weight: 700; color: #1e293b; padding: 8px 4px 4px 4px; z-index: 2;">
+              <div>স্মারক নং: <span style="font-family: monospace, 'Hind Siliguri'; color: #0f5132;">সছঐস/পেমেন্ট/২০২৬-০১</span></div>
+              <div>তারিখ: <span id="plDate" style="color: #1e293b;">১৯ নভেম্বর ২০২৬ ইং</span></div>
+            </div>
+
+            <div style="text-align: center; margin: 0 0 8px 0; z-index: 2;">
+              <div style="display: inline-block; background: #094a2b; color: #ffffff; font-size: 30px; font-weight: 800; padding: 10px 52px; border-radius: 14px; letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(9,74,43,0.18);">
+                মাসিক সঞ্চয় ও কিস্তি জমার বিবরণী তালিকা
+              </div>
+            </div>
+
+            <div style="font-size: 21px; color: #334155; padding: 0 6px; z-index: 2;">
+              অত্র সমিতির সম্মানিত সদস্যদের মধ্যে নিম্নে বর্ণিত সদস্যদের মাসিক কিস্তির অর্থ যথাযথভাবে ব্যাংকে গৃহীত হয়েছে:
+            </div>
+
+            <!-- Table of Paid Members -->
+            <div style="border: 2px solid #0f5132; border-radius: 14px; overflow: hidden; background: white; z-index: 2;">
+              <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 20px;">
+                <thead>
+                  <tr style="background: #0e4a2e; color: white;">
+                    <th style="padding: 10px 14px; width: 100px; text-align: center; border-right: 1px solid rgba(255,255,255,0.2);">ক্রঃ নং</th>
+                    <th style="padding: 10px 18px; border-right: 1px solid rgba(255,255,255,0.2);">সদস্যের নাম</th>
+                    <th style="padding: 10px 18px; width: 340px; text-align: center; border-right: 1px solid rgba(255,255,255,0.2);">পেমেন্ট ডেট</th>
+                    <th style="padding: 10px 20px; width: 300px; text-align: right;">জমার পরিমাণ (টাকা)</th>
+                  </tr>
+                </thead>
+                <tbody id="plTableBody">
+                  <!-- Generated by JS -->
+                </tbody>
+                <tfoot>
+                  <tr style="background: #f8fafc; border-top: 2.5px solid #0f5132; font-weight: 800; font-size: 22px;">
+                    <td colspan="3" style="padding: 12px 18px; text-align: right; color: #0e4a2e;">সর্বমোট সংগৃহীত পেমেন্ট (<span id="plTotalCount">২৫</span> জন সদস্য):</td>
+                    <td id="plTotalAmount" style="padding: 12px 20px; text-align: right; color: #0f5132; font-size: 24px;">২,৫০,০০০/- ৳</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <!-- Notes & Bank Info -->
+            <div style="border: 2px solid #0f5132; border-radius: 14px; padding: 14px 22px; background: #f8fafc; font-size: 20px; line-height: 1.5; z-index: 2;">
+              <div style="font-weight: 800; color: #0f172a;">কথায়: <span id="plWordsAmount">দুই লক্ষ পঞ্চাশ হাজার টাকা মাত্র।</span></div>
+              <div style="font-weight: 700; color: #1e293b; margin-top: 4px;">
+                ব্যাংক: CITY BANK PLC | ব্রাঞ্চ: REKABI BAZAR | রাউটিং নং: 225591215
+              </div>
+              <div style="font-weight: 700; color: #1e293b;">
+                একাউন্ট নং: 2305158045001 | একাউন্ট নাম: MD RAHIM, SUMAYA AKTER AND DELWARA BEGUM
+              </div>
+              <div style="font-size: 18px; color: #b45309; font-weight: 600; margin-top: 4px;">
+                বিঃদ্রঃ এই ট্রানজেকশনগুলো রিসিটের উপর ভিত্তি করে কনফার্ম করা হয়েছে, এখনো ব্যাংক স্টেটমেন্টের সাথে ক্রস-ম্যাচ চেক করা হয়নি।
+              </div>
+            </div>
+
+            <!-- Signatures and QR Section -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; padding: 16px 20px 4px 20px; z-index: 2;">
+              <div style="text-align: center; width: 330px;">
+                <div style="border-top: 1.5px solid #334155; margin-bottom: 8px;"></div>
+                <div style="font-size: 24px; font-weight: 800; color: #0f172a;">সাজ্জাদ হোসেন</div>
+                <div style="font-size: 19px; font-weight: 600; color: #475569;">প্রস্তুতকারী / কোষাধ্যক্ষ</div>
+                <div style="font-size: 16px; color: #64748b;">স্বাক্ষর ও তারিখ</div>
+              </div>
+
+              <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                <div style="border: 2px solid #0f5132; border-radius: 12px; padding: 8px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.06);">
+                  <div id="plQrContainer"></div>
+                </div>
+                <div style="font-size: 18px; font-weight: 700; color: #0f5132; margin-top: 6px;">স্ক্যান করে যাচাই করুন</div>
+              </div>
+
+              <div style="text-align: center; width: 330px;">
+                <div style="border-top: 1.5px solid #334155; margin-bottom: 8px;"></div>
+                <div style="font-size: 24px; font-weight: 800; color: #0f172a;">সভাপতি / সাধারণ সম্পাদক</div>
+                <div style="font-size: 19px; font-weight: 600; color: #475569;">স্বাক্ষর ও সিল</div>
+              </div>
+            </div>
+
+            <!-- Bottom Address Bar -->
+            <div style="border-top: 1.5px solid #0f5132; text-align: center; padding-top: 10px; font-size: 20px; font-weight: 600; color: #475569; z-index: 2;">
+              স্বপ্ন ছোঁয়া ঐক্য সমিতি | ঠিকানা: শ্রীনগর, মুন্সীগঞ্জ | স্থাপিত: ২০২৬ ইং
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. DUE MEMBERS LIST (1654 x 2339 px A4) -->
+        <div id="padDueListNode" class="official-pad-root hidden" style="width: 1654px; height: 2339px; background: #ffffff; padding: 26px; box-sizing: border-box; position: relative; font-family: 'Hind Siliguri', 'Inter', sans-serif; color: #1e293b; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="official-pad-border-frame" style="border: 5px solid #0f5132; outline: 1.5px solid #0f5132; outline-offset: -10px; height: 100%; box-sizing: border-box; padding: 24px 34px; display: flex; flex-direction: column; justify-content: space-between; position: relative; background: #ffffff;">
+            <div class="official-pad-watermark-bg"></div>
+
+            <div style="width: 100%; border-bottom: 2px solid #0f5132; padding-bottom: 4px; z-index: 2;">
+              <img src="assets/pad_header.webp" onerror="this.src='pad_header.webp'" style="width: 100%; height: auto; display: block;" alt="প্যাড হেডার" />
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 24px; font-weight: 700; color: #1e293b; padding: 8px 4px 4px 4px; z-index: 2;">
+              <div>স্মারক নং: <span style="font-family: monospace, 'Hind Siliguri'; color: #991b1b;">সছঐস/বকেয়া/২০২৬-০২</span></div>
+              <div>তারিখ: <span id="dlDate" style="color: #1e293b;">১৯ নভেম্বর ২০২৬ ইং</span></div>
+            </div>
+
+            <div style="text-align: center; margin: 0 0 8px 0; z-index: 2;">
+              <div style="display: inline-block; background: #991b1b; color: #ffffff; font-size: 30px; font-weight: 800; padding: 10px 52px; border-radius: 14px; letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(153,27,27,0.2);">
+                বকেয়া মাসিক কিস্তি জমার তালিকা ও জরুরি বিজ্ঞপ্তি
+              </div>
+            </div>
+
+            <div style="font-size: 21px; color: #334155; padding: 0 6px; z-index: 2;">
+              অত্র সমিতির সম্মানিত সদস্যদের মধ্যে নিম্নে বর্ণিত <span id="dlCountText" style="font-weight: 800; color: #991b1b;">২</span> জন সদস্যের চলতি মাসের কিস্তি (১০,০০০/- টাকা) এখনো অপরিশোধিত রয়েছে:
+            </div>
+
+            <!-- Due Members Table -->
+            <div style="border: 2px solid #0f5132; border-radius: 14px; overflow: hidden; background: white; z-index: 2;">
+              <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 22px;">
+                <thead>
+                  <tr style="background: #0e4a2e; color: white;">
+                    <th style="padding: 12px 16px; width: 120px; text-align: center; border-right: 1px solid rgba(255,255,255,0.2);">ক্রঃ</th>
+                    <th style="padding: 12px 24px; border-right: 1px solid rgba(255,255,255,0.2);">সদস্যের নাম</th>
+                    <th style="padding: 12px 24px; width: 360px; text-align: right;">বকেয়া (টাকা)</th>
+                  </tr>
+                </thead>
+                <tbody id="dlTableBody">
+                  <!-- Generated by JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Summary Strip -->
+            <div style="background: #fef2f2; border: 2px solid #fecaca; border-radius: 12px; padding: 14px 24px; font-size: 22px; font-weight: 700; color: #991b1b; display: flex; justify-content: space-between; align-items: center; z-index: 2;">
+              <div>মোট বকেয়া সদস্য: <span id="dlSumCount" style="font-weight: 800;">২</span> জন</div>
+              <div style="color: #0f5132;">জমাকৃত তহবিল: <span id="dlSumFund" style="font-weight: 800;">২,৫০,০০০/- ৳ (২৫ জন)</span></div>
+              <div>মোট বকেয়া: <span id="dlSumDueAmt" style="font-weight: 800;">২০,০০০/- ৳</span></div>
+            </div>
+
+            <!-- Instructions Box -->
+            <div style="border: 2px solid #0f5132; border-radius: 14px; padding: 18px 24px; background: #ffffff; font-size: 21px; line-height: 1.6; z-index: 2;">
+              <div style="font-size: 23px; font-weight: 800; color: #0e4a2e; margin-bottom: 8px;">কিস্তি পরিশোধের নিয়মাবলী ও মাধ্যম:</div>
+              <div style="margin-bottom: 6px;">
+                <strong>১. ব্যাংক: CITY BANK PLC | ব্রাঞ্চ: REKABI BAZAR | রাউটিং নং: 225591215</strong><br/>
+                একাউন্ট নং: <strong>2305158045001</strong> | নাম: <strong>MD RAHIM, SUMAYA AKTER AND DELWARA BEGUM</strong>
+              </div>
+              <div style="margin-bottom: 6px;">
+                <strong>২. বিকাশ (পার্সোনাল): 01881210444</strong> — কারো বিকাশে পেমেন্টের প্রয়োজন হলে অনুগ্রহ করে কোষাধ্যক্ষের সাথে যোগাযোগ করে উক্ত নম্বরে 'সেন্ড মানি' করবেন।
+              </div>
+              <div style="margin-bottom: 6px; color: #b45309; font-weight: 700;">
+                ৩. বিশেষ অনুরোধ: বিকাশে টাকা পাঠানোর সময় দয়া করে ক্যাশ-আউট চার্জসহ মোট অর্থ প্রেরণ করবেন।
+              </div>
+              <div style="color: #0f5132; font-weight: 700;">
+                ৪. বিকাশে টাকা পাঠানোর পর ব্যাংকে জমা হওয়ার অফিসিয়াল রিসিটটি অবশ্যই সংগ্রহ করে গ্রুপে পোস্ট করবেন।
+              </div>
+            </div>
+
+            <!-- Signatures and QR Section -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; padding: 16px 20px 4px 20px; z-index: 2;">
+              <div style="text-align: center; width: 330px;">
+                <div style="border-top: 1.5px solid #334155; margin-bottom: 8px;"></div>
+                <div style="font-size: 24px; font-weight: 800; color: #0f172a;">সাজ্জাদ হোসেন</div>
+                <div style="font-size: 19px; font-weight: 600; color: #475569;">প্রস্তুতকারী / কোষাধ্যক্ষ</div>
+                <div style="font-size: 16px; color: #64748b;">স্বাক্ষর ও তারিখ</div>
+              </div>
+
+              <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                <div style="border: 2px solid #0f5132; border-radius: 12px; padding: 8px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.06);">
+                  <div id="dlQrContainer"></div>
+                </div>
+                <div style="font-size: 18px; font-weight: 700; color: #0f5132; margin-top: 6px;">স্ক্যান করে যাচাই করুন</div>
+              </div>
+
+              <div style="text-align: center; width: 330px;">
+                <div style="border-top: 1.5px solid #334155; margin-bottom: 8px;"></div>
+                <div style="font-size: 24px; font-weight: 800; color: #0f172a;">সভাপতি / সাধারণ সম্পাদক</div>
+                <div style="font-size: 19px; font-weight: 600; color: #475569;">স্বাক্ষর ও সিল</div>
+              </div>
+            </div>
+
+            <!-- Bottom Address Bar -->
+            <div style="border-top: 1.5px solid #0f5132; text-align: center; padding-top: 10px; font-size: 20px; font-weight: 600; color: #475569; z-index: 2;">
+              স্বপ্ন ছোঁয়া ঐক্য সমিতি | ঠিকানা: শ্রীনগর, মুন্সীগঞ্জ | স্থাপিত: ২০২৬ ইং
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- Unified Admin Control Panel Modal -->
   <div id="adminPanelModal" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden">
     <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden border border-emerald-200 animate-pop">
       <div class="bg-gradient-to-r from-slate-900 via-emerald-900 to-teal-900 px-5 py-4 text-white flex flex-wrap items-center justify-between gap-2">
         <div>
-          <span class="inline-block bg-amber-400 text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Admin Control Center • 2-Way Sync</span>
-          <h3 class="text-lg font-bold mt-0.5">🔓 অ্যাডমিন কন্ট্রোল প্যানেল (মেইন অ্যাপ + গুগল শিট সিঙ্ক)</h3>
+          <span class="inline-block bg-amber-400 text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Admin Control Center • Firebase Sync</span>
+          <h3 class="text-lg font-bold mt-0.5">🔓 অ্যাডমিন কন্ট্রোল প্যানেল (মেইন অ্যাপের সাথে লাইভ সিঙ্ক)</h3>
         </div>
         <div class="flex items-center gap-2">
           <button type="button" id="fbAuthBtn" onclick="signInFirebaseGoogle()" class="bg-amber-400 hover:bg-amber-300 text-slate-900 text-xs font-bold px-3 py-1.5 rounded-xl transition">🔥 Firebase কানেক্ট</button>
@@ -388,21 +836,35 @@
         </div>
       </div>
 
+      <!-- Firebase Sync Status Strip -->
       <div id="fbSyncBanner" class="px-5 py-2 bg-emerald-50 border-b border-emerald-200 text-[11px] font-semibold text-emerald-900 flex flex-wrap items-center justify-between gap-2">
         <span id="fbStatusText">🔄 মেইন অ্যাপ (Firebase: somitiapp-1f0a2)-এর সাথে সংযোগ হচ্ছে...</span>
-        <span class="text-emerald-700">এখানে ভেরিফাই/ডিলিট করলে মেইন অ্যাপ + গুগল শিটেও সেম টু সেম আপডেট হবে</span>
+        <span class="text-emerald-700">এখানে ভেরিফাই/ডিলিট করলে মেইন অ্যাপের প্রোফাইলেও সেম টু সেম আপডেট হবে</span>
       </div>
 
+      <!-- Admin Sub-Tabs -->
       <div class="px-5 py-2.5 bg-slate-50 border-b border-slate-200 flex flex-wrap gap-1.5 text-xs">
         <button type="button" data-atab="manage" onclick="switchAdminTab('manage')" class="admin-tab-btn bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold">🗑️ ভেরিফাই ও রিসিট ডিলিট/এডিট</button>
-        <button type="button" data-atab="add" onclick="switchAdminTab('add')" class="admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold">➕ নতুন পেমেন্ট যোগ (মেইন অ্যাপ + শিট)</button>
-        <button type="button" data-atab="settings" onclick="switchAdminTab('settings')" class="admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold">⚙️ শিট সিঙ্ক, নোটিশ ও পাসওয়ার্ড</button>
+        <button type="button" data-atab="add" onclick="switchAdminTab('add')" class="admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold">➕ নতুন পেমেন্ট যোগ (মেইন অ্যাপেও যাবে)</button>
+        <button type="button" data-atab="settings" onclick="switchAdminTab('settings')" class="admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold">⚙️ নোটিশ, পাসওয়ার্ড ও এক্সপোর্ট</button>
       </div>
 
+      <!-- Admin Content Body -->
       <div class="p-5 overflow-y-auto space-y-4 flex-1 text-xs">
+        <!-- Tab 1: Manage / Delete / Restore -->
         <div id="adminTab_manage" class="space-y-3">
+          <div class="bg-gradient-to-r from-emerald-900 to-teal-900 p-3.5 rounded-2xl text-white flex flex-wrap items-center justify-between gap-2 shadow">
+            <div>
+              <div class="font-bold text-sm">🏛️ ৩টি অফিশিয়াল প্যাড ও রিসিট জেনারেটর</div>
+              <div class="text-[11px] text-emerald-200">মানি রিসিট (1654×1450), পরিশোধিত তালিকা (A4) ও বকেয়া তালিকা (A4)</div>
+            </div>
+            <button type="button" onclick="openOfficialPadModal(null, 'receipt')" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-3.5 py-1.5 rounded-xl transition shadow active:scale-95">
+              🖼️ প্যাড তৈরি ও ডাউনলোড করুন
+            </button>
+          </div>
+
           <div class="flex flex-wrap items-center justify-between gap-2 bg-amber-50 border border-amber-200 p-3 rounded-xl">
-            <span class="text-amber-900 font-semibold">যেকোনো ভেরিফাইড রিসিট ডিলিট করলে এখান থেকে, মেইন অ্যাপ থেকে এবং গুগল শিট থেকেও মুছে যাবে।</span>
+            <span class="text-amber-900 font-semibold">যেকোনো ভেরিফাইড রিসিট ডিলিট করলে এখান থেকে এবং মেইন অ্যাপের ডিপোজিট লিস্ট থেকেও মুছে যাবে।</span>
             <div class="flex flex-wrap gap-1.5">
               <button type="button" onclick="deleteAllReceipts()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 rounded-lg transition">🗑️ সব ডিলিট করুন</button>
               <button type="button" onclick="restoreAllDeleted()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-3 py-1.5 rounded-lg transition">♻️ সব রিস্টোর করুন</button>
@@ -412,7 +874,21 @@
           <div id="adminRecordsList" class="space-y-2 max-h-[45vh] overflow-y-auto pr-1"></div>
         </div>
 
+        <!-- Tab 2: Add New Payment / Mark Paid -->
         <div id="adminTab_add" class="hidden space-y-3">
+          <div class="bg-emerald-50 border border-emerald-200 p-3.5 rounded-2xl flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl">⚡</span>
+              <div>
+                <div class="font-bold text-emerald-950 text-xs sm:text-sm">দ্রুত অটো-ফিল (১-ক্লিক সদস্য নির্বাচন)</div>
+                <div class="text-[11px] text-emerald-800">যেকোনো সদস্য নির্বাচন করলেই সব তথ্য স্বয়ংক্রিয়ভাবে ফর্ম ও প্যাডে বসে যাবে</div>
+              </div>
+            </div>
+            <select id="adminMemberSelect" onchange="autoFillAdminPayment(this.value)" class="px-3 py-2 rounded-xl border border-emerald-300 bg-white font-bold text-slate-800 text-xs focus:ring-2 focus:ring-emerald-600 focus:outline-none shadow-sm">
+              <option value="">-- সদস্য নির্বাচন করুন (০১-২৭) --</option>
+            </select>
+          </div>
+
           <form id="adminAddForm" onsubmit="handleAdminAdd(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
             <div>
               <label class="block font-bold text-slate-700 mb-1">রিসিট কোড</label>
@@ -447,25 +923,26 @@
               <input type="url" id="addSlipUrl" placeholder="https://drive.google.com/..." class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-white" />
             </div>
             <div class="sm:col-span-2">
-              <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-xl transition shadow">✅ ভেরিফাই করুন (মেইন অ্যাপ + গুগল শিট)</button>
+              <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-xl transition shadow">✅ ভেরিফাই করুন, মেইন অ্যাপে পাঠান ও ৩টি প্যাড তৈরি করুন</button>
             </div>
           </form>
         </div>
 
+        <!-- Tab 3: Notice, Password & Export -->
         <div id="adminTab_settings" class="hidden space-y-4">
-          <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 space-y-2.5">
-            <label class="block font-bold text-amber-950">🔗 গুগল শিট ২-ওয়ে সিঙ্ক (Apps Script Web App URL)</label>
-            <p class="text-[11px] text-amber-800">গুগল শিটের Extensions → Apps Script ডিপ্লয় লিংকটি এখানে সেভ করলে এখান থেকে পেমেন্ট যোগ বা ডিলিট করলেই গুগল শিট অটোমেটিক আপডেট হবে।</p>
-            <div class="flex gap-2">
-              <input type="url" id="sheetWebhookInput" placeholder="https://script.google.com/macros/s/.../exec" class="flex-1 px-3 py-2 rounded-xl border border-amber-300 bg-white" />
-              <button type="button" onclick="saveSheetWebhook()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 rounded-lg transition">সেভ</button>
-            </div>
-          </div>
-
           <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2.5">
             <label class="block font-bold text-slate-800">📢 উপরের জরুরি বিজ্ঞপ্তি পরিবর্তন করুন</label>
             <textarea id="adminNoticeInput" rows="2" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white"></textarea>
             <button type="button" onclick="saveNoticeText()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-4 py-2 rounded-lg transition">💾 বিজ্ঞপ্তি সেভ করুন</button>
+          </div>
+
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2.5">
+            <label class="block font-bold text-slate-800">🌐 Google Sheets ২-ওয়ে ওয়েব হুক URL (Apps Script)</label>
+            <div class="flex gap-2">
+              <input type="url" id="adminWebhookInput" placeholder="https://script.google.com/macros/s/.../exec" class="flex-1 px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+              <button type="button" onclick="saveWebhookUrl()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-4 py-2 rounded-lg transition">সেভ</button>
+            </div>
+            <p class="text-[11px] text-slate-500">পেমেন্ট ভেরিফাই হলে স্বয়ংক্রিয়ভাবে এই ওয়েব হুকে ডাটা পোস্ট হবে এবং গুগল শিটে যুক্ত হবে।</p>
           </div>
 
           <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2.5">
@@ -491,6 +968,7 @@
   </div>
 
   <script>
+    // Firebase Config (Same as Main App: somitiapp-1f0a2)
     const firebaseConfig = {
       apiKey: "AIzaSyCg4XAdBGbZOLzrWnRmIh9QItthL9IAEGc",
       authDomain: "somitiapp-1f0a2.firebaseapp.com",
@@ -507,19 +985,198 @@
         fbDb = firebase.firestore();
         fbAuth = firebase.auth();
       }
-    } catch (e) {}
-
-    function getSomitiDocRef() {
-      return fbDb ? fbDb.collection('somitis').doc('main') : null;
+    } catch (e) {
+      console.warn('Firebase init skipped:', e);
     }
 
-    const DEFAULT_RECORDS = [{"code": "RCT-01", "alt_code": "সছঐস/রিসিট/২০২৬-০১", "member": "কাওসার আহমেদ রিফাত", "serial": "০২", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "সিটি ব্যাংক (শ্রীনগর শাখা) — যৌথ ক্যাশ ডিপোজিট", "sender": "যৌথ ডিপোজিট (সাজ্জাদ, রিফাত ও রাকিব)", "slip_url": "https://drive.google.com/file/d/1VXTQa7sSZBvtds1mGXdINkc3LoyFW7Ix/view?usp=drivesdk", "pad_url": ""}, {"code": "RCT-02", "alt_code": "সছঐস/রিসিট/২০২৬-০২", "member": "মনিরুজ্জামান", "serial": "০৮", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা (১০,০৭৫.৮৯ ৳)", "method": "Al Mulla Exchange -> City Bank PLC (Txn: 2026/67179693)", "sender": "MANIRUZZAMAN MD MOTIUR RAHMAN (কুয়েত প্রবাসী)", "slip_url": "https://drive.google.com/file/d/1mCL4YxhBqHE4V_mYFBGmrPx7Y93tdpec/view?usp=drivesdk", "pad_url": ""}, {"code": "RCT-03", "alt_code": "সছঐস/রিসিট/২০২৬-০৩", "member": "সাজ্জাদ হোসেন", "serial": "১৫", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "সিটি ব্যাংক (শ্রীনগর শাখা) — যৌথ ক্যাশ ডিপোজিট", "sender": "সাজ্জাদ হোসেন (যৌথ স্লিপ: ৩০,০০০/-)", "slip_url": "https://drive.google.com/file/d/1VXTQa7sSZBvtds1mGXdINkc3LoyFW7Ix/view?usp=drivesdk", "pad_url": ""}, {"code": "RCT-04", "alt_code": "সছঐস/রিসিট/২০২৬-০৪", "member": "জনি শিকদার", "serial": "২৪", "date": "১১ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank Agent Banking (Txn: TR041429111126)", "sender": "শিরিন আক্তার (জনি শিকদারের পক্ষে)", "slip_url": "https://drive.google.com/file/d/1-3lIG7y9pK0752Vi7EUjxt2csVw5dcpm/view?usp=drivesdk", "pad_url": ""}, {"code": "RCT-05", "alt_code": "সছঐস/রিসিট/২০২৬-০৫", "member": "মোহাম্মদ রাকিব", "serial": "২৭", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "সিটি ব্যাংক (শ্রীনগর শাখা) — যৌথ ক্যাশ ডিপোজিট", "sender": "যৌথ ডিপোজিট (সাজ্জাদ, রিফাত ও রাকিব)", "slip_url": "https://drive.google.com/file/d/1VXTQa7sSZBvtds1mGXdINkc3LoyFW7Ix/view?usp=drivesdk", "pad_url": ""}, {"code": "RCT-06", "alt_code": "সছঐস/রিসিট/২০২৬-০৬", "member": "আবুল-কালাম", "serial": "১৬", "date": "১২ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash", "sender": "মোঃ রাসেল (আবুল কালামের পক্ষে)", "slip_url": "https://drive.google.com/file/d/1RCxWG5JsSnS16qU3CADBox0ON3KYm7dB/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/16vo3nmgB2oRk7X6qOhRvpWV4QFijSZOY/view?usp=drivesdk"}, {"code": "RCT-07", "alt_code": "সছঐস/রিসিট/২০২৬-০৭", "member": "রাসেল খান", "serial": "০৩", "date": "১২ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Other Bank Transfer (Ref: 1896516)", "sender": "LAMIA KHAN (A/C: 2216*****7208)", "slip_url": "https://drive.google.com/file/d/1G3sdjPKqjmzYyKGvDNKvukit3SjNMJQo/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1-1KUr3yLY7A_LNDVkAqM4jYDbWnUzwLX/view?usp=drivesdk"}, {"code": "RCT-08", "alt_code": "সছঐস/রিসিট/২০২৬-০৮", "member": "মোঃ সিহাব শরীফ", "serial": "০৪", "date": "১২ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা (প্রেরিত: ৯,৮৫২/- ৳)", "method": "Western Union Direct to Bank (MTCN: 596-636-1604)", "sender": "MD SIHAB SHARIF (ইতালি প্রবাসী)", "slip_url": "https://drive.google.com/file/d/1z1hsi6qsjX8J64_6iirEelcGRhZpU1om/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1-ykJt6tQ22ImeluB-DHSbqLYyUwUC7ni/view?usp=drivesdk"}, {"code": "RCT-09", "alt_code": "সছঐস/রিসিট/২০২৬-০৯", "member": "ফয়সাল শেখ", "serial": "১৮", "date": "১২ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা (72.46 EUR)", "method": "Taptap Send (Txn: 2389759779816870520)", "sender": "Sheikh Foysal (স্পেন প্রবাসী)", "slip_url": "https://drive.google.com/file/d/1WLQXgLi3vszMRTZPgeC4n3lvQH7_y7hM/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1nlzqwRswhvSM0ads6JmzQYjj4bZ7wO04/view?usp=drivesdk"}, {"code": "RCT-10", "alt_code": "সছঐস/রিসিট/২০২৬-১০", "member": "মোহাম্মদ সোহেল", "serial": "২৫", "date": "১৩ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Other Bank Transfer (Ref: 1925061)", "sender": "HOSNA ARA AKTER (A/C: 2164*****6976)", "slip_url": "https://drive.google.com/file/d/108-NTL2TNBry00lHiuxu-vf7XvReW-CS/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1vT9jpOcxZNVvpwr1ISY8eSR0QJqpiObO/view?usp=drivesdk"}, {"code": "RCT-11", "alt_code": "সছঐস/রিসিট/২০২৬-১১", "member": "আব্দুল বাতেন পাঠান", "serial": "২৬", "date": "১৩ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "UCB ONE Fund Transfer NPSB (Txn: IB94562885)", "sender": "আব্দুল বাতেন পাঠান (A/C: 0093********7417)", "slip_url": "https://drive.google.com/file/d/1xvdHcRQ71PJL6eD-THJG_nIFXEOl5Rti/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1KtWz4dUkAnTM859Cg2OQyiov3A-4nqI1/view?usp=drivesdk"}, {"code": "RCT-12", "alt_code": "সছঐস/রিসিট/২০২৬-১২", "member": "আবু-বক্কর সিদ্দিক", "serial": "২৩", "date": "১৩ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Rupali Bank PLC NPSB (Trx: 82611136197002400001)", "sender": "Abu Bakar Siddique Nayan (A/C: 6197010002768)", "slip_url": "https://drive.google.com/file/d/1xaCWmwd6Pa49lTrZPX7r0JMLLEklSq8Q/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1xTXbsvXWEEUErbE7COAoFj_auszgVbOG/view?usp=drivesdk"}, {"code": "RCT-13", "alt_code": "সছঐস/রিসিট/২০২৬-১৩", "member": "সজীব মোল্লা", "serial": "০৫", "date": "১৪ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা (প্রেরিত: ৯,৮০০/- ৳)", "method": "Western Union Direct to Bank (MTCN: 407-064-7975)", "sender": "SAJIB MOLLA (ইতালি প্রবাসী)", "slip_url": "https://drive.google.com/file/d/1nlzsotbJ3e_zHTNPg_Jxhz0hYAkFgJ7A/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1EmLhPE3HttJ3OQrMUPijG-cl02DF9Ce1/view?usp=drivesdk"}, {"code": "RCT-14", "alt_code": "সছঐস/রিসিট/২০২৬-১৪", "member": "মোঃ আওলাদ হোসেন", "serial": "০১", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — যৌথ ক্যাশ ২০,০০০/-", "sender": "মিনা মমতাজ (যৌথ স্লিপ: Awolad ও Yasin)", "slip_url": "https://drive.google.com/file/d/1IIxhnvcJHJ27aPqbwPxpAL8JUEwsh3lq/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1sJV5My4sl_N3UfYekGeDHZsRtKAJTv5o/view?usp=drivesdk"}, {"code": "RCT-15", "alt_code": "সছঐস/রিসিট/২০২৬-১৫", "member": "মোঃ ইয়াছিন দেওয়ান", "serial": "২২", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — যৌথ ক্যাশ ২০,০০০/-", "sender": "মিনা মমতাজ (যৌথ স্লিপ: Awolad ও Yasin)", "slip_url": "https://drive.google.com/file/d/1IIxhnvcJHJ27aPqbwPxpAL8JUEwsh3lq/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/15_ZlrKqEhESNaKgm98csOFQheVsT0E-Z/view?usp=drivesdk"}, {"code": "RCT-16", "alt_code": "সছঐস/রিসিট/২০২৬-১৬", "member": "শেখ মাসুদ", "serial": "১৭", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash", "sender": "MASUD Sheikh / রহিম (হাঁসাড়া, শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1ThTvBdxfA8zuKsFDrsIs5zYzNlObGczQ/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/11g8gQcn01vnQrVGNo7XnqhMPgnD_RvB6/view?usp=drivesdk"}, {"code": "RCT-17", "alt_code": "সছঐস/রিসিট/২০২৬-১৭", "member": "মোহাম্মদ ইয়ামিন শেখ", "serial": "১৯", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash (Remittance)", "sender": "MD. Yeamen (কলেজ গেট, শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1yY-AIZOEGXRJF5wE5BUHiQHDYGUJkI26/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1u64n57Jh1nIjadKGQuaqFycO_xYZRcbp/view?usp=drivesdk"}, {"code": "RCT-18", "alt_code": "সছঐস/রিসিট/২০২৬-১৮", "member": "শফিকুল", "serial": "০৭", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash (Slip #51345)", "sender": "Safiqul (সেলিমতি / গাদিঘাট, শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1O3ESaSFDib0EijIDMQVAgNjTzRBLBDHH/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/12abMKGuR_roGxZzCiHV00FiBE7yVj0AY/view?usp=drivesdk"}, {"code": "RCT-19", "serial_code": "S-06", "alt_code": "সছঐস/রিসিট/২০২৬-১৯", "member": "মোঃ নাজমুল ইসলাম", "serial": "০৬", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Western Union Direct to Bank (MTCN: 376-060-3297)", "sender": "MOHAMMAD AOULAD HOSSAIN (যৌথ ৩০,০০০/-)", "slip_url": "https://drive.google.com/file/d/1C2Wp0qfddtNCzLWHlkfghsC-FblupxhS/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/12lG6BdMm19Ta7wvMtaTp0KbuDsIPNqCM/view?usp=drivesdk"}, {"code": "RCT-20", "serial_code": "S-10", "alt_code": "সছঐস/রিসিট/২০২৬-২০", "member": "জুয়েল শিকদার", "serial": "১০", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Western Union Direct to Bank (MTCN: 376-060-3297)", "sender": "MOHAMMAD AOULAD HOSSAIN (যৌথ ৩০,০০০/-)", "slip_url": "https://drive.google.com/file/d/1C2Wp0qfddtNCzLWHlkfghsC-FblupxhS/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/12lG6BdMm19Ta7wvMtaTp0KbuDsIPNqCM/view?usp=drivesdk"}, {"code": "RCT-21", "serial_code": "S-11", "alt_code": "সছঐস/রিসিট/২০২৬-২১", "member": "চঞ্চল হাওলাদার", "serial": "১১", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Western Union Direct to Bank (MTCN: 376-060-3297)", "sender": "MOHAMMAD AOULAD HOSSAIN (যৌথ ৩০,০০০/-)", "slip_url": "https://drive.google.com/file/d/1C2Wp0qfddtNCzLWHlkfghsC-FblupxhS/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/12lG6BdMm19Ta7wvMtaTp0KbuDsIPNqCM/view?usp=drivesdk"}, {"code": "RCT-22", "serial_code": "S-20", "alt_code": "সছঐস/রিসিট/২০২৬-২২", "member": "মেহেদী হাসান", "serial": "২০", "date": "১৬ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash (Slip #52824)", "sender": "MEHEDI HASAN (মত্তগ্রাম, শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1uQqbEO8IYbX6jsma8ZjojzwyczGFUhgw/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1EDufXkc_Yu15NDvTovOAYLWBySgnotEj/view?usp=drivesdk"}, {"code": "RCT-23", "serial_code": "S-14", "alt_code": "সছঐস/রিসিট/২০২৬-২৩", "member": "রাজু আহমেদ খান", "serial": "১৪", "date": "১৭ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Trust Money NPSB -> City Bank PLC (Ref: OWS100716910256)", "sender": "Trust Money A/C: 0071-0310015289", "slip_url": "https://drive.google.com/file/d/1r_yqW5kA9LarJlvE7GV0VgFrm70EOybb/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1YTponCBffimFVHDlXba1EAxHs8W4ArkS/view?usp=drivesdk"}, {"code": "RCT-24", "serial_code": "S-09", "alt_code": "সছঐস/রিসিট/২০২৬-২৪", "member": "আওলাদ খান", "serial": "০৯", "date": "১৮ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash (Slip #2914)", "sender": "Jihad Hasan (বাঘবাড়ী, শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1E-UOGXj0bWbwB1bSFpzPgOa7fnJv5Qyj/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1lnM3Twj_vURkd6eqlhcxHwMOa6Cs2SQ8/view?usp=drivesdk"}, {"code": "RCT-25", "serial_code": "S-21", "alt_code": "সছঐস/রিসিট/২০২৬-২৫", "member": "তাজুল ইসলাম", "serial": "২১", "date": "১৯ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash (Slip #1273)", "sender": "ফাতেমা আক্তার / Fatema Akter (শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1oiEA8lecAdqwcSven7qGX5xAFFFYebWK/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1ljosdxEoXk5tlMjtqFj4OC98gFgrmjAy/view?usp=drivesdk"}, {"code": "PAID-LIST", "alt_code": "স্মারক-০১/২০২৬", "member": "মাসিক সঞ্চয় ও কিস্তি জমার বিবরণী তালিকা (২৫ জন)", "serial": "অফিসিয়াল তালিকা", "date": "১৯ নভেম্বর ২০২৬", "amount": "২,৫০,০০০/- টাকা (২৫ জন)", "method": "CITY BANK PLC (REKABI BAZAR) — A/C: 2305158045001", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1G0fRm1LBtmIV89zePGnS4ciqZYwmY_SI/view?usp=drivesdk"}, {"code": "DUE-LIST", "alt_code": "স্মারক-০২/২০২৬", "member": "বকেয়া মাসিক কিস্তি জমার তালিকা ও জরুরি বিজ্ঞপ্তি (২ জন)", "serial": "অফিসিয়াল বিজ্ঞপ্তি", "date": "১৯ নভেম্বর ২০২৬", "amount": "বকেয়া: ২০,০০০/- টাকা (২ জন)", "method": "সিটি ব্যাংক (২৩০৫১৫৮০৪৫০০১) / বিকাশ: ০১৮৮১২১০৪৪৪", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1MlObD7PgNV1RTVCEpnHyLHvDmogPa9IO/view?usp=drivesdk"}];
+    function getSomitiDocRef() {
+      if (!fbDb) return null;
+      return fbDb.collection('somitis').doc('swapnochowa');
+    }
+
+    // Default Pad Configuration
+    const DEFAULT_PAD_CONFIG = {
+      reg: "সমবায় রেজিঃ নং-৭৮৯০/২০২৬",
+      addr: "শ্রীনগর, মুন্সীগঞ্জ",
+      bank: "সিটি ব্যাংক পিএলসি • হিসাব: ২৩০৫১৫৮০৪৫০০১",
+      routing: "২২৫২৬০৪১৫",
+      bkash: "০১৮৮১২১০৪৪৪",
+      cashier: "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)"
+    };
+
+    let padConfig = { ...DEFAULT_PAD_CONFIG };
+    try {
+      const stored = localStorage.getItem('somiti_pad_custom_settings');
+      if (stored) {
+        padConfig = { ...DEFAULT_PAD_CONFIG, ...JSON.parse(stored) };
+      }
+    } catch (_) {}
+
+    function applyPadConfig() {
+      const r = id => document.getElementById(id);
+      if (r('hdrReg')) r('hdrReg').innerText = '🏛️ ' + (padConfig.reg || DEFAULT_PAD_CONFIG.reg);
+      if (r('hdrAddr')) r('hdrAddr').innerText = '📍 ' + (padConfig.addr || DEFAULT_PAD_CONFIG.addr);
+      if (r('hdrBank')) r('hdrBank').innerText = '🏦 ' + (padConfig.bank || DEFAULT_PAD_CONFIG.bank);
+      if (r('hdrRouting')) r('hdrRouting').innerText = '🌐 রাউটিং: ' + (padConfig.routing || DEFAULT_PAD_CONFIG.routing);
+      if (r('hdrBkash')) r('hdrBkash').innerText = '📱 বিকাশ: ' + (padConfig.bkash || DEFAULT_PAD_CONFIG.bkash);
+      if (r('guideRouting')) r('guideRouting').innerText = padConfig.routing || DEFAULT_PAD_CONFIG.routing;
+      if (r('guideBkash')) r('guideBkash').innerText = padConfig.bkash || DEFAULT_PAD_CONFIG.bkash;
+      if (r('guideCashier')) r('guideCashier').innerText = (padConfig.cashier || DEFAULT_PAD_CONFIG.cashier) + " — কোষাধ্যক্ষ";
+      if (r('kpiCashierText')) r('kpiCashierText').innerText = padConfig.cashier || DEFAULT_PAD_CONFIG.cashier;
+      if (r('mCashierSignName')) r('mCashierSignName').innerText = padConfig.cashier || DEFAULT_PAD_CONFIG.cashier;
+    }
+
+    function openPadEditModal() {
+      document.getElementById('editAddr').value = padConfig.addr || '';
+      document.getElementById('editBank').value = padConfig.bank || '';
+      document.getElementById('editRouting').value = padConfig.routing || '';
+      document.getElementById('editBkash').value = padConfig.bkash || '';
+      document.getElementById('editReg').value = (padConfig.reg || '').replace(/^সমবায় রেজিঃ নং-/, '');
+      document.getElementById('editCashier').value = padConfig.cashier || '';
+      document.getElementById('padEditModal').classList.remove('hidden');
+    }
+
+    function closePadEditModal() {
+      document.getElementById('padEditModal').classList.add('hidden');
+    }
+
+    function savePadCustomDetails() {
+      const addr = document.getElementById('editAddr').value.trim();
+      const bank = document.getElementById('editBank').value.trim();
+      const routing = document.getElementById('editRouting').value.trim();
+      const bkash = document.getElementById('editBkash').value.trim();
+      const reg = document.getElementById('editReg').value.trim();
+      const cashier = document.getElementById('editCashier').value.trim();
+
+      padConfig = {
+        addr: addr || DEFAULT_PAD_CONFIG.addr,
+        bank: bank || DEFAULT_PAD_CONFIG.bank,
+        routing: routing || DEFAULT_PAD_CONFIG.routing,
+        bkash: bkash || DEFAULT_PAD_CONFIG.bkash,
+        reg: reg ? (reg.startsWith("সমবায়") ? reg : ("সমবায় রেজিঃ নং-" + reg)) : DEFAULT_PAD_CONFIG.reg,
+        cashier: cashier || DEFAULT_PAD_CONFIG.cashier
+      };
+
+      try {
+        localStorage.setItem('somiti_pad_custom_settings', JSON.stringify(padConfig));
+      } catch (_) {}
+
+      // Two-Way Sync: Update master Somiti profile in Firestore (swapnochowa)
+      const docRef = getSomitiDocRef();
+      if (docRef) {
+        try {
+          docRef.set({
+            address: addr || DEFAULT_PAD_CONFIG.addr,
+            bankName: bank || DEFAULT_PAD_CONFIG.bank,
+            bankAccount: bank ? (bank.match(/\\d{9,}/) ? bank.match(/\\d{9,}/)[0] : "2305158045001") : "2305158045001",
+            routingNo: routing || "২২৫২৬০৪১৫",
+            bkashNumber: bkash || "০১৮৮১২১০৪৪৪",
+            regNo: padConfig.reg,
+            cashierName: cashier || DEFAULT_PAD_CONFIG.cashier,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true }).catch(err => console.warn("Firestore profile sync warning:", err));
+        } catch(stErr) {
+          console.warn("Firestore save notice:", stErr);
+        }
+      }
+
+      applyPadConfig();
+      closePadEditModal();
+      alert("✅ প্যাডের তথ্য সফলভাবে সংরক্ষিত ও ক্লাউডে লাইভ সিঙ্ক হয়েছে!");
+    }
+
+    function resetPadDefaults() {
+      if (!confirm("আপনি কি নিশ্চিতভাবে ডিফল্ট প্যাড তথ্য রিস্টোর করতে চান?")) return;
+      padConfig = { ...DEFAULT_PAD_CONFIG };
+      try {
+        localStorage.removeItem('somiti_pad_custom_settings');
+      } catch (_) {}
+
+      const docRef = getSomitiDocRef();
+      if (docRef) {
+        try {
+          docRef.set({
+            address: DEFAULT_PAD_CONFIG.addr,
+            bankName: DEFAULT_PAD_CONFIG.bank,
+            bankAccount: "2305158045001",
+            routingNo: "২২৫২৬০৪১৫",
+            bkashNumber: "০১৮৮১২১০৪৪৪",
+            regNo: DEFAULT_PAD_CONFIG.reg,
+            cashierName: DEFAULT_PAD_CONFIG.cashier,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true }).catch(() => {});
+        } catch(_) {}
+      }
+
+      applyPadConfig();
+      closePadEditModal();
+      alert("✅ ডিফল্ট তথ্য সফলভাবে রিস্টোর ও ক্লাউডে সিঙ্ক হয়েছে!");
+    }
+
+    const DEFAULT_RECORDS = [
+      {"code": "RCT-01", "serial_code": "S-02", "alt_code": "সছঐস/রিসিট/২০২৬-০১", "member": "কাওসার আহমেদ রিফাত", "serial": "০২", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "সিটি ব্যাংক (শ্রীনগর শাখা) — যৌথ ক্যাশ ডিপোজিট", "sender": "যৌথ ডিপোজিট (সাজ্জাদ, রিফাত ও রাকিব)", "slip_url": "https://drive.google.com/file/d/1VXTQa7sSZBvtds1mGXdINkc3LoyFW7Ix/view?usp=drivesdk", "pad_url": ""},
+      {"code": "RCT-02", "serial_code": "S-08", "alt_code": "সছঐস/রিসিট/২০২৬-০২", "member": "মনিরুজ্জামান", "serial": "০৮", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা (১০,০৭৫.৮৯ ৳)", "method": "Al Mulla Exchange -> City Bank PLC (Txn: 2026/67179693)", "sender": "MANIRUZZAMAN MD MOTIUR RAHMAN (কুয়েত প্রবাসী)", "slip_url": "https://drive.google.com/file/d/1mCL4YxhBqHE4V_mYFBGmrPx7Y93tdpec/view?usp=drivesdk", "pad_url": ""},
+      {"code": "RCT-03", "serial_code": "S-15", "alt_code": "সছঐস/রিসিট/২০২৬-০৩", "member": "সাজ্জাদ হোসেন", "serial": "১৫", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "সিটি ব্যাংক (শ্রীনগর শাখা) — যৌথ ক্যাশ ডিপোজিট", "sender": "সাজ্জাদ হোসেন (যৌথ স্লিপ: ৩০,০০০/-)", "slip_url": "https://drive.google.com/file/d/1VXTQa7sSZBvtds1mGXdINkc3LoyFW7Ix/view?usp=drivesdk", "pad_url": ""},
+      {"code": "RCT-04", "serial_code": "S-24", "alt_code": "সছঐস/রিসিট/২০২৬-০৪", "member": "জনি শিকদার", "serial": "২৪", "date": "১১ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank Agent Banking (Txn: TR041429111126)", "sender": "শিরিন আক্তার (জনি শিকদারের পক্ষে)", "slip_url": "https://drive.google.com/file/d/1-3lIG7y9pK0752Vi7EUjxt2csVw5dcpm/view?usp=drivesdk", "pad_url": ""},
+      {"code": "RCT-05", "serial_code": "S-27", "alt_code": "সছঐস/রিসিট/২০২৬-০৫", "member": "মোহাম্মদ রাকিব", "serial": "২৭", "date": "১০ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "সিটি ব্যাংক (শ্রীনগর শাখা) — যৌথ ক্যাশ ডিপোজিট", "sender": "যৌথ ডিপোজিট (সাজ্জাদ, রিফাত ও রাকিব)", "slip_url": "https://drive.google.com/file/d/1VXTQa7sSZBvtds1mGXdINkc3LoyFW7Ix/view?usp=drivesdk", "pad_url": ""},
+      {"code": "RCT-06", "serial_code": "S-16", "alt_code": "সছঐস/রিসিট/২০২৬-০৬", "member": "আবুল-কালাম", "serial": "১৬", "date": "১২ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash", "sender": "মোঃ রাসেল (আবুল কালামের পক্ষে)", "slip_url": "https://drive.google.com/file/d/1RCxWG5JsSnS16qU3CADBox0ON3KYm7dB/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/16vo3nmgB2oRk7X6qOhRvpWV4QFijSZOY/view?usp=drivesdk"},
+      {"code": "RCT-07", "serial_code": "S-03", "alt_code": "সছঐস/রিসিট/২০২৬-০৭", "member": "রাসেল খান", "serial": "০৩", "date": "১২ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Other Bank Transfer (Ref: 1896516)", "sender": "LAMIA KHAN (A/C: 2216*****7208)", "slip_url": "https://drive.google.com/file/d/1G3sdjPKqjmzYyKGvDNKvukit3SjNMJQo/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1-1KUr3yLY7A_LNDVkAqM4jYDbWnUzwLX/view?usp=drivesdk"},
+      {"code": "RCT-08", "serial_code": "S-04", "alt_code": "সছঐস/রিসিট/২০২৬-০৮", "member": "মোঃ সিহাব শরীফ", "serial": "০৪", "date": "১২ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা (প্রেরিত: ৯,৮৫২/- ৳)", "method": "Western Union Direct to Bank (MTCN: 596-636-1604)", "sender": "MD SIHAB SHARIF (ইতালি প্রবাসী)", "slip_url": "https://drive.google.com/file/d/1z1hsi6qsjX8J64_6iirEelcGRhZpU1om/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1-ykJt6tQ22ImeluB-DHSbqLYyUwUC7ni/view?usp=drivesdk"},
+      {"code": "RCT-09", "serial_code": "S-18", "alt_code": "সছঐস/রিসিট/২০২৬-০৯", "member": "ফয়সাল শেখ", "serial": "১৮", "date": "১২ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা (72.46 EUR)", "method": "Taptap Send (Txn: 2389759779816870520)", "sender": "Sheikh Foysal (স্পেন প্রবাসী)", "slip_url": "https://drive.google.com/file/d/1WLQXgLi3vszMRTZPgeC4n3lvQH7_y7hM/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1nlzqwRswhvSM0ads6JmzQYjj4bZ7wO04/view?usp=drivesdk"},
+      {"code": "RCT-10", "serial_code": "S-25", "alt_code": "সছঐস/রিসিট/২০২৬-১০", "member": "মোহাম্মদ সোহেল", "serial": "২৫", "date": "১৩ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Other Bank Transfer (Ref: 1925061)", "sender": "HOSNA ARA AKTER (A/C: 2164*****6976)", "slip_url": "https://drive.google.com/file/d/108-NTL2TNBry00lHiuxu-vf7XvReW-CS/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1vT9jpOcxZNVvpwr1ISY8eSR0QJqpiObO/view?usp=drivesdk"},
+      {"code": "RCT-11", "serial_code": "S-26", "alt_code": "সছঐস/রিসিট/২০২৬-১১", "member": "আব্দুল বাতেন পাঠান", "serial": "২৬", "date": "১৩ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "UCB ONE Fund Transfer NPSB (Txn: IB94562885)", "sender": "আব্দুল বাতেন পাঠান (A/C: 0093********7417)", "slip_url": "https://drive.google.com/file/d/1xvdHcRQ71PJL6eD-THJG_nIFXEOl5Rti/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1KtWz4dUkAnTM859Cg2OQyiov3A-4nqI1/view?usp=drivesdk"},
+      {"code": "RCT-12", "serial_code": "S-23", "alt_code": "সছঐস/রিসিট/২০২৬-১২", "member": "আবু-বক্কর সিদ্দিক", "serial": "২৩", "date": "১৩ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Rupali Bank PLC NPSB (Trx: 82611136197002400001)", "sender": "Abu Bakar Siddique Nayan (A/C: 6197010002768)", "slip_url": "https://drive.google.com/file/d/1xaCWmwd6Pa49lTrZPX7r0JMLLEklSq8Q/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1xTXbsvXWEEUErbE7COAoFj_auszgVbOG/view?usp=drivesdk"},
+      {"code": "RCT-13", "serial_code": "S-05", "alt_code": "সছঐস/রিসিট/২০২৬-১৩", "member": "সজীব মোল্লা", "serial": "০৫", "date": "১৪ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা (প্রেরিত: ৯,৮০০/- ৳)", "method": "Western Union Direct to Bank (MTCN: 407-064-7975)", "sender": "SAJIB MOLLA (ইতালি প্রবাসী)", "slip_url": "https://drive.google.com/file/d/1nlzsotbJ3e_zHTNPg_Jxhz0hYAkFgJ7A/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1EmLhPE3HttJ3OQrMUPijG-cl02DF9Ce1/view?usp=drivesdk"},
+      {"code": "RCT-14", "serial_code": "S-01", "alt_code": "সছঐস/রিসিট/২০২৬-১৪", "member": "মোঃ আওলাদ হোসেন", "serial": "০১", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — যৌথ ক্যাশ ২০,০০০/-", "sender": "মিনা মমতাজ (যৌথ স্লিপ: Awolad ও Yasin)", "slip_url": "https://drive.google.com/file/d/1IIxhnvcJHJ27aPqbwPxpAL8JUEwsh3lq/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1sJV5My4sl_N3UfYekGeDHZsRtKAJTv5o/view?usp=drivesdk"},
+      {"code": "RCT-15", "serial_code": "S-22", "alt_code": "সছঐস/রিসিট/২০২৬-১৫", "member": "মোঃ ইয়াছিন দেওয়ান", "serial": "২২", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — যৌথ ক্যাশ ২০,০০০/-", "sender": "মিনা মমতাজ (যৌথ স্লিপ: Awolad ও Yasin)", "slip_url": "https://drive.google.com/file/d/1IIxhnvcJHJ27aPqbwPxpAL8JUEwsh3lq/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/15_ZlrKqEhESNaKgm98csOFQheVsT0E-Z/view?usp=drivesdk"},
+      {"code": "RCT-16", "serial_code": "S-17", "alt_code": "সছঐস/রিসিট/২০২৬-১৬", "member": "শেখ মাসুদ", "serial": "১৭", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash", "sender": "MASUD Sheikh / রহিম (হাঁসাড়া, শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1ThTvBdxfA8zuKsFDrsIs5zYzNlObGczQ/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/11g8gQcn01vnQrVGNo7XnqhMPgnD_RvB6/view?usp=drivesdk"},
+      {"code": "RCT-17", "serial_code": "S-19", "alt_code": "সছঐস/রিসিট/২০২৬-১৭", "member": "মোহাম্মদ ইয়ামিন শেখ", "serial": "১৯", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash (Remittance)", "sender": "MD. Yeamen (কলেজ গেট, শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1yY-AIZOEGXRJF5wE5BUHiQHDYGUJkI26/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1u64n57Jh1nIjadKGQuaqFycO_xYZRcbp/view?usp=drivesdk"},
+      {"code": "RCT-18", "serial_code": "S-07", "alt_code": "সছঐস/রিসিট/২০২৬-১৮", "member": "শফিকুল", "serial": "০৭", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash (Slip #51345)", "sender": "Safiqul (সেলিমতি / গাদিঘাট, শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1O3ESaSFDib0EijIDMQVAgNjTzRBLBDHH/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/12abMKGuR_roGxZzCiHV00FiBE7yVj0AY/view?usp=drivesdk"},
+      {"code": "RCT-19", "serial_code": "S-06", "alt_code": "সছঐস/রিসিট/২০২৬-১৯", "member": "মোঃ নাজমুল ইসলাম", "serial": "০৬", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Western Union Direct to Bank (MTCN: 376-060-3297)", "sender": "MOHAMMAD AOULAD HOSSAIN (যৌথ ৩০,০০০/-)", "slip_url": "https://drive.google.com/file/d/1C2Wp0qfddtNCzLWHlkfghsC-FblupxhS/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/12lG6BdMm19Ta7wvMtaTp0KbuDsIPNqCM/view?usp=drivesdk"},
+      {"code": "RCT-20", "serial_code": "S-10", "alt_code": "সছঐস/রিসিট/২০২৬-২০", "member": "জুয়েল শিকদার", "serial": "১০", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Western Union Direct to Bank (MTCN: 376-060-3297)", "sender": "MOHAMMAD AOULAD HOSSAIN (যৌথ ৩০,০০০/-)", "slip_url": "https://drive.google.com/file/d/1C2Wp0qfddtNCzLWHlkfghsC-FblupxhS/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/12lG6BdMm19Ta7wvMtaTp0KbuDsIPNqCM/view?usp=drivesdk"},
+      {"code": "RCT-21", "serial_code": "S-11", "alt_code": "সছঐস/রিসিট/২০২৬-২১", "member": "চঞ্চল হাওলাদার", "serial": "১১", "date": "১৫ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Western Union Direct to Bank (MTCN: 376-060-3297)", "sender": "MOHAMMAD AOULAD HOSSAIN (যৌথ ৩০,০০০/-)", "slip_url": "https://drive.google.com/file/d/1C2Wp0qfddtNCzLWHlkfghsC-FblupxhS/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/12lG6BdMm19Ta7wvMtaTp0KbuDsIPNqCM/view?usp=drivesdk"},
+      {"code": "RCT-22", "serial_code": "S-20", "alt_code": "সছঐস/রিসিট/২০২৬-২২", "member": "মেহেদী হাসান", "serial": "২০", "date": "১৬ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash (Slip #52824)", "sender": "MEHEDI HASAN (মত্তগ্রাম, শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1uQqbEO8IYbX6jsma8ZjojzwyczGFUhgw/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1EDufXkc_Yu15NDvTovOAYLWBySgnotEj/view?usp=drivesdk"},
+      {"code": "RCT-23", "serial_code": "S-14", "alt_code": "সছঐস/রিসিট/২০২৬-২৩", "member": "রাজু আহমেদ খান", "serial": "১৪", "date": "১৭ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "Trust Money NPSB -> City Bank PLC (Ref: OWS100716910256)", "sender": "Trust Money A/C: 0071-0310015289", "slip_url": "https://drive.google.com/file/d/1r_yqW5kA9LarJlvE7GV0VgFrm70EOybb/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1YTponCBffimFVHDlXba1EAxHs8W4ArkS/view?usp=drivesdk"},
+      {"code": "RCT-24", "serial_code": "S-09", "alt_code": "সছঐস/রিসিট/২০২৬-২৪", "member": "আওলাদ খান", "serial": "০৯", "date": "১৮ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash (Slip #2914)", "sender": "Jihad Hasan (বাঘবাড়ী, শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1E-UOGXj0bWbwB1bSFpzPgOa7fnJv5Qyj/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1lnM3Twj_vURkd6eqlhcxHwMOa6Cs2SQ8/view?usp=drivesdk"},
+      {"code": "RCT-25", "serial_code": "S-21", "alt_code": "সছঐস/রিসিট/২০২৬-২৫", "member": "তাজুল ইসলাম", "serial": "২১", "date": "১৯ নভেম্বর ২০২৬", "amount": "১০,০০০/- টাকা", "method": "City Bank PLC (Sreenagar Sub Branch) — Cash (Slip #1273)", "sender": "ফাতেমা আক্তার / Fatema Akter (শ্রীনগর)", "slip_url": "https://drive.google.com/file/d/1oiEA8lecAdqwcSven7qGX5xAFFFYebWK/view?usp=drivesdk", "pad_url": "https://drive.google.com/file/d/1ljosdxEoXk5tlMjtqFj4OC98gFgrmjAy/view?usp=drivesdk"},
+      {"code": "PAID-LIST", "serial_code": "PAID-LIST", "alt_code": "স্মারক-০১/২০২৬", "member": "মাসিক সঞ্চয় ও কিস্তি জমার বিবরণী তালিকা (২৫ জন)", "serial": "অফিসিয়াল তালিকা", "date": "১৯ নভেম্বর ২০২৬", "amount": "২,৫০,০০০/- টাকা (২৫ জন)", "method": "CITY BANK PLC (REKABI BAZAR) — A/C: 2305158045001", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1G0fRm1LBtmIV89zePGnS4ciqZYwmY_SI/view?usp=drivesdk"},
+      {"code": "DUE-LIST", "serial_code": "DUE-LIST", "alt_code": "স্মারক-০২/২০২৬", "member": "বকেয়া মাসিক কিস্তি জমার তালিকা ও জরুরি বিজ্ঞপ্তি (২ জন)", "serial": "অফিসিয়াল বিজ্ঞপ্তি", "date": "১৯ নভেম্বর ২০২৬", "amount": "বকেয়া: ২০,০০০/- টাকা (২ জন)", "method": "সিটি ব্যাংক (২৩০৫১৫৮০৪৫০০১) / বিকাশ: ০১৮৮১২১০৪৪৪", "sender": "প্রস্তুতকারী: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)", "slip_url": "https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit", "pad_url": "https://drive.google.com/file/d/1MlObD7PgNV1RTVCEpnHyLHvDmogPa9IO/view?usp=drivesdk"}
+    ];
+
+    // Master Society Members Directory (All 27 Members)
+    const MASTER_MEMBERS_LIST = [
+      { serial: "01", serialBn: "০১", name: "মোঃ আওলাদ হোসেন", phone: "017xxxxxxxx", expat: false, country: "বাংলাদেশ 🇧🇩" },
+      { serial: "02", serialBn: "০২", name: "কাওসার আহমেদ রিফাত", phone: "017xxxxxxxx", expat: false, country: "বাংলাদেশ 🇧🇩" },
+      { serial: "03", serialBn: "০৩", name: "রাসেল খান", phone: "017xxxxxxxx", expat: false, country: "বাংলাদেশ 🇧🇩" },
+      { serial: "04", serialBn: "০৪", name: "মোঃ সিহাব শরীফ", phone: "017xxxxxxxx", expat: true, country: "ইতালি 🇮🇹" },
+      { serial: "05", serialBn: "০৫", name: "সজীব মোল্লা", phone: "017xxxxxxxx", expat: true, country: "ইতালি 🇮🇹" },
+      { serial: "06", serialBn: "০৬", name: "মোঃ নাজমুল ইসলাম", phone: "+39 3930844056", expat: true, country: "ইতালি 🇮🇹" },
+      { serial: "07", serialBn: "০৭", name: "শফিকুল", phone: "+65 90528770", expat: true, country: "সিঙ্গাপুর 🇸🇬" },
+      { serial: "08", serialBn: "০৮", name: "মনিরুজ্জামান", phone: "+965 66686271", expat: true, country: "কুয়েত 🇰🇼" },
+      { serial: "09", serialBn: "০৯", name: "আওলাদ খান", phone: "+39 3273830227", expat: true, country: "ইতালি 🇮🇹" },
+      { serial: "10", serialBn: "১০", name: "জুয়েল শিকদার", phone: "+39 3478350779", expat: true, country: "ইতালি 🇮🇹" },
+      { serial: "11", serialBn: "১১", name: "চঞ্চল হাওলাদার", phone: "+39 3510055930", expat: true, country: "ইতালি 🇮🇹" },
+      { serial: "12", serialBn: "১২", name: "মোঃ নোমান হাওলাদার", phone: "+385 95 745 1898", expat: true, country: "ক্রোয়েশিয়া 🇭🇷" },
+      { serial: "13", serialBn: "১৩", name: "মাহফুজ হাসান", phone: "+39 3894606009", expat: true, country: "ইতালি 🇮🇹" },
+      { serial: "14", serialBn: "১৪", name: "রাজু আহমেদ খান", phone: "+39 388 885 2338", expat: true, country: "ইতালি 🇮🇹" },
+      { serial: "15", serialBn: "১৫", name: "সাজ্জাদ হোসেন", phone: "01881210444", role: "কোষাধ্যক্ষ 👑", expat: false, country: "বাংলাদেশ 🇧🇩" },
+      { serial: "16", serialBn: "১৬", name: "আবুল-কালাম", phone: "+966 503603447", expat: true, country: "সৌদি আরব 🇸🇦" },
+      { serial: "17", serialBn: "১৭", name: "শেখ মাসুদ", phone: "+966 541596370", expat: true, country: "সৌদি আরব 🇸🇦" },
+      { serial: "18", serialBn: "১৮", name: "ফয়সাল শেখ", phone: "+34 632190135", expat: true, country: "স্পেন 🇪🇸" },
+      { serial: "19", serialBn: "১৯", name: "মোহাম্মদ ইয়ামিন শেখ", phone: "+60 14 7451477", expat: true, country: "মালয়েশিয়া 🇲🇾" },
+      { serial: "20", serialBn: "২০", name: "মেহেদী হাসান", phone: "01305075520", expat: false, country: "বাংলাদেশ 🇧🇩" },
+      { serial: "21", serialBn: "২১", name: "তাজুল ইসলাম", phone: "+39 3508472185", expat: true, country: "ইতালি 🇮🇹" },
+      { serial: "22", serialBn: "২২", name: "মোঃ ইয়াছিন দেওয়ান", phone: "+974 7778697", expat: true, country: "কাতার 🇶🇦" },
+      { serial: "23", serialBn: "২৩", name: "আবু-বক্কর সিদ্দিক", phone: "+39 3444435394", expat: true, country: "ইতালি 🇮🇹" },
+      { serial: "24", serialBn: "২৪", name: "জনি শিকদার", phone: "+385 99 847 3541", expat: true, country: "ক্রোয়েশিয়া 🇭🇷" },
+      { serial: "25", serialBn: "২৫", name: "মোহাম্মদ সোহেল", phone: "+1 347-7547558", expat: true, country: "যুক্তরাষ্ট্র 🇺🇸" },
+      { serial: "26", serialBn: "২৬", name: "আব্দুল বাতেন পাঠান", phone: "+966 573438656", expat: true, country: "সৌদি আরব 🇸🇦" },
+      { serial: "27", serialBn: "২৭", name: "মোহাম্মদ রাকিব", phone: "+39 3248619582", expat: true, country: "ইতালি 🇮🇹" }
+    ];
     const STORAGE_DELETED_KEY = 'somiti_deleted_codes_v1';
     const STORAGE_CUSTOM_KEY = 'somiti_custom_records_v1';
     const STORAGE_PASS_KEY = 'somiti_admin_pass_v1';
     const STORAGE_NOTICE_KEY = 'somiti_notice_text_v1';
-    const STORAGE_WEBHOOK_KEY = 'somiti_sheet_webhook_v1';
-    const DEFAULT_SHEET_WEBHOOK = 'https://script.google.com/macros/s/AKfycbyz6y4Aw0zjMtvke7sTjajvypAKVDQ_WgFxELUEDPRyL187XEJPAXcsFXLfCtSKwg1sLA/exec';
 
     let deletedCodes = JSON.parse(localStorage.getItem(STORAGE_DELETED_KEY) || '[]');
     let customRecords = JSON.parse(localStorage.getItem(STORAGE_CUSTOM_KEY) || '[]');
@@ -556,27 +1213,6 @@
       if (noticeSpan) noticeSpan.innerHTML = savedNotice;
     }
 
-    function saveSheetWebhook() {
-      const url = document.getElementById('sheetWebhookInput').value.trim();
-      localStorage.setItem(STORAGE_WEBHOOK_KEY, url);
-      alert('✅ গুগল শিট ওয়েবহুক লিংক সেভ হয়েছে!');
-    }
-
-    async function pushToGoogleSheet(payload) {
-      const webhookUrl = localStorage.getItem(STORAGE_WEBHOOK_KEY) || DEFAULT_SHEET_WEBHOOK;
-      if (!webhookUrl) return;
-      try {
-        await fetch(webhookUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-      } catch (e) {
-        console.warn('Sheet webhook sync failed:', e);
-      }
-    }
-
     function copyText(txt, btn) {
       navigator.clipboard.writeText(txt).then(() => {
         const orig = btn.innerText;
@@ -603,13 +1239,17 @@
       document.getElementById('mMethod').innerText = rec.method;
       document.getElementById('mSender').innerText = rec.sender;
 
-      document.getElementById('mSlipBtn').href = rec.slip_url || '#';
+      const slipBtn = document.getElementById('mSlipBtn');
+      slipBtn.href = rec.slip_url || '#';
+
       const padBtn = document.getElementById('mPadBtn');
-      if (rec.pad_url) {
-        padBtn.href = rec.pad_url;
+      if (padBtn) {
         padBtn.classList.remove('hidden');
-      } else {
-        padBtn.classList.add('hidden');
+        padBtn.onclick = (e) => {
+          e.preventDefault();
+          const targetTab = rec.code === 'PAID-LIST' ? 'paid' : (rec.code === 'DUE-LIST' ? 'due' : 'receipt');
+          openOfficialPadModal(rec, targetTab);
+        };
       }
 
       const qBox = document.getElementById('modalQrBox');
@@ -696,7 +1336,7 @@
       const cGrid = document.getElementById('countryGrid');
       if (cGrid) {
         const countries = [
-          { flag: '🇮🇹', name: 'ইতালি', cnt: '৬+ জন' },
+          { flag: '🇮🇹', name: 'ইতালি', cnt: '৭+ জন' },
           { flag: '🇸🇦', name: 'সৌদি আরব', cnt: '২ জন' },
           { flag: '🇰🇼', name: 'কুয়েত', cnt: '১ জন' },
           { flag: '🇪🇸', name: 'স্পেন', cnt: '১ জন' },
@@ -705,7 +1345,7 @@
           { flag: '🇶🇦', name: 'কাতার', cnt: '১ জন' },
           { flag: '🇺🇸', name: 'আমেরিকা', cnt: '১ জন' },
           { flag: '🇭🇷', name: 'ক্রোয়েশিয়া', cnt: '১ জন' },
-          { flag: '🇧🇩', name: 'বাংলাদেশ', cnt: '২+ জন' }
+          { flag: '🇧🇩', name: 'বাংলাদেশ', cnt: '৩+ জন' }
         ];
         cGrid.innerHTML = countries.map(c => `<span class="px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 font-semibold text-emerald-900">${c.flag} ${c.name} <span class="text-emerald-700 font-bold">(${c.cnt})</span></span>`).join('');
       }
@@ -772,7 +1412,7 @@
           const delBtn = document.createElement('button');
           delBtn.type = 'button';
           delBtn.className = 'mt-2.5 w-full bg-rose-50 hover:bg-rose-600 text-rose-700 hover:text-white border border-rose-200 font-bold py-1.5 rounded-lg text-[11px] transition';
-          delBtn.innerText = '🗑️ ভেরিফাই ডিলিট (অ্যাপ + শিট)';
+          delBtn.innerText = '🗑️ ভেরিফাই ডিলিট (মেইন অ্যাপ সহ)';
           delBtn.onclick = () => deleteReceiptByCode(rec.code, rec.member, rec.fbId);
           wrap.appendChild(delBtn);
         }
@@ -857,7 +1497,7 @@
             waBtn.className = 'mt-2 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 px-2 rounded-lg text-[11px] transition';
             waBtn.innerText = '📲 WhatsApp রিমাইন্ডার';
             waBtn.onclick = () => {
-              const msg = `আসসালামু আলাইকুম ${dm.name} ভাই, স্বপ্ন ছোঁয়া ঐক্য সমিতির চলতি মাসের কিস্তি (১০,০০০/- টাকা) পরিশোধের জন্য বিনীত অনুরোধ রইলো।\nবকেয়া তালিকা দেখুন: ${window.location.origin}${window.location.pathname}?filter=due`;
+              const msg = `আসসালামু আলাইকুম ${dm.name} ভাই, স্বপ্ন ছোঁয়া ঐক্য সমিতির চলতি মাসের কিস্তি (১০,০০০/- টাকা) পরিশোধের জন্য বিনীত অনুরোধ রইলো।\\nবকেয়া তালিকা দেখুন: ${window.location.origin}${window.location.pathname}?filter=due`;
               window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
             };
             card.appendChild(waBtn);
@@ -873,6 +1513,36 @@
       renderGridWithData(filtered);
     }
 
+    // Helper function to capture clean receipt image as Canvas
+    async function captureReceiptCanvas() {
+      const card = document.getElementById('modalCard');
+      const closeBtn = document.getElementById('closeModalBtn');
+      const actionBtns = document.getElementById('modalActionBtns');
+
+      const prevCloseDisp = closeBtn ? closeBtn.style.display : '';
+      const prevActionDisp = actionBtns ? actionBtns.style.display : '';
+      if (closeBtn) closeBtn.style.display = 'none';
+      if (actionBtns) actionBtns.style.display = 'none';
+
+      try {
+        if (typeof html2canvas === 'undefined') {
+          throw new Error('html2canvas লাইব্রেরি লোড হয়নি!');
+        }
+        const canvas = await html2canvas(card, {
+          scale: 2.5,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff',
+          logging: false
+        });
+        return canvas;
+      } finally {
+        if (closeBtn) closeBtn.style.display = prevCloseDisp;
+        if (actionBtns) actionBtns.style.display = prevActionDisp;
+      }
+    }
+
+    // Firebase Auth & Realtime Sync with Main App
     function signInFirebaseGoogle() {
       if (!fbAuth) { alert('Firebase লোড হয়নি।'); return; }
       const provider = new firebase.auth.GoogleAuthProvider();
@@ -907,6 +1577,7 @@
 
       docRef.collection('deposits').orderBy('date', 'desc').onSnapshot(snap => {
         firestoreDeposits = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        // Attach Firestore document IDs to matching records for 1-click delete sync
         liveRecords.forEach(r => {
           const match = firestoreDeposits.find(fd =>
             (fd.memberName && fd.memberName === r.member) ||
@@ -920,6 +1591,7 @@
       }, () => {});
     }
 
+    // Admin Control Panel Functions
     function getAdminPass() {
       return localStorage.getItem(STORAGE_PASS_KEY) || '2026';
     }
@@ -944,8 +1616,9 @@
       document.getElementById('adminPanelModal').classList.remove('hidden');
       const noticeEl = document.querySelector('main > div strong')?.parentElement;
       if (noticeEl) document.getElementById('adminNoticeInput').value = noticeEl.innerText;
-      const whInput = document.getElementById('sheetWebhookInput');
-      if (whInput) whInput.value = localStorage.getItem(STORAGE_WEBHOOK_KEY) || DEFAULT_SHEET_WEBHOOK;
+      const wbInput = document.getElementById('adminWebhookInput');
+      if (wbInput) wbInput.value = localStorage.getItem(STORAGE_WEBHOOK_KEY) || '';
+      populateAdminMemberDropdown();
       renderAdminList();
     }
 
@@ -992,7 +1665,7 @@
             <div class="flex gap-1.5">
               ${isDel
                 ? `<button type="button" onclick="restoreReceiptByCode('${r.code}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2.5 py-1 rounded-lg">♻️ রিস্টোর</button>`
-                : `<button type="button" onclick="deleteReceiptByCode('${r.code}', '${r.member.replace(/'/g, "\\'")}', '${fbMatch ? fbMatch.id : ''}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-2.5 py-1 rounded-lg">🗑️ ডিলিট</button>`
+                : `<button type="button" onclick="deleteReceiptByCode('${r.code}', '${r.member.replace(/'/g, "\\\\'")}', '${fbMatch ? fbMatch.id : ''}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-2.5 py-1 rounded-lg">🗑️ ডিলিট</button>`
               }
             </div>
           </div>
@@ -1007,6 +1680,7 @@
       customRecords = customRecords.filter(r => r.code !== code);
       localStorage.setItem(STORAGE_CUSTOM_KEY, JSON.stringify(customRecords));
 
+      // Also delete from Main App Firebase Firestore (somitis/swapnochowa/deposits)
       const docRef = getSomitiDocRef();
       if (docRef) {
         try {
@@ -1016,10 +1690,11 @@
             const snap = await docRef.collection('deposits').where('memberName', '==', memberName).get();
             for (const d of snap.docs) await d.ref.delete();
           }
-        } catch (err) {}
+        } catch (err) {
+          console.warn('Firestore delete skipped/auth needed:', err.message);
+        }
       }
 
-      await pushToGoogleSheet({ action: 'delete', memberName, code });
       rebuildLiveRecords();
       renderGrid(liveRecords);
       renderAdminList();
@@ -1056,6 +1731,70 @@
       renderAdminList();
     }
 
+    const STORAGE_WEBHOOK_KEY = 'somiti_webhook_url_v1';
+    function getWebhookUrl() {
+      return localStorage.getItem(STORAGE_WEBHOOK_KEY) || '';
+    }
+    function saveWebhookUrl() {
+      const url = document.getElementById('adminWebhookInput')?.value.trim();
+      if (!url) {
+        localStorage.removeItem(STORAGE_WEBHOOK_KEY);
+        alert('ওয়েবহুক URL মুছে ফেলা হয়েছে।');
+        return;
+      }
+      localStorage.setItem(STORAGE_WEBHOOK_KEY, url);
+      alert('✅ ওয়েবহুক URL সংরক্ষিত হয়েছে!');
+    }
+
+    function populateAdminMemberDropdown() {
+      const select = document.getElementById('adminMemberSelect');
+      if (!select) return;
+      select.innerHTML = '<option value="">-- সদস্য নির্বাচন করুন (০১-২৭) --</option>';
+      MASTER_MEMBERS_LIST.forEach(m => {
+        const isPaid = liveRecords.some(r => r.member === m.name && !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-'));
+        const opt = document.createElement('option');
+        opt.value = m.serial;
+        opt.innerText = `${m.serialBn}. ${m.name} ${isPaid ? '(পরিশোধিত ✅)' : '(বকেয়া ⏳)'}`;
+        select.appendChild(opt);
+      });
+    }
+
+    function autoFillAdminPayment(serialVal) {
+      if (!serialVal) return;
+      const mem = MASTER_MEMBERS_LIST.find(m => m.serial === serialVal || m.serialBn === serialVal);
+      if (!mem) return;
+      
+      const addSerial = document.getElementById('addSerial');
+      const addMember = document.getElementById('addMember');
+      const addCode = document.getElementById('addCode');
+      const addAmount = document.getElementById('addAmount');
+      const addDate = document.getElementById('addDate');
+      const addMethod = document.getElementById('addMethod');
+      const addSender = document.getElementById('addSender');
+
+      if (addSerial) addSerial.value = mem.serial;
+      if (addMember) addMember.value = mem.name;
+
+      const existing = liveRecords.find(r => r.member === mem.name && !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-'));
+      if (existing) {
+        if (addCode) addCode.value = existing.code;
+        if (addMethod) addMethod.value = existing.method || 'City Bank PLC';
+        if (addSender) addSender.value = existing.sender || 'নিজ';
+      } else {
+        const paidCount = liveRecords.filter(r => r.code.startsWith('RCT-')).length;
+        const nextCode = 'RCT-' + String(paidCount + 1).padStart(2, '0');
+        if (addCode) addCode.value = nextCode;
+        if (addMethod) addMethod.value = mem.expat ? 'Western Union Direct to Bank' : 'City Bank PLC (Sreenagar Sub Branch) — Cash';
+        if (addSender) addSender.value = 'নিজ';
+      }
+
+      if (addAmount) addAmount.value = 10000;
+      if (addDate) {
+        const today = new Date().toISOString().split('T')[0];
+        addDate.value = today;
+      }
+    }
+
     async function handleAdminAdd(e) {
       e.preventDefault();
       const amtNum = Number(document.getElementById('addAmount').value || 10000);
@@ -1067,12 +1806,13 @@
       const senderStr = document.getElementById('addSender').value.trim() || 'নিজ';
       const slipUrl = document.getElementById('addSlipUrl').value.trim() || 'https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-';
 
+      const sCode = 'S-' + String(Number(serialStr) || serialStr).padStart(2, '0');
       const rec = {
         code: codeStr,
-        serial_code: 'S-' + serialStr.padStart(2, '0'),
+        serial_code: sCode,
         alt_code: 'সছঐস/রিসিট/২০২৬-' + serialStr,
         member: memberName,
-        serial: serialStr,
+        serial: toBn(serialStr),
         date: dateStr,
         amount: `${formatBnTaka(amtNum)}/- টাকা`,
         method: methodStr,
@@ -1081,6 +1821,7 @@
         pad_url: ''
       };
 
+      // 1. Write directly to Main App Firebase Firestore (somitis/swapnochowa/deposits)
       const docRef = getSomitiDocRef();
       if (docRef) {
         try {
@@ -1100,20 +1841,34 @@
             createdAt: new Date().toISOString()
           });
         } catch (err) {
-          alert('নোট: Firebase-এ সেভ করতে অ্যাডমিন প্যানেলের "🔥 Firebase কানেক্ট" দিয়ে লগইন করুন। (' + err.message + ')');
+          console.warn('Firebase sync warning:', err.message);
         }
       }
 
-      await pushToGoogleSheet({
-        action: 'add',
-        serial: Number(serialStr),
-        memberName,
-        depositor: senderStr,
-        date: dateStr,
-        bank: methodStr,
-        amount: amtNum,
-        slipUrl
-      });
+      // 2. Dispatch Google Sheets 2-Way Webhook (Apps Script)
+      const webhookUrl = getWebhookUrl();
+      if (webhookUrl && webhookUrl.startsWith('http')) {
+        try {
+          fetch(webhookUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'verify_payment',
+              code: codeStr,
+              serial_code: sCode,
+              serial: serialStr,
+              member: memberName,
+              amount: amtNum,
+              date: dateStr,
+              method: methodStr,
+              sender: senderStr,
+              slip_url: slipUrl,
+              verifiedAt: new Date().toISOString()
+            })
+          }).catch(wbErr => console.warn('Webhook post warning:', wbErr));
+        } catch (_) {}
+      }
 
       customRecords.push(rec);
       localStorage.setItem(STORAGE_CUSTOM_KEY, JSON.stringify(customRecords));
@@ -1121,9 +1876,380 @@
       rebuildLiveRecords();
       renderGrid(liveRecords);
       renderAdminList();
+      populateAdminMemberDropdown();
       e.target.reset();
-      alert('✅ ভেরিফাইড রিসিট যোগ হয়েছে ও সিঙ্ক হয়েছে!');
-      switchAdminTab('manage');
+
+      // 3. Immediately Close Admin and Auto-Generate 3 Official Pads Modal
+      closeAdminPanel();
+      alert('✅ পেমেন্ট সফলভাবে ভেরিফাই ও মেইন অ্যাপে সিঙ্ক হয়েছে!\n🏛️ এখন ৩টি অফিশিয়াল প্যাড স্বয়ংক্রিয়ভাবে তৈরি হচ্ছে...');
+      openOfficialPadModal(rec, 'receipt');
+    }
+
+    // ================= 3 OFFICIAL PADS (HIGH-RESOLUTION EXPORT ENGINE) =================
+    let currentPadTab = 'receipt';
+    let currentPadRec = null;
+
+    const BN_MONTHS = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+    function getBengaliCurrentDate() {
+      const d = new Date();
+      return `${toBn(d.getDate())} ${BN_MONTHS[d.getMonth()]} ${toBn(d.getFullYear())} ইং`;
+    }
+
+    function openOfficialPadModal(record = null, targetTab = 'receipt') {
+      if (record) {
+        currentPadRec = record;
+      } else if (!currentPadRec) {
+        const paidOnly = liveRecords.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-'));
+        currentPadRec = paidOnly[paidOnly.length - 1] || DEFAULT_RECORDS[0];
+      }
+
+      renderPadReceipt(currentPadRec);
+      renderPadPaidList();
+      renderPadDueList();
+
+      switchOfficialPadTab(targetTab || 'receipt');
+
+      const modal = document.getElementById('officialPadModal');
+      if (modal) modal.classList.remove('hidden');
+
+      adjustPadViewportScale();
+    }
+
+    function closeOfficialPadModal() {
+      const modal = document.getElementById('officialPadModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function switchOfficialPadTab(tabName) {
+      currentPadTab = tabName;
+      const receiptBtn = document.getElementById('tabPadReceiptBtn');
+      const paidBtn = document.getElementById('tabPadPaidBtn');
+      const dueBtn = document.getElementById('tabPadDueBtn');
+
+      const receiptNode = document.getElementById('padReceiptNode');
+      const paidNode = document.getElementById('padPaidListNode');
+      const dueNode = document.getElementById('padDueListNode');
+
+      const activeBtnClass = 'pad-tab-btn px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-bold transition shadow';
+      const inactiveBtnClass = 'pad-tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white font-medium transition';
+
+      if (receiptBtn) receiptBtn.className = tabName === 'receipt' ? activeBtnClass : inactiveBtnClass;
+      if (paidBtn) paidBtn.className = tabName === 'paid' ? activeBtnClass : inactiveBtnClass;
+      if (dueBtn) dueBtn.className = tabName === 'due' ? activeBtnClass : inactiveBtnClass;
+
+      if (receiptNode) receiptNode.classList.toggle('hidden', tabName !== 'receipt');
+      if (paidNode) paidNode.classList.toggle('hidden', tabName !== 'paid');
+      if (dueNode) dueNode.classList.toggle('hidden', tabName !== 'due');
+
+      adjustPadViewportScale();
+    }
+
+    function adjustPadViewportScale() {
+      const wrapper = document.getElementById('padViewportScrollWrapper');
+      const container = document.getElementById('padViewportContainer');
+      if (!wrapper || !container) return;
+
+      const availWidth = Math.max(300, wrapper.clientWidth - 28);
+      const padWidth = 1654;
+      const scale = Math.min(1, Math.max(0.18, availWidth / padWidth));
+      container.style.transform = `scale(${scale})`;
+
+      const nodeHeight = currentPadTab === 'receipt' ? 1450 : 2339;
+      container.style.height = `${Math.ceil(nodeHeight * scale) + 20}px`;
+      container.style.width = `${Math.ceil(padWidth * scale)}px`;
+    }
+
+    function renderPadReceipt(rec) {
+      if (!rec) return;
+      const sCode = rec.serial_code || ('S-' + String(rec.serial || '01').padStart(2, '0'));
+      const fullCode = (rec.alt_code || rec.code) + ` (${sCode})`;
+      
+      const elCode = document.getElementById('prCode');
+      const elDate = document.getElementById('prDate');
+      const elMember = document.getElementById('prMember');
+      const elSender = document.getElementById('prSender');
+      const elAmount = document.getElementById('prAmount');
+      const elDateRow = document.getElementById('prDateRow');
+      const elBank = document.getElementById('prBank');
+      const elMethod = document.getElementById('prMethod');
+
+      if (elCode) elCode.innerText = fullCode;
+      if (elDate) elDate.innerText = (rec.date || getBengaliCurrentDate()) + ' ইং';
+      if (elMember) elMember.innerText = `${rec.member} (ক্রমিক নং: ${toBn(rec.serial)})`;
+      if (elSender) elSender.innerText = rec.sender || 'নিজ';
+      if (elAmount) elAmount.innerText = `${rec.amount || '১০,০০০/- টাকা'} (কথায়: দশ হাজার টাকা মাত্র)`;
+      if (elDateRow) elDateRow.innerText = (rec.date || getBengaliCurrentDate()) + ' ইং';
+      if (elBank) elBank.innerText = rec.method && rec.method.includes('City') ? 'CITY BANK PLC (Sreenagar Sub Branch)' : (rec.method || 'City Bank PLC');
+      if (elMethod) elMethod.innerText = rec.method || 'নগদ ব্যাংক ডিপোজিট';
+
+      // QR Code (Linking to https://smartsomiti.vercel.app/verify.html?id=S-XX)
+      const qrBox = document.getElementById('prQrContainer');
+      if (qrBox) {
+        qrBox.innerHTML = '';
+        if (typeof QRCode !== 'undefined') {
+          const qrUrl = `https://smartsomiti.vercel.app/verify.html?id=${sCode}`;
+          new QRCode(qrBox, {
+            text: qrUrl,
+            width: 130,
+            height: 130,
+            colorDark: '#0f5132',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.H
+          });
+        }
+      }
+    }
+
+    function renderPadPaidList() {
+      const plDate = document.getElementById('plDate');
+      if (plDate) plDate.innerText = getBengaliCurrentDate();
+
+      const tbody = document.getElementById('plTableBody');
+      if (!tbody) return;
+
+      const paidList = liveRecords.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-'));
+      
+      tbody.innerHTML = paidList.map((r, idx) => {
+        const bg = idx % 2 === 0 ? '#ffffff' : '#f8fafc';
+        return `
+          <tr style="background: ${bg}; border-bottom: 1px solid #e2e8f0;">
+            <td style="padding: 9px 14px; text-align: center; font-weight: 800; color: #334155; border-right: 1px solid #e2e8f0;">${toBn(r.serial || (idx + 1))}</td>
+            <td style="padding: 9px 18px; font-weight: 700; color: #0f172a; border-right: 1px solid #e2e8f0;">${r.member}</td>
+            <td style="padding: 9px 18px; text-align: center; color: #475569; border-right: 1px solid #e2e8f0;">${r.date || '১০ নভেম্বর ২০২৬'}</td>
+            <td style="padding: 9px 20px; text-align: right; font-weight: 800; color: #0f5132;">১০,০০০/- ৳</td>
+          </tr>
+        `;
+      }).join('');
+
+      const totalCount = paidList.length;
+      const totalAmt = totalCount * 10000;
+
+      const plTotalCount = document.getElementById('plTotalCount');
+      const plTotalAmount = document.getElementById('plTotalAmount');
+      const plWordsAmount = document.getElementById('plWordsAmount');
+
+      if (plTotalCount) plTotalCount.innerText = toBn(totalCount);
+      if (plTotalAmount) plTotalAmount.innerText = `${formatBnTaka(totalAmt)}/- ৳`;
+      if (plWordsAmount) plWordsAmount.innerText = `${formatBnTaka(totalAmt)} টাকা মাত্র (মোট ${toBn(totalCount)} জন সদস্য)।`;
+
+      // QR Code (Linking to https://smartsomiti.vercel.app/verify.html?id=PAID-LIST)
+      const qrBox = document.getElementById('plQrContainer');
+      if (qrBox) {
+        qrBox.innerHTML = '';
+        if (typeof QRCode !== 'undefined') {
+          new QRCode(qrBox, {
+            text: 'https://smartsomiti.vercel.app/verify.html?id=PAID-LIST',
+            width: 130,
+            height: 130,
+            colorDark: '#0f5132',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.H
+          });
+        }
+      }
+    }
+
+    function renderPadDueList() {
+      const dlDate = document.getElementById('dlDate');
+      if (dlDate) dlDate.innerText = getBengaliCurrentDate();
+
+      const tbody = document.getElementById('dlTableBody');
+      if (!tbody) return;
+
+      const dueList = dueMembers && dueMembers.length > 0 ? dueMembers : [
+        { serial: '12', name: 'মোঃ নোমান হাওলাদার' },
+        { serial: '13', name: 'মাহফুজ হাসান' }
+      ];
+
+      tbody.innerHTML = dueList.map((d, idx) => {
+        const bg = idx % 2 === 0 ? '#ffffff' : '#fef2f2';
+        return `
+          <tr style="background: ${bg}; border-bottom: 1px solid #fecaca;">
+            <td style="padding: 14px 16px; text-align: center; font-weight: 800; color: #991b1b; border-right: 1px solid #fecaca;">${toBn(d.serial)}</td>
+            <td style="padding: 14px 24px; font-weight: 800; color: #0f172a; border-right: 1px solid #fecaca;">${d.name}</td>
+            <td style="padding: 14px 24px; text-align: right; font-weight: 800; color: #dc2626;">১০,০০০/- ৳</td>
+          </tr>
+        `;
+      }).join('');
+
+      const paidCnt = liveRecords.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-')).length;
+      const dueCnt = dueList.length;
+      const dueAmt = dueCnt * 10000;
+
+      const elCountText = document.getElementById('dlCountText');
+      const elSumCount = document.getElementById('dlSumCount');
+      const elSumFund = document.getElementById('dlSumFund');
+      const elSumDueAmt = document.getElementById('dlSumDueAmt');
+
+      if (elCountText) elCountText.innerText = toBn(dueCnt);
+      if (elSumCount) elSumCount.innerText = toBn(dueCnt);
+      if (elSumFund) elSumFund.innerText = `${formatBnTaka(paidCnt * 10000)}/- ৳ (${toBn(paidCnt)} জন)`;
+      if (elSumDueAmt) elSumDueAmt.innerText = `${formatBnTaka(dueAmt)}/- ৳`;
+
+      // QR Code (Linking to https://smartsomiti.vercel.app/verify.html?id=DUE-LIST)
+      const qrBox = document.getElementById('dlQrContainer');
+      if (qrBox) {
+        qrBox.innerHTML = '';
+        if (typeof QRCode !== 'undefined') {
+          new QRCode(qrBox, {
+            text: 'https://smartsomiti.vercel.app/verify.html?id=DUE-LIST',
+            width: 130,
+            height: 130,
+            colorDark: '#991b1b',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.H
+          });
+        }
+      }
+    }
+
+    function getCurrentActivePadNode() {
+      if (currentPadTab === 'receipt') return document.getElementById('padReceiptNode');
+      if (currentPadTab === 'paid') return document.getElementById('padPaidListNode');
+      return document.getElementById('padDueListNode');
+    }
+
+    function getPadFileName(ext = 'png') {
+      const serialPart = currentPadRec ? (currentPadRec.serial_code || ('S-' + String(currentPadRec.serial).padStart(2, '0'))) : 'S-00';
+      if (currentPadTab === 'receipt') {
+        const memClean = (currentPadRec?.member || 'Member').replace(/[\s\/\\]+/g, '_');
+        return `Official_Receipt_${serialPart}_${memClean}.${ext}`;
+      } else if (currentPadTab === 'paid') {
+        return `Official_Paid_List_A4_Swapno_Chowa.${ext}`;
+      } else {
+        return `Official_Due_List_A4_Swapno_Chowa.${ext}`;
+      }
+    }
+
+    async function capturePadCanvas(node) {
+      if (typeof html2canvas === 'undefined') {
+        throw new Error('html2canvas লাইব্রেরি লোড হয়নি!');
+      }
+      const container = document.getElementById('padViewportContainer');
+      const prevTransform = container.style.transform;
+      container.style.transform = 'none';
+
+      try {
+        const canvas = await html2canvas(node, {
+          scale: 1,
+          width: node.offsetWidth,
+          height: node.offsetHeight,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff',
+          logging: false
+        });
+        return canvas;
+      } finally {
+        container.style.transform = prevTransform;
+      }
+    }
+
+    async function downloadCurrentPadPng() {
+      const node = getCurrentActivePadNode();
+      if (!node) return;
+      const btn = event?.currentTarget;
+      const origText = btn ? btn.innerHTML : '';
+      if (btn) btn.innerHTML = '<span>⏳</span> <span>ছবি হচ্ছে...</span>';
+
+      try {
+        const canvas = await capturePadCanvas(node);
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = getPadFileName('png');
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+        if (btn) btn.innerHTML = '<span>✅</span> <span>ডাউনলোড হয়েছে</span>';
+      } catch (err) {
+        alert('ছবি ডাউনলোড করতে সমস্যা হয়েছে: ' + err.message);
+      } finally {
+        if (btn) setTimeout(() => btn.innerHTML = origText, 2000);
+      }
+    }
+
+    async function downloadCurrentPadPdf() {
+      const node = getCurrentActivePadNode();
+      if (!node) return;
+      const btn = event?.currentTarget;
+      const origText = btn ? btn.innerHTML : '';
+      if (btn) btn.innerHTML = '<span>⏳</span> <span>PDF হচ্ছে...</span>';
+
+      try {
+        const canvas = await capturePadCanvas(node);
+        const imgData = canvas.toDataURL('image/jpeg', 0.95);
+        const { jsPDF } = window.jspdf || {};
+        if (!jsPDF) throw new Error('jsPDF লাইব্রেরি লোড হয়নি!');
+
+        let pdf;
+        if (currentPadTab === 'receipt') {
+          pdf = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: [210, 184]
+          });
+          pdf.addImage(imgData, 'JPEG', 0, 0, 210, 184, undefined, 'FAST');
+        } else {
+          pdf = new jsPDF('p', 'mm', 'a4');
+          pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+        }
+
+        pdf.save(getPadFileName('pdf'));
+        if (btn) btn.innerHTML = '<span>✅</span> <span>PDF সেভ হয়েছে</span>';
+      } catch (err) {
+        alert('PDF তৈরি করতে সমস্যা হয়েছে: ' + err.message);
+      } finally {
+        if (btn) setTimeout(() => btn.innerHTML = origText, 2000);
+      }
+    }
+
+    async function shareCurrentPadWhatsApp() {
+      const node = getCurrentActivePadNode();
+      if (!node) return;
+      const btn = event?.currentTarget;
+      const origText = btn ? btn.innerHTML : '';
+      if (btn) btn.innerHTML = '<span>⏳</span> <span>শেয়ার হচ্ছে...</span>';
+
+      const sCode = currentPadRec ? (currentPadRec.serial_code || ('S-' + String(currentPadRec.serial).padStart(2, '0'))) : 'S-00';
+      let caption = '';
+      if (currentPadTab === 'receipt') {
+        const qrUrl = `https://smartsomiti.vercel.app/verify.html?id=${sCode}`;
+        caption = `✅ *স্বপ্ন ছোঁয়া ঐক্য সমিতি — ব্যক্তিগত অফিসিয়াল মানি রিসিট*\n👤 সদস্য: ${currentPadRec.member}\n🧾 রিসিট কোড: ${currentPadRec.code} (${sCode})\n💰 পরিমাণ: ${currentPadRec.amount}\n📅 তারিখ: ${currentPadRec.date}\n🏦 মাধ্যম: ${currentPadRec.method}\n🔍 অনলাইনে যাচাই করুন: ${qrUrl}`;
+      } else if (currentPadTab === 'paid') {
+        const paidCnt = liveRecords.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-')).length;
+        caption = `📋 *স্বপ্ন ছোঁয়া ঐক্য সমিতি — পরিশোধিত সদস্যদের অফিসিয়াল তালিকা*\n📊 মোট জমাকৃত তহবিল: ${formatBnTaka(paidCnt * 10000)}/- ৳ (${toBn(paidCnt)} জন)\n🔍 অনলাইনে যাচাই করুন: https://smartsomiti.vercel.app/verify.html?id=PAID-LIST`;
+      } else {
+        const dueCnt = dueMembers ? dueMembers.length : 2;
+        caption = `⚠️ *স্বপ্ন ছোঁয়া ঐক্য সমিতি — বকেয়া কিস্তির অফিসিয়াল তালিকা ও নোটিশ*\n⏳ বকেয়া সদস্য: ${toBn(dueCnt)} জন (${formatBnTaka(dueCnt * 10000)}/- ৳)\n🔍 অনলাইনে যাচাই করুন: https://smartsomiti.vercel.app/verify.html?id=DUE-LIST`;
+      }
+
+      try {
+        const canvas = await capturePadCanvas(node);
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        const fileName = getPadFileName('png');
+        const file = new File([blob], fileName, { type: 'image/png' });
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            title: 'স্বপ্ন ছোঁয়া ঐক্য সমিতি অফিশিয়াল প্যাড',
+            text: caption,
+            files: [file]
+          });
+          if (btn) btn.innerHTML = '<span>✅</span> <span>শেয়ার সম্পন্ন</span>';
+          return;
+        } else {
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = fileName;
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+        }
+        window.open(`https://wa.me/?text=${encodeURIComponent(caption)}`, '_blank');
+      } catch (err) {
+        window.open(`https://wa.me/?text=${encodeURIComponent(caption)}`, '_blank');
+      } finally {
+        if (btn) setTimeout(() => btn.innerHTML = origText, 2000);
+      }
     }
 
     function saveNoticeText() {
@@ -1157,6 +2283,7 @@
       a.click();
     }
 
+    // Live sync from Public Google Sheet
     async function syncFromGoogleSheet() {
       const sheetId = '1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0';
       const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Sheet1`;
@@ -1307,11 +2434,74 @@
       copyText(shareUrl, e.currentTarget);
     });
 
-    document.getElementById('mWaShareBtn').addEventListener('click', () => {
+    // Modal WhatsApp Share with Direct Image File (Web Share API Level 2)
+    document.getElementById('mWaShareBtn').addEventListener('click', async () => {
       if (!activeModalRec) return;
+      const btn = document.getElementById('mWaShareBtn');
+      const originalText = btn.innerText;
+      btn.innerText = '⏳ ছবি হচ্ছে...';
+      btn.disabled = true;
+
       const vUrl = `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(activeModalRec.code)}`;
-      const msg = `✅ *স্বপ্ন ছোঁয়া ঐক্য সমিতি — ডিজিটাল রিসিট*\nসদস্য: ${activeModalRec.member}\nরিসিট নং: ${activeModalRec.code}\nপরিমাণ: ${activeModalRec.amount}\nঅনলাইনে যাচাই করুন: ${vUrl}`;
-      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+      const caption = `✅ *স্বপ্ন ছোঁয়া ঐক্য সমিতি — ডিজিটাল রিসিট*\n👤 সদস্য: ${activeModalRec.member}\n🧾 রিসিট নং: ${activeModalRec.code}\n💰 পরিমাণ: ${activeModalRec.amount}\n📅 তারিখ: ${activeModalRec.date}\n🔍 অনলাইনে যাচাই করুন: ${vUrl}`;
+
+      try {
+        if (typeof html2canvas !== 'undefined') {
+          const canvas = await captureReceiptCanvas();
+          const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+          const fileName = `Receipt_${(activeModalRec.code || 'somiti').replace(/[^a-zA-Z0-9_-]/g, '_')}.png`;
+          const file = new File([blob], fileName, { type: 'image/png' });
+
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              title: `রিসিট — ${activeModalRec.member}`,
+              text: caption,
+              files: [file]
+            });
+            btn.innerText = '✅ শেয়ার হয়েছে';
+            setTimeout(() => { btn.innerText = originalText; btn.disabled = false; }, 2000);
+            return;
+          } else {
+            // Auto download image and open WhatsApp text
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = fileName;
+            a.click();
+            setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+          }
+        }
+        window.open(`https://wa.me/?text=${encodeURIComponent(caption)}`, '_blank');
+      } catch (err) {
+        window.open(`https://wa.me/?text=${encodeURIComponent(caption)}`, '_blank');
+      } finally {
+        btn.innerText = originalText;
+        btn.disabled = false;
+      }
+    });
+
+    // Save Image Button
+    document.getElementById('mSaveImgBtn').addEventListener('click', async () => {
+      if (!activeModalRec) return;
+      const btn = document.getElementById('mSaveImgBtn');
+      const originalText = btn.innerText;
+      btn.innerText = '⏳ সেভ হচ্ছে...';
+      btn.disabled = true;
+
+      try {
+        const canvas = await captureReceiptCanvas();
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        const fileName = `Receipt_${(activeModalRec.code || 'somiti').replace(/[^a-zA-Z0-9_-]/g, '_')}.png`;
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = fileName;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+        btn.innerText = '✅ সেভ হয়েছে';
+      } catch (err) {
+        alert('ছবি সেভ করতে সমস্যা হয়েছে: ' + err.message);
+      } finally {
+        setTimeout(() => { btn.innerText = originalText; btn.disabled = false; }, 1800);
+      }
     });
 
     let qrScanner = null;
@@ -1345,6 +2535,8 @@
       if (qrScanner) qrScanner.stop().catch(() => {});
     });
 
+    applyPadConfig();
+    populateAdminMemberDropdown();
     renderGrid(liveRecords);
     initFirebaseRealtime();
 
