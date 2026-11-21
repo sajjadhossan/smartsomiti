@@ -1108,16 +1108,39 @@
         </div>
 
         <!-- Tab 2: Add New Payment / Mark Paid -->
-        <div id="adminTab_add" class="hidden space-y-3">
+        <div id="adminTab_add" class="hidden space-y-4">
+
+          <!-- ⏳ Automatic Unpaid / Due Members Quick Section -->
+          <div class="bg-gradient-to-br from-rose-50 to-amber-50/50 border border-rose-200 p-4 rounded-2xl shadow-sm space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-rose-200/60 pb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">⏳</span>
+                <div>
+                  <h4 class="font-extrabold text-rose-900 text-sm sm:text-base">চলতি মাসের বকেয়া / আনপেইড সদস্য তালিকা (অটোমেটিক)</h4>
+                  <p class="text-[11px] text-rose-700">যারা এখনো কিস্তি দেননি তাদের নাম, ক্রমিক ও মোবাইল নম্বর নিচে দেওয়া হলো</p>
+                </div>
+              </div>
+              <span id="adminDueCountBadge" class="bg-rose-600 text-white font-extrabold text-xs px-2.5 py-1 rounded-full shadow-sm">
+                বকেয়া: ২ জন
+              </span>
+            </div>
+
+            <!-- Dynamic Unpaid Members Cards Grid -->
+            <div id="adminDueMembersList" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[30vh] overflow-y-auto pr-1">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- Quick Auto-Fill Dropdown -->
           <div class="bg-emerald-50 border border-emerald-200 p-3.5 rounded-2xl flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
             <div class="flex items-center gap-2">
               <span class="text-2xl">⚡</span>
               <div>
-                <div class="font-bold text-emerald-950 text-xs sm:text-sm">দ্রুত অটো-ফিল (১-ক্লিক সদস্য নির্বাচন)</div>
+                <div class="font-bold text-emerald-950 text-xs sm:text-sm">ড্রপডাউন থেকে সদস্য নির্বাচন করুন (০১-২৭)</div>
                 <div class="text-[11px] text-emerald-800">যেকোনো সদস্য নির্বাচন করলেই সব তথ্য স্বয়ংক্রিয়ভাবে ফর্ম ও প্যাডে বসে যাবে</div>
               </div>
             </div>
-            <select id="adminMemberSelect" onchange="autoFillAdminPayment(this.value)" class="px-3 py-2 rounded-xl border border-emerald-300 bg-white font-bold text-slate-800 text-xs focus:ring-2 focus:ring-emerald-600 focus:outline-none shadow-sm">
+            <select id="adminMemberSelect" onchange="autoFillAdminPayment(this.value)" class="px-3 py-2 rounded-xl border border-emerald-300 bg-white font-bold text-slate-800 text-xs focus:ring-2 focus:ring-emerald-600 focus:outline-none shadow-sm max-w-xs">
               <option value="">-- সদস্য নির্বাচন করুন (০১-২৭) --</option>
             </select>
           </div>
@@ -1919,6 +1942,10 @@
           ? 'admin-tab-btn bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold'
           : 'admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold';
       });
+      if (tab === 'add') {
+        populateAdminMemberDropdown();
+        renderAdminDueList();
+      }
     }
 
     function renderAdminList() {
@@ -2025,14 +2052,98 @@
     function populateAdminMemberDropdown() {
       const select = document.getElementById('adminMemberSelect');
       if (!select) return;
-      select.innerHTML = '<option value="">-- সদস্য নির্বাচন করুন (০১-২৭) --</option>';
+
+      const dueSerials = new Set((dueMembers || []).map(d => String(d.serial).padStart(2, '0')));
+      
+      const dueGroup = [];
+      const paidGroup = [];
+
       MASTER_MEMBERS_LIST.forEach(m => {
-        const isPaid = liveRecords.some(r => r.member === m.name && !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-'));
-        const opt = document.createElement('option');
-        opt.value = m.serial;
-        opt.innerText = `${m.serialBn}. ${m.name} ${isPaid ? '(পরিশোধিত ✅)' : '(বকেয়া ⏳)'}`;
-        select.appendChild(opt);
+        const isDue = dueSerials.has(m.serial) || (dueMembers || []).some(d => d.name === m.name);
+        if (isDue) {
+          dueGroup.push(`<option value="${m.serial}">[${m.serialBn}] ${m.name} — 📞 ${m.phone} (বকেয়া ⏳)</option>`);
+        } else {
+          paidGroup.push(`<option value="${m.serial}">[${m.serialBn}] ${m.name} — 📞 ${m.phone} (পরিশোধিত ✅)</option>`);
+        }
       });
+
+      let html = '<option value="">-- সদস্য নির্বাচন করুন (০১-২৭) --</option>';
+      if (dueGroup.length > 0) {
+        html += `<optgroup label="⏳ বকেয়া সদস্য (${toBn(dueGroup.length)} জন)">${dueGroup.join('')}</optgroup>`;
+      }
+      if (paidGroup.length > 0) {
+        html += `<optgroup label="✅ পরিশোধিত সদস্য (${toBn(paidGroup.length)} জন)">${paidGroup.join('')}</optgroup>`;
+      }
+
+      select.innerHTML = html;
+      renderAdminDueList();
+    }
+
+    function renderAdminDueList() {
+      const container = document.getElementById('adminDueMembersList');
+      const badge = document.getElementById('adminDueCountBadge');
+      if (!container) return;
+
+      const dueList = (dueMembers || []).map(d => {
+        const sPad = String(d.serial).padStart(2, '0');
+        const mem = MASTER_MEMBERS_LIST.find(m => m.serial === sPad || m.name === d.name);
+        return {
+          serial: sPad,
+          serialBn: mem ? mem.serialBn : toBn(d.serial),
+          name: d.name,
+          phone: mem ? mem.phone : 'মোবাইল নম্বর নেই',
+          country: mem ? mem.country : 'বাংলাদেশ 🇧🇩'
+        };
+      });
+
+      if (badge) badge.innerText = `বকেয়া: ${toBn(dueList.length)} জন (${formatBnTaka(dueList.length * 10000)} ৳)`;
+
+      if (dueList.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full p-4 rounded-xl bg-emerald-100/70 border border-emerald-300 text-center text-emerald-900 font-bold text-xs">
+            🎉 আলহামদুলিল্লাহ, সকল সদস্যের চলতি মাসের কিস্তি পরিশোধ সম্পন্ন হয়েছে! বর্তমানে কোনো বকেয়া সদস্য নেই।
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = dueList.map(dm => `
+        <div class="p-3 rounded-xl bg-white border border-rose-200 shadow-sm flex flex-col justify-between gap-2 transition hover:border-rose-400">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-[11px] font-extrabold px-2 py-0.5 rounded bg-rose-100 text-rose-800">
+                ক্রমিক: ${dm.serialBn} (S-${dm.serial})
+              </span>
+              <span class="text-[11px] font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+                ১০,০০০/- ৳ বকেয়া
+              </span>
+            </div>
+            <h5 class="text-xs sm:text-sm font-bold text-slate-900 mt-1.5">${dm.name}</h5>
+            <p class="text-[11px] text-slate-600 mt-0.5 font-semibold flex flex-wrap items-center gap-1.5">
+              <span class="text-emerald-800 font-mono">📞 ${dm.phone}</span>
+              <span class="text-slate-400">•</span>
+              <span>${dm.country}</span>
+            </p>
+          </div>
+          <div class="pt-2 border-t border-slate-100 flex items-center gap-1.5">
+            <button type="button" onclick="autoFillAdminPayment('${dm.serial}')" class="flex-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold py-1.5 px-2 rounded-lg text-[11px] transition text-center active:scale-95">
+              ⚡ ফর্মে বসান
+            </button>
+            <button type="button" onclick="quickVerifyUnpaidMember('${dm.serial}')" class="flex-1 bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-1.5 px-2 rounded-lg text-[11px] transition text-center shadow-sm active:scale-95">
+              ✅ ১-ক্লিক ভেরিফাই
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function quickVerifyUnpaidMember(serial) {
+      autoFillAdminPayment(serial);
+      const form = document.getElementById('adminAddForm');
+      if (form) {
+        const fakeEvt = { preventDefault: () => {}, target: form };
+        await handleAdminAdd(fakeEvt);
+      }
     }
 
     function autoFillAdminPayment(serialVal) {
@@ -2055,13 +2166,13 @@
       if (existing) {
         if (addCode) addCode.value = existing.code;
         if (addMethod) addMethod.value = existing.method || 'City Bank PLC';
-        if (addSender) addSender.value = existing.sender || 'নিজ';
+        if (addSender) addSender.value = existing.sender || `${mem.name} (${mem.phone})`;
       } else {
         const paidCount = liveRecords.filter(r => r.code.startsWith('RCT-')).length;
         const nextCode = 'RCT-' + String(paidCount + 1).padStart(2, '0');
         if (addCode) addCode.value = nextCode;
         if (addMethod) addMethod.value = mem.expat ? 'Western Union Direct to Bank' : 'City Bank PLC (Sreenagar Sub Branch) — Cash';
-        if (addSender) addSender.value = 'নিজ';
+        if (addSender) addSender.value = `${mem.name} (${mem.phone})`;
       }
 
       if (addAmount) addAmount.value = 10000;
@@ -2069,6 +2180,13 @@
         const today = new Date().toISOString().split('T')[0];
         addDate.value = today;
       }
+
+      // Sync the dropdown value
+      const select = document.getElementById('adminMemberSelect');
+      if (select) select.value = mem.serial;
+
+      const formEl = document.getElementById('adminAddForm');
+      if (formEl) formEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     async function handleAdminAdd(e) {
