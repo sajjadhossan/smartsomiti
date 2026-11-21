@@ -132,15 +132,32 @@
 
   <main class="max-w-5xl mx-auto px-4 mt-6 space-y-6">
 
-    <!-- Top Live Notice Strip -->
-    <div class="bg-amber-50 border border-amber-200 rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-2 text-xs text-amber-900 shadow-sm">
-      <div class="flex items-center space-x-2">
-        <span class="text-base">📢</span>
-        <span><strong>জরুরি বিজ্ঞপ্তি:</strong> চলতি মাসের (নভেম্বর ২০২৬) কিস্তি <strong>১০,০০০/- টাকা</strong>। বিকাশে পাঠালে ক্যাশ-আউট চার্জসহ পাঠাবেন এবং ব্যাংক রিসিট গ্রুপে পোস্ট করবেন।</span>
-      </div>
-      <div class="flex items-center gap-2">
-        <span id="lastSyncText" class="text-[11px] font-semibold text-amber-800">⏳ সিঙ্ক হচ্ছে...</span>
-        <a href="#paymentGuide" class="bg-amber-200/70 hover:bg-amber-300 text-amber-950 font-bold px-3 py-1 rounded-lg transition">💳 পেমেন্ট তথ্য</a>
+    <!-- Top Live Notice Strip (Professional Executive UI) -->
+    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-teal-500/10 border border-amber-300/80 p-3.5 sm:p-4 shadow-sm backdrop-blur-sm">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-start sm:items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-600 text-white flex items-center justify-center text-lg shadow-md shrink-0 mt-0.5 sm:mt-0">
+            📢
+          </div>
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-amber-500 text-slate-950 shadow-xs">
+                <span class="w-1.5 h-1.5 rounded-full bg-slate-950 animate-pulse"></span>
+                জরুরি বিজ্ঞপ্তি
+              </span>
+              <span id="lastSyncText" class="text-[11px] font-semibold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-md">🟢 লাইভ সিঙ্ক</span>
+            </div>
+            <div id="noticeContentText" class="text-xs sm:text-sm font-medium text-slate-800 leading-relaxed">
+              চলতি মাসের (নভেম্বর ২০২৬) কিস্তি <strong class="font-extrabold text-emerald-800 bg-emerald-100/70 px-1.5 py-0.5 rounded">১০,০০০/- টাকা</strong>। বিকাশে পাঠালে ক্যাশ-আউট চার্জসহ পাঠাবেন এবং ব্যাংক রিসিট গ্রুপে পোস্ট করবেন।
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
+          <a href="#paymentGuide" class="inline-flex items-center gap-1.5 bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs px-3.5 py-2 rounded-xl transition shadow active:scale-95">
+            <span>💳</span>
+            <span>পেমেন্ট গাইড</span>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -821,6 +838,33 @@
     </div>
   </div>
 
+  <!-- Secure Admin Password Authentication Modal (Zero Leaks) -->
+  <div id="adminAuthModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[70] flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 flex flex-col items-center text-center animate-pop relative">
+      <button type="button" onclick="closeAdminAuthModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700 flex items-center justify-center text-sm font-bold transition">✕</button>
+      
+      <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl mb-3 shadow-inner">
+        🛡️
+      </div>
+      <h3 class="text-base font-bold text-slate-900">অ্যাডমিন অ্যাক্সেস যাচাইকরণ</h3>
+      <p class="text-xs text-slate-500 mt-1 mb-4">প্যানেলে প্রবেশের জন্য আপনার সিক্রেট পাসওয়ার্ড দিন</p>
+      
+      <form id="adminAuthForm" onsubmit="submitAdminPassword(event)" class="w-full space-y-3">
+        <div class="relative">
+          <input type="password" id="adminAuthPassInput" required placeholder="গোপন পাসওয়ার্ড লিখুন..." class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600 font-mono text-center text-base tracking-widest placeholder:text-slate-400 placeholder:text-xs placeholder:tracking-normal" />
+          <button type="button" onclick="togglePassVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-sm">👁️</button>
+        </div>
+        <div id="adminAuthError" class="text-[11px] text-rose-600 font-semibold hidden flex items-center justify-center gap-1">
+          <span>❌</span> <span>ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।</span>
+        </div>
+        <div class="flex gap-2 pt-1">
+          <button type="button" onclick="closeAdminAuthModal()" class="w-1/3 py-2.5 rounded-xl border border-slate-300 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition">বাতিল</button>
+          <button type="submit" class="flex-1 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-md transition">🔓 প্রবেশ করুন</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Unified Admin Control Panel Modal -->
   <div id="adminPanelModal" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden">
     <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden border border-emerald-200 animate-pop">
@@ -1209,7 +1253,7 @@
 
     const savedNotice = localStorage.getItem(STORAGE_NOTICE_KEY);
     if (savedNotice) {
-      const noticeSpan = document.querySelector('main > div strong')?.parentElement;
+      const noticeSpan = document.getElementById('noticeContentText');
       if (noticeSpan) noticeSpan.innerHTML = savedNotice;
     }
 
@@ -1601,21 +1645,59 @@
         openAdminPanel();
         return;
       }
-      const pin = prompt('অ্যাডমিন পাসওয়ার্ড দিন (ডিফল্ট: 2026):');
-      if (pin === getAdminPass()) {
+      openAdminAuthModal();
+    }
+
+    function openAdminAuthModal() {
+      const modal = document.getElementById('adminAuthModal');
+      const input = document.getElementById('adminAuthPassInput');
+      const err = document.getElementById('adminAuthError');
+      if (err) err.classList.add('hidden');
+      if (input) {
+        input.value = '';
+        input.type = 'password';
+        input.classList.remove('border-rose-500');
+      }
+      if (modal) modal.classList.remove('hidden');
+      setTimeout(() => input?.focus(), 120);
+    }
+
+    function closeAdminAuthModal() {
+      const modal = document.getElementById('adminAuthModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function togglePassVisibility() {
+      const input = document.getElementById('adminAuthPassInput');
+      if (!input) return;
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    function submitAdminPassword(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('adminAuthPassInput');
+      const err = document.getElementById('adminAuthError');
+      const entered = (input?.value || '').trim();
+
+      if (entered === getAdminPass()) {
         isAdmin = true;
         document.getElementById('adminBtn').innerText = '🔓 অ্যাডমিন প্যানেল';
+        closeAdminAuthModal();
         renderGrid(liveRecords);
         openAdminPanel();
-      } else if (pin !== null) {
-        alert('ভুল পাসওয়ার্ড!');
+      } else {
+        if (err) err.classList.remove('hidden');
+        if (input) {
+          input.classList.add('border-rose-500');
+          input.select();
+        }
       }
     }
 
     function openAdminPanel() {
       document.getElementById('adminPanelModal').classList.remove('hidden');
-      const noticeEl = document.querySelector('main > div strong')?.parentElement;
-      if (noticeEl) document.getElementById('adminNoticeInput').value = noticeEl.innerText;
+      const noticeEl = document.getElementById('noticeContentText');
+      if (noticeEl) document.getElementById('adminNoticeInput').value = noticeEl.innerText.trim();
       const wbInput = document.getElementById('adminWebhookInput');
       if (wbInput) wbInput.value = localStorage.getItem(STORAGE_WEBHOOK_KEY) || '';
       populateAdminMemberDropdown();
@@ -2255,10 +2337,10 @@
     function saveNoticeText() {
       const txt = document.getElementById('adminNoticeInput').value.trim();
       if (!txt) return;
-      const htmlNotice = `<strong>জরুরি বিজ্ঞপ্তি:</strong> ${txt.replace(/^জরুরি বিজ্ঞপ্তি:\s*/, '')}`;
-      localStorage.setItem(STORAGE_NOTICE_KEY, htmlNotice);
-      const noticeEl = document.querySelector('main > div strong')?.parentElement;
-      if (noticeEl) noticeEl.innerHTML = htmlNotice;
+      const cleanNotice = txt.replace(/^জরুরি বিজ্ঞপ্তি:\s*/, '');
+      localStorage.setItem(STORAGE_NOTICE_KEY, cleanNotice);
+      const noticeEl = document.getElementById('noticeContentText');
+      if (noticeEl) noticeEl.innerHTML = cleanNotice;
       alert('✅ বিজ্ঞপ্তি আপডেট হয়েছে!');
     }
 
