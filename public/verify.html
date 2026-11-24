@@ -30,6 +30,15 @@
     .animate-pop {
       animation: popIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
+    @keyframes stampDrop {
+      0% { opacity: 0; transform: scale(2.8) rotate(-24deg); }
+      50% { opacity: 0.85; transform: scale(0.92) rotate(-8deg); }
+      75% { transform: scale(1.05) rotate(-13deg); }
+      100% { opacity: 0.95; transform: scale(1) rotate(-11deg); }
+    }
+    .animate-stamp {
+      animation: stampDrop 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
     @media print {
       body * { visibility: hidden; }
       #verifyModal, #verifyModal * { visibility: visible; }
@@ -265,6 +274,61 @@
           <p class="text-xs text-amber-700 mt-0.5">বকেয়া: ২০,০০০/- টাকা (২ জন)</p>
         </div>
       </div>
+
+      <!-- 📈 Fund Growth Chart (Visual Monthly Capital Analytics) -->
+      <div class="px-5 pb-5 pt-1">
+        <div class="p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 border border-emerald-800/50 text-white space-y-3 shadow-md">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-800/50 pb-2">
+            <div class="flex items-center gap-2">
+              <span class="text-lg">📈</span>
+              <div>
+                <h4 class="font-bold text-xs sm:text-sm text-white">তহবিল প্রবৃদ্ধি ও সঞ্চয় বিশ্লেষণ (Capital Growth Chart)</h4>
+                <p class="text-[10px] text-emerald-300">মাসিক আদায় ও ক্রমপুঞ্জিত সঞ্চয় তহবিলের ভিজ্যুয়াল চার্ট</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 text-[10px] font-mono">
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-emerald-500"></span> <span>মাসিক আদায়</span></span>
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-amber-400"></span> <span>মোট সঞ্চয়</span></span>
+            </div>
+          </div>
+
+          <!-- Responsive SVG Bar / Trend Chart -->
+          <div class="pt-2">
+            <svg viewBox="0 0 540 130" class="w-full h-auto overflow-visible font-sans text-[11px]">
+              <!-- Grid lines -->
+              <line x1="40" y1="20" x2="520" y2="20" stroke="#334155" stroke-dasharray="3,3" />
+              <line x1="40" y1="60" x2="520" y2="60" stroke="#334155" stroke-dasharray="3,3" />
+              <line x1="40" y1="100" x2="520" y2="100" stroke="#334155" />
+
+              <!-- Y-Axis labels -->
+              <text x="35" y="24" fill="#94a3b8" text-anchor="end" font-size="9">৬ লাখ</text>
+              <text x="35" y="64" fill="#94a3b8" text-anchor="end" font-size="9">৩ লাখ</text>
+              <text x="35" y="104" fill="#94a3b8" text-anchor="end" font-size="9">০</text>
+
+              <!-- Month 1: Oct 2026 -->
+              <rect x="80" y="55" width="34" height="45" rx="6" fill="#10b981" />
+              <text x="97" y="48" fill="#a7f3d0" text-anchor="middle" font-weight="bold" font-size="10">২.৭০ লাখ</text>
+              <text x="97" y="118" fill="#e2e8f0" text-anchor="middle" font-weight="600" font-size="10">অক্টোবর</text>
+
+              <!-- Month 2: Nov 2026 (Current) -->
+              <rect x="235" y="58" width="34" height="42" rx="6" fill="#059669" stroke="#34d399" stroke-width="2" />
+              <text x="252" y="51" fill="#6ee7b7" text-anchor="middle" font-weight="bold" font-size="10">২.৫০ লাখ</text>
+              <text x="252" y="118" fill="#34d399" text-anchor="middle" font-weight="bold" font-size="10">নভেম্বর (চলতি)</text>
+
+              <!-- Month 3: Cumulative Total (5.20 Lakh) -->
+              <rect x="390" y="22" width="42" height="78" rx="8" fill="#f59e0b" />
+              <text x="411" y="15" fill="#fef08a" text-anchor="middle" font-weight="extrabold" font-size="11">৫.২০ লাখ ৳</text>
+              <text x="411" y="118" fill="#fde047" text-anchor="middle" font-weight="bold" font-size="10">সর্বমোট সঞ্চয়</text>
+
+              <!-- Connecting Growth Trend Curve -->
+              <path d="M 97 55 Q 174 45 252 58 T 411 22" fill="none" stroke="#fef08a" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4,4" />
+              <circle cx="97" cy="55" r="4" fill="#10b981" stroke="#ffffff" stroke-width="2" />
+              <circle cx="252" cy="58" r="5" fill="#34d399" stroke="#ffffff" stroke-width="2" />
+              <circle cx="411" cy="22" r="6" fill="#f59e0b" stroke="#ffffff" stroke-width="2" />
+            </svg>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Method-wise & Date-wise Breakdown -->
@@ -368,7 +432,17 @@
 
       <!-- Modal Body Details -->
       <div id="modalBody" class="p-6 space-y-4">
-        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-2.5 text-sm">
+        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-2.5 text-sm relative overflow-hidden">
+          <!-- Animated Verified Digital Seal -->
+          <div class="absolute right-3 bottom-3 pointer-events-none z-10 opacity-90 animate-stamp">
+            <div class="border-4 border-dashed border-emerald-600 rounded-2xl px-3 py-1.5 text-center bg-emerald-50/80 shadow-md backdrop-blur-xs">
+              <div class="text-[9px] font-black text-emerald-900 tracking-wider">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
+              <div class="text-xs font-black text-emerald-700 uppercase tracking-widest flex items-center justify-center gap-1">
+                <span>✔</span> <span>VERIFIED</span>
+              </div>
+              <div class="text-[8px] font-mono font-bold text-emerald-800">DIGITAL AUDIT SEAL</div>
+            </div>
+          </div>
           <div class="flex justify-between border-b border-slate-200 pb-2">
             <span class="text-slate-500">রিসিট / স্মারক নং:</span>
             <span id="mCode" class="font-bold text-slate-800 font-mono"></span>
