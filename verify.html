@@ -4,6 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>স্বপ্ন ছোঁয়া ঐক্য সমিতি — ডিজিটাল রিসিট ও নোটিশ যাচাইকরণ</title>
+  <!-- Open Graph / WhatsApp Preview Meta Tags -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="স্বপ্ন ছোঁয়া ঐক্য সমিতি — অথেন্টিক ও ভেরিফাইড অফিশিয়াল নোটিশ" />
+  <meta property="og:description" content="পরিচালনা পরিষদ কর্তৃক অনুমোদিত ও ভেরিফাইড অফিশিয়াল নোটিশ পোর্টাল। অনলাইনে নোটিশ ও কিস্তি যাচাই করুন।" />
+  <meta property="og:url" content="https://smartsomiti.vercel.app/verify.html?notice=verified" />
+  <meta property="og:site_name" content="স্বপ্ন ছোঁয়া ঐক্য সমিতি" />
+  <meta property="og:image" content="https://smartsomiti.vercel.app/logo.webp" />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/webp" href="logo.webp" />
   <link rel="apple-touch-icon" href="logo.webp" />
@@ -148,6 +155,10 @@
           </div>
         </div>
         <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
+          <button type="button" onclick="openAuthenticNoticeModal()" class="inline-flex items-center gap-1.5 bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-bold text-xs px-3.5 py-2 rounded-xl transition shadow">
+            <span>🛡️</span>
+            <span>অথেন্টিক ভেরিফিকেশন</span>
+          </button>
           <a href="#paymentGuide" class="inline-flex items-center gap-1.5 bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs px-3.5 py-2 rounded-xl transition shadow active:scale-95">
             <span>💳</span>
             <span>পেমেন্ট গাইড</span>
@@ -449,6 +460,110 @@
       <button id="closeErrorBtn" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 rounded-xl text-xs transition">
         ঠিক আছে
       </button>
+    </div>
+  </div>
+
+  <!-- Authentic Verified Notice Modal -->
+  <div id="authenticNoticeModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden border-2 border-emerald-500 animate-pop">
+      
+      <!-- Top Official Green Header -->
+      <div class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-teal-950 p-4 sm:p-5 text-white flex items-center justify-between gap-3 border-b-2 border-amber-400 shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-400 to-amber-500 flex items-center justify-center text-xl shadow-lg shrink-0 text-slate-950">
+            🏛️
+          </div>
+          <div>
+            <div class="inline-flex items-center gap-1.5 bg-emerald-500/20 text-emerald-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-emerald-400/30 uppercase tracking-wider">
+              <span>🛡️</span> <span>Official Security Verification</span>
+            </div>
+            <h3 class="text-base sm:text-lg font-black text-white mt-0.5">স্বপ্ন ছোঁয়া ঐক্য সমিতি</h3>
+            <p class="text-[11px] text-emerald-200">অফিসিয়াল নোটিশ ও কিস্তি যাচাইকরণ পোর্টাল</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeAuthenticNoticeModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-sm font-bold text-white transition">✕</button>
+      </div>
+
+      <!-- Verified Authenticity Banner -->
+      <div class="bg-emerald-50 border-b border-emerald-200 p-3 sm:px-5 flex items-center gap-3 shrink-0">
+        <div class="w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center text-lg font-black shrink-0 shadow-sm">
+          ✓
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-xs sm:text-sm font-black text-emerald-950 flex items-center gap-1.5 flex-wrap">
+            <span>শতভাগ অথেন্টিক ও ভেরিফাইড অফিশিয়াল নোটিশ</span>
+            <span class="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-md font-bold">VERIFIED AUTHENTIC</span>
+          </div>
+          <p class="text-[11px] text-emerald-800 mt-0.5">এই নোটিশটি পরিচালনা পরিষদ কর্তৃক ডিজিটালভাবে অনুমোদিত ও অফিসিয়াল ডাটাবেসে নিবন্ধিত।</p>
+        </div>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-4 sm:p-5 overflow-y-auto space-y-4 text-xs sm:text-sm flex-1">
+        
+        <!-- Notice Details Card -->
+        <div class="bg-gradient-to-br from-slate-50 to-emerald-50/40 rounded-2xl p-4 border border-emerald-200 shadow-xs space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-200/80 pb-2.5 text-xs text-slate-600">
+            <span class="font-bold text-emerald-950">📌 স্মারক নং: <span class="font-mono text-emerald-800 font-extrabold">নোটিশ-১১/২০২৬</span></span>
+            <span class="font-semibold bg-white px-2.5 py-1 rounded-lg border border-emerald-200 text-slate-700">তারিখ: নভেম্বর ২০২৬ ইং</span>
+          </div>
+
+          <!-- Dynamic Notice Content -->
+          <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-inner">
+            <h4 class="font-black text-slate-900 text-xs sm:text-sm mb-1.5 flex items-center gap-1.5 text-emerald-900">
+              <span>📢</span> <span>জরুরি নোটিশ বার্তা:</span>
+            </h4>
+            <div id="authNoticeBodyText" class="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium">
+              <!-- Rendered Notice Content -->
+            </div>
+          </div>
+
+          <!-- Summary Badges -->
+          <div class="grid grid-cols-2 gap-2 sm:gap-3 text-center pt-1">
+            <div class="bg-emerald-100/80 p-2.5 rounded-xl border border-emerald-300">
+              <div class="text-[11px] font-bold text-emerald-800">নির্ধারিত মাসিক কিস্তি</div>
+              <div class="text-base font-extrabold text-emerald-950 mt-0.5">১০,০০০/- টাকা</div>
+            </div>
+            <div class="bg-teal-100/80 p-2.5 rounded-xl border border-teal-300">
+              <div class="text-[11px] font-bold text-teal-800">অনুমোদিত আদায়</div>
+              <div id="authNoticePaidStats" class="text-base font-extrabold text-teal-950 mt-0.5">২৫ জন (২,৫০,০০০/- ৳)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Official Accounts & Cashier Info -->
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2.5">
+          <div class="font-bold text-slate-900 text-xs flex items-center gap-1.5">
+            <span>🏦</span> <span>অনুমোদিত ব্যাংক ও পেমেন্ট চ্যানেল:</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <div class="bg-white p-2.5 rounded-xl border border-slate-200">
+              <div class="text-[11px] text-slate-500 font-semibold">সিটি ব্যাংক পিএলসি</div>
+              <div class="font-bold text-slate-900 font-mono text-xs mt-0.5">হিসাব: ২৩০৫১৫৮০৪৫০০১</div>
+              <div class="text-[10px] text-slate-500">রাউটিং: ২২৫২৬০৪১৫ • শ্রীনগর উপ-শাখা</div>
+            </div>
+            <div class="bg-white p-2.5 rounded-xl border border-slate-200">
+              <div class="text-[11px] text-pink-700 font-semibold">বিকাশ পার্সোনাল (খরচসহ)</div>
+              <div class="font-bold text-slate-900 font-mono text-xs mt-0.5">০১৮৮১২১০৪৪৪</div>
+              <div class="text-[10px] text-slate-500">কোষাধ্যক্ষ: মোঃ সাজ্জাদ হোসেন</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer Action Buttons -->
+      <div class="bg-slate-100 px-4 py-3 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2 text-xs shrink-0">
+        <span class="text-[11px] font-semibold text-emerald-800 flex items-center gap-1">
+          <span>🔒</span> <span>সুরক্ষিত ডিজিটাল আর্কাইভ সিস্টেম</span>
+        </span>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="closeAuthenticNoticeModal()" class="bg-emerald-700 hover:bg-emerald-800 active:scale-95 text-white font-bold px-4 py-2 rounded-xl transition shadow">
+            ঠিক আছে
+          </button>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1533,6 +1648,28 @@
       if (r('mCashierSignName')) r('mCashierSignName').innerText = padConfig.cashier || DEFAULT_PAD_CONFIG.cashier;
     }
 
+    function openAuthenticNoticeModal() {
+      const modal = document.getElementById('authenticNoticeModal');
+      if (!modal) return;
+      const noticeEl = document.getElementById('noticeContentText');
+      const txt = noticeEl ? noticeEl.innerText.trim() : 'চলতি মাসের কিস্তি ১০,০০০/- টাকা দ্রুত পরিশোধ করার জন্য অনুরোধ করা হচ্ছে।';
+      const bodyEl = document.getElementById('authNoticeBodyText');
+      if (bodyEl) {
+        bodyEl.innerHTML = txt.replace(/\n/g, '<br/>');
+      }
+      const paidCnt = liveRecords.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-')).length;
+      const statsEl = document.getElementById('authNoticePaidStats');
+      if (statsEl) {
+        statsEl.innerText = `${toBn(paidCnt)} জন (${formatBnTaka(paidCnt * 10000)}/- ৳)`;
+      }
+      modal.classList.remove('hidden');
+    }
+
+    function closeAuthenticNoticeModal() {
+      const modal = document.getElementById('authenticNoticeModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
     function openPadEditModal() {
       document.getElementById('editAddr').value = padConfig.addr || '';
       document.getElementById('editBank').value = padConfig.bank || '';
@@ -1742,6 +1879,12 @@
     function verifyQuery(query, silentIfMissing = false) {
       const q = (query || '').trim().toLowerCase();
       if (!q) return false;
+
+      // 0. Notice / Authentic verification shortcuts
+      if (q === 'notice' || q === 'নোটিশ' || q === 'verified' || q === 'authentic' || q === 'notice-verified') {
+        openAuthenticNoticeModal();
+        return true;
+      }
 
       // 1. Direct shortcuts for Paid / Due Lists (Admin Protected)
       if (q === 'paid-list' || q === 'paid' || q === 'স্মারক-০১/২০২৬' || q === 'পরিশোধিত') {
@@ -3556,8 +3699,8 @@
         msg += `📌 *বিশেষ নির্দেশিকা:*\n${rawNotice}\n\n`;
       }
 
-      msg += `🔍 *অনলাইনে রিসিট, তালিকা ও প্যাড যাচাই:* \n`;
-      msg += `👉 https://smartsomiti.vercel.app/verify.html\n\n`;
+      msg += `🛡️ *অথেন্টিক নোটিশ ও ডিজিটাল ভেরিফিকেশন লিংক:* \n`;
+      msg += `👉 https://smartsomiti.vercel.app/verify.html?notice=verified\n\n`;
       msg += `━━━━━━━━━━━━━━━━━━━━━━━\n`;
       msg += `✅ *অনুমোদিত:* স্বপ্ন ছোঁয়া ঐক্য সমিতি পরিচালনা পরিষদ`;
 
@@ -3627,7 +3770,7 @@
       } else if (type === 'bkash_info') {
         snip = `\n📱 *বিকাশ পার্সোনাল:* ০১৮৮১২১০৪৪৪ (ক্যাশ-আউট খরচসহ)\n`;
       } else if (type === 'verify_link') {
-        snip = `\n🔍 *অনলাইনে রিসিট ও নোটিশ যাচাই:* https://smartsomiti.vercel.app/verify.html\n`;
+        snip = `\n🛡️ *অথেন্টিক নোটিশ যাচাই লিংক:* https://smartsomiti.vercel.app/verify.html?notice=verified\n`;
       }
 
       const start = ta.selectionStart !== undefined ? ta.selectionStart : ta.value.length;
@@ -4153,19 +4296,23 @@
 
     (async () => {
       const params = new URLSearchParams(window.location.search);
+      const urlNotice = params.get('notice') || params.get('verify_notice') || params.get('auth');
+      const urlId = params.get('id') || params.get('code') || params.get('member');
+      if (urlNotice === 'verified' || urlNotice === 'true' || urlNotice === '1' || urlId === 'NOTICE' || urlId === 'OFFICIAL-NOTICE') {
+        openAuthenticNoticeModal();
+      }
       const urlFilter = params.get('filter');
       if (urlFilter && ['paid', 'due', 'money', 'notices'].includes(urlFilter)) {
         const fBtn = document.querySelector(`.filter-btn[data-filter="${urlFilter}"]`);
         if (fBtn) fBtn.click();
       }
-      const urlId = params.get('id') || params.get('code') || params.get('member');
       let opened = false;
-      if (urlId) {
+      if (urlId && urlId !== 'NOTICE' && urlId !== 'OFFICIAL-NOTICE') {
         document.getElementById('verifyInput').value = urlId;
         opened = verifyQuery(urlId, true);
       }
       await syncFromGoogleSheet();
-      if (urlId && !opened) {
+      if (urlId && !opened && urlId !== 'NOTICE' && urlId !== 'OFFICIAL-NOTICE') {
         verifyQuery(urlId, false);
       }
     })();
