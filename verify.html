@@ -203,126 +203,7 @@
           <button type="button" data-code="RCT-14" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-14 (আওলাদ হোসেন)</button>
           <button type="button" data-code="RCT-15" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-15 (ইয়াছিন)</button>
           <button type="button" data-code="RCT-13" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-13 (সজীব)</button>
-          <button type="button" data-code="স্মারক-০১/২০২৬" class="quick-pill bg-amber-50 hover:bg-amber-100 text-amber-800 px-2.5 py-1 rounded-lg border border-amber-200 font-semibold transition">স্মারক-০১/২০২৬ (পেইড)</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= 🏛️ ৩টি অফিশিয়াল প্যাড হাব (1-Click Official Pads Hub) ================= -->
-    <section id="officialPadHub" class="bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 text-white rounded-3xl p-5 sm:p-7 shadow-2xl border border-emerald-800/50 relative overflow-hidden">
-      <!-- Ambient Glow -->
-      <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -left-20 -top-20 w-80 h-80 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-      <div class="relative z-10 space-y-5">
-        <!-- Hub Header -->
-        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-emerald-800/60 pb-4">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-2xl shadow-lg shadow-emerald-900/40">
-              🏛️
-            </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <h3 class="text-lg sm:text-xl font-extrabold tracking-wide text-white">স্বপ্ন ছোঁয়া অফিশিয়াল প্যাড হাব</h3>
-                <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-400/30">৩টি অফিসিয়াল ফরম্যাট</span>
-              </div>
-              <p class="text-xs text-emerald-200/80 mt-0.5">হাই-রেজোলিউশন অফিশিয়াল প্যাড ভিউ, PNG ছবি ও A4 PDF ডাউনলোড এবং WhatsApp শেয়ার</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-2">
-            <button type="button" onclick="openManualDuePaidModal()" class="bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-extrabold text-xs px-3.5 py-2 rounded-xl transition shadow flex items-center gap-1.5">
-              <span>⚙️</span>
-              <span>কে বাকি / কে পেইড এডিট করুন</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- 3 Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          
-          <!-- Card 1: মানি রিসিট -->
-          <div class="bg-slate-800/80 hover:bg-slate-800 border border-emerald-700/40 rounded-2xl p-4 flex flex-col justify-between transition group hover:border-emerald-500/60 shadow-lg">
-            <div>
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded-lg border border-emerald-700/50">১. মানি রিসিট</span>
-                <span class="text-[11px] font-mono text-slate-400">1654 × 1450 px</span>
-              </div>
-              <h4 class="text-base font-bold text-white group-hover:text-emerald-300 transition">ব্যক্তিগত অফিসিয়াল মানি রিসিট</h4>
-              <p class="text-xs text-slate-300 mt-1">প্রতিটি সদস্যের জন্য স্বয়ংক্রিয় QR কোডযুক্ত অফিসিয়াল জমা রশিদ।</p>
-              
-              <!-- Member Selector -->
-              <div class="mt-3.5 space-y-1">
-                <label class="text-[11px] font-semibold text-slate-300">সদস্য নির্বাচন করুন (০১-২৭):</label>
-                <select id="hubMemberSelect" onchange="previewHubMemberReceipt(this.value)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                  <!-- Loaded via JS -->
-                </select>
-              </div>
-            </div>
-
-            <div class="pt-4 mt-3 border-t border-slate-700/60 flex items-center gap-2">
-              <button type="button" onclick="openSelectedMemberReceipt()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold py-2 px-3 rounded-xl text-xs transition shadow flex items-center justify-center gap-1.5">
-                <span>👁️</span> <span>রিসিট প্যাড দেখুন</span>
-              </button>
-              <button type="button" onclick="quickDownloadReceiptPng()" title="সরাসরি PNG ডাউনলোড" class="bg-slate-700 hover:bg-slate-600 text-emerald-300 font-bold p-2 rounded-xl text-xs transition">
-                🖼️
-              </button>
-            </div>
-          </div>
-
-          <!-- Card 2: পরিশোধিত তালিকা -->
-          <div class="bg-slate-800/80 hover:bg-slate-800 border border-teal-700/40 rounded-2xl p-4 flex flex-col justify-between transition group hover:border-teal-500/60 shadow-lg">
-            <div>
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold text-teal-400 bg-teal-950/80 px-2.5 py-1 rounded-lg border border-teal-700/50">২. পরিশোধিত তালিকা</span>
-                <span class="text-[11px] font-mono text-slate-400">A4 • 1654 × 2339 px</span>
-              </div>
-              <h4 class="text-base font-bold text-white group-hover:text-teal-300 transition">পরিশোধিত সদস্যদের পূর্ণাঙ্গ তালিকা</h4>
-              <p class="text-xs text-slate-300 mt-1">চলতি মাসে যারা কিস্তি পরিশোধ করেছেন তাদের টেবিলসহ অফিসিয়াল প্যাড।</p>
-              
-              <!-- Stats Badge -->
-              <div class="mt-3.5 bg-slate-900/90 border border-teal-800/40 rounded-xl p-2.5 text-xs flex items-center justify-between">
-                <span class="text-slate-300">পরিশোধ করেছেন:</span>
-                <span id="hubPaidStatText" class="font-extrabold text-teal-300">২৫ জন (২,৫০,০০০ ৳)</span>
-              </div>
-            </div>
-
-            <div class="pt-4 mt-3 border-t border-slate-700/60 flex items-center gap-2">
-              <button type="button" onclick="openOfficialPadModal(null, 'paid')" class="flex-1 bg-teal-600 hover:bg-teal-500 active:scale-95 text-white font-bold py-2 px-3 rounded-xl text-xs transition shadow flex items-center justify-center gap-1.5">
-                <span>👁️</span> <span>পেইড লিস্ট প্যাড দেখুন</span>
-              </button>
-              <button type="button" onclick="quickDownloadPaidPng()" title="সরাসরি PNG ডাউনলোড" class="bg-slate-700 hover:bg-slate-600 text-teal-300 font-bold p-2 rounded-xl text-xs transition">
-                🖼️
-              </button>
-            </div>
-          </div>
-
-          <!-- Card 3: বকেয়া তালিকা -->
-          <div class="bg-slate-800/80 hover:bg-slate-800 border border-rose-700/40 rounded-2xl p-4 flex flex-col justify-between transition group hover:border-rose-500/60 shadow-lg">
-            <div>
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold text-rose-400 bg-rose-950/80 px-2.5 py-1 rounded-lg border border-rose-700/50">৩. বকেয়া তালিকা</span>
-                <span class="text-[11px] font-mono text-slate-400">A4 • 1654 × 2339 px</span>
-              </div>
-              <h4 class="text-base font-bold text-white group-hover:text-rose-300 transition">বকেয়া কিস্তির অফিশিয়াল তাগিদপত্র</h4>
-              <p class="text-xs text-slate-300 mt-1">চলতি মাসের যাদের কিস্তি বকেয়া আছে তাদের সতর্কবার্তা ও অফিশিয়াল নোটিশ।</p>
-              
-              <!-- Stats Badge -->
-              <div class="mt-3.5 bg-slate-900/90 border border-rose-800/40 rounded-xl p-2.5 text-xs flex items-center justify-between">
-                <span class="text-slate-300">বর্তমান বকেয়া:</span>
-                <span id="hubDueStatText" class="font-extrabold text-rose-300">২ জন (২০,০০০ ৳)</span>
-              </div>
-            </div>
-
-            <div class="pt-4 mt-3 border-t border-slate-700/60 flex items-center gap-2">
-              <button type="button" onclick="openOfficialPadModal(null, 'due')" class="flex-1 bg-rose-700 hover:bg-rose-600 active:scale-95 text-white font-bold py-2 px-3 rounded-xl text-xs transition shadow flex items-center justify-center gap-1.5">
-                <span>👁️</span> <span>বকেয়া লিস্ট প্যাড দেখুন</span>
-              </button>
-              <button type="button" onclick="quickDownloadDuePng()" title="সরাসরি PNG ডাউনলোড" class="bg-slate-700 hover:bg-slate-600 text-rose-300 font-bold p-2 rounded-xl text-xs transition">
-                🖼️
-              </button>
-            </div>
-          </div>
-
+          <button type="button" data-code="RCT-01" class="quick-pill bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg border border-emerald-200 font-semibold transition">RCT-01 (রিফাত)</button>
         </div>
       </div>
     </section>
@@ -661,7 +542,7 @@
             <!-- Populated via JS -->
           </select>
         </div>
-        <button type="button" onclick="openManualDuePaidModal()" class="bg-amber-600 hover:bg-amber-500 active:scale-95 text-white font-bold px-3 py-2 rounded-xl transition flex items-center gap-1 shadow">
+        <button type="button" id="modalPadEditDueBtn" onclick="openManualDuePaidModal()" class="bg-amber-600 hover:bg-amber-500 active:scale-95 text-white font-bold px-3 py-2 rounded-xl transition flex items-center gap-1 shadow">
           <span>⚙️</span> <span>বকেয়া/পেইড এডিট</span>
         </button>
       </div>
@@ -677,7 +558,7 @@
         <button type="button" onclick="shareCurrentPadWhatsApp()" class="bg-green-600 hover:bg-green-700 text-white font-bold px-3.5 py-2 rounded-xl shadow transition flex items-center gap-1.5 active:scale-95">
           <span>📲</span> <span>WhatsApp-এ পাঠান</span>
         </button>
-        <button type="button" onclick="window.print()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold px-3 py-2 rounded-xl transition">
+        <button type="button" id="modalPadPrintBtn" onclick="window.print()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold px-3 py-2 rounded-xl transition">
           🖨️ প্রিন্ট
         </button>
         <button type="button" onclick="closeOfficialPadModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center font-bold text-sm transition">
@@ -1079,6 +960,7 @@
       <div class="px-5 py-2.5 bg-slate-50 border-b border-slate-200 flex flex-wrap gap-1.5 text-xs">
         <button type="button" data-atab="manage" onclick="switchAdminTab('manage')" class="admin-tab-btn bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold">🗑️ ভেরিফাই ও রিসিট ডিলিট/এডিট</button>
         <button type="button" data-atab="add" onclick="switchAdminTab('add')" class="admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold">➕ নতুন পেমেন্ট যোগ (মেইন অ্যাপেও যাবে)</button>
+        <button type="button" data-atab="pads" onclick="switchAdminTab('pads')" class="admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5"><span>📜</span> <span>অফিসিয়াল প্যাড ও প্রিন্ট হাব</span></button>
         <button type="button" data-atab="whatsapp" onclick="switchAdminTab('whatsapp')" class="admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5"><span>📲</span> <span>WhatsApp নোটিশ ব্রডকাস্ট</span></button>
         <button type="button" data-atab="settings" onclick="switchAdminTab('settings')" class="admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold">⚙️ নোটিশ, পাসওয়ার্ড ও এক্সপোর্ট</button>
       </div>
@@ -1092,8 +974,8 @@
               <div class="font-bold text-sm">🏛️ ৩টি অফিশিয়াল প্যাড ও রিসিট জেনারেটর</div>
               <div class="text-[11px] text-emerald-200">মানি রিসিট (1654×1450), পরিশোধিত তালিকা (A4) ও বকেয়া তালিকা (A4)</div>
             </div>
-            <button type="button" onclick="openOfficialPadModal(null, 'receipt')" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-3.5 py-1.5 rounded-xl transition shadow active:scale-95">
-              🖼️ প্যাড তৈরি ও ডাউনলোড করুন
+            <button type="button" onclick="switchAdminTab('pads')" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-3.5 py-1.5 rounded-xl transition shadow active:scale-95">
+              🖼️ প্যাড ও প্রিন্ট হাব খুলুন
             </button>
           </div>
 
@@ -1259,6 +1141,134 @@
               <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-xl transition shadow">✅ ভেরিফাই করুন, মেইন অ্যাপে পাঠান ও ৩টি প্যাড তৈরি করুন</button>
             </div>
           </form>
+        <!-- Tab: Official Pad & Print Hub (Admin Only) -->
+        <div id="adminTab_pads" class="hidden space-y-4">
+          <section id="officialPadHub" class="bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 text-white rounded-3xl p-5 sm:p-6 shadow-xl border border-emerald-800/50 relative overflow-hidden">
+            <!-- Ambient Glow -->
+            <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-20 -top-20 w-80 h-80 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 space-y-4">
+              <!-- Hub Header -->
+              <div class="flex flex-wrap items-center justify-between gap-3 border-b border-emerald-800/60 pb-3">
+                <div class="flex items-center gap-3">
+                  <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-xl shadow-lg shadow-emerald-900/40">
+                    🏛️
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <h3 class="text-base sm:text-lg font-extrabold tracking-wide text-white">অফিসিয়াল প্যাড ও প্রিন্ট ম্যানেজমেন্ট</h3>
+                      <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-400/30">শুধু অ্যাডমিন অ্যাক্সেস</span>
+                    </div>
+                    <p class="text-[11px] text-emerald-200/80 mt-0.5">হাই-রেজোলিউশন অফিশিয়াল প্যাড ভিউ, সরাসরি প্রিন্ট, PNG ছবি ও A4 PDF ডাউনলোড</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button type="button" onclick="openManualDuePaidModal()" class="bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-extrabold text-xs px-3.5 py-2 rounded-xl transition shadow flex items-center gap-1.5">
+                    <span>⚙️</span>
+                    <span>কে বাকি / কে পেইড এডিট করুন</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 3 Cards Grid -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                
+                <!-- Card 1: মানি রিসিট -->
+                <div class="bg-slate-800/80 hover:bg-slate-800 border border-emerald-700/40 rounded-2xl p-4 flex flex-col justify-between transition group hover:border-emerald-500/60 shadow-lg">
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-xs font-bold text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded-lg border border-emerald-700/50">১. মানি রিসিট</span>
+                      <span class="text-[11px] font-mono text-slate-400">1654 × 1450 px</span>
+                    </div>
+                    <h4 class="text-sm font-bold text-white group-hover:text-emerald-300 transition">ব্যক্তিগত অফিসিয়াল মানি রিসিট</h4>
+                    <p class="text-[11px] text-slate-300 mt-1">প্রতিটি সদস্যের জন্য স্বয়ংক্রিয় QR কোডযুক্ত অফিসিয়াল জমা রশিদ।</p>
+                    
+                    <!-- Member Selector -->
+                    <div class="mt-3 space-y-1">
+                      <label class="text-[11px] font-semibold text-slate-300">সদস্য নির্বাচন করুন (০১-২৭):</label>
+                      <select id="hubMemberSelect" onchange="previewHubMemberReceipt(this.value)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-xl px-2.5 py-1.5 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <!-- Loaded via JS -->
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="pt-3.5 mt-3 border-t border-slate-700/60 flex flex-wrap items-center gap-1.5">
+                    <button type="button" onclick="openSelectedMemberReceipt()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold py-1.5 px-2.5 rounded-xl text-xs transition shadow flex items-center justify-center gap-1">
+                      <span>👁️</span> <span>রিসিট দেখুন</span>
+                    </button>
+                    <button type="button" onclick="quickPrintPad('receipt')" title="সরাসরি প্রিন্ট করুন" class="bg-slate-700 hover:bg-slate-600 text-white font-bold px-2.5 py-1.5 rounded-xl text-xs transition flex items-center gap-1">
+                      <span>🖨️</span> <span>প্রিন্ট</span>
+                    </button>
+                    <button type="button" onclick="quickDownloadReceiptPng()" title="সরাসরি PNG ছবি ডাউনলোড" class="bg-slate-700 hover:bg-slate-600 text-emerald-300 font-bold p-1.5 rounded-xl text-xs transition">
+                      🖼️
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Card 2: পরিশোধিত তালিকা -->
+                <div class="bg-slate-800/80 hover:bg-slate-800 border border-teal-700/40 rounded-2xl p-4 flex flex-col justify-between transition group hover:border-teal-500/60 shadow-lg">
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-xs font-bold text-teal-400 bg-teal-950/80 px-2.5 py-1 rounded-lg border border-teal-700/50">২. পরিশোধিত তালিকা</span>
+                      <span class="text-[11px] font-mono text-slate-400">A4 • 1654 × 2339 px</span>
+                    </div>
+                    <h4 class="text-sm font-bold text-white group-hover:text-teal-300 transition">পরিশোধিত সদস্যদের পূর্ণাঙ্গ তালিকা</h4>
+                    <p class="text-[11px] text-slate-300 mt-1">চলতি মাসে যারা কিস্তি পরিশোধ করেছেন তাদের টেবিলসহ অফিসিয়াল A4 প্যাড।</p>
+                    
+                    <!-- Stats Badge -->
+                    <div class="mt-3 bg-slate-900/90 border border-teal-800/40 rounded-xl p-2 text-xs flex items-center justify-between">
+                      <span class="text-slate-300">পরিশোধ করেছেন:</span>
+                      <span id="hubPaidStatText" class="font-extrabold text-teal-300">২৫ জন (২,৫০,০০০ ৳)</span>
+                    </div>
+                  </div>
+
+                  <div class="pt-3.5 mt-3 border-t border-slate-700/60 flex flex-wrap items-center gap-1.5">
+                    <button type="button" onclick="openOfficialPadModal(null, 'paid')" class="flex-1 bg-teal-600 hover:bg-teal-500 active:scale-95 text-white font-bold py-1.5 px-2.5 rounded-xl text-xs transition shadow flex items-center justify-center gap-1">
+                      <span>👁️</span> <span>পেইড প্যাড</span>
+                    </button>
+                    <button type="button" onclick="quickPrintPad('paid')" title="সরাসরি প্রিন্ট করুন" class="bg-slate-700 hover:bg-slate-600 text-white font-bold px-2.5 py-1.5 rounded-xl text-xs transition flex items-center gap-1">
+                      <span>🖨️</span> <span>প্রিন্ট</span>
+                    </button>
+                    <button type="button" onclick="quickDownloadPaidPng()" title="সরাসরি PNG ডাউনলোড" class="bg-slate-700 hover:bg-slate-600 text-teal-300 font-bold p-1.5 rounded-xl text-xs transition">
+                      🖼️
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Card 3: বকেয়া তালিকা -->
+                <div class="bg-slate-800/80 hover:bg-slate-800 border border-rose-700/40 rounded-2xl p-4 flex flex-col justify-between transition group hover:border-rose-500/60 shadow-lg">
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-xs font-bold text-rose-400 bg-rose-950/80 px-2.5 py-1 rounded-lg border border-rose-700/50">৩. বকেয়া তালিকা</span>
+                      <span class="text-[11px] font-mono text-slate-400">A4 • 1654 × 2339 px</span>
+                    </div>
+                    <h4 class="text-sm font-bold text-white group-hover:text-rose-300 transition">বকেয়া কিস্তির অফিশিয়াল তাগিদপত্র</h4>
+                    <p class="text-[11px] text-slate-300 mt-1">চলতি মাসের যাদের কিস্তি বকেয়া আছে তাদের সতর্কবার্তা ও অফিশিয়াল নোটিশ।</p>
+                    
+                    <!-- Stats Badge -->
+                    <div class="mt-3 bg-slate-900/90 border border-rose-800/40 rounded-xl p-2 text-xs flex items-center justify-between">
+                      <span class="text-slate-300">বর্তমান বকেয়া:</span>
+                      <span id="hubDueStatText" class="font-extrabold text-rose-300">২ জন (২০,০০০ ৳)</span>
+                    </div>
+                  </div>
+
+                  <div class="pt-3.5 mt-3 border-t border-slate-700/60 flex flex-wrap items-center gap-1.5">
+                    <button type="button" onclick="openOfficialPadModal(null, 'due')" class="flex-1 bg-rose-700 hover:bg-rose-600 active:scale-95 text-white font-bold py-1.5 px-2.5 rounded-xl text-xs transition shadow flex items-center justify-center gap-1">
+                      <span>👁️</span> <span>বকেয়া প্যাড</span>
+                    </button>
+                    <button type="button" onclick="quickPrintPad('due')" title="সরাসরি প্রিন্ট করুন" class="bg-slate-700 hover:bg-slate-600 text-white font-bold px-2.5 py-1.5 rounded-xl text-xs transition flex items-center gap-1">
+                      <span>🖨️</span> <span>প্রিন্ট</span>
+                    </button>
+                    <button type="button" onclick="quickDownloadDuePng()" title="সরাসরি PNG ডাউনলোড" class="bg-slate-700 hover:bg-slate-600 text-rose-300 font-bold p-1.5 rounded-xl text-xs transition">
+                      🖼️
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </section>
         </div>
 
         <!-- Tab: WhatsApp Broadcast & Notification Center -->
@@ -1706,6 +1716,11 @@
 
     function openVerifiedModal(rec) {
       activeModalRec = rec;
+      if (!isAdmin && (rec.code === 'PAID-LIST' || rec.code === 'DUE-LIST' || rec.code.startsWith('স্মারক'))) {
+        alert('🔒 পরিশোধিত ও বকেয়া তালিকা এবং অফিসিয়াল প্যাড প্রিন্ট করার সুবিধা শুধুমাত্র পরিচালনা পরিষদের (অ্যাডমিন) জন্য সংরক্ষিত। অনুগ্রহ করে অ্যাডমিন লগইন করুন।');
+        openAdminAuthModal();
+        return;
+      }
       const targetTab = rec.code === 'PAID-LIST' ? 'paid' : (rec.code === 'DUE-LIST' ? 'due' : 'receipt');
       openOfficialPadModal(rec, targetTab);
     }
@@ -1714,12 +1729,22 @@
       const q = (query || '').trim().toLowerCase();
       if (!q) return false;
 
-      // 1. Direct shortcuts for Paid / Due Lists
+      // 1. Direct shortcuts for Paid / Due Lists (Admin Protected)
       if (q === 'paid-list' || q === 'paid' || q === 'স্মারক-০১/২০২৬' || q === 'পরিশোধিত') {
+        if (!isAdmin) {
+          alert('🔒 পরিশোধিত তালিকা ও অফিসিয়াল প্যাড প্রিন্ট করার সুবিধা শুধুমাত্র পরিচালনা পরিষদের (অ্যাডমিন) জন্য সংরক্ষিত। অনুগ্রহ করে অ্যাডমিন লগইন করুন।');
+          openAdminAuthModal();
+          return true;
+        }
         openOfficialPadModal(null, 'paid');
         return true;
       }
       if (q === 'due-list' || q === 'due' || q === 'স্মারক-০২/২০২৬' || q === 'বকেয়া' || q === 'বকেয়া') {
+        if (!isAdmin) {
+          alert('🔒 বকেয়া তালিকা ও অফিসিয়াল প্যাড প্রিন্ট করার সুবিধা শুধুমাত্র পরিচালনা পরিষদের (অ্যাডমিন) জন্য সংরক্ষিত। অনুগ্রহ করে অ্যাডমিন লগইন করুন।');
+          openAdminAuthModal();
+          return true;
+        }
         openOfficialPadModal(null, 'due');
         return true;
       }
@@ -1744,6 +1769,11 @@
         r.code.toLowerCase().includes(q)
       );
       if (match) {
+        if (!isAdmin && (match.code === 'PAID-LIST' || match.code === 'DUE-LIST' || (match.alt_code && match.alt_code.startsWith('স্মারক')))) {
+          alert('🔒 পরিশোধিত ও বকেয়া তালিকা এবং অফিসিয়াল প্যাড প্রিন্ট করার সুবিধা শুধুমাত্র পরিচালনা পরিষদের (অ্যাডমিন) জন্য সংরক্ষিত। অনুগ্রহ করে অ্যাডমিন লগইন করুন।');
+          openAdminAuthModal();
+          return true;
+        }
         const targetTab = match.code === 'PAID-LIST' ? 'paid' : (match.code === 'DUE-LIST' ? 'due' : 'receipt');
         openOfficialPadModal(match, targetTab);
         return true;
@@ -2170,11 +2200,12 @@
       isAdmin = false;
       document.getElementById('adminBtn').innerText = '🔐 অ্যাডমিন';
       closeAdminPanel();
+      closeOfficialPadModal();
       renderGrid(liveRecords);
     }
 
     function switchAdminTab(tab) {
-      ['manage', 'add', 'whatsapp', 'settings'].forEach(t => {
+      ['manage', 'add', 'pads', 'whatsapp', 'settings'].forEach(t => {
         const el = document.getElementById('adminTab_' + t);
         if (el) el.classList.toggle('hidden', t !== tab);
       });
@@ -2187,6 +2218,10 @@
       if (tab === 'add') {
         populateAdminMemberDropdown();
         renderAdminDueList();
+      }
+      if (tab === 'pads') {
+        populateHubAndModalMemberDropdowns();
+        updateHubStats();
       }
       if (tab === 'whatsapp') {
         initAdminWhatsAppTab();
@@ -2882,6 +2917,12 @@
     }
 
     function openOfficialPadModal(record = null, targetTab = 'receipt') {
+      if (!isAdmin && (targetTab === 'paid' || targetTab === 'due')) {
+        alert('🔒 পরিশোধিত ও বকেয়া তালিকা এবং অফিসিয়াল প্যাড প্রিন্ট করার সুবিধা শুধুমাত্র পরিচালনা পরিষদের (অ্যাডমিন) জন্য সংরক্ষিত। অনুগ্রহ করে অ্যাডমিন লগইন করুন।');
+        openAdminAuthModal();
+        return;
+      }
+
       if (record) {
         currentPadRec = record;
       } else if (!currentPadRec) {
@@ -2902,7 +2943,19 @@
         if (hubSel) hubSel.value = serStr;
       }
 
-      switchOfficialPadTab(targetTab || 'receipt');
+      // Toolbar elements access control based on Admin privilege
+      const paidTabBtn = document.getElementById('tabPadPaidBtn');
+      const dueTabBtn = document.getElementById('tabPadDueBtn');
+      const memWrap = document.getElementById('modalPadMemberSelectWrap');
+      const editDueBtn = document.getElementById('modalPadEditDueBtn');
+      const printBtn = document.getElementById('modalPadPrintBtn');
+
+      if (paidTabBtn) paidTabBtn.style.display = isAdmin ? '' : 'none';
+      if (dueTabBtn) dueTabBtn.style.display = isAdmin ? '' : 'none';
+      if (editDueBtn) editDueBtn.style.display = isAdmin ? '' : 'none';
+      if (printBtn) printBtn.style.display = isAdmin ? '' : 'none';
+
+      switchOfficialPadTab(isAdmin ? (targetTab || 'receipt') : 'receipt');
 
       const modal = document.getElementById('officialPadModal');
       if (modal) modal.classList.remove('hidden');
@@ -2916,6 +2969,10 @@
     }
 
     function switchOfficialPadTab(tabName) {
+      if (!isAdmin && tabName !== 'receipt') {
+        alert('🔒 পরিশোধিত ও বকেয়া তালিকা শুধুমাত্র পরিচালনা পরিষদের (অ্যাডমিন) জন্য সংরক্ষিত।');
+        return;
+      }
       currentPadTab = tabName;
       const receiptBtn = document.getElementById('tabPadReceiptBtn');
       const paidBtn = document.getElementById('tabPadPaidBtn');
@@ -2926,7 +2983,7 @@
       const dueNode = document.getElementById('padDueListNode');
 
       const memSelWrap = document.getElementById('modalPadMemberSelectWrap');
-      if (memSelWrap) memSelWrap.style.display = tabName === 'receipt' ? 'flex' : 'none';
+      if (memSelWrap) memSelWrap.style.display = (isAdmin && tabName === 'receipt') ? 'flex' : 'none';
 
       const activeBtnClass = 'pad-tab-btn px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-bold transition shadow';
       const inactiveBtnClass = 'pad-tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white font-medium transition';
@@ -2940,6 +2997,13 @@
       if (dueNode) dueNode.classList.toggle('hidden', tabName !== 'due');
 
       adjustPadViewportScale();
+    }
+
+    function quickPrintPad(padType = 'receipt') {
+      openOfficialPadModal(null, padType);
+      setTimeout(() => {
+        window.print();
+      }, 400);
     }
 
     function adjustPadViewportScale() {
