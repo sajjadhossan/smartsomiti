@@ -152,7 +152,11 @@
             </div>
           </div>
         </div>
-        <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
+        <div class="flex flex-wrap items-center gap-2 self-end sm:self-center shrink-0">
+          <button type="button" onclick="openWaNoticeHubModal()" class="inline-flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 hover:from-emerald-700 hover:to-green-700 active:scale-95 text-white font-extrabold text-xs px-3.5 py-2 rounded-xl transition shadow-md shadow-emerald-700/25">
+            <span class="text-sm">📲</span>
+            <span>WhatsApp নোটিশ পাঠান</span>
+          </button>
           <a href="#paymentGuide" class="inline-flex items-center gap-1.5 bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs px-3.5 py-2 rounded-xl transition shadow active:scale-95">
             <span>💳</span>
             <span>পেমেন্ট গাইড</span>
@@ -229,7 +233,11 @@
               <p class="text-xs text-emerald-200/80 mt-0.5">হাই-রেজোলিউশন অফিশিয়াল প্যাড ভিউ, PNG ছবি ও A4 PDF ডাউনলোড এবং WhatsApp শেয়ার</p>
             </div>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" onclick="openWaNoticeHubModal()" class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 active:scale-95 text-white font-extrabold text-xs px-3.5 py-2 rounded-xl transition shadow flex items-center gap-1.5">
+              <span>📲</span>
+              <span>WhatsApp নোটিশ হাব</span>
+            </button>
             <button type="button" onclick="openManualDuePaidModal()" class="bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-extrabold text-xs px-3.5 py-2 rounded-xl transition shadow flex items-center gap-1.5">
               <span>⚙️</span>
               <span>কে বাকি / কে পেইড এডিট করুন</span>
@@ -1022,6 +1030,124 @@
             <span>পরিবর্তন সংরক্ষণ ও প্যাড দেখুন</span>
           </button>
         </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= 📲 WHATSAPP OFFICIAL NOTICE & PAD SHARING HUB MODAL ================= -->
+  <div id="waNoticeHubModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[80] flex items-center justify-center p-3 sm:p-5 hidden">
+    <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-3xl max-h-[94vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Modal Header -->
+      <div class="px-5 py-4 bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white flex items-center justify-between border-b border-emerald-900 shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-green-500 to-emerald-600 flex items-center justify-center text-xl shadow-md">
+            📲
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+              <span>WhatsApp অফিশিয়াল নোটিশ ও প্যাড হাব</span>
+              <span class="text-[10px] bg-green-500/20 text-green-300 font-extrabold px-2 py-0.5 rounded-full border border-green-400/30">হাই-ইম্প্যাক্ট ও বোল্ড</span>
+            </h3>
+            <p class="text-xs text-emerald-200/80">বোল্ড রঙিন ফরম্যাটে নোটিশ ও ৩টি অফিসিয়াল প্যাড (পরিশোধিত, বকেয়া, রিসিট) সরাসরি WhatsApp-এ পাঠান</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeWaNoticeHubModal()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center font-bold text-base transition">✕</button>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-4">
+        
+        <!-- Live WhatsApp Chat Bubble Preview (Realistic WhatsApp UI) -->
+        <div class="space-y-1.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+              <span>💬</span> <span>WhatsApp-এ মেসেজটি যেমন দেখাবে (লাইভ প্রিভিউ):</span>
+            </span>
+            <div class="flex items-center gap-2">
+              <label class="inline-flex items-center gap-1.5 cursor-pointer text-[11px] font-bold text-slate-700 bg-slate-100 hover:bg-slate-200/80 px-2.5 py-1 rounded-lg border border-slate-300 select-none transition">
+                <input type="checkbox" id="waIncludeDueCheck" checked onchange="updateWaMessagePreview()" class="w-3.5 h-3.5 text-emerald-600 rounded focus:ring-emerald-500">
+                <span>বকেয়া তালিকা যুক্ত রাখুন</span>
+              </label>
+              <button type="button" onclick="copyFullWhatsAppNotice(this)" class="text-[11px] font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg border border-emerald-200 transition flex items-center gap-1">
+                <span>📋</span> <span>মেসেজ কপি</span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="bg-[#e5ddd5] p-3 sm:p-4 rounded-2xl border border-slate-300 shadow-inner">
+            <div class="bg-white rounded-2xl rounded-tl-sm p-4 text-xs sm:text-sm text-slate-900 shadow-sm border border-emerald-200/50 space-y-2 font-mono leading-relaxed max-h-60 overflow-y-auto" id="waMessagePreviewText">
+              <!-- Live Text populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Instant Action Buttons Grid -->
+        <div class="space-y-2 pt-1">
+          <span class="text-xs font-bold text-slate-700 block">⚡ আপনার পছন্দ অনুযায়ী সরাসরি পাঠান:</span>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <!-- 1. Text Only -->
+            <button type="button" onclick="sendWaNoticeTextOnly(this)" class="flex items-center gap-3 p-3.5 rounded-2xl bg-emerald-50 hover:bg-emerald-100/90 border-2 border-emerald-300/80 text-left transition shadow-xs group active:scale-98">
+              <div class="w-10 h-10 rounded-xl bg-emerald-700 text-white flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition shadow">
+                💬
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="font-extrabold text-emerald-950 text-xs sm:text-sm">১. শুধু নোটিশ পাঠান (Text Only)</div>
+                <div class="text-[11px] text-emerald-700">বোল্ড ও কালারফুল টেক্সট সরাসরি WhatsApp-এ খুলবে</div>
+              </div>
+            </button>
+
+            <!-- 2. Paid List + Notice -->
+            <button type="button" onclick="sendWaNoticeWithPad('paid', this)" class="flex items-center gap-3 p-3.5 rounded-2xl bg-teal-50 hover:bg-teal-100/90 border-2 border-teal-300/80 text-left transition shadow-xs group active:scale-98">
+              <div class="w-10 h-10 rounded-xl bg-teal-700 text-white flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition shadow">
+                📋
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="font-extrabold text-teal-950 text-xs sm:text-sm">২. পরিশোধিত তালিকা প্যাড + নোটিশ</div>
+                <div class="text-[11px] text-teal-700">A4 সাইজ পরিশোধিত তালিকা ইমেজ ও নোটিশ একসাথে</div>
+              </div>
+            </button>
+
+            <!-- 3. Due List + Notice -->
+            <button type="button" onclick="sendWaNoticeWithPad('due', this)" class="flex items-center gap-3 p-3.5 rounded-2xl bg-rose-50 hover:bg-rose-100/90 border-2 border-rose-300/80 text-left transition shadow-xs group active:scale-98">
+              <div class="w-10 h-10 rounded-xl bg-rose-700 text-white flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition shadow">
+                🔴
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="font-extrabold text-rose-950 text-xs sm:text-sm">৩. বকেয়া তালিকা প্যাড + নোটিশ</div>
+                <div class="text-[11px] text-rose-700">A4 সাইজ বকেয়া তালিকা ইমেজ ও তাগিদ নোটিশ একসাথে</div>
+              </div>
+            </button>
+
+            <!-- 4. Money Receipt + Notice -->
+            <button type="button" onclick="sendWaNoticeWithPad('receipt', this)" class="flex items-center gap-3 p-3.5 rounded-2xl bg-amber-50 hover:bg-amber-100/90 border-2 border-amber-300/80 text-left transition shadow-xs group active:scale-98">
+              <div class="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition shadow">
+                🧾
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="font-extrabold text-amber-950 text-xs sm:text-sm">৪. মানি রিসিট প্যাড + নোটিশ</div>
+                <div class="text-[11px] text-amber-800">অফিসিয়াল মানি রিসিট (1654×1450) ও নোটিশ একসাথে</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-slate-600 text-[11px] flex items-center gap-2">
+          <span class="text-lg">💡</span>
+          <span>মোবাইল থেকে পাঠালে ছবি ও নোটিশ সরাসরি WhatsApp অ্যাপে একসাথে সিলেক্ট হয়ে যাবে। কম্পিউটার থেকে পাঠালে ছবি ডাউনলোড হয়ে সম্পূর্ণ নোটিশ কপি ও WhatsApp Web ওপেন হবে।</span>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-5 py-3 bg-slate-100 border-t border-slate-200 flex items-center justify-between shrink-0">
+        <button type="button" onclick="closeWaNoticeHubModal()" class="px-4 py-2 rounded-xl bg-white border border-slate-300 font-bold text-xs text-slate-700 hover:bg-slate-50 transition">
+          বন্ধ করুন
+        </button>
+        <button type="button" onclick="sendWaNoticeTextOnly(this)" class="px-5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 font-bold text-xs text-white shadow transition flex items-center gap-1.5 active:scale-95">
+          <span>📲</span> <span>সরাসরি WhatsApp-এ পাঠান</span>
+        </button>
       </div>
 
     </div>
@@ -1837,7 +1963,21 @@
             waBtn.className = 'mt-2 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 px-2 rounded-lg text-[11px] transition';
             waBtn.innerText = '📲 WhatsApp রিমাইন্ডার';
             waBtn.onclick = () => {
-              const msg = `আসসালামু আলাইকুম ${dm.name} ভাই, স্বপ্ন ছোঁয়া ঐক্য সমিতির চলতি মাসের কিস্তি (১০,০০০/- টাকা) পরিশোধের জন্য বিনীত অনুরোধ রইলো।\\nবকেয়া তালিকা দেখুন: ${window.location.origin}${window.location.pathname}?filter=due`;
+              const sNum = dm.serial ? String(dm.serial).padStart(2, '0') : '00';
+              const msg = `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+                `🏛️  *স্বপ্ন ছোঁয়া ঐক্য সমিতি*  🏛️\n` +
+                `⚠️  *জরুরি কিস্তি পরিশোধের তাগিদপত্র*\n` +
+                `━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+                `আসসালামু আলাইকুম *${dm.name}* ভাই (সদস্য ক্রমিক: *S-${sNum}*),\n\n` +
+                `সমিতির চলতি মাসের (*নভেম্বর ২০২৬*) নির্ধারিত কিস্তি *১০,০০০/- টাকা* এখনও বকেয়া রয়েছে।\n` +
+                `সমিতির নিয়ম অনুযায়ী নির্ধারিত সময়ের মধ্যে কিস্তি পরিশোধ করার জন্য বিনীত অনুরোধ জানানো হচ্ছে।\n\n` +
+                `🏦 *সিটি ব্যাংক হিসাব:* ২৩০৫১৫৮০৪৫০০১\n` +
+                `🌐 *রাউটিং:* ২২৫২৬০৪১৫ • শ্রীনগর উপ-শাখা\n` +
+                `📱 *বিকাশ পার্সোনাল:* ০১৮৮১২১০৪৪৪ (খরচসহ)\n\n` +
+                `🔍 *অনলাইনে বকেয়া তালিকা ও অফিসিয়াল প্যাড দেখুন:* \n` +
+                `👉 https://smartsomiti.vercel.app/verify.html?id=DUE-LIST\n\n` +
+                `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+                `ধন্যবাদান্তে,\n*স্বপ্ন ছোঁয়া ঐক্য সমিতি পরিচালনা পরিষদ*`;
               window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
             };
             card.appendChild(waBtn);
@@ -3264,6 +3404,183 @@
       }
     }
 
+    // ================= 📲 HIGH-IMPACT WHATSAPP NOTICE & PAD SHARING SYSTEM =================
+    function generateOfficialWhatsAppNotice(includeDueList = true) {
+      const paidCnt = liveRecords.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-')).length;
+      const dueList = dueMembers || [];
+      const dueCnt = dueList.length;
+      const paidAmt = formatBnTaka(paidCnt * 10000);
+      const dueAmt = formatBnTaka(dueCnt * 10000);
+      const rawNotice = (document.getElementById('noticeContentText')?.innerText || '').trim();
+
+      let msg = `━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      msg += `🏛️  *স্বপ্ন ছোঁয়া ঐক্য সমিতি*  🏛️\n`;
+      msg += `📢  *জরুরি অফিশিয়াল নোটিশ ও কিস্তি আপডেট*\n`;
+      msg += `━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+
+      msg += `📅 *চলতি মাস:* নভেম্বর ২০২৬\n`;
+      msg += `💰 *নির্ধারিত কিস্তি:* ১০,০০০/- টাকা (দশ হাজার টাকা)\n`;
+      msg += `🏦 *ব্যাংক হিসাব:* সিটি ব্যাংক পিএলসি • হিসাব: ২৩০৫১৫৮০৪৫০০১\n`;
+      msg += `🌐 *রাউটিং:* ২২৫২৬০৪১৫ • শ্রীনগর উপ-শাখা\n`;
+      msg += `📱 *বিকাশ পার্সোনাল:* ০১৮৮১২১০৪৪৪ (খরচসহ)\n\n`;
+
+      msg += `━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      msg += `📊 *বর্তমান আদায় ও বকেয়ার সারসংক্ষেপ:*\n`;
+      msg += `━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      msg += `🟢 *পরিশোধ করেছেন:* *${toBn(paidCnt)} জন* (মোট: *${paidAmt}/-* ৳)\n`;
+      msg += `🔴 *বকেয়া আছেন:* *${toBn(dueCnt)} জন* (বাকি: *${dueAmt}/-* ৳)\n\n`;
+
+      if (includeDueList && dueList.length > 0) {
+        msg += `⚠️ *বকেয়া সদস্যদের তালিকা:*\n`;
+        dueList.forEach((dm, idx) => {
+          const sNum = dm.serial ? String(dm.serial).padStart(2, '0') : String(idx + 1).padStart(2, '0');
+          msg += `🔴 *${toBn(idx + 1)}.* ${dm.name} (ক্রমিক: *S-${sNum}*)\n`;
+        });
+        msg += `\n`;
+      }
+
+      if (rawNotice) {
+        msg += `📌 *বিশেষ নির্দেশিকা:*\n${rawNotice}\n\n`;
+      }
+
+      msg += `🔍 *অনলাইনে রিসিট, তালিকা ও প্যাড যাচাই:* \n`;
+      msg += `👉 https://smartsomiti.vercel.app/verify.html\n\n`;
+      msg += `━━━━━━━━━━━━━━━━━━━━━━━\n`;
+      msg += `✅ *অনুমোদিত:* স্বপ্ন ছোঁয়া ঐক্য সমিতি পরিচালনা পরিষদ`;
+
+      return msg;
+    }
+
+    function openWaNoticeHubModal() {
+      const modal = document.getElementById('waNoticeHubModal');
+      if (!modal) return;
+      updateWaMessagePreview();
+      modal.classList.remove('hidden');
+    }
+
+    function closeWaNoticeHubModal() {
+      const modal = document.getElementById('waNoticeHubModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function updateWaMessagePreview() {
+      const previewEl = document.getElementById('waMessagePreviewText');
+      if (!previewEl) return;
+      const checkDue = document.getElementById('waIncludeDueCheck');
+      const incDue = checkDue ? checkDue.checked : true;
+      const rawMsg = generateOfficialWhatsAppNotice(incDue);
+
+      const htmlMsg = rawMsg
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\*(.*?)\*/g, '<strong class="font-extrabold text-emerald-950 bg-amber-200/70 px-1 py-0.5 rounded">$1</strong>')
+        .replace(/\n/g, '<br/>');
+      previewEl.innerHTML = htmlMsg;
+    }
+
+    function copyFullWhatsAppNotice(btn) {
+      const checkDue = document.getElementById('waIncludeDueCheck');
+      const incDue = checkDue ? checkDue.checked : true;
+      const msg = generateOfficialWhatsAppNotice(incDue);
+      navigator.clipboard.writeText(msg).then(() => {
+        if (btn) {
+          const orig = btn.innerHTML;
+          btn.innerHTML = '<span>✅</span> <span>কপি হয়েছে!</span>';
+          setTimeout(() => btn.innerHTML = orig, 2000);
+        }
+      });
+    }
+
+    function sendWaNoticeTextOnly(btn) {
+      const checkDue = document.getElementById('waIncludeDueCheck');
+      const incDue = checkDue ? checkDue.checked : true;
+      const msg = generateOfficialWhatsAppNotice(incDue);
+      if (btn) {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<span>⏳</span> <span>খোলা হচ্ছে...</span>';
+        setTimeout(() => btn.innerHTML = orig, 2000);
+      }
+      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    async function sendWaNoticeWithPad(padType = 'paid', btn = null) {
+      const origText = btn ? btn.innerHTML : '';
+      if (btn) btn.innerHTML = '<span>⏳</span> <span>ছবি তৈরি হচ্ছে...</span>';
+
+      try {
+        if (!currentPadRec) {
+          const paidOnly = liveRecords.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-'));
+          currentPadRec = paidOnly[paidOnly.length - 1] || DEFAULT_RECORDS[0];
+        }
+        renderPadReceipt(currentPadRec);
+        renderPadPaidList();
+        renderPadDueList();
+        switchOfficialPadTab(padType);
+
+        const padModal = document.getElementById('officialPadModal');
+        const wasHidden = padModal.classList.contains('hidden');
+        if (wasHidden) {
+          padModal.style.opacity = '0';
+          padModal.style.pointerEvents = 'none';
+          padModal.classList.remove('hidden');
+        }
+
+        const node = getCurrentActivePadNode();
+        if (!node) throw new Error('প্যাড পাওয়া যায়নি');
+
+        const canvas = await capturePadCanvas(node);
+
+        if (wasHidden) {
+          padModal.classList.add('hidden');
+          padModal.style.opacity = '';
+          padModal.style.pointerEvents = '';
+        }
+
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        const fileName = getPadFileName('png');
+        const file = new File([blob], fileName, { type: 'image/png' });
+
+        const checkDue = document.getElementById('waIncludeDueCheck');
+        const incDue = checkDue ? checkDue.checked : true;
+
+        let captionHeader = '';
+        if (padType === 'paid') {
+          captionHeader = `📋 *স্বপ্ন ছোঁয়া ঐক্য সমিতি — পরিশোধিত সদস্যদের অফিসিয়াল তালিকা*\n\n`;
+        } else if (padType === 'due') {
+          captionHeader = `⚠️ *স্বপ্ন ছোঁয়া ঐক্য সমিতি — বকেয়া কিস্তির অফিসিয়াল তালিকা ও নোটিশ*\n\n`;
+        } else {
+          const sCode = currentPadRec?.serial_code || ('S-' + String(currentPadRec?.serial || '01').padStart(2, '0'));
+          captionHeader = `✅ *স্বপ্ন ছোঁয়া ঐক্য সমিতি — অফিসিয়াল মানি রিসিট*\n👤 সদস্য: *${currentPadRec?.member}* (আইডি: *${sCode}*)\n💰 পরিমাণ: *${currentPadRec?.amount}*\n\n`;
+        }
+
+        const fullCaption = captionHeader + generateOfficialWhatsAppNotice(padType === 'due' ? true : incDue);
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            title: 'স্বপ্ন ছোঁয়া ঐক্য সমিতি অফিসিয়াল নোটিশ ও প্যাড',
+            text: fullCaption,
+            files: [file]
+          });
+          if (btn) btn.innerHTML = '<span>✅</span> <span>শেয়ার সফল!</span>';
+        } else {
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = fileName;
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+          await navigator.clipboard.writeText(fullCaption).catch(() => {});
+          window.open(`https://wa.me/?text=${encodeURIComponent(fullCaption)}`, '_blank');
+          if (btn) btn.innerHTML = '<span>✅</span> <span>ছবি ডাউনলোড ও WhatsApp ওপেন হয়েছে!</span>';
+        }
+      } catch (err) {
+        console.warn('Share error:', err);
+        sendWaNoticeTextOnly(btn);
+      } finally {
+        if (btn) setTimeout(() => btn.innerHTML = origText, 2500);
+      }
+    }
+
     async function shareCurrentPadWhatsApp() {
       const node = getCurrentActivePadNode();
       if (!node) return;
@@ -3275,13 +3592,33 @@
       let caption = '';
       if (currentPadTab === 'receipt') {
         const qrUrl = `https://smartsomiti.vercel.app/verify.html?id=${sCode}`;
-        caption = `✅ *স্বপ্ন ছোঁয়া ঐক্য সমিতি — ব্যক্তিগত অফিসিয়াল মানি রিসিট*\n👤 সদস্য: ${currentPadRec.member}\n🧾 রিসিট কোড: ${currentPadRec.code} (${sCode})\n💰 পরিমাণ: ${currentPadRec.amount}\n📅 তারিখ: ${currentPadRec.date}\n🏦 মাধ্যম: ${currentPadRec.method}\n🔍 অনলাইনে যাচাই করুন: ${qrUrl}`;
+        caption = `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+          `🏛️  *স্বপ্ন ছোঁয়া ঐক্য সমিতি*  🏛️\n` +
+          `✅  *ব্যক্তিগত অফিসিয়াল মানি রিসিট*\n` +
+          `━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+          `👤 *সদস্যের নাম:* ${currentPadRec.member}\n` +
+          `🧾 *রিসিট কোড:* *${currentPadRec.code}* (আইডি: *${sCode}*)\n` +
+          `💰 *জমার পরিমাণ:* *${currentPadRec.amount}*\n` +
+          `📅 *জমার তারিখ:* ${currentPadRec.date}\n` +
+          `🏦 *মাধ্যম:* ${currentPadRec.method}\n` +
+          `📥 *জমাদানকারী:* ${currentPadRec.sender || 'নিজ'}\n\n` +
+          `🔍 *অনলাইনে এই রিসিটটি যাচাই করুন:*\n👉 ${qrUrl}\n\n` +
+          `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+          `✅ *অনুমোদিত ও আর্কাইভে সংরক্ষিত*`;
       } else if (currentPadTab === 'paid') {
         const paidCnt = liveRecords.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-')).length;
-        caption = `📋 *স্বপ্ন ছোঁয়া ঐক্য সমিতি — পরিশোধিত সদস্যদের অফিসিয়াল তালিকা*\n📊 মোট জমাকৃত তহবিল: ${formatBnTaka(paidCnt * 10000)}/- ৳ (${toBn(paidCnt)} জন)\n🔍 অনলাইনে যাচাই করুন: https://smartsomiti.vercel.app/verify.html?id=PAID-LIST`;
+        caption = `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+          `🏛️  *স্বপ্ন ছোঁয়া ঐক্য সমিতি*  🏛️\n` +
+          `📋  *পরিশোধিত সদস্যদের অফিসিয়াল তালিকা*\n` +
+          `━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+          `📅 *মাস:* নভেম্বর ২০২৬\n` +
+          `🟢 *পরিশোধ করেছেন:* *${toBn(paidCnt)} জন*\n` +
+          `💰 *মোট জমাকৃত তহবিল:* *${formatBnTaka(paidCnt * 10000)}/- টাকা*\n\n` +
+          `🔍 *অনলাইনে সম্পূর্ণ পরিশোধিত প্যাড দেখুন:*\n👉 https://smartsomiti.vercel.app/verify.html?id=PAID-LIST\n\n` +
+          `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+          `✅ *স্বপ্ন ছোঁয়া ঐক্য সমিতি পরিচালনা পরিষদ*`;
       } else {
-        const dueCnt = dueMembers ? dueMembers.length : 2;
-        caption = `⚠️ *স্বপ্ন ছোঁয়া ঐক্য সমিতি — বকেয়া কিস্তির অফিসিয়াল তালিকা ও নোটিশ*\n⏳ বকেয়া সদস্য: ${toBn(dueCnt)} জন (${formatBnTaka(dueCnt * 10000)}/- ৳)\n🔍 অনলাইনে যাচাই করুন: https://smartsomiti.vercel.app/verify.html?id=DUE-LIST`;
+        caption = generateOfficialWhatsAppNotice(true);
       }
 
       try {
@@ -3304,6 +3641,7 @@
           a.download = fileName;
           a.click();
           setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+          await navigator.clipboard.writeText(caption).catch(() => {});
         }
         window.open(`https://wa.me/?text=${encodeURIComponent(caption)}`, '_blank');
       } catch (err) {
