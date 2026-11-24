@@ -1589,6 +1589,53 @@
             </div>
           </div>
 
+          <!-- Smart Notice Templates Selector Bar (4 Options) -->
+          <div class="bg-gradient-to-r from-emerald-50 via-teal-50 to-slate-50 p-3 sm:p-4 rounded-2xl border border-emerald-200 shadow-xs space-y-2.5">
+            <div class="flex flex-wrap items-center justify-between gap-1.5 text-xs font-bold text-slate-800">
+              <span class="flex items-center gap-1.5">
+                <span>📋</span> <span>১-ক্লিকে নোটিশের ধরন তৈরি করুন:</span>
+              </span>
+              <span class="text-[10px] text-emerald-800 bg-white px-2 py-0.5 rounded-full border border-emerald-200 font-semibold">নিচের যেকোনো বাটনে চাপলে স্বয়ংক্রিয়ভাবে নোটিশ ড্রাফট হবে</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <!-- 1. Full Status: Paid + Due -->
+              <button type="button" onclick="applyWaTemplate('full')" class="wa-tmpl-btn p-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-700 text-white font-bold text-xs transition shadow-xs text-left active:scale-95 flex flex-col justify-between" data-wtype="full">
+                <span class="text-xs sm:text-sm flex items-center gap-1">📊 ১. উভয় তালিকা</span>
+                <span class="text-[10px] opacity-90 font-medium mt-0.5">পেইড + বকেয়া পূর্ণাঙ্গ</span>
+              </button>
+
+              <!-- 2. Due List Only -->
+              <button type="button" onclick="applyWaTemplate('due')" class="wa-tmpl-btn p-2.5 rounded-xl border border-slate-200 bg-white text-slate-800 font-bold text-xs transition shadow-xs text-left active:scale-95 flex flex-col justify-between hover:bg-rose-50" data-wtype="due">
+                <span class="text-xs sm:text-sm text-rose-700 flex items-center gap-1">⚠️ ২. শুধু বকেয়া</span>
+                <span class="text-[10px] text-slate-500 font-medium mt-0.5">বাকিদের তাগিদপত্র</span>
+              </button>
+
+              <!-- 3. Paid List Only -->
+              <button type="button" onclick="applyWaTemplate('paid')" class="wa-tmpl-btn p-2.5 rounded-xl border border-slate-200 bg-white text-slate-800 font-bold text-xs transition shadow-xs text-left active:scale-95 flex flex-col justify-between hover:bg-teal-50" data-wtype="paid">
+                <span class="text-xs sm:text-sm text-teal-700 flex items-center gap-1">✅ ৩. শুধু পেইড</span>
+                <span class="text-[10px] text-slate-500 font-medium mt-0.5">আদায়কৃত তালিকা</span>
+              </button>
+
+              <!-- 4. Single Member Alert -->
+              <button type="button" onclick="applyWaTemplate('single')" class="wa-tmpl-btn p-2.5 rounded-xl border border-slate-200 bg-white text-slate-800 font-bold text-xs transition shadow-xs text-left active:scale-95 flex flex-col justify-between hover:bg-amber-50" data-wtype="single">
+                <span class="text-xs sm:text-sm text-amber-700 flex items-center gap-1">🎉 ৪. নতুন পেমেন্ট</span>
+                <span class="text-[10px] text-slate-500 font-medium mt-0.5">১ জনের কনফার্মেশন</span>
+              </button>
+            </div>
+
+            <!-- Single Member Alert Selector Bar -->
+            <div id="waSingleMemberWrap" class="hidden pt-2 border-t border-emerald-200/70 flex flex-wrap items-center gap-2">
+              <span class="text-[11px] font-bold text-emerald-950 flex items-center gap-1">👤 পেমেন্টকারী সদস্য বেছে নিন:</span>
+              <select id="waSingleMemberSelect" onchange="onWaSingleMemberChange(this.value)" class="bg-white text-slate-900 font-bold text-xs rounded-xl px-3 py-1.5 border-2 border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 max-w-[260px]">
+                <!-- Populated via JS -->
+              </select>
+              <button type="button" onclick="onWaSingleMemberChange(document.getElementById('waSingleMemberSelect').value)" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-3.5 py-1.5 rounded-xl transition shadow-xs active:scale-95">
+                অ্যালার্ট নোটিশ তৈরি করুন
+              </button>
+            </div>
+          </div>
+
           <!-- 2-Column Split: Big Editor on Left, Live WhatsApp Screen on Right -->
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
             
@@ -4012,7 +4059,62 @@
     }
 
     // ================= 📲 HIGH-IMPACT WHATSAPP NOTICE & PAD SHARING SYSTEM =================
-    function generateOfficialWhatsAppNotice(includeDueList = true) {
+    let currentWaTemplateType = 'full';
+
+    function applyWaTemplate(type) {
+      currentWaTemplateType = type;
+      document.querySelectorAll('.wa-tmpl-btn').forEach(b => {
+        const active = b.getAttribute('data-wtype') === type;
+        if (active) {
+          b.className = 'wa-tmpl-btn p-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-700 text-white font-bold text-xs transition shadow-xs text-left active:scale-95 flex flex-col justify-between';
+        } else {
+          b.className = 'wa-tmpl-btn p-2.5 rounded-xl border border-slate-200 bg-white text-slate-800 font-bold text-xs transition shadow-xs text-left active:scale-95 flex flex-col justify-between hover:bg-slate-50';
+        }
+      });
+
+      const singleWrap = document.getElementById('waSingleMemberWrap');
+      if (singleWrap) {
+        if (type === 'single') {
+          singleWrap.classList.remove('hidden');
+          populateWaSingleMemberDropdown();
+        } else {
+          singleWrap.classList.add('hidden');
+        }
+      }
+
+      const ta = document.getElementById('adminWaTextarea');
+      if (!ta) return;
+      if (type === 'full') {
+        ta.value = generateOfficialWhatsAppNoticeFull();
+      } else if (type === 'due') {
+        ta.value = generateOfficialWhatsAppNoticeDueOnly();
+      } else if (type === 'paid') {
+        ta.value = generateOfficialWhatsAppNoticePaidOnly();
+      } else if (type === 'single') {
+        const sel = document.getElementById('waSingleMemberSelect');
+        ta.value = generateSingleMemberWaAlert(sel ? sel.value : '01');
+      }
+      handleAdminWaInput();
+    }
+
+    function onWaSingleMemberChange(serial) {
+      const ta = document.getElementById('adminWaTextarea');
+      if (ta) {
+        ta.value = generateSingleMemberWaAlert(serial);
+        handleAdminWaInput();
+      }
+    }
+
+    function populateWaSingleMemberDropdown() {
+      const sel = document.getElementById('waSingleMemberSelect');
+      if (!sel || sel.children.length > 0) return;
+      sel.innerHTML = MASTER_MEMBERS_LIST.map(m => {
+        const sNum = String(m.serial).padStart(2, '0');
+        return `<option value="${sNum}">S-${sNum} • ${m.name}</option>`;
+      }).join('');
+    }
+
+    function generateOfficialWhatsAppNoticeFull() {
       const paidCnt = liveRecords.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-')).length;
       const dueList = dueMembers || [];
       const dueCnt = dueList.length;
@@ -4020,25 +4122,34 @@
       const dueAmt = formatBnTaka(dueCnt * 10000);
       const rawNotice = (document.getElementById('noticeContentText')?.innerText || '').trim();
 
-      let msg = `━━━━━━━━━━━━━━━━━━━━━━━\n`;
-      msg += `🏛️  *স্বপ্ন ছোঁয়া ঐক্য সমিতি*  🏛️\n`;
-      msg += `📢  *পরিচালনা পরিষদ কর্তৃক প্রেরিত অফিশিয়াল নোটিশ*\n`;
-      msg += `━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+      let msg = `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `🏛️  *স্বপ্ন ছোঁয়া ঐক্য সমিতি*  🏛️\n` +
+        `📢  *পরিচালনা পরিষদ কর্তৃক প্রেরিত অফিশিয়াল নোটিশ*\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+        `📅 *চলতি মাস:* নভেম্বর ২০২৬\n` +
+        `💰 *নির্ধারিত কিস্তি:* ১০,০০০/- টাকা (দশ হাজার টাকা)\n` +
+        `🏦 *ব্যাংক হিসাব:* সিটি ব্যাংক পিএলসি • হিসাব: ২৩০৫১৫৮০৪৫০০১\n` +
+        `🌐 *রাউটিং:* ২২৫২৬০৪১৫ • শ্রীনগর উপ-শাখা\n` +
+        `📱 *বিকাশ পার্সোনাল:* ০১৮৮১২১০৪৪৪ (ক্যাশ-আউট খরচসহ)\n\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `📊 *বর্তমান আদায় ও বকেয়ার সারসংক্ষেপ:*\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `🟢 *পরিশোধ করেছেন:* *${toBn(paidCnt)} জন* (মোট: *${paidAmt}/-* ৳)\n` +
+        `🔴 *বকেয়া আছেন:* *${toBn(dueCnt)} জন* (বাকি: *${dueAmt}/-* ৳)\n\n`;
 
-      msg += `📅 *চলতি মাস:* নভেম্বর ২০২৬\n`;
-      msg += `💰 *নির্ধারিত কিস্তি:* ১০,০০০/- টাকা (দশ হাজার টাকা)\n`;
-      msg += `🏦 *ব্যাংক হিসাব:* সিটি ব্যাংক পিএলসি • হিসাব: ২৩০৫১৫৮০৪৫০০১\n`;
-      msg += `🌐 *রাউটিং:* ২২৫২৬০৪১৫ • শ্রীনগর উপ-শাখা\n`;
-      msg += `📱 *বিকাশ পার্সোনাল:* ০১৮৮১২১০৪৪৪ (ক্যাশ-আউট খরচসহ)\n\n`;
+      const dueNames = new Set(dueList.map(d => d.name));
+      const paidList = MASTER_MEMBERS_LIST.filter(m => !dueNames.has(m.name));
+      if (paidList.length > 0) {
+        msg += `✅ *পরিশোধিত সদস্যদের তালিকা (${toBn(paidList.length)} জন):*\n`;
+        paidList.forEach((m, idx) => {
+          const sNum = m.serial ? String(m.serial).padStart(2, '0') : String(idx + 1).padStart(2, '0');
+          msg += `🟢 *${toBn(idx + 1)}.* ${m.name} (ক্রমিক: *S-${sNum}*)\n`;
+        });
+        msg += `\n`;
+      }
 
-      msg += `━━━━━━━━━━━━━━━━━━━━━━━\n`;
-      msg += `📊 *বর্তমান আদায় ও বকেয়ার সারসংক্ষেপ:*\n`;
-      msg += `━━━━━━━━━━━━━━━━━━━━━━━\n`;
-      msg += `🟢 *পরিশোধ করেছেন:* *${toBn(paidCnt)} জন* (মোট: *${paidAmt}/-* ৳)\n`;
-      msg += `🔴 *বকেয়া আছেন:* *${toBn(dueCnt)} জন* (বাকি: *${dueAmt}/-* ৳)\n\n`;
-
-      if (includeDueList && dueList.length > 0) {
-        msg += `⚠️ *বকেয়া সদস্যদের তালিকা:*\n`;
+      if (dueList.length > 0) {
+        msg += `⚠️ *বকেয়া সদস্যদের তালিকা (${toBn(dueList.length)} জন):*\n`;
         dueList.forEach((dm, idx) => {
           const sNum = dm.serial ? String(dm.serial).padStart(2, '0') : String(idx + 1).padStart(2, '0');
           msg += `🔴 *${toBn(idx + 1)}.* ${dm.name} (ক্রমিক: *S-${sNum}*)\n`;
@@ -4050,13 +4161,137 @@
         msg += `📌 *বিশেষ নির্দেশিকা:*\n${rawNotice}\n\n`;
       }
 
-      msg += `━━━━━━━━━━━━━━━━━━━━━━━\n`;
-      msg += `🛡️ *এই নোটিশটির সত্যতা অনলাইনে যাচাই করতে নিচের অফিশিয়াল লিংকে ট্যাপ করুন:*\n`;
-      msg += `👉 https://smartsomiti.vercel.app/verify.html?notice=verified\n`;
-      msg += `━━━━━━━━━━━━━━━━━━━━━━━\n`;
-      msg += `✅ *অনুমোদিত:* পরিচালনা পরিষদ, স্বপ্ন ছোঁয়া ঐক্য সমিতি`;
+      msg += `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `🛡️ *এই নোটিশটির সত্যতা অনলাইনে যাচাই করতে নিচের অফিশিয়াল লিংকে ট্যাপ করুন:*\n` +
+        `👉 https://smartsomiti.vercel.app/verify.html?notice=verified\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `✅ *অনুমোদিত:* পরিচালনা পরিষদ, স্বপ্ন ছোঁয়া ঐক্য সমিতি`;
 
       return msg;
+    }
+
+    function generateOfficialWhatsAppNoticeDueOnly() {
+      const dueList = dueMembers || [];
+      const dueCnt = dueList.length;
+      const dueAmt = formatBnTaka(dueCnt * 10000);
+      const rawNotice = (document.getElementById('noticeContentText')?.innerText || '').trim();
+
+      let msg = `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `🏛️  *স্বপ্ন ছোঁয়া ঐক্য সমিতি*  🏛️\n` +
+        `⚠️  *জরুরি কিস্তি পরিশোধের তাগিদপত্র*\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+        `📅 *চলতি মাস:* নভেম্বর ২০২৬\n` +
+        `💰 *নির্ধারিত কিস্তি:* ১০,০০০/- টাকা (দশ হাজার টাকা)\n` +
+        `🏦 *ব্যাংক হিসাব:* সিটি ব্যাংক পিএলসি • হিসাব: ২৩০৫১৫৮০৪৫০০১\n` +
+        `🌐 *রাউটিং:* ২২৫২৬০৪১৫ • শ্রীনগর উপ-শাখা\n` +
+        `📱 *বিকাশ পার্সোনাল:* ০১৮৮১২১০৪৪৪ (ক্যাশ-আউট খরচসহ)\n\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `⚠️ *চলতি মাসে বকেয়া সদস্যদের তালিকা (${toBn(dueCnt)} জন):*\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n`;
+
+      if (dueList.length > 0) {
+        dueList.forEach((dm, idx) => {
+          const sNum = dm.serial ? String(dm.serial).padStart(2, '0') : String(idx + 1).padStart(2, '0');
+          msg += `🔴 *${toBn(idx + 1)}.* ${dm.name} (ক্রমিক: *S-${sNum}*)\n`;
+        });
+        msg += `\n`;
+      } else {
+        msg += `✅ *আলহামদুলিল্লাহ, সকল সদস্যের কিস্তি পরিশোধ সম্পন্ন হয়েছে!*\n\n`;
+      }
+
+      if (rawNotice) {
+        msg += `📌 *বিশেষ নির্দেশিকা:*\n${rawNotice}\n\n`;
+      }
+
+      msg += `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `🛡️ *এই তাগিদপত্রের সত্যতা ও বকেয়া তালিকা অনলাইনে যাচাই করুন:*\n` +
+        `👉 https://smartsomiti.vercel.app/verify.html?notice=verified\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `✅ *অনুমোদিত:* পরিচালনা পরিষদ, স্বপ্ন ছোঁয়া ঐক্য সমিতি`;
+
+      return msg;
+    }
+
+    function generateOfficialWhatsAppNoticePaidOnly() {
+      const dueList = dueMembers || [];
+      const dueNames = new Set(dueList.map(d => d.name));
+      const paidList = MASTER_MEMBERS_LIST.filter(m => !dueNames.has(m.name));
+      const paidCnt = paidList.length;
+      const paidAmt = formatBnTaka(paidCnt * 10000);
+      const rawNotice = (document.getElementById('noticeContentText')?.innerText || '').trim();
+
+      let msg = `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `🏛️  *স্বপ্ন ছোঁয়া ঐক্য সমিতি*  🏛️\n` +
+        `✅  *পরিশোধিত কিস্তির বিবরণী ও কালেকশন রিপোর্ট*\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+        `📅 *চলতি মাস:* নভেম্বর ২০২৬\n` +
+        `💰 *আদায়কৃত তহবিল:* *${paidAmt}/-* টাকা (*${toBn(paidCnt)} জন*)\n\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `✅ *পরিশোধকারী সদস্যদের তালিকা:*\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n`;
+
+      paidList.forEach((m, idx) => {
+        const sNum = m.serial ? String(m.serial).padStart(2, '0') : String(idx + 1).padStart(2, '0');
+        msg += `🟢 *${toBn(idx + 1)}.* ${m.name} (ক্রমিক: *S-${sNum}* • ১০,০০০/- ৳)\n`;
+      });
+      msg += `\n`;
+
+      if (rawNotice) {
+        msg += `📌 *বিশেষ নির্দেশিকা:*\n${rawNotice}\n\n`;
+      }
+
+      msg += `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `🛡️ *এই রিপোর্টের সত্যতা অনলাইনে যাচাই করতে নিচের অফিশিয়াল লিংকে ট্যাপ করুন:*\n` +
+        `👉 https://smartsomiti.vercel.app/verify.html?notice=verified\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `✅ *অনুমোদিত:* পরিচালনা পরিষদ, স্বপ্ন ছোঁয়া ঐক্য সমিতি`;
+
+      return msg;
+    }
+
+    function generateSingleMemberWaAlert(memberSerial = '01') {
+      const sNum = String(Number(memberSerial) || memberSerial).padStart(2, '0');
+      const mem = MASTER_MEMBERS_LIST.find(m => m.serial === sNum) || { name: 'সম্মানিত সদস্য', serial: sNum };
+      const paidCnt = liveRecords.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-')).length;
+      const dueList = dueMembers || [];
+      const dueCnt = dueList.length;
+
+      let msg = `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `🏛️  *স্বপ্ন ছোঁয়া ঐক্য সমিতি*  🏛️\n` +
+        `🎉  *নতুন কিস্তি পেমেন্ট কনফার্মেশন অ্যালার্ট*\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+        `আলহামদুলিল্লাহ! অদ্য সমিতির সম্মানিত সদস্য:\n` +
+        `👤 *নাম:* *${mem.name}*\n` +
+        `🔢 *সদস্য ক্রমিক:* *S-${sNum}*\n` +
+        `💰 *জমা পরিমাণ:* *১০,০০০/- টাকা* (দশ হাজার টাকা)\n` +
+        `📅 *তারিখ:* ${getBengaliCurrentDate()} ইং\n` +
+        `✅ *স্ট্যাটাস:* সফলভাবে আদায় ও ডিজিটালভাবে সংরক্ষিত\n\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `📊 *সমিতির বর্তমান ফান্ড পরিস্থিতি (নভেম্বর ২০২৬):*\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `🟢 *মোট পরিশোধ করেছেন:* *${toBn(paidCnt)} জন*\n` +
+        `🔴 *এখনও বাকি আছেন:* *${toBn(dueCnt)} জন*\n\n`;
+
+      if (dueList.length > 0) {
+        msg += `⚠️ *অবশিষ্ট বকেয়া সদস্যদের তালিকা:*\n`;
+        dueList.forEach((dm, idx) => {
+          const dNum = dm.serial ? String(dm.serial).padStart(2, '0') : String(idx + 1).padStart(2, '0');
+          msg += `🔴 *${toBn(idx + 1)}.* ${dm.name} (ক্রমিক: *S-${dNum}*)\n`;
+        });
+        msg += `\n`;
+      }
+
+      msg += `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `🛡️ *এই রিসিটের সত্যতা অনলাইনে যাচাই করতে নিচের অফিশিয়াল লিংকে ট্যাপ করুন:*\n` +
+        `👉 https://smartsomiti.vercel.app/verify.html?id=S-${sNum}\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `✅ *অনুমোদিত:* পরিচালনা পরিষদ, স্বপ্ন ছোঁয়া ঐক্য সমিতি`;
+
+      return msg;
+    }
+
+    function generateOfficialWhatsAppNotice(includeDueList = true) {
+      return generateOfficialWhatsAppNoticeFull();
     }
 
     // ================= 📲 ADMIN WHATSAPP BROADCAST & NOTICE HUB =================
@@ -4069,19 +4304,17 @@
     }
 
     function initAdminWhatsAppTab() {
+      populateWaSingleMemberDropdown();
       const ta = document.getElementById('adminWaTextarea');
       if (ta && !ta.value.trim()) {
-        loadDefaultAdminWaText();
+        applyWaTemplate('full');
       } else {
         handleAdminWaInput();
       }
     }
 
     function loadDefaultAdminWaText() {
-      const ta = document.getElementById('adminWaTextarea');
-      if (!ta) return;
-      ta.value = generateOfficialWhatsAppNotice(true);
-      handleAdminWaInput();
+      applyWaTemplate(currentWaTemplateType || 'full');
     }
 
     function handleAdminWaInput() {
