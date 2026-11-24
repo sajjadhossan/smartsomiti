@@ -931,37 +931,37 @@
   </div>
 
   <!-- Unified Admin Control Panel Modal -->
-  <div id="adminPanelModal" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden">
-    <div class="bg-white rounded-3xl max-w-5xl w-full h-[88vh] sm:h-[90vh] max-h-[94vh] flex flex-col shadow-2xl overflow-hidden border border-emerald-200 animate-pop">
-      <div class="bg-gradient-to-r from-slate-900 via-emerald-900 to-teal-900 px-5 py-4 text-white flex flex-wrap items-center justify-between gap-2">
+  <div id="adminPanelModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-0 sm:p-4 hidden">
+    <div class="bg-white rounded-none sm:rounded-3xl max-w-5xl w-full h-[100dvh] sm:h-[90vh] sm:max-h-[94vh] flex flex-col shadow-2xl overflow-hidden border-0 sm:border border-emerald-200 animate-pop">
+      <div class="bg-gradient-to-r from-slate-900 via-emerald-900 to-teal-900 px-3.5 sm:px-5 py-3 sm:py-4 text-white flex items-center justify-between gap-2 shrink-0">
         <div>
-          <span class="inline-block bg-amber-400 text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Admin Control Center • Firebase Sync</span>
-          <h3 class="text-lg font-bold mt-0.5">🔓 অ্যাডমিন কন্ট্রোল প্যানেল (মেইন অ্যাপের সাথে লাইভ সিঙ্ক)</h3>
+          <span class="inline-block bg-amber-400 text-slate-900 text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Admin Control Center</span>
+          <h3 class="text-sm sm:text-lg font-bold mt-0.5">🔓 অ্যাডমিন কন্ট্রোল প্যানেল</h3>
         </div>
-        <div class="flex items-center gap-2">
-          <button type="button" id="fbAuthBtn" onclick="signInFirebaseGoogle()" class="bg-amber-400 hover:bg-amber-300 text-slate-900 text-xs font-bold px-3 py-1.5 rounded-xl transition">🔥 Firebase কানেক্ট</button>
-          <button type="button" onclick="adminLogout()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition">লগআউট</button>
+        <div class="flex items-center gap-1.5 sm:gap-2">
+          <button type="button" id="fbAuthBtn" onclick="signInFirebaseGoogle()" class="bg-amber-400 hover:bg-amber-300 text-slate-900 text-[11px] sm:text-xs font-bold px-2.5 py-1.5 rounded-xl transition">🔥 Firebase</button>
+          <button type="button" onclick="adminLogout()" class="bg-rose-600 hover:bg-rose-700 text-white text-[11px] sm:text-xs font-bold px-2.5 py-1.5 rounded-xl transition">লগআউট</button>
           <button type="button" onclick="closeAdminPanel()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-sm font-bold transition">✕</button>
         </div>
       </div>
 
       <!-- Firebase Sync Status Strip -->
-      <div id="fbSyncBanner" class="px-5 py-2 bg-emerald-50 border-b border-emerald-200 text-[11px] font-semibold text-emerald-900 flex flex-wrap items-center justify-between gap-2">
+      <div id="fbSyncBanner" class="px-3.5 sm:px-5 py-1.5 sm:py-2 bg-emerald-50 border-b border-emerald-200 text-[11px] font-semibold text-emerald-900 flex flex-wrap items-center justify-between gap-2 shrink-0">
         <span id="fbStatusText">🔄 মেইন অ্যাপ (Firebase: somitiapp-1f0a2)-এর সাথে সংযোগ হচ্ছে...</span>
-        <span class="text-emerald-700">এখানে ভেরিফাই/ডিলিট করলে মেইন অ্যাপের প্রোফাইলেও সেম টু সেম আপডেট হবে</span>
+        <span class="text-emerald-700 hidden sm:inline">এখানে ভেরিফাই/ডিলিট করলে মেইন অ্যাপের প্রোফাইলেও সেম টু সেম আপডেট হবে</span>
       </div>
 
-      <!-- Admin Sub-Tabs -->
-      <div class="px-5 py-2.5 bg-slate-50 border-b border-slate-200 flex flex-wrap gap-1.5 text-xs">
-        <button type="button" data-atab="manage" onclick="switchAdminTab('manage')" class="admin-tab-btn bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold">🗑️ ভেরিফাই ও রিসিট ডিলিট/এডিট</button>
-        <button type="button" data-atab="add" onclick="switchAdminTab('add')" class="admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold">➕ নতুন পেমেন্ট যোগ (মেইন অ্যাপেও যাবে)</button>
-        <button type="button" data-atab="pads" onclick="switchAdminTab('pads')" class="admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5"><span>📜</span> <span>অফিসিয়াল প্যাড ও প্রিন্ট হাব</span></button>
-        <button type="button" data-atab="whatsapp" onclick="switchAdminTab('whatsapp')" class="admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5"><span>📲</span> <span>WhatsApp নোটিশ ব্রডকাস্ট</span></button>
-        <button type="button" data-atab="settings" onclick="switchAdminTab('settings')" class="admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold">⚙️ নোটিশ, পাসওয়ার্ড ও এক্সপোর্ট</button>
+      <!-- Admin Sub-Tabs (Horizontal Scroll Single Row on Mobile) -->
+      <div class="px-3 sm:px-5 py-2 bg-slate-50 border-b border-slate-200 flex items-center gap-1.5 text-xs overflow-x-auto whitespace-nowrap scrollbar-none shrink-0">
+        <button type="button" data-atab="manage" onclick="switchAdminTab('manage')" class="admin-tab-btn shrink-0 bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold flex items-center gap-1"><span>🗑️</span> <span>ভেরিফাই ও রিসিট</span></button>
+        <button type="button" data-atab="add" onclick="switchAdminTab('add')" class="admin-tab-btn shrink-0 bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1"><span>➕</span> <span>নতুন পেমেন্ট যোগ</span></button>
+        <button type="button" data-atab="pads" onclick="switchAdminTab('pads')" class="admin-tab-btn shrink-0 bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1"><span>📜</span> <span>অফিসিয়াল প্যাড হাব</span></button>
+        <button type="button" data-atab="whatsapp" onclick="switchAdminTab('whatsapp')" class="admin-tab-btn shrink-0 bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1"><span>📲</span> <span>WhatsApp ব্রডকাস্ট</span></button>
+        <button type="button" data-atab="settings" onclick="switchAdminTab('settings')" class="admin-tab-btn shrink-0 bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1"><span>⚙️</span> <span>সেটিংস ও এক্সপোর্ট</span></button>
       </div>
 
       <!-- Admin Content Body -->
-      <div class="p-5 overflow-y-auto space-y-4 flex-1 text-xs">
+      <div class="p-3 sm:p-5 overflow-y-auto space-y-4 flex-1 text-xs">
         <!-- Tab 1: Manage / Delete / Restore -->
         <div id="adminTab_manage" class="space-y-3">
           <div class="bg-gradient-to-r from-emerald-900 to-teal-900 p-3.5 rounded-2xl text-white flex flex-wrap items-center justify-between gap-2 shadow">
@@ -1327,9 +1327,9 @@
                 </div>
 
                 <!-- Big Textarea -->
-                <textarea id="adminWaTextarea" rows="13" oninput="handleAdminWaInput()"
+                <textarea id="adminWaTextarea" rows="8" oninput="handleAdminWaInput()"
                   placeholder="এখানে আপনার সম্পূর্ণ নোটিশ লিখুন বা কপি-পেস্ট করুন..."
-                  class="w-full px-3.5 py-3 text-xs sm:text-sm rounded-xl border border-slate-300 bg-white font-mono leading-relaxed focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600 transition shadow-inner resize-y"></textarea>
+                  class="w-full px-3.5 py-3 text-xs sm:text-sm rounded-xl border border-slate-300 bg-white font-mono leading-relaxed focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600 transition shadow-inner resize-y min-h-[160px] sm:min-h-[220px]"></textarea>
               </div>
 
               <!-- Editor Footer Note -->
@@ -1351,7 +1351,7 @@
               </div>
 
               <!-- Phone Mockup Container -->
-              <div class="flex-1 rounded-3xl bg-[#0b141a] p-2.5 shadow-xl border-4 border-slate-800 flex flex-col overflow-hidden max-h-[500px]">
+              <div class="flex-1 rounded-3xl bg-[#0b141a] p-2.5 shadow-xl border-4 border-slate-800 flex flex-col overflow-hidden max-h-[380px] sm:max-h-[500px]">
                 <!-- WhatsApp Chat Header -->
                 <div class="bg-[#202c33] text-white px-3 py-2 rounded-2xl flex items-center gap-2.5 shadow-sm shrink-0">
                   <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-sm font-bold">
@@ -1386,7 +1386,7 @@
               <span>🚀</span> <span>পছন্দ অনুযায়ী সরাসরি WhatsApp-এ ব্রডকাস্ট করুন:</span>
             </div>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5">
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-2.5">
               <!-- 1. Text Only -->
               <button type="button" onclick="sendAdminWaTextOnly(this)" class="flex flex-col items-center justify-center text-center p-3 rounded-xl bg-white hover:bg-emerald-100/90 border-2 border-emerald-300 text-emerald-950 font-bold transition shadow-xs active:scale-95 group">
                 <span class="text-xl mb-1 group-hover:scale-110 transition">💬</span>
@@ -2234,8 +2234,10 @@
       });
       document.querySelectorAll('.admin-tab-btn').forEach(b => {
         const active = b.getAttribute('data-atab') === tab;
-        b.className = `admin-tab-btn px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 text-xs ${active ? 'bg-emerald-700 text-white font-bold shadow-xs' : 'bg-white border border-slate-200 text-slate-700 font-semibold hover:bg-slate-100'}`;
+        b.className = `admin-tab-btn shrink-0 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 text-xs ${active ? 'bg-emerald-700 text-white font-bold shadow-xs' : 'bg-white border border-slate-200 text-slate-700 font-semibold hover:bg-slate-100'}`;
       });
+      const fbBanner = document.getElementById('fbSyncBanner');
+      if (fbBanner) fbBanner.classList.toggle('hidden', tab === 'whatsapp');
       if (tab === 'add') {
         populateAdminMemberDropdown();
         renderAdminDueList();
