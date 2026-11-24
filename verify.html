@@ -1269,12 +1269,15 @@
           </div>
 
           <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2.5">
-            <label class="block font-bold text-slate-800">🌐 Google Sheets ২-ওয়ে ওয়েব হুক URL (Apps Script)</label>
+            <div class="flex items-center justify-between">
+              <label class="block font-bold text-slate-800">🌐 Google Sheets ২-ওয়ে ওয়েব হুক URL (Apps Script)</label>
+              <span class="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-200">🟢 গুগল শিট ও ড্রাইভ সিঙ্ক সক্রিয়</span>
+            </div>
             <div class="flex gap-2">
-              <input type="url" id="adminWebhookInput" placeholder="https://script.google.com/macros/s/.../exec" class="flex-1 px-3 py-2 rounded-xl border border-slate-300 bg-white" />
+              <input type="url" id="adminWebhookInput" value="https://script.google.com/macros/s/AKfycbyz6y4Aw0zjMtvke7sTjajvypAKVDQ_WgFxELUEDPRyL187XEJPAXcsFXLfCtSKwg1sLA/exec" placeholder="https://script.google.com/macros/s/.../exec" class="flex-1 px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-mono" />
               <button type="button" onclick="saveWebhookUrl()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-4 py-2 rounded-lg transition">সেভ</button>
             </div>
-            <p class="text-[11px] text-slate-500">পেমেন্ট ভেরিফাই হলে স্বয়ংক্রিয়ভাবে এই ওয়েব হুকে ডাটা পোস্ট হবে এবং গুগল শিটে যুক্ত হবে।</p>
+            <p class="text-[11px] text-slate-500">পেমেন্ট ভেরিফাই বা ডিলিট হলে স্বয়ংক্রিয়ভাবে Google Sheet (1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0) ও Firebase-এ সিঙ্ক হবে এবং ড্রাইভে স্লিপ সংরক্ষিত হবে।</p>
           </div>
 
           <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2.5">
@@ -1992,7 +1995,7 @@
       const noticeEl = document.getElementById('noticeContentText');
       if (noticeEl) document.getElementById('adminNoticeInput').value = noticeEl.innerText.trim();
       const wbInput = document.getElementById('adminWebhookInput');
-      if (wbInput) wbInput.value = localStorage.getItem(STORAGE_WEBHOOK_KEY) || '';
+      if (wbInput) wbInput.value = localStorage.getItem(STORAGE_WEBHOOK_KEY) || DEFAULT_SHEET_WEBHOOK;
       populateAdminMemberDropdown();
       renderAdminList();
     }
@@ -2074,6 +2077,24 @@
         }
       }
 
+      // Also delete from Google Sheets via Webhook
+      const webhookUrl = getWebhookUrl();
+      if (webhookUrl && webhookUrl.startsWith('http')) {
+        try {
+          fetch(webhookUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'delete_payment',
+              code: code,
+              member: memberName,
+              deletedAt: new Date().toISOString()
+            })
+          }).catch(wbErr => console.warn('Webhook delete warning:', wbErr));
+        } catch (_) {}
+      }
+
       rebuildLiveRecords();
       renderGrid(liveRecords);
       renderAdminList();
@@ -2110,15 +2131,18 @@
       renderAdminList();
     }
 
+    const DEFAULT_SHEET_WEBHOOK = 'https://script.google.com/macros/s/AKfycbyz6y4Aw0zjMtvke7sTjajvypAKVDQ_WgFxELUEDPRyL187XEJPAXcsFXLfCtSKwg1sLA/exec';
     const STORAGE_WEBHOOK_KEY = 'somiti_webhook_url_v1';
     function getWebhookUrl() {
-      return localStorage.getItem(STORAGE_WEBHOOK_KEY) || '';
+      return localStorage.getItem(STORAGE_WEBHOOK_KEY) || DEFAULT_SHEET_WEBHOOK;
     }
     function saveWebhookUrl() {
       const url = document.getElementById('adminWebhookInput')?.value.trim();
       if (!url) {
         localStorage.removeItem(STORAGE_WEBHOOK_KEY);
-        alert('ওয়েবহুক URL মুছে ফেলা হয়েছে।');
+        alert('ওয়েবহুক URL ডিফল্ট (Google Apps Script) হিসেবে সেট করা হয়েছে।');
+        const wbInput = document.getElementById('adminWebhookInput');
+        if (wbInput) wbInput.value = DEFAULT_SHEET_WEBHOOK;
         return;
       }
       localStorage.setItem(STORAGE_WEBHOOK_KEY, url);
