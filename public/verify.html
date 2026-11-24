@@ -111,11 +111,6 @@
           <span class="font-semibold text-amber-200" id="hdrBkash">📱 বিকাশ: ০১৮৮১২১০৪৪৪</span>
         </div>
         <div class="flex flex-wrap items-center justify-center gap-2 text-xs shrink-0">
-          <button type="button" onclick="openPadEditModal()"
-            class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-3 py-1.5 rounded-lg shadow transition flex items-center space-x-1">
-            <span>✏️</span>
-            <span>প্যাড তথ্য এডিট</span>
-          </button>
           <button type="button" id="refreshBtn" onclick="manualSync()" class="bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg font-semibold border border-white/20 transition">🔄 লাইভ আপডেট</button>
           <button type="button" id="darkModeBtn" onclick="toggleDarkMode()" class="bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg font-semibold border border-white/20 transition">🌙 ডার্ক</button>
           <button type="button" id="adminBtn" onclick="toggleAdminMode()" class="bg-white/10 hover:bg-white/20 px-2.5 py-1.5 rounded-lg font-semibold border border-white/20 transition">🔐 অ্যাডমিন</button>
@@ -252,7 +247,7 @@
         <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50/40">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">নভেম্বর ২০২৬</span>
-            <span class="text-xs font-semibold text-slate-500">${toBn(25)} / ${toBn(27)} জন</span>
+            <span class="text-xs font-semibold text-slate-500">২৫ / ২৭ জন</span>
           </div>
           <p class="text-lg font-bold text-emerald-700 mt-2">২,৫০,০০০/- টাকা</p>
           <p class="text-xs text-amber-700 mt-0.5">বকেয়া: ২০,০০০/- টাকা (২ জন)</p>
@@ -1162,11 +1157,14 @@
                     </div>
                     <p class="text-[11px] text-emerald-200/80 mt-0.5">হাই-রেজোলিউশন অফিশিয়াল প্যাড ভিউ, সরাসরি প্রিন্ট, PNG ছবি ও A4 PDF ডাউনলোড</p>
                   </div>
-                </div>
-                <div class="flex items-center gap-2">
+                <div class="flex flex-wrap items-center gap-2">
+                  <button type="button" onclick="openPadEditModal()" class="bg-teal-500 hover:bg-teal-400 active:scale-95 text-slate-950 font-extrabold text-xs px-3.5 py-2 rounded-xl transition shadow flex items-center gap-1.5">
+                    <span>✏️</span>
+                    <span>প্যাডের মূল তথ্য এডিট (ব্যাংক/বিকাশ)</span>
+                  </button>
                   <button type="button" onclick="openManualDuePaidModal()" class="bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-extrabold text-xs px-3.5 py-2 rounded-xl transition shadow flex items-center gap-1.5">
                     <span>⚙️</span>
-                    <span>কে বাকি / কে পেইড এডিট করুন</span>
+                    <span>কে বাকি / কে পেইড এডিট</span>
                   </button>
                 </div>
               </div>
@@ -1420,6 +1418,19 @@
 
         <!-- Tab 3: Notice, Password & Export -->
         <div id="adminTab_settings" class="hidden space-y-4">
+          <!-- Pad Information & Customization Card -->
+          <div class="bg-gradient-to-r from-emerald-50 to-teal-50 p-4 rounded-2xl border border-emerald-200 space-y-2 flex flex-wrap items-center justify-between gap-3 shadow-xs">
+            <div>
+              <div class="font-bold text-slate-800 text-sm flex items-center gap-1.5">
+                <span>✏️</span> <span>অফিসিয়াল প্যাডের মূল তথ্য সম্পাদনা</span>
+              </div>
+              <p class="text-[11px] text-slate-600 mt-0.5">ব্যাংকের নাম, একাউন্ট নম্বর, রাউটিং, বিকাশ পার্সোনাল নম্বর, কোষাধ্যক্ষ ও সমিতির ঠিকানা পরিবর্তন করুন।</p>
+            </div>
+            <button type="button" onclick="openPadEditModal()" class="bg-emerald-700 hover:bg-emerald-800 active:scale-95 text-white font-bold px-4 py-2 rounded-xl transition shadow flex items-center gap-1.5 text-xs">
+              <span>✏️</span> <span>তথ্য সম্পাদনা করুন</span>
+            </button>
+          </div>
+
           <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2.5">
             <label class="block font-bold text-slate-800">📢 উপরের জরুরি বিজ্ঞপ্তি পরিবর্তন করুন</label>
             <textarea id="adminNoticeInput" rows="2" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white"></textarea>
@@ -2030,7 +2041,12 @@
                 `👉 https://smartsomiti.vercel.app/verify.html?id=DUE-LIST\n\n` +
                 `━━━━━━━━━━━━━━━━━━━━━━━\n` +
                 `ধন্যবাদান্তে,\n*স্বপ্ন ছোঁয়া ঐক্য সমিতি পরিচালনা পরিষদ*`;
-              window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+              try { navigator.clipboard?.writeText?.(msg); } catch (e) {}
+              const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+              const win = window.open(waUrl, '_blank');
+              if (!win || win.closed || typeof win.closed === 'undefined') {
+                window.location.href = waUrl;
+              }
             };
             card.appendChild(waBtn);
           }
@@ -2190,6 +2206,9 @@
       if (wbInput) wbInput.value = localStorage.getItem(STORAGE_WEBHOOK_KEY) || DEFAULT_SHEET_WEBHOOK;
       populateAdminMemberDropdown();
       renderAdminList();
+      populateHubAndModalMemberDropdowns();
+      updateHubStats();
+      initAdminWhatsAppTab();
     }
 
     function closeAdminPanel() {
@@ -3641,12 +3660,21 @@
         btn.innerHTML = '<span>⏳</span> <span>খোলা হচ্ছে...</span>';
         setTimeout(() => btn.innerHTML = orig, 2000);
       }
-      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+      navigator.clipboard?.writeText?.(msg).catch(() => {});
+      const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+      const w = window.open(waUrl, '_blank');
+      if (!w || w.closed || typeof w.closed === 'undefined') {
+        window.location.href = waUrl;
+      }
     }
 
     async function sendAdminWaWithPad(padType = 'paid', btn = null) {
       const origText = btn ? btn.innerHTML : '';
       if (btn) btn.innerHTML = '<span>⏳</span> <span>ছবি তৈরি হচ্ছে...</span>';
+
+      const ta = document.getElementById('adminWaTextarea');
+      const caption = (ta && ta.value.trim()) ? ta.value : generateOfficialWhatsAppNotice(padType === 'due');
+      navigator.clipboard?.writeText?.(caption).catch(() => {});
 
       try {
         if (!currentPadRec) {
@@ -3681,9 +3709,6 @@
         const fileName = getPadFileName('png');
         const file = new File([blob], fileName, { type: 'image/png' });
 
-        const ta = document.getElementById('adminWaTextarea');
-        const caption = (ta && ta.value.trim()) ? ta.value : generateOfficialWhatsAppNotice(padType === 'due');
-
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
           await navigator.share({
             title: 'স্বপ্ন ছোঁয়া ঐক্য সমিতি অফিসিয়াল নোটিশ ও প্যাড',
@@ -3697,8 +3722,11 @@
           a.download = fileName;
           a.click();
           setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-          await navigator.clipboard.writeText(caption).catch(() => {});
-          window.open(`https://wa.me/?text=${encodeURIComponent(caption)}`, '_blank');
+          const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(caption)}`;
+          const w = window.open(waUrl, '_blank');
+          if (!w || w.closed || typeof w.closed === 'undefined') {
+            window.location.href = waUrl;
+          }
           if (btn) btn.innerHTML = '<span>✅</span> <span>ছবি ডাউনলোড ও WhatsApp ওপেন</span>';
         }
       } catch (err) {
@@ -3725,7 +3753,7 @@
     async function shareCurrentPadWhatsApp() {
       const node = getCurrentActivePadNode();
       if (!node) return;
-      const btn = event?.currentTarget;
+      const btn = (typeof event !== 'undefined' && event?.currentTarget) || document.querySelector('#officialPadModal button[onclick="shareCurrentPadWhatsApp()"]');
       const origText = btn ? btn.innerHTML : '';
       if (btn) btn.innerHTML = '<span>⏳</span> <span>শেয়ার হচ্ছে...</span>';
 
@@ -3782,11 +3810,20 @@
           a.download = fileName;
           a.click();
           setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-          await navigator.clipboard.writeText(caption).catch(() => {});
+          try { await navigator.clipboard?.writeText?.(caption); } catch (e) {}
         }
-        window.open(`https://wa.me/?text=${encodeURIComponent(caption)}`, '_blank');
+        const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(caption)}`;
+        const win = window.open(waUrl, '_blank');
+        if (!win || win.closed || typeof win.closed === 'undefined') {
+          window.location.href = waUrl;
+        }
       } catch (err) {
-        window.open(`https://wa.me/?text=${encodeURIComponent(caption)}`, '_blank');
+        try { await navigator.clipboard?.writeText?.(caption); } catch (e) {}
+        const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(caption)}`;
+        const win = window.open(waUrl, '_blank');
+        if (!win || win.closed || typeof win.closed === 'undefined') {
+          window.location.href = waUrl;
+        }
       } finally {
         if (btn) setTimeout(() => btn.innerHTML = origText, 2000);
       }
@@ -4010,11 +4047,21 @@
             a.download = fileName;
             a.click();
             setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+            try { await navigator.clipboard?.writeText?.(caption); } catch (e) {}
           }
         }
-        window.open(`https://wa.me/?text=${encodeURIComponent(caption)}`, '_blank');
+        const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(caption)}`;
+        const win = window.open(waUrl, '_blank');
+        if (!win || win.closed || typeof win.closed === 'undefined') {
+          window.location.href = waUrl;
+        }
       } catch (err) {
-        window.open(`https://wa.me/?text=${encodeURIComponent(caption)}`, '_blank');
+        try { await navigator.clipboard?.writeText?.(caption); } catch (e) {}
+        const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(caption)}`;
+        const win = window.open(waUrl, '_blank');
+        if (!win || win.closed || typeof win.closed === 'undefined') {
+          window.location.href = waUrl;
+        }
       } finally {
         btn.innerText = originalText;
         btn.disabled = false;
