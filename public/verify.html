@@ -152,11 +152,7 @@
             </div>
           </div>
         </div>
-        <div class="flex flex-wrap items-center gap-2 self-end sm:self-center shrink-0">
-          <button type="button" onclick="openWaNoticeHubModal()" class="inline-flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 hover:from-emerald-700 hover:to-green-700 active:scale-95 text-white font-extrabold text-xs px-3.5 py-2 rounded-xl transition shadow-md shadow-emerald-700/25">
-            <span class="text-sm">📲</span>
-            <span>WhatsApp নোটিশ পাঠান</span>
-          </button>
+        <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
           <a href="#paymentGuide" class="inline-flex items-center gap-1.5 bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs px-3.5 py-2 rounded-xl transition shadow active:scale-95">
             <span>💳</span>
             <span>পেমেন্ট গাইড</span>
@@ -233,11 +229,7 @@
               <p class="text-xs text-emerald-200/80 mt-0.5">হাই-রেজোলিউশন অফিশিয়াল প্যাড ভিউ, PNG ছবি ও A4 PDF ডাউনলোড এবং WhatsApp শেয়ার</p>
             </div>
           </div>
-          <div class="flex flex-wrap items-center gap-2">
-            <button type="button" onclick="openWaNoticeHubModal()" class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 active:scale-95 text-white font-extrabold text-xs px-3.5 py-2 rounded-xl transition shadow flex items-center gap-1.5">
-              <span>📲</span>
-              <span>WhatsApp নোটিশ হাব</span>
-            </button>
+          <div class="flex items-center gap-2">
             <button type="button" onclick="openManualDuePaidModal()" class="bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-extrabold text-xs px-3.5 py-2 rounded-xl transition shadow flex items-center gap-1.5">
               <span>⚙️</span>
               <span>কে বাকি / কে পেইড এডিট করুন</span>
@@ -1035,124 +1027,6 @@
     </div>
   </div>
 
-  <!-- ================= 📲 WHATSAPP OFFICIAL NOTICE & PAD SHARING HUB MODAL ================= -->
-  <div id="waNoticeHubModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[80] flex items-center justify-center p-3 sm:p-5 hidden">
-    <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-3xl max-h-[94vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-      
-      <!-- Modal Header -->
-      <div class="px-5 py-4 bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white flex items-center justify-between border-b border-emerald-900 shrink-0">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-green-500 to-emerald-600 flex items-center justify-center text-xl shadow-md">
-            📲
-          </div>
-          <div>
-            <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-              <span>WhatsApp অফিশিয়াল নোটিশ ও প্যাড হাব</span>
-              <span class="text-[10px] bg-green-500/20 text-green-300 font-extrabold px-2 py-0.5 rounded-full border border-green-400/30">হাই-ইম্প্যাক্ট ও বোল্ড</span>
-            </h3>
-            <p class="text-xs text-emerald-200/80">বোল্ড রঙিন ফরম্যাটে নোটিশ ও ৩টি অফিসিয়াল প্যাড (পরিশোধিত, বকেয়া, রিসিট) সরাসরি WhatsApp-এ পাঠান</p>
-          </div>
-        </div>
-        <button type="button" onclick="closeWaNoticeHubModal()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center font-bold text-base transition">✕</button>
-      </div>
-
-      <!-- Modal Body (Scrollable) -->
-      <div class="p-4 sm:p-6 overflow-y-auto space-y-4">
-        
-        <!-- Live WhatsApp Chat Bubble Preview (Realistic WhatsApp UI) -->
-        <div class="space-y-1.5">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-              <span>💬</span> <span>WhatsApp-এ মেসেজটি যেমন দেখাবে (লাইভ প্রিভিউ):</span>
-            </span>
-            <div class="flex items-center gap-2">
-              <label class="inline-flex items-center gap-1.5 cursor-pointer text-[11px] font-bold text-slate-700 bg-slate-100 hover:bg-slate-200/80 px-2.5 py-1 rounded-lg border border-slate-300 select-none transition">
-                <input type="checkbox" id="waIncludeDueCheck" checked onchange="updateWaMessagePreview()" class="w-3.5 h-3.5 text-emerald-600 rounded focus:ring-emerald-500">
-                <span>বকেয়া তালিকা যুক্ত রাখুন</span>
-              </label>
-              <button type="button" onclick="copyFullWhatsAppNotice(this)" class="text-[11px] font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg border border-emerald-200 transition flex items-center gap-1">
-                <span>📋</span> <span>মেসেজ কপি</span>
-              </button>
-            </div>
-          </div>
-          
-          <div class="bg-[#e5ddd5] p-3 sm:p-4 rounded-2xl border border-slate-300 shadow-inner">
-            <div class="bg-white rounded-2xl rounded-tl-sm p-4 text-xs sm:text-sm text-slate-900 shadow-sm border border-emerald-200/50 space-y-2 font-mono leading-relaxed max-h-60 overflow-y-auto" id="waMessagePreviewText">
-              <!-- Live Text populated by JS -->
-            </div>
-          </div>
-        </div>
-
-        <!-- 4 Instant Action Buttons Grid -->
-        <div class="space-y-2 pt-1">
-          <span class="text-xs font-bold text-slate-700 block">⚡ আপনার পছন্দ অনুযায়ী সরাসরি পাঠান:</span>
-          
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-            <!-- 1. Text Only -->
-            <button type="button" onclick="sendWaNoticeTextOnly(this)" class="flex items-center gap-3 p-3.5 rounded-2xl bg-emerald-50 hover:bg-emerald-100/90 border-2 border-emerald-300/80 text-left transition shadow-xs group active:scale-98">
-              <div class="w-10 h-10 rounded-xl bg-emerald-700 text-white flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition shadow">
-                💬
-              </div>
-              <div class="flex-1 min-w-0">
-                <div class="font-extrabold text-emerald-950 text-xs sm:text-sm">১. শুধু নোটিশ পাঠান (Text Only)</div>
-                <div class="text-[11px] text-emerald-700">বোল্ড ও কালারফুল টেক্সট সরাসরি WhatsApp-এ খুলবে</div>
-              </div>
-            </button>
-
-            <!-- 2. Paid List + Notice -->
-            <button type="button" onclick="sendWaNoticeWithPad('paid', this)" class="flex items-center gap-3 p-3.5 rounded-2xl bg-teal-50 hover:bg-teal-100/90 border-2 border-teal-300/80 text-left transition shadow-xs group active:scale-98">
-              <div class="w-10 h-10 rounded-xl bg-teal-700 text-white flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition shadow">
-                📋
-              </div>
-              <div class="flex-1 min-w-0">
-                <div class="font-extrabold text-teal-950 text-xs sm:text-sm">২. পরিশোধিত তালিকা প্যাড + নোটিশ</div>
-                <div class="text-[11px] text-teal-700">A4 সাইজ পরিশোধিত তালিকা ইমেজ ও নোটিশ একসাথে</div>
-              </div>
-            </button>
-
-            <!-- 3. Due List + Notice -->
-            <button type="button" onclick="sendWaNoticeWithPad('due', this)" class="flex items-center gap-3 p-3.5 rounded-2xl bg-rose-50 hover:bg-rose-100/90 border-2 border-rose-300/80 text-left transition shadow-xs group active:scale-98">
-              <div class="w-10 h-10 rounded-xl bg-rose-700 text-white flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition shadow">
-                🔴
-              </div>
-              <div class="flex-1 min-w-0">
-                <div class="font-extrabold text-rose-950 text-xs sm:text-sm">৩. বকেয়া তালিকা প্যাড + নোটিশ</div>
-                <div class="text-[11px] text-rose-700">A4 সাইজ বকেয়া তালিকা ইমেজ ও তাগিদ নোটিশ একসাথে</div>
-              </div>
-            </button>
-
-            <!-- 4. Money Receipt + Notice -->
-            <button type="button" onclick="sendWaNoticeWithPad('receipt', this)" class="flex items-center gap-3 p-3.5 rounded-2xl bg-amber-50 hover:bg-amber-100/90 border-2 border-amber-300/80 text-left transition shadow-xs group active:scale-98">
-              <div class="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition shadow">
-                🧾
-              </div>
-              <div class="flex-1 min-w-0">
-                <div class="font-extrabold text-amber-950 text-xs sm:text-sm">৪. মানি রিসিট প্যাড + নোটিশ</div>
-                <div class="text-[11px] text-amber-800">অফিসিয়াল মানি রিসিট (1654×1450) ও নোটিশ একসাথে</div>
-              </div>
-            </button>
-          </div>
-        </div>
-
-        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-slate-600 text-[11px] flex items-center gap-2">
-          <span class="text-lg">💡</span>
-          <span>মোবাইল থেকে পাঠালে ছবি ও নোটিশ সরাসরি WhatsApp অ্যাপে একসাথে সিলেক্ট হয়ে যাবে। কম্পিউটার থেকে পাঠালে ছবি ডাউনলোড হয়ে সম্পূর্ণ নোটিশ কপি ও WhatsApp Web ওপেন হবে।</span>
-        </div>
-      </div>
-
-      <!-- Modal Footer -->
-      <div class="px-5 py-3 bg-slate-100 border-t border-slate-200 flex items-center justify-between shrink-0">
-        <button type="button" onclick="closeWaNoticeHubModal()" class="px-4 py-2 rounded-xl bg-white border border-slate-300 font-bold text-xs text-slate-700 hover:bg-slate-50 transition">
-          বন্ধ করুন
-        </button>
-        <button type="button" onclick="sendWaNoticeTextOnly(this)" class="px-5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 font-bold text-xs text-white shadow transition flex items-center gap-1.5 active:scale-95">
-          <span>📲</span> <span>সরাসরি WhatsApp-এ পাঠান</span>
-        </button>
-      </div>
-
-    </div>
-  </div>
-
   <!-- Secure Admin Password Authentication Modal (Zero Leaks) -->
   <div id="adminAuthModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[70] flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 flex flex-col items-center text-center animate-pop relative">
@@ -1182,7 +1056,7 @@
 
   <!-- Unified Admin Control Panel Modal -->
   <div id="adminPanelModal" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden">
-    <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden border border-emerald-200 animate-pop">
+    <div class="bg-white rounded-3xl max-w-5xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden border border-emerald-200 animate-pop">
       <div class="bg-gradient-to-r from-slate-900 via-emerald-900 to-teal-900 px-5 py-4 text-white flex flex-wrap items-center justify-between gap-2">
         <div>
           <span class="inline-block bg-amber-400 text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Admin Control Center • Firebase Sync</span>
@@ -1205,6 +1079,7 @@
       <div class="px-5 py-2.5 bg-slate-50 border-b border-slate-200 flex flex-wrap gap-1.5 text-xs">
         <button type="button" data-atab="manage" onclick="switchAdminTab('manage')" class="admin-tab-btn bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold">🗑️ ভেরিফাই ও রিসিট ডিলিট/এডিট</button>
         <button type="button" data-atab="add" onclick="switchAdminTab('add')" class="admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold">➕ নতুন পেমেন্ট যোগ (মেইন অ্যাপেও যাবে)</button>
+        <button type="button" data-atab="whatsapp" onclick="switchAdminTab('whatsapp')" class="admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5"><span>📲</span> <span>WhatsApp নোটিশ ব্রডকাস্ট</span></button>
         <button type="button" data-atab="settings" onclick="switchAdminTab('settings')" class="admin-tab-btn bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold">⚙️ নোটিশ, পাসওয়ার্ড ও এক্সপোর্ট</button>
       </div>
 
@@ -1384,6 +1259,153 @@
               <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-xl transition shadow">✅ ভেরিফাই করুন, মেইন অ্যাপে পাঠান ও ৩টি প্যাড তৈরি করুন</button>
             </div>
           </form>
+        </div>
+
+        <!-- Tab: WhatsApp Broadcast & Notification Center -->
+        <div id="adminTab_whatsapp" class="hidden space-y-4">
+          
+          <!-- Banner -->
+          <div class="bg-gradient-to-r from-emerald-900 via-teal-950 to-slate-900 p-4 rounded-2xl text-white flex flex-wrap items-center justify-between gap-3 shadow-md border border-emerald-800/60">
+            <div class="flex items-center gap-3">
+              <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-green-500 to-emerald-600 flex items-center justify-center text-2xl shadow-md shrink-0">
+                📲
+              </div>
+              <div>
+                <h4 class="font-extrabold text-sm sm:text-base text-white flex items-center gap-2">
+                  <span>WhatsApp নোটিশ ব্রডকাস্ট ও প্যাড শেয়ার সেন্টার</span>
+                  <span class="text-[10px] bg-green-500/25 text-green-300 font-bold px-2 py-0.5 rounded-full border border-green-400/30">অ্যাডমিন এক্সক্লুসিভ</span>
+                </h4>
+                <p class="text-[11px] text-emerald-200/80 mt-0.5">এখানে নোটিশ লিখুন বা এডিট করুন, লাইভ রিভিউ দেখুন এবং এক ক্লিকে প্যাড ছবিসহ WhatsApp-এ ব্রডকাস্ট করুন</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="loadDefaultAdminWaText()" class="bg-emerald-800/80 hover:bg-emerald-700 text-emerald-100 text-xs font-bold px-3 py-1.5 rounded-xl border border-emerald-600/50 transition flex items-center gap-1.5 shadow-sm active:scale-95">
+                <span>🔄</span> <span>ডিফল্ট নোটিশ রিফ্রেশ</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 2-Column Split: Big Editor on Left, Live WhatsApp Screen on Right -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            
+            <!-- Left: Large Full-Display Editor (7 cols) -->
+            <div class="lg:col-span-7 bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3 flex flex-col justify-between">
+              <div class="space-y-2.5">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <label class="block font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-1.5">
+                    <span>✍️</span> <span>নোটিশ এডিটর (এখানে লিখুন বা কপি-পেস্ট করুন):</span>
+                  </label>
+                  <span id="adminWaCharCount" class="font-mono text-[11px] text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200">০ অক্ষর</span>
+                </div>
+
+                <!-- Quick Insert Toolbar -->
+                <div class="flex flex-wrap items-center gap-1.5 pt-0.5 pb-1">
+                  <span class="text-[10.5px] font-bold text-slate-500">কুইক ইনসার্ট:</span>
+                  <button type="button" onclick="insertAdminWaSnippet('due_list')" class="px-2.5 py-1 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-800 text-[11px] font-bold transition shadow-xs active:scale-95">
+                    ⚠️ বকেয়া তালিকা
+                  </button>
+                  <button type="button" onclick="insertAdminWaSnippet('bank_info')" class="px-2.5 py-1 rounded-lg bg-blue-100 hover:bg-blue-200 text-blue-800 text-[11px] font-bold transition shadow-xs active:scale-95">
+                    🏦 ব্যাংক হিসাব
+                  </button>
+                  <button type="button" onclick="insertAdminWaSnippet('bkash_info')" class="px-2.5 py-1 rounded-lg bg-pink-100 hover:bg-pink-200 text-pink-800 text-[11px] font-bold transition shadow-xs active:scale-95">
+                    📱 বিকাশ
+                  </button>
+                  <button type="button" onclick="insertAdminWaSnippet('verify_link')" class="px-2.5 py-1 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-[11px] font-bold transition shadow-xs active:scale-95">
+                    🔍 ভেরিফাই লিংক
+                  </button>
+                </div>
+
+                <!-- Big Textarea -->
+                <textarea id="adminWaTextarea" rows="13" oninput="handleAdminWaInput()"
+                  placeholder="এখানে আপনার সম্পূর্ণ নোটিশ লিখুন বা কপি-পেস্ট করুন..."
+                  class="w-full px-3.5 py-3 text-xs sm:text-sm rounded-xl border border-slate-300 bg-white font-mono leading-relaxed focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600 transition shadow-inner resize-y"></textarea>
+              </div>
+
+              <!-- Editor Footer Note -->
+              <div class="pt-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500 border-t border-slate-200">
+                <span>💡 কোনো শব্দ মোটা করতে লেখার আগে-পরে স্টার দিন (যেমন: <code class="text-emerald-700 font-bold">*১০,০০০/- টাকা*</code>)।</span>
+                <button type="button" onclick="copyAdminWaMessage(this)" class="font-bold text-emerald-800 hover:text-emerald-900 bg-emerald-100 hover:bg-emerald-200 px-3 py-1 rounded-lg transition flex items-center gap-1 shadow-xs">
+                  <span>📋</span> <span>মেসেজ কপি</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Right: Real WhatsApp Phone Review Screen (5 cols) -->
+            <div class="lg:col-span-5 flex flex-col space-y-2">
+              <div class="flex items-center justify-between text-xs font-bold text-slate-700">
+                <span class="flex items-center gap-1.5">
+                  <span>📱</span> <span>WhatsApp লাইভ স্ক্রিন রিভিউ (কেমন দেখাবে):</span>
+                </span>
+                <span class="text-[10px] text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full font-bold">রিয়েল-টাইম</span>
+              </div>
+
+              <!-- Phone Mockup Container -->
+              <div class="flex-1 rounded-3xl bg-[#0b141a] p-2.5 shadow-xl border-4 border-slate-800 flex flex-col overflow-hidden max-h-[500px]">
+                <!-- WhatsApp Chat Header -->
+                <div class="bg-[#202c33] text-white px-3 py-2 rounded-2xl flex items-center gap-2.5 shadow-sm shrink-0">
+                  <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-sm font-bold">
+                    🏛️
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="font-bold text-xs truncate">স্বপ্ন ছোঁয়া ঐক্য সমিতি</div>
+                    <div class="text-[10px] text-emerald-400">অনলাইন • পরিচালনা পরিষদ</div>
+                  </div>
+                </div>
+
+                <!-- Chat Wallpaper & Live Bubble -->
+                <div class="flex-1 overflow-y-auto p-2.5 space-y-2 bg-[#efeae2] dark:bg-[#0c1317] rounded-2xl my-2" style="background-image: radial-gradient(#d1d7db 1px, transparent 1px); background-size: 16px 16px;">
+                  <div class="bg-white dark:bg-[#1f2c34] text-slate-900 dark:text-slate-100 rounded-2xl rounded-tl-none p-3 shadow-md border border-slate-200/80 text-xs font-mono leading-relaxed max-w-[95%] space-y-1.5 break-words">
+                    <div id="adminWaLiveReviewText">
+                      <!-- Live Rendered Output -->
+                    </div>
+                    <div class="flex items-center justify-end gap-1 text-[10px] text-slate-400 pt-1">
+                      <span id="adminWaReviewTime">এখন</span>
+                      <span class="text-sky-500 font-bold">✓✓</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Action Send Buttons (4 Options) -->
+          <div class="bg-emerald-50/80 border border-emerald-200 p-4 rounded-2xl space-y-2.5">
+            <div class="font-extrabold text-xs sm:text-sm text-emerald-950 flex items-center gap-1.5">
+              <span>🚀</span> <span>পছন্দ অনুযায়ী সরাসরি WhatsApp-এ ব্রডকাস্ট করুন:</span>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5">
+              <!-- 1. Text Only -->
+              <button type="button" onclick="sendAdminWaTextOnly(this)" class="flex flex-col items-center justify-center text-center p-3 rounded-xl bg-white hover:bg-emerald-100/90 border-2 border-emerald-300 text-emerald-950 font-bold transition shadow-xs active:scale-95 group">
+                <span class="text-xl mb-1 group-hover:scale-110 transition">💬</span>
+                <span class="text-xs">১. শুধু নোটিশ পাঠান</span>
+                <span class="text-[10px] text-emerald-700 font-normal">টেক্সট চ্যাটে সরাসরি যাবে</span>
+              </button>
+
+              <!-- 2. Paid List + Notice -->
+              <button type="button" onclick="sendAdminWaWithPad('paid', this)" class="flex flex-col items-center justify-center text-center p-3 rounded-xl bg-white hover:bg-teal-100/90 border-2 border-teal-300 text-teal-950 font-bold transition shadow-xs active:scale-95 group">
+                <span class="text-xl mb-1 group-hover:scale-110 transition">📋</span>
+                <span class="text-xs">২. পেইড তালিকা প্যাড সহ</span>
+                <span class="text-[10px] text-teal-700 font-normal">A4 পেইড ইমেজ + নোটিশ</span>
+              </button>
+
+              <!-- 3. Due List + Notice -->
+              <button type="button" onclick="sendAdminWaWithPad('due', this)" class="flex flex-col items-center justify-center text-center p-3 rounded-xl bg-white hover:bg-rose-100/90 border-2 border-rose-300 text-rose-950 font-bold transition shadow-xs active:scale-95 group">
+                <span class="text-xl mb-1 group-hover:scale-110 transition">🔴</span>
+                <span class="text-xs">৩. বকেয়া তালিকা প্যাড সহ</span>
+                <span class="text-[10px] text-rose-700 font-normal">A4 বকেয়া ইমেজ + নোটিশ</span>
+              </button>
+
+              <!-- 4. Money Receipt + Notice -->
+              <button type="button" onclick="sendAdminWaWithPad('receipt', this)" class="flex flex-col items-center justify-center text-center p-3 rounded-xl bg-white hover:bg-amber-100/90 border-2 border-amber-300 text-amber-950 font-bold transition shadow-xs active:scale-95 group">
+                <span class="text-xl mb-1 group-hover:scale-110 transition">🧾</span>
+                <span class="text-xs">৪. মানি রিসিট প্যাড সহ</span>
+                <span class="text-[10px] text-amber-800 font-normal">রিসিট ইমেজ + নোটিশ</span>
+              </button>
+            </div>
+          </div>
+
         </div>
 
         <!-- Tab 3: Notice, Password & Export -->
@@ -2152,8 +2174,9 @@
     }
 
     function switchAdminTab(tab) {
-      ['manage', 'add', 'settings'].forEach(t => {
-        document.getElementById('adminTab_' + t).classList.toggle('hidden', t !== tab);
+      ['manage', 'add', 'whatsapp', 'settings'].forEach(t => {
+        const el = document.getElementById('adminTab_' + t);
+        if (el) el.classList.toggle('hidden', t !== tab);
       });
       document.querySelectorAll('.admin-tab-btn').forEach(b => {
         const active = b.getAttribute('data-atab') === tab;
@@ -2164,6 +2187,9 @@
       if (tab === 'add') {
         populateAdminMemberDropdown();
         renderAdminDueList();
+      }
+      if (tab === 'whatsapp') {
+        initAdminWhatsAppTab();
       }
     }
 
@@ -3451,51 +3477,101 @@
       return msg;
     }
 
-    function openWaNoticeHubModal() {
-      const modal = document.getElementById('waNoticeHubModal');
-      if (!modal) return;
-      updateWaMessagePreview();
-      modal.classList.remove('hidden');
+    // ================= 📲 ADMIN WHATSAPP BROADCAST & NOTICE HUB =================
+    function initAdminWhatsAppTab() {
+      const ta = document.getElementById('adminWaTextarea');
+      if (ta && !ta.value.trim()) {
+        loadDefaultAdminWaText();
+      } else {
+        handleAdminWaInput();
+      }
     }
 
-    function closeWaNoticeHubModal() {
-      const modal = document.getElementById('waNoticeHubModal');
-      if (modal) modal.classList.add('hidden');
+    function loadDefaultAdminWaText() {
+      const ta = document.getElementById('adminWaTextarea');
+      if (!ta) return;
+      ta.value = generateOfficialWhatsAppNotice(true);
+      handleAdminWaInput();
     }
 
-    function updateWaMessagePreview() {
-      const previewEl = document.getElementById('waMessagePreviewText');
-      if (!previewEl) return;
-      const checkDue = document.getElementById('waIncludeDueCheck');
-      const incDue = checkDue ? checkDue.checked : true;
-      const rawMsg = generateOfficialWhatsAppNotice(incDue);
-
-      const htmlMsg = rawMsg
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/\*(.*?)\*/g, '<strong class="font-extrabold text-emerald-950 bg-amber-200/70 px-1 py-0.5 rounded">$1</strong>')
-        .replace(/\n/g, '<br/>');
-      previewEl.innerHTML = htmlMsg;
+    function handleAdminWaInput() {
+      const ta = document.getElementById('adminWaTextarea');
+      const preview = document.getElementById('adminWaLiveReviewText');
+      const count = document.getElementById('adminWaCharCount');
+      if (!ta) return;
+      const val = ta.value;
+      if (count) count.innerText = toBn(val.length) + ' অক্ষর';
+      if (preview) {
+        const html = val
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/\*(.*?)\*/g, '<strong class="font-black text-emerald-950 dark:text-emerald-200 bg-amber-200/70 dark:bg-emerald-900/40 px-1 py-0.5 rounded">$1</strong>')
+          .replace(/\n/g, '<br/>');
+        preview.innerHTML = html || '<span class="text-slate-400 italic">কিছু লিখলে এখানে লাইভ রিভিউ দেখা যাবে...</span>';
+      }
+      const timeEl = document.getElementById('adminWaReviewTime');
+      if (timeEl) {
+        const now = new Date();
+        const hrs = now.getHours();
+        const mins = String(now.getMinutes()).padStart(2, '0');
+        const ampm = hrs >= 12 ? 'PM' : 'AM';
+        const h12 = hrs % 12 || 12;
+        timeEl.innerText = `${toBn(h12)}:${toBn(mins)} ${ampm}`;
+      }
     }
 
-    function copyFullWhatsAppNotice(btn) {
-      const checkDue = document.getElementById('waIncludeDueCheck');
-      const incDue = checkDue ? checkDue.checked : true;
-      const msg = generateOfficialWhatsAppNotice(incDue);
-      navigator.clipboard.writeText(msg).then(() => {
+    function insertAdminWaSnippet(type) {
+      const ta = document.getElementById('adminWaTextarea');
+      if (!ta) return;
+      let snip = '';
+      if (type === 'due_list') {
+        const dueList = dueMembers || [];
+        if (dueList.length > 0) {
+          snip = `\n⚠️ *বকেয়া সদস্যদের তালিকা:*\n` + dueList.map((dm, i) => {
+            const sNum = dm.serial ? String(dm.serial).padStart(2, '0') : String(i + 1).padStart(2, '0');
+            return `🔴 *${toBn(i + 1)}.* ${dm.name} (ক্রমিক: *S-${sNum}*)`;
+          }).join('\n') + `\n`;
+        } else {
+          snip = `\n✅ *সকল সদস্যের চলতি মাসের কিস্তি পরিশোধ সম্পন্ন হয়েছে!*\n`;
+        }
+      } else if (type === 'bank_info') {
+        snip = `\n🏦 *ব্যাংক হিসাব:* সিটি ব্যাংক পিএলসি • হিসাব: ২৩০৫১৫৮০৪৫০০১ • রাউটিং: ২২৫২৬০৪১৫ (শ্রীনগর উপ-শাখা)\n`;
+      } else if (type === 'bkash_info') {
+        snip = `\n📱 *বিকাশ পার্সোনাল:* ০১৮৮১২১০৪৪৪ (ক্যাশ-আউট খরচসহ)\n`;
+      } else if (type === 'verify_link') {
+        snip = `\n🔍 *অনলাইনে রিসিট ও নোটিশ যাচাই:* https://smartsomiti.vercel.app/verify.html\n`;
+      }
+
+      const start = ta.selectionStart !== undefined ? ta.selectionStart : ta.value.length;
+      const end = ta.selectionEnd !== undefined ? ta.selectionEnd : ta.value.length;
+      ta.value = ta.value.substring(0, start) + snip + ta.value.substring(end);
+      ta.selectionStart = ta.selectionEnd = start + snip.length;
+      ta.focus();
+      handleAdminWaInput();
+    }
+
+    function copyAdminWaMessage(btn) {
+      const ta = document.getElementById('adminWaTextarea');
+      if (!ta) return;
+      navigator.clipboard.writeText(ta.value).then(() => {
         if (btn) {
           const orig = btn.innerHTML;
           btn.innerHTML = '<span>✅</span> <span>কপি হয়েছে!</span>';
           setTimeout(() => btn.innerHTML = orig, 2000);
         }
+      }).catch(() => {
+        if (btn) {
+          const orig = btn.innerHTML;
+          btn.innerHTML = '<span>❌</span> <span>কপি ব্যর্থ</span>';
+          setTimeout(() => btn.innerHTML = orig, 2000);
+        }
       });
     }
 
-    function sendWaNoticeTextOnly(btn) {
-      const checkDue = document.getElementById('waIncludeDueCheck');
-      const incDue = checkDue ? checkDue.checked : true;
-      const msg = generateOfficialWhatsAppNotice(incDue);
+    function sendAdminWaTextOnly(btn) {
+      const ta = document.getElementById('adminWaTextarea');
+      const msg = (ta && ta.value.trim()) ? ta.value : generateOfficialWhatsAppNotice(true);
       if (btn) {
         const orig = btn.innerHTML;
         btn.innerHTML = '<span>⏳</span> <span>খোলা হচ্ছে...</span>';
@@ -3504,7 +3580,7 @@
       window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
-    async function sendWaNoticeWithPad(padType = 'paid', btn = null) {
+    async function sendAdminWaWithPad(padType = 'paid', btn = null) {
       const origText = btn ? btn.innerHTML : '';
       if (btn) btn.innerHTML = '<span>⏳</span> <span>ছবি তৈরি হচ্ছে...</span>';
 
@@ -3541,25 +3617,13 @@
         const fileName = getPadFileName('png');
         const file = new File([blob], fileName, { type: 'image/png' });
 
-        const checkDue = document.getElementById('waIncludeDueCheck');
-        const incDue = checkDue ? checkDue.checked : true;
-
-        let captionHeader = '';
-        if (padType === 'paid') {
-          captionHeader = `📋 *স্বপ্ন ছোঁয়া ঐক্য সমিতি — পরিশোধিত সদস্যদের অফিসিয়াল তালিকা*\n\n`;
-        } else if (padType === 'due') {
-          captionHeader = `⚠️ *স্বপ্ন ছোঁয়া ঐক্য সমিতি — বকেয়া কিস্তির অফিসিয়াল তালিকা ও নোটিশ*\n\n`;
-        } else {
-          const sCode = currentPadRec?.serial_code || ('S-' + String(currentPadRec?.serial || '01').padStart(2, '0'));
-          captionHeader = `✅ *স্বপ্ন ছোঁয়া ঐক্য সমিতি — অফিসিয়াল মানি রিসিট*\n👤 সদস্য: *${currentPadRec?.member}* (আইডি: *${sCode}*)\n💰 পরিমাণ: *${currentPadRec?.amount}*\n\n`;
-        }
-
-        const fullCaption = captionHeader + generateOfficialWhatsAppNotice(padType === 'due' ? true : incDue);
+        const ta = document.getElementById('adminWaTextarea');
+        const caption = (ta && ta.value.trim()) ? ta.value : generateOfficialWhatsAppNotice(padType === 'due');
 
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
           await navigator.share({
             title: 'স্বপ্ন ছোঁয়া ঐক্য সমিতি অফিসিয়াল নোটিশ ও প্যাড',
-            text: fullCaption,
+            text: caption,
             files: [file]
           });
           if (btn) btn.innerHTML = '<span>✅</span> <span>শেয়ার সফল!</span>';
@@ -3569,17 +3633,30 @@
           a.download = fileName;
           a.click();
           setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-          await navigator.clipboard.writeText(fullCaption).catch(() => {});
-          window.open(`https://wa.me/?text=${encodeURIComponent(fullCaption)}`, '_blank');
-          if (btn) btn.innerHTML = '<span>✅</span> <span>ছবি ডাউনলোড ও WhatsApp ওপেন হয়েছে!</span>';
+          await navigator.clipboard.writeText(caption).catch(() => {});
+          window.open(`https://wa.me/?text=${encodeURIComponent(caption)}`, '_blank');
+          if (btn) btn.innerHTML = '<span>✅</span> <span>ছবি ডাউনলোড ও WhatsApp ওপেন</span>';
         }
       } catch (err) {
         console.warn('Share error:', err);
-        sendWaNoticeTextOnly(btn);
+        sendAdminWaTextOnly(btn);
       } finally {
         if (btn) setTimeout(() => btn.innerHTML = origText, 2500);
       }
     }
+
+    // Aliases for compatibility
+    function openWaNoticeHubModal() {
+      if (typeof openAdminPanel === 'function') {
+        openAdminPanel();
+        switchAdminTab('whatsapp');
+      }
+    }
+    function closeWaNoticeHubModal() {}
+    function updateWaMessagePreview() { handleAdminWaInput(); }
+    function copyFullWhatsAppNotice(btn) { copyAdminWaMessage(btn); }
+    function sendWaNoticeTextOnly(btn) { sendAdminWaTextOnly(btn); }
+    function sendWaNoticeWithPad(padType = 'paid', btn = null) { return sendAdminWaWithPad(padType, btn); }
 
     async function shareCurrentPadWhatsApp() {
       const node = getCurrentActivePadNode();
