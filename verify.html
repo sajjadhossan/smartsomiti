@@ -414,10 +414,11 @@
             <span>↗</span>
           </a>
 
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1">
             <button type="button" id="mCopyLinkBtn" class="bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold py-2.5 px-2 rounded-xl text-xs border border-amber-200 transition">🔗 লিংক কপি</button>
             <button type="button" id="mWaShareBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-2 rounded-xl text-xs transition shadow-sm">📲 WhatsApp ছবি</button>
             <button type="button" id="mSaveImgBtn" class="bg-teal-700 hover:bg-teal-800 text-white font-bold py-2.5 px-2 rounded-xl text-xs transition shadow-sm">🖼️ ছবি সেভ</button>
+            <button type="button" id="mPdfDownloadBtn" onclick="downloadReceiptPdfDirect()" class="bg-indigo-700 hover:bg-indigo-800 text-white font-bold py-2.5 px-2 rounded-xl text-xs transition shadow-sm">📥 PDF ফাইল</button>
             <button type="button" onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 px-2 rounded-xl text-xs transition">🖨️ প্রিন্ট</button>
           </div>
         </div>
@@ -1844,8 +1845,10 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <button type="button" onclick="manualSync()" class="bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold py-2.5 px-3 rounded-xl transition">🔄 গুগল শিট ও Firebase সিঙ্ক</button>
               <a href="https://docs.google.com/spreadsheets/d/1ODNjxha-yX36Gmd8YIe7oVoGw-zZyzHFsjBwRgHeUO0/edit" target="_blank" rel="noopener" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold py-2.5 px-3 rounded-xl text-center transition">📊 গুগল শিট খুলুন ↗</a>
-              <button type="button" onclick="exportCSV()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 px-3 rounded-xl transition">📥 Excel/CSV ডাউনলোড</button>
-              <button type="button" onclick="exportUpdatedHtml()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-3 rounded-xl transition">💾 আপডেটেড verify.html ডাউনলোড</button>
+              <button type="button" onclick="exportDatabaseJson()" class="bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-2.5 px-3 rounded-xl transition shadow-xs">💾 ডাটাবেজ ব্যাকআপ (JSON ডাউনলোড)</button>
+              <button type="button" onclick="exportCSV()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 px-3 rounded-xl transition">📥 Excel/CSV রিপোর্ট ডাউনলোড</button>
+              <button type="button" onclick="triggerPwaInstallPrompt()" class="bg-teal-700 hover:bg-teal-800 text-white font-bold py-2.5 px-3 rounded-xl transition col-span-1 sm:col-span-2">📲 অ্যাপ ইনস্টল করুন (Home Screen PWA)</button>
+              <button type="button" onclick="exportUpdatedHtml()" class="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2.5 px-3 rounded-xl transition col-span-1 sm:col-span-2">💾 আপডেটেড verify.html ডাউনলোড</button>
             </div>
           </div>
         </div>
@@ -2307,13 +2310,31 @@
       const mGrid = document.getElementById('monthlySummaryGrid');
       if (mGrid) {
         mGrid.innerHTML = `
-          <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50/40">
+          <div class="p-4 rounded-xl border-2 border-emerald-400 bg-emerald-50/70 shadow-xs">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">নভেম্বর ২০২৬</span>
-              <span class="text-xs font-semibold text-slate-500">${toBn(paidCnt)} / ${toBn(totalMem)} জন</span>
+              <span class="text-xs font-bold text-emerald-900 bg-emerald-200/90 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                <span>🗓️</span> <span>নভেম্বর ২০২৬ (চলতি মাস)</span>
+              </span>
+              <span class="text-xs font-bold text-emerald-800">${toBn(paidCnt)} / ${toBn(totalMem)} জন</span>
             </div>
-            <p class="text-lg font-bold text-emerald-700 mt-2">${formatBnTaka(totalAmt)}/- টাকা</p>
-            <p class="text-xs text-amber-700 mt-0.5">বকেয়া: ${formatBnTaka(dueAmt)}/- টাকা (${toBn(dueCnt)} জন)</p>
+            <p class="text-xl font-black text-emerald-800 mt-2">${formatBnTaka(totalAmt)}/- টাকা</p>
+            <p class="text-xs font-semibold text-rose-700 mt-0.5">বকেয়া: ${formatBnTaka(dueAmt)}/- টাকা (${toBn(dueCnt)} জন বাকি)</p>
+          </div>
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60 opacity-85">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-700 bg-slate-200 px-2.5 py-0.5 rounded-full">অক্টোবর ২০২৬ (পূর্ববর্তী)</span>
+              <span class="text-xs font-semibold text-emerald-700 font-bold">২৭ / ২৭ জন (১০০%)</span>
+            </div>
+            <p class="text-lg font-bold text-slate-800 mt-2">২,৭০,০০০/- টাকা</p>
+            <p class="text-xs text-emerald-700 mt-0.5">পরিশোধ সম্পন্ন ✅</p>
+          </div>
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60 opacity-85">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-700 bg-slate-200 px-2.5 py-0.5 rounded-full">ডিসেম্বর ২০২৬ (আসন্ন)</span>
+              <span class="text-xs font-semibold text-amber-700 font-bold">নির্ধারিত কিস্তি</span>
+            </div>
+            <p class="text-lg font-bold text-slate-800 mt-2">২,৭০,০০০/- টাকা</p>
+            <p class="text-xs text-amber-700 mt-0.5">১ম সপ্তাহ থেকে জমা শুরু হবে ⏳</p>
           </div>
         `;
       }
@@ -2978,7 +2999,10 @@
               <span>${dm.country}</span>
             </p>
           </div>
-          <div class="pt-2 border-t border-slate-100 flex items-center gap-1.5">
+          <div class="pt-2 border-t border-slate-100 flex flex-wrap items-center gap-1.5">
+            <button type="button" onclick="sendIndividualWaReminder('${dm.serial}')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 px-2 rounded-lg text-[11px] transition text-center shadow-xs active:scale-95 flex items-center justify-center gap-1.5">
+              <span>📲</span> <span>ব্যক্তিগত WhatsApp তাগিদ পাঠান</span>
+            </button>
             <button type="button" onclick="autoFillAdminPayment('${dm.serial}')" class="flex-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold py-1.5 px-2 rounded-lg text-[11px] transition text-center active:scale-95">
               ⚡ ফর্মে বসান
             </button>
@@ -2988,6 +3012,47 @@
           </div>
         </div>
       `).join('');
+    }
+
+    function sendIndividualWaReminder(memberSerial) {
+      const sPad = String(Number(memberSerial) || memberSerial).padStart(2, '0');
+      const mem = MASTER_MEMBERS_LIST.find(m => m.serial === sPad);
+      if (!mem) return;
+
+      const rawPhone = (mem.phone || '').replace(/[^0-9]/g, '');
+      if (!rawPhone || rawPhone.length < 7) {
+        alert(`${mem.name}-এর কোনো বৈধ মোবাইল নম্বর পাওয়া যায়নি!`);
+        return;
+      }
+
+      // Convert local BD format to international 880
+      let intlPhone = rawPhone;
+      if (rawPhone.startsWith('01') && rawPhone.length === 11) {
+        intlPhone = '88' + rawPhone;
+      }
+
+      const msg = `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `🏛️  *স্বপ্ন ছোঁয়া ঐক্য সমিতি*  🏛️\n` +
+        `⚠️  *চলতি মাসের কিস্তি পরিশোধের তাগিদপত্র*\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+        `আসসালামু আলাইকুম, সম্মানিত সদস্য *${mem.name}* ভাই (সদস্য ক্রমিক: *S-${sPad}*)।\n\n` +
+        `আশা করি ভালো আছেন। আপনার সদয় অবগতির জন্য জানানো যাচ্ছে যে, সমিতির চলতি মাস (নভেম্বর ২০২৬)-এর নির্ধারিত কিস্তি *১০,০০০/- টাকা* (দশ হাজার টাকা) এখনও বকেয়া রয়েছে।\n\n` +
+        `সমিতির আর্থিক শৃঙ্খলা ও নিয়ম রক্ষার স্বার্থে নির্ধারিত সময়ের মধ্যে কিস্তি পরিশোধ করার জন্য আপনাকে বিশেষভাবে অনুরোধ জানানো হচ্ছে।\n\n` +
+        `🏦 *ব্যাংক হিসাব:* সিটি ব্যাংক পিএলসি • হিসাব: ২৩০৫১৫৮০৪৫০০১\n` +
+        `🌐 *রাউটিং:* ২২৫২৬০৪১৫ • শ্রীনগর উপ-শাখা\n` +
+        `📱 *বিকাশ পার্সোনাল:* ০১৮৮১২১০৪৪৪ (ক্যাশ-আউট খরচসহ)\n\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `🛡️ *চলতি মাসের অফিশিয়াল নোটিশ ও বকেয়া তালিকা অনলাইনে যাচাই করুন:*\n` +
+        `👉 https://smartsomiti.vercel.app/verify.html?notice=verified\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `ধন্যবাদান্তে,\n` +
+        `পরিচালনা পরিষদ, স্বপ্ন ছোঁয়া ঐক্য সমিতি`;
+
+      const waUrl = `https://api.whatsapp.com/send?phone=${intlPhone}&text=${encodeURIComponent(msg)}`;
+      const win = window.open(waUrl, '_blank');
+      if (!win || win.closed || typeof win.closed === 'undefined') {
+        window.location.href = waUrl;
+      }
     }
 
     async function quickVerifyUnpaidMember(serial) {
@@ -4693,19 +4758,38 @@
     if (localStorage.getItem('somiti_dark') === '1') toggleDarkMode();
 
     function exportCSV() {
-      const rows = [['Code', 'Member', 'Date', 'Amount', 'Method', 'Status']];
+      const rows = [['Code', 'Serial', 'Member', 'Date', 'Amount', 'Method', 'Status']];
       liveRecords.filter(r => !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-')).forEach(r => {
-        rows.push([r.code, r.member, r.date, r.amount, r.method, 'Paid']);
+        rows.push([r.code, r.serial_code || '', r.member, r.date, r.amount, r.method || '', 'Paid']);
       });
-      dueMembers.forEach(d => {
-        rows.push([`S-${String(d.serial).padStart(2,'0')}`, d.name, '-', '10000', '-', 'Pending']);
+      (dueMembers || []).forEach(d => {
+        rows.push([`DUE-${String(d.serial).padStart(2,'0')}`, `S-${String(d.serial).padStart(2,'0')}`, d.name, '-', '10000', '-', 'Pending']);
       });
       const csv = '\uFEFF' + rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'swapnochowa_somity_report.csv';
+      a.download = `swapnochowa_somity_report_${new Date().toISOString().slice(0,10)}.csv`;
       a.click();
+    }
+
+    function exportDatabaseJson() {
+      const payload = {
+        somiti: "স্বপ্ন ছোঁয়া ঐক্য সমিতি",
+        exportedAt: new Date().toISOString(),
+        totalMembers: MASTER_MEMBERS_LIST.length,
+        masterMembers: MASTER_MEMBERS_LIST,
+        liveRecords: liveRecords,
+        dueMembers: dueMembers,
+        padConfig: currentPadConfig
+      };
+      const jsonStr = JSON.stringify(payload, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `smart_somiti_backup_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 4000);
     }
 
     document.getElementById('verifyForm').addEventListener('submit', (e) => {
@@ -4836,6 +4920,38 @@
       }
     });
 
+    // Direct PDF Receipt Download
+    async function downloadReceiptPdfDirect() {
+      if (!activeModalRec) return;
+      const btn = document.getElementById('mPdfDownloadBtn');
+      const origText = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.innerHTML = '⏳ PDF হচ্ছে...';
+        btn.disabled = true;
+      }
+
+      try {
+        const canvas = await captureReceiptCanvas();
+        const imgData = canvas.toDataURL('image/jpeg', 0.95);
+        const { jsPDF } = window.jspdf || {};
+        if (!jsPDF) throw new Error('jsPDF লাইব্রেরি লোড হয়নি!');
+
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: [210, 184]
+        });
+        pdf.addImage(imgData, 'JPEG', 0, 0, 210, 184, undefined, 'FAST');
+        const fileName = `Receipt_${(activeModalRec.code || 'somiti').replace(/[^a-zA-Z0-9_-]/g, '_')}.pdf`;
+        pdf.save(fileName);
+        if (btn) btn.innerHTML = '✅ PDF সেভ হয়েছে';
+      } catch (err) {
+        alert('PDF তৈরি করতে সমস্যা হয়েছে: ' + err.message);
+      } finally {
+        if (btn) setTimeout(() => { btn.innerHTML = origText; btn.disabled = false; }, 1800);
+      }
+    }
+
     let qrScanner = null;
     document.getElementById('openScannerBtn').addEventListener('click', () => {
       const box = document.getElementById('qrReaderBox');
@@ -4912,6 +5028,38 @@
         verifyQuery(urlId, false);
       }
     })();
+
+    // PWA Service Worker Registration & Install Prompt Handler
+    let deferredPwaPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPwaPrompt = e;
+      const pwaBanner = document.getElementById('pwaInstallBanner');
+      if (pwaBanner) pwaBanner.classList.remove('hidden');
+    });
+
+    function triggerPwaInstallPrompt() {
+      if (deferredPwaPrompt) {
+        deferredPwaPrompt.prompt();
+        deferredPwaPrompt.userChoice.then((choice) => {
+          if (choice.outcome === 'accepted') {
+            const pwaBanner = document.getElementById('pwaInstallBanner');
+            if (pwaBanner) pwaBanner.classList.add('hidden');
+          }
+          deferredPwaPrompt = null;
+        });
+      } else {
+        alert('📲 আপনার ডিভাইসে অ্যাপটি ইনস্টল করতে:\n১. ব্রাউজার মেনুর ৩-ডটে (⋮) অথবা শেয়ার বাটনে ট্যাপ করুন।\n২. "Install app" অথবা "Add to Home Screen" অপশনে ট্যাপ করুন।');
+      }
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => {
+          console.log('[SW Registration Error]', err);
+        });
+      });
+    }
   </script>
 </body>
 </html>
