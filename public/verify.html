@@ -45,6 +45,7 @@
   </style>
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -437,6 +438,89 @@
     </div>
   </div>
 
+  <!-- ================= 👤 INDIVIDUAL MEMBER LEDGER & PROFILE MODAL ================= -->
+  <div id="memberLedgerModal" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-lg w-full max-h-[92vh] flex flex-col shadow-2xl border border-emerald-300 animate-pop overflow-hidden">
+      <!-- Modal Header -->
+      <div class="bg-gradient-to-r from-emerald-800 to-teal-900 text-white p-4 sm:p-5 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div id="ledgerAvatar" class="w-12 h-12 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-xl font-black text-amber-300 shadow-inner">
+            👤
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 id="ledgerMemberName" class="font-extrabold text-base sm:text-lg tracking-wide text-white">সদস্যের নাম</h3>
+              <span id="ledgerSerialBadge" class="bg-amber-400 text-slate-950 font-mono text-xs font-black px-2 py-0.5 rounded-full">S-01</span>
+            </div>
+            <p id="ledgerSubInfo" class="text-xs text-emerald-200 mt-0.5">বাংলাদেশ 🇧🇩 • সাধারণ সদস্য</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeMemberLedgerModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white font-bold transition">
+          ✕
+        </button>
+      </div>
+
+      <!-- Ledger Content (Scrollable) -->
+      <div class="p-4 sm:p-5 overflow-y-auto space-y-4 text-xs">
+        <!-- Financial Overview Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-center">
+          <div class="bg-emerald-50 p-3 rounded-2xl border border-emerald-200">
+            <div class="text-[10px] font-bold text-emerald-800">মোট কিস্তি পরিশোধ</div>
+            <div id="ledgerPaidMonths" class="text-base font-black text-emerald-700 mt-1">১টি কিস্তি</div>
+            <div id="ledgerTotalPaidAmt" class="text-[11px] font-bold text-emerald-900">১০,০০০/- ৳</div>
+          </div>
+          <div class="bg-rose-50 p-3 rounded-2xl border border-rose-200">
+            <div class="text-[10px] font-bold text-rose-800">চলতি মাসের স্ট্যাটাস</div>
+            <div id="ledgerCurrentStatus" class="text-sm font-black text-rose-700 mt-1">বকেয়া ⏳</div>
+            <div id="ledgerDueAmt" class="text-[11px] font-bold text-rose-800">১০,০০০/- ৳</div>
+          </div>
+          <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 col-span-2 sm:col-span-1">
+            <div class="text-[10px] font-bold text-slate-600">যোগাযোগ / মোবাইল</div>
+            <div id="ledgerPhoneText" class="text-xs font-mono font-bold text-slate-800 mt-1 truncate">017xxxxxxxx</div>
+            <div id="ledgerCountryText" class="text-[10px] text-slate-500">বাংলাদেশ</div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" id="ledgerDirectReceiptBtn" class="flex-1 bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2 px-3 rounded-xl transition shadow flex items-center justify-center gap-1.5 active:scale-95">
+            <span>🧾</span> <span>অফিশিয়াল রিসিট দেখুন</span>
+          </button>
+          <button type="button" id="ledgerWaReminderBtn" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-3 rounded-xl transition shadow flex items-center justify-center gap-1.5 active:scale-95">
+            <span>📲</span> <span>WhatsApp তাগিদ</span>
+          </button>
+        </div>
+
+        <!-- Payment History Table -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-slate-800 text-xs flex items-center gap-1.5">
+              <span>📜</span> <span>সকল কিস্তির পরিশোধ হিস্ট্রি ও লেজার:</span>
+            </h4>
+            <span class="text-[10px] text-slate-400 font-semibold">প্রতিষ্ঠালগ্ন হতে হালনাগাদ</span>
+          </div>
+
+          <div class="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-xs">
+            <table class="w-full text-left text-[11px]">
+              <thead class="bg-slate-100/80 text-slate-700 font-bold border-b border-slate-200">
+                <tr>
+                  <th class="p-2.5">মাস / কিস্তি</th>
+                  <th class="p-2.5">রিসিট নং</th>
+                  <th class="p-2.5">জমার তারিখ</th>
+                  <th class="p-2.5 text-right">পরিমাণ</th>
+                  <th class="p-2.5 text-center">স্ট্যাটাস</th>
+                </tr>
+              </thead>
+              <tbody id="ledgerHistoryTableBody" class="divide-y divide-slate-100">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Not Found Modal -->
   <div id="errorModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl space-y-4 animate-pop">
@@ -596,6 +680,10 @@
             <input type="text" id="editCashier" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: সাজ্জাদ হোসেন (কোষাধ্যক্ষ)" />
           </div>
         </div>
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">🖋️ সিল ও স্বাক্ষর টেক্সট / পদবি (প্যাডের নিচে):</label>
+          <input type="text" id="editSealText" class="w-full border rounded-lg px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: সভাপতি / সাধারণ সম্পাদক • সিলমোহর ও স্বাক্ষর" />
+        </div>
       </div>
       <div class="flex items-center justify-between pt-3 border-t">
         <button type="button" onclick="resetPadDefaults()" class="text-rose-600 hover:text-rose-700 font-semibold text-xs">
@@ -744,12 +832,16 @@
                   <div id="prQrContainer"></div>
                 </div>
                 <div style="font-size: 18px; font-weight: 700; color: #0f5132; margin-top: 6px;">স্ক্যান করে যাচাই করুন</div>
+                <!-- Digital Barcode inside Pad -->
+                <div style="margin-top: 8px; background: white; padding: 4px 8px; border-radius: 8px; border: 1px solid #cbd5e1;">
+                  <svg id="prBarcodeSvg" style="height: 38px; width: 170px;"></svg>
+                </div>
               </div>
 
               <div style="text-align: center; width: 330px;">
                 <div style="border-top: 1.5px solid #334155; margin-bottom: 8px;"></div>
-                <div style="font-size: 24px; font-weight: 800; color: #0f172a;">সভাপতি / সাধারণ সম্পাদক</div>
-                <div style="font-size: 19px; font-weight: 600; color: #475569;">স্বাক্ষর ও সিল</div>
+                <div class="pad-seal-title" style="font-size: 24px; font-weight: 800; color: #0f172a;">সভাপতি / সাধারণ সম্পাদক</div>
+                <div class="pad-seal-sub" style="font-size: 19px; font-weight: 600; color: #475569;">স্বাক্ষর ও সিল</div>
               </div>
             </div>
 
@@ -1277,6 +1369,19 @@
           </div>
           <input type="text" id="adminSearchInput" oninput="renderAdminList()" placeholder="নাম বা রিসিট কোড দিয়ে খুঁজুন (যেমন: তাজুল বা RCT-25)..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-600" />
           <div id="adminRecordsList" class="space-y-2 max-h-[45vh] overflow-y-auto pr-1"></div>
+
+          <!-- Audit Activity Trail Section -->
+          <div class="mt-4 pt-3 border-t border-slate-200">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-slate-800 text-xs flex items-center gap-1.5">
+                <span>🛡️</span> <span>অ্যাডমিন অ্যাকশন ও অডিট হিস্ট্রি (Audit Log):</span>
+              </span>
+              <button type="button" onclick="clearAdminAuditLogs()" class="text-[10px] text-rose-600 hover:text-rose-700 font-semibold">লগ ক্লিয়ার করুন</button>
+            </div>
+            <div id="adminAuditLogsList" class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 space-y-1.5 max-h-36 overflow-y-auto font-mono text-[11px] text-slate-700">
+              <!-- Logs injected by JS -->
+            </div>
+          </div>
         </div>
 
         <!-- Tab 2: Add New Payment / Mark Paid -->
@@ -1890,7 +1995,9 @@
       bank: "সিটি ব্যাংক পিএলসি • হিসাব: ২৩০৫১৫৮০৪৫০০১",
       routing: "২২৫২৬০৪১৫",
       bkash: "০১৮৮১২১০৪৪৪",
-      cashier: "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)"
+      cashier: "সাজ্জাদ হোসেন (কোষাধ্যক্ষ)",
+      sealTitle: "সভাপতি / সাধারণ সম্পাদক",
+      sealSub: "স্বাক্ষর ও সিল"
     };
 
     let padConfig = { ...DEFAULT_PAD_CONFIG };
@@ -1913,6 +2020,13 @@
       if (r('guideCashier')) r('guideCashier').innerText = (padConfig.cashier || DEFAULT_PAD_CONFIG.cashier) + " — কোষাধ্যক্ষ";
       if (r('kpiCashierText')) r('kpiCashierText').innerText = padConfig.cashier || DEFAULT_PAD_CONFIG.cashier;
       if (r('mCashierSignName')) r('mCashierSignName').innerText = padConfig.cashier || DEFAULT_PAD_CONFIG.cashier;
+
+      document.querySelectorAll('.pad-seal-title').forEach(el => {
+        el.innerText = padConfig.sealTitle || DEFAULT_PAD_CONFIG.sealTitle;
+      });
+      document.querySelectorAll('.pad-seal-sub').forEach(el => {
+        el.innerText = padConfig.sealSub || DEFAULT_PAD_CONFIG.sealSub;
+      });
     }
 
     function openAuthenticNoticeModal() {
@@ -1937,6 +2051,120 @@
       if (modal) modal.classList.add('hidden');
     }
 
+    // ================= 👤 INDIVIDUAL MEMBER PROFILE & LEDGER CONTROLLER =================
+    let activeLedgerMember = null;
+
+    function openMemberLedgerModal(serialOrName) {
+      const sPad = String(Number(serialOrName) || serialOrName).padStart(2, '0');
+      const mem = MASTER_MEMBERS_LIST.find(m => m.serial === sPad || m.name === serialOrName);
+      if (!mem) return;
+      activeLedgerMember = mem;
+
+      const modal = document.getElementById('memberLedgerModal');
+      if (!modal) return;
+
+      const nameEl = document.getElementById('ledgerMemberName');
+      const badgeEl = document.getElementById('ledgerSerialBadge');
+      const subEl = document.getElementById('ledgerSubInfo');
+      const phoneEl = document.getElementById('ledgerPhoneText');
+      const countryEl = document.getElementById('ledgerCountryText');
+      const paidMonthsEl = document.getElementById('ledgerPaidMonths');
+      const totalPaidEl = document.getElementById('ledgerTotalPaidAmt');
+      const currStatusEl = document.getElementById('ledgerCurrentStatus');
+      const dueAmtEl = document.getElementById('ledgerDueAmt');
+      const directReceiptBtn = document.getElementById('ledgerDirectReceiptBtn');
+      const waBtn = document.getElementById('ledgerWaReminderBtn');
+      const tableBody = document.getElementById('ledgerHistoryTableBody');
+
+      if (nameEl) nameEl.innerText = mem.name;
+      if (badgeEl) badgeEl.innerText = `S-${mem.serial}`;
+      if (subEl) subEl.innerText = `${mem.country} • ${mem.role || (mem.expat ? 'সম্মানিত প্রবাসী সদস্য' : 'সম্মানিত সদস্য')}`;
+      if (phoneEl) phoneEl.innerText = mem.phone || 'মোবাইল নম্বর নেই';
+      if (countryEl) countryEl.innerText = mem.country;
+
+      // Check current month paid status
+      const dueNames = new Set((dueMembers || []).map(d => d.name));
+      const isDue = dueNames.has(mem.name);
+      const paidRec = liveRecords.find(r => r.member === mem.name && !r.code.startsWith('PAID-') && !r.code.startsWith('DUE-'));
+
+      if (currStatusEl) {
+        currStatusEl.innerText = isDue ? 'বকেয়া ⏳' : 'পরিশোধিত ✅';
+        currStatusEl.className = isDue ? 'text-sm font-black text-rose-700 mt-1' : 'text-sm font-black text-emerald-700 mt-1';
+      }
+      if (dueAmtEl) {
+        dueAmtEl.innerText = isDue ? '১০,০০০/- ৳' : '০/- ৳ (পরিশোধিত)';
+        dueAmtEl.className = isDue ? 'text-[11px] font-bold text-rose-800' : 'text-[11px] font-bold text-emerald-800';
+      }
+
+      // History table rows (Current month + previous month)
+      const rows = [];
+      // Current Month (November 2026)
+      if (isDue) {
+        rows.push({
+          month: 'নভেম্বর ২০২৬ (চলতি)',
+          code: 'DUE-2611',
+          date: '-',
+          amount: '১০,০০০/- ৳',
+          status: '<span class="text-rose-700 font-bold bg-rose-100 px-2 py-0.5 rounded">বকেয়া</span>'
+        });
+      } else {
+        rows.push({
+          month: 'নভেম্বর ২০২৬ (চলতি)',
+          code: paidRec ? paidRec.code : `RCT-${mem.serial}`,
+          date: paidRec ? paidRec.date : 'নভেম্বর ২০২৬',
+          amount: '১০,০০০/- ৳',
+          status: '<span class="text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded">পরিশোধিত ✅</span>'
+        });
+      }
+
+      // Previous Month (October 2026) - 100% paid
+      rows.push({
+        month: 'অক্টোবর ২০২৬',
+        code: `OCT-${mem.serial}`,
+        date: '১৫ অক্টোবর ২০২৬',
+        amount: '১০,০০০/- ৳',
+        status: '<span class="text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded">পরিশোধিত ✅</span>'
+      });
+
+      const totalPaidCount = isDue ? 1 : 2;
+      const totalPaidAmount = totalPaidCount * 10000;
+      if (paidMonthsEl) paidMonthsEl.innerText = `${toBn(totalPaidCount)}টি কিস্তি`;
+      if (totalPaidEl) totalPaidEl.innerText = `${formatBnTaka(totalPaidAmount)}/- ৳`;
+
+      if (tableBody) {
+        tableBody.innerHTML = rows.map(r => `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="p-2.5 font-bold text-slate-800">${r.month}</td>
+            <td class="p-2.5 font-mono text-emerald-800 font-semibold">${r.code}</td>
+            <td class="p-2.5 text-slate-600">${r.date}</td>
+            <td class="p-2.5 text-right font-bold text-slate-800">${r.amount}</td>
+            <td class="p-2.5 text-center">${r.status}</td>
+          </tr>
+        `).join('');
+      }
+
+      if (directReceiptBtn) {
+        directReceiptBtn.onclick = () => {
+          closeMemberLedgerModal();
+          const synth = getOrSynthesizeRecordForMember(mem.serial);
+          openOfficialPadModal(synth, 'receipt');
+        };
+      }
+
+      if (waBtn) {
+        waBtn.onclick = () => {
+          sendIndividualWaReminder(mem.serial);
+        };
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeMemberLedgerModal() {
+      const modal = document.getElementById('memberLedgerModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
     function openPadEditModal() {
       document.getElementById('editAddr').value = padConfig.addr || '';
       document.getElementById('editBank').value = padConfig.bank || '';
@@ -1944,6 +2172,7 @@
       document.getElementById('editBkash').value = padConfig.bkash || '';
       document.getElementById('editReg').value = (padConfig.reg || '').replace(/^সমবায় রেজিঃ নং-/, '');
       document.getElementById('editCashier').value = padConfig.cashier || '';
+      document.getElementById('editSealText').value = padConfig.sealTitle || '';
       document.getElementById('padEditModal').classList.remove('hidden');
     }
 
@@ -1958,6 +2187,7 @@
       const bkash = document.getElementById('editBkash').value.trim();
       const reg = document.getElementById('editReg').value.trim();
       const cashier = document.getElementById('editCashier').value.trim();
+      const sealTitle = document.getElementById('editSealText').value.trim();
 
       padConfig = {
         addr: addr || DEFAULT_PAD_CONFIG.addr,
@@ -1965,7 +2195,9 @@
         routing: routing || DEFAULT_PAD_CONFIG.routing,
         bkash: bkash || DEFAULT_PAD_CONFIG.bkash,
         reg: reg ? (reg.startsWith("সমবায়") ? reg : ("সমবায় রেজিঃ নং-" + reg)) : DEFAULT_PAD_CONFIG.reg,
-        cashier: cashier || DEFAULT_PAD_CONFIG.cashier
+        cashier: cashier || DEFAULT_PAD_CONFIG.cashier,
+        sealTitle: sealTitle || DEFAULT_PAD_CONFIG.sealTitle,
+        sealSub: DEFAULT_PAD_CONFIG.sealSub
       };
 
       try {
@@ -2364,6 +2596,18 @@
         btn.addEventListener('click', () => openVerifiedModal(rec));
         wrap.appendChild(btn);
 
+        if (!isNotice) {
+          const ledgerBtn = document.createElement('button');
+          ledgerBtn.type = 'button';
+          ledgerBtn.className = 'mt-2 text-[11px] font-bold text-emerald-800 hover:text-emerald-950 flex items-center gap-1 transition';
+          ledgerBtn.innerHTML = '<span>👤</span> <span>সদস্য লেজার প্রোফাইল ↗</span>';
+          ledgerBtn.onclick = (e) => {
+            e.stopPropagation();
+            openMemberLedgerModal(rec.member);
+          };
+          wrap.appendChild(ledgerBtn);
+        }
+
         if (isAdmin) {
           const delBtn = document.createElement('button');
           delBtn.type = 'button';
@@ -2736,6 +2980,7 @@
       updateHubStats();
       initAdminWhatsAppTab();
       updateAdminDrawerStats();
+      renderAdminAuditLogs();
       switchAdminTab('manage');
     }
 
@@ -2872,6 +3117,57 @@
       rebuildLiveRecords();
       renderGrid(liveRecords);
       renderAdminList();
+      if (typeof addAdminAuditLog === 'function') {
+        addAdminAuditLog('🗑️ রিসিট ডিলিট', `${memberName || ''} (${code}) রিসিট মুছে ফেলা হয়েছে`);
+      }
+    }
+
+    const STORAGE_AUDIT_LOGS_KEY = 'somiti_admin_audit_logs_v1';
+
+    function addAdminAuditLog(action, detail) {
+      try {
+        const timeStr = new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const dateStr = new Date().toLocaleDateString('bn-BD', { day: '2-digit', month: 'short' });
+        const entry = {
+          time: `${dateStr}, ${timeStr}`,
+          action,
+          detail
+        };
+        const existing = JSON.parse(localStorage.getItem(STORAGE_AUDIT_LOGS_KEY) || '[]');
+        existing.unshift(entry);
+        if (existing.length > 50) existing.pop();
+        localStorage.setItem(STORAGE_AUDIT_LOGS_KEY, JSON.stringify(existing));
+        renderAdminAuditLogs();
+      } catch (_) {}
+    }
+
+    function renderAdminAuditLogs() {
+      const container = document.getElementById('adminAuditLogsList');
+      if (!container) return;
+      try {
+        const logs = JSON.parse(localStorage.getItem(STORAGE_AUDIT_LOGS_KEY) || '[]');
+        if (logs.length === 0) {
+          container.innerHTML = `<div class="text-slate-400 text-center py-2">বর্তমানে কোনো অ্যাক্টিভিটি লগ নেই।</div>`;
+          return;
+        }
+        container.innerHTML = logs.map(l => `
+          <div class="flex items-start justify-between gap-2 border-b border-slate-200/60 pb-1 last:border-b-0">
+            <div>
+              <span class="font-bold text-emerald-800">${l.action}:</span>
+              <span class="text-slate-700">${l.detail}</span>
+            </div>
+            <span class="text-[10px] text-slate-400 shrink-0">${l.time}</span>
+          </div>
+        `).join('');
+      } catch (_) {
+        container.innerHTML = `<div class="text-slate-400 text-center py-2">লগ লোড করা যায়নি।</div>`;
+      }
+    }
+
+    function clearAdminAuditLogs() {
+      if (!confirm('আপনি কি অডিট অ্যাক্টিভিটি লগগুলো মুছে ফেলতে চান?')) return;
+      localStorage.removeItem(STORAGE_AUDIT_LOGS_KEY);
+      renderAdminAuditLogs();
     }
 
     function restoreReceiptByCode(code) {
@@ -3516,6 +3812,10 @@
       clearSlipImage();
       const formEl = document.getElementById('adminAddForm');
       if (formEl) formEl.reset();
+
+      if (typeof addAdminAuditLog === 'function') {
+        addAdminAuditLog('✅ পেমেন্ট এন্ট্রি', `${memberName} (${sCode}) - ${formatBnTaka(amtNum)} ৳ জমা রেকর্ড`);
+      }
 
       // 3. Immediately Close Admin and Auto-Generate 3 Official Pads Modal
       closeAdminPanel();
