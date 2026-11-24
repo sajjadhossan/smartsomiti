@@ -342,19 +342,6 @@
         </div>
         <div id="countryGrid" class="p-4 flex flex-wrap gap-2 text-xs"></div>
       </div>
-
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <div class="px-5 py-3.5 border-b border-slate-100 bg-slate-50/70">
-          <h3 class="text-sm font-bold text-slate-800">📁 অফিশিয়াল গুগল ড্রাইভ আর্কাইভ</h3>
-          <p class="text-[11px] text-slate-500">সকল ডকুমেন্ট ও স্লিপের পাবলিক ফোল্ডার</p>
-        </div>
-        <div class="p-4 grid grid-cols-2 gap-2.5 text-xs">
-          <a href="https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-" target="_blank" rel="noopener" class="p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-200 font-semibold text-slate-700 transition">🧾 ১. পেমেন্ট স্লিপ ↗</a>
-          <a href="https://drive.google.com/drive/folders/1YfwAsWE5k0bgQl-NciDoaL7oE_1eMfWD" target="_blank" rel="noopener" class="p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-200 font-semibold text-slate-700 transition">📄 ২. অফিশিয়াল রিসিট ↗</a>
-          <a href="https://drive.google.com/drive/folders/18nkqHRQUGgz3zJJz4LVnTgz1ra8P2Jpq" target="_blank" rel="noopener" class="p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-200 font-semibold text-slate-700 transition">✅ ৩. পরিশোধিত তালিকা ↗</a>
-          <a href="https://drive.google.com/drive/folders/1vx3wY2r1ZwBieCcmc8Zn-UEePhBA0gf5" target="_blank" rel="noopener" class="p-2.5 rounded-xl bg-slate-50 hover:bg-rose-50 border border-slate-200 font-semibold text-slate-700 transition">⏳ ৪. বকেয়া তালিকা ↗</a>
-        </div>
-      </div>
     </section>
 
   </main>
@@ -1208,6 +1195,30 @@
               </button>
             </div>
 
+            <!-- Google Drive Cloud Archives in Drawer -->
+            <div class="pt-2">
+              <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 pb-1 border-t border-slate-800 pt-2 flex items-center justify-between">
+                <span>📁 গুগল ড্রাইভ ক্লাউড আর্কাইভ</span>
+                <span class="text-[9px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-1.5 py-0.2 rounded">অ্যাডমিন</span>
+              </div>
+              <a href="https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-" target="_blank" rel="noopener" class="w-full flex items-center justify-between p-2 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition text-xs">
+                <span>🧾 ১. পেমেন্ট স্লিপ ফোল্ডার</span>
+                <span class="text-[10px] text-emerald-400">খুলুন ↗</span>
+              </a>
+              <a href="https://drive.google.com/drive/folders/1YfwAsWE5k0bgQl-NciDoaL7oE_1eMfWD" target="_blank" rel="noopener" class="w-full flex items-center justify-between p-2 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition text-xs">
+                <span>📄 ২. অফিশিয়াল রিসিট ফোল্ডার</span>
+                <span class="text-[10px] text-emerald-400">খুলুন ↗</span>
+              </a>
+              <a href="https://drive.google.com/drive/folders/18nkqHRQUGgz3zJJz4LVnTgz1ra8P2Jpq" target="_blank" rel="noopener" class="w-full flex items-center justify-between p-2 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition text-xs">
+                <span>✅ ৩. পরিশোধিত তালিকা ফোল্ডার</span>
+                <span class="text-[10px] text-emerald-400">খুলুন ↗</span>
+              </a>
+              <a href="https://drive.google.com/drive/folders/1vx3wY2r1ZwBieCcmc8Zn-UEePhBA0gf5" target="_blank" rel="noopener" class="w-full flex items-center justify-between p-2 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition text-xs">
+                <span>⏳ ৪. বকেয়া তালিকা ফোল্ডার</span>
+                <span class="text-[10px] text-rose-400">খুলুন ↗</span>
+              </a>
+            </div>
+
           </div>
 
           <!-- Drawer Footer -->
@@ -1746,6 +1757,38 @@
             <div class="flex gap-2">
               <input type="password" id="newAdminPassInput" placeholder="নতুন পাসওয়ার্ড লিখুন..." class="flex-1 px-3 py-2 rounded-xl border border-slate-300 bg-white" />
               <button type="button" onclick="changeAdminPassword()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-4 py-2 rounded-lg transition">পাসওয়ার্ড আপডেট</button>
+            </div>
+          </div>
+
+          <!-- Official Google Drive Archives (Admin Exclusive) -->
+          <div class="bg-gradient-to-br from-slate-900 to-emerald-950 p-4 rounded-2xl border border-emerald-800/60 text-white space-y-3 shadow-md">
+            <div class="flex items-center justify-between border-b border-emerald-800/50 pb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">📁</span>
+                <div>
+                  <h4 class="font-bold text-xs sm:text-sm text-white">অফিসিয়াল গুগল ড্রাইভ ক্লাউড আর্কাইভ ফোল্ডার</h4>
+                  <p class="text-[11px] text-emerald-300">সকল পেমেন্ট স্লিপ, রিসিট ও অফিশিয়াল তালিকার মূল ব্যাকআপ (শুধুমাত্র পরিচালনা পরিষদ)</p>
+                </div>
+              </div>
+              <span class="text-[10px] bg-amber-400 text-slate-950 font-bold px-2 py-0.5 rounded-full">গোপনীয় / অ্যাডমিন</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <a href="https://drive.google.com/drive/folders/1loFYQQ3rfcsqwTtfIRMsbadutVsvxjV-" target="_blank" rel="noopener" class="p-2.5 rounded-xl bg-slate-800/90 hover:bg-emerald-800/80 border border-slate-700 text-slate-100 font-semibold transition flex items-center justify-between">
+                <span>🧾 ১. পেমেন্ট স্লিপ ফোল্ডার</span>
+                <span class="text-emerald-400">খুলুন ↗</span>
+              </a>
+              <a href="https://drive.google.com/drive/folders/1YfwAsWE5k0bgQl-NciDoaL7oE_1eMfWD" target="_blank" rel="noopener" class="p-2.5 rounded-xl bg-slate-800/90 hover:bg-emerald-800/80 border border-slate-700 text-slate-100 font-semibold transition flex items-center justify-between">
+                <span>📄 ২. অফিশিয়াল রিসিট ফোল্ডার</span>
+                <span class="text-emerald-400">খুলুন ↗</span>
+              </a>
+              <a href="https://drive.google.com/drive/folders/18nkqHRQUGgz3zJJz4LVnTgz1ra8P2Jpq" target="_blank" rel="noopener" class="p-2.5 rounded-xl bg-slate-800/90 hover:bg-emerald-800/80 border border-slate-700 text-slate-100 font-semibold transition flex items-center justify-between">
+                <span>✅ ৩. পরিশোধিত তালিকা ফোল্ডার</span>
+                <span class="text-emerald-400">খুলুন ↗</span>
+              </a>
+              <a href="https://drive.google.com/drive/folders/1vx3wY2r1ZwBieCcmc8Zn-UEePhBA0gf5" target="_blank" rel="noopener" class="p-2.5 rounded-xl bg-slate-800/90 hover:bg-emerald-800/80 border border-slate-700 text-slate-100 font-semibold transition flex items-center justify-between">
+                <span>⏳ ৪. বকেয়া তালিকা ফোল্ডার</span>
+                <span class="text-rose-400">খুলুন ↗</span>
+              </a>
             </div>
           </div>
 
